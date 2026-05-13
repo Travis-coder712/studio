@@ -1,0 +1,776 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Studio — Travis Hughes</title>
+  <meta name="description" content="A small studio of useful tools — Australian renewable energy intelligence, learning curricula, family-scale software, and tinkered-with side projects." />
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=Inter:wght@400;500;600;700;800&display=swap">
+
+  <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Ctext y='80' font-size='80'%3E✦%3C/text%3E%3C/svg%3E">
+
+  <style>
+    :root {
+      --bg:           #fafbfc;
+      --bg-2:         #ffffff;
+      --bg-3:         #f1f5f9;
+      --border:       #e2e8f0;
+      --border-2:     #cbd5e1;
+      --text:         #0f172a;
+      --text-2:       #334155;
+      --text-3:       #64748b;
+      --text-mute:    #94a3b8;
+
+      --indigo:       #2563eb;   /* primary brand blue (corporate) */
+      --pink:         #0891b2;   /* repurposed: secondary cyan accent */
+      --emerald:      #10b981;
+      --violet:       #0e7490;   /* per-project: deep cyan (was mauve) */
+      --rose:         #f43f5e;
+      --amber:        #f59e0b;
+      --teal:         #0d9488;
+      --sky:          #0ea5e9;
+      --orange:       #fb923c;
+      --fuchsia:      #0369a1;   /* per-project: blue-700 (was magenta) */
+      --lime:         #84cc16;
+
+      --radius:       16px;
+      --radius-sm:    10px;
+      --shadow-1:     0 1px 2px rgba(15,23,42,0.04), 0 1px 3px rgba(15,23,42,0.05);
+      --shadow-2:     0 4px 16px rgba(15,23,42,0.06), 0 12px 32px rgba(15,23,42,0.08);
+      --shadow-hero:  0 20px 60px rgba(99,102,241,0.18);
+    }
+
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    html { scroll-behavior: smooth; }
+    body {
+      background: var(--bg);
+      color: var(--text);
+      font-family: 'Inter', -apple-system, BlinkMacSystemFont, system-ui, sans-serif;
+      font-size: 16px;
+      line-height: 1.6;
+      -webkit-font-smoothing: antialiased;
+    }
+
+    /* Floating gradient mesh — visible all over page */
+    .mesh {
+      position: fixed; inset: 0;
+      pointer-events: none;
+      z-index: 0;
+      overflow: hidden;
+    }
+    .mesh::before, .mesh::after {
+      content: '';
+      position: absolute;
+      border-radius: 50%;
+      filter: blur(80px);
+      opacity: 0.5;
+      animation: drift 30s ease-in-out infinite alternate;
+    }
+    .mesh::before {
+      width: 600px; height: 600px;
+      background: radial-gradient(circle, var(--indigo), transparent 70%);
+      top: -200px; left: -150px;
+      opacity: 0.35;
+    }
+    .mesh::after {
+      width: 500px; height: 500px;
+      background: radial-gradient(circle, var(--sky), transparent 70%);
+      bottom: -100px; right: -100px;
+      animation-delay: -15s;
+      opacity: 0.30;
+    }
+    @keyframes drift {
+      0%   { transform: translate(0, 0) scale(1); }
+      50%  { transform: translate(60px, 40px) scale(1.1); }
+      100% { transform: translate(-40px, 80px) scale(0.95); }
+    }
+
+    main, .nav, footer { position: relative; z-index: 1; }
+
+    /* Nav */
+    .nav {
+      position: sticky;
+      top: 0;
+      backdrop-filter: blur(20px);
+      -webkit-backdrop-filter: blur(20px);
+      background: rgba(250,251,252,0.75);
+      border-bottom: 1px solid var(--border);
+      z-index: 50;
+    }
+    .nav-inner {
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 16px 28px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 20px;
+    }
+    .brand {
+      font-size: 18px;
+      font-weight: 800;
+      letter-spacing: -0.02em;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+    .brand .star {
+      color: var(--indigo);
+      font-size: 22px;
+      display: inline-block;
+      animation: spin 12s linear infinite;
+    }
+    @keyframes spin { from { transform: rotate(0); } to { transform: rotate(360deg); } }
+    .nav-links { display: flex; gap: 22px; }
+    .nav-links a {
+      color: var(--text-2);
+      text-decoration: none;
+      font-size: 14px;
+      font-weight: 500;
+      transition: color 0.15s ease;
+    }
+    .nav-links a:hover { color: var(--indigo); }
+
+    /* Hero */
+    .hero {
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 100px 28px 80px;
+      text-align: center;
+    }
+    .hero .eyebrow {
+      display: inline-block;
+      font-size: 13px;
+      font-weight: 600;
+      letter-spacing: 0.04em;
+      color: var(--indigo);
+      background: rgba(99,102,241,0.10);
+      padding: 6px 14px;
+      border-radius: 999px;
+      margin-bottom: 24px;
+    }
+    .hero h1 {
+      font-family: 'Instrument Serif', 'Times New Roman', serif;
+      font-weight: 400;
+      font-size: clamp(56px, 9vw, 124px);
+      line-height: 0.95;
+      letter-spacing: -0.04em;
+      margin-bottom: 28px;
+    }
+    .hero h1 .accent {
+      font-style: italic;
+      background: linear-gradient(135deg, var(--indigo) 0%, var(--sky) 60%, var(--teal) 100%);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+    }
+    .hero p {
+      font-size: clamp(17px, 2.2vw, 22px);
+      color: var(--text-2);
+      max-width: 660px;
+      margin: 0 auto 40px;
+      line-height: 1.5;
+    }
+    .hero .stats {
+      display: inline-flex;
+      gap: 32px;
+      padding: 18px 28px;
+      background: rgba(255,255,255,0.7);
+      border: 1px solid var(--border);
+      border-radius: 999px;
+      backdrop-filter: blur(10px);
+      -webkit-backdrop-filter: blur(10px);
+    }
+    .hero .stat {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 2px;
+    }
+    .hero .stat .num {
+      font-size: 22px;
+      font-weight: 700;
+      color: var(--text);
+    }
+    .hero .stat .lbl {
+      font-size: 11px;
+      font-weight: 500;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      color: var(--text-3);
+    }
+    .hero .stat-divider {
+      width: 1px;
+      background: var(--border);
+    }
+
+    /* Section header */
+    .section {
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 80px 28px;
+    }
+    .section-eyebrow {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      margin-bottom: 24px;
+    }
+    .section-eyebrow .num {
+      font-family: ui-monospace, 'SF Mono', Menlo, monospace;
+      font-size: 12px;
+      color: var(--text-mute);
+      letter-spacing: 0.05em;
+    }
+    .section-eyebrow .line {
+      flex: 1; max-width: 80px; height: 1px;
+      background: var(--border-2);
+    }
+    .section-eyebrow .label {
+      font-size: 12px;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.14em;
+      color: var(--text-2);
+    }
+    .section h2 {
+      font-family: 'Instrument Serif', serif;
+      font-weight: 400;
+      font-size: clamp(36px, 5vw, 56px);
+      line-height: 1.05;
+      letter-spacing: -0.025em;
+      margin-bottom: 16px;
+      max-width: 800px;
+    }
+    .section h2 em {
+      font-style: italic;
+      background: linear-gradient(135deg, var(--indigo), var(--sky));
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+    }
+    .section-intro {
+      color: var(--text-2);
+      font-size: 17px;
+      max-width: 640px;
+      margin-bottom: 48px;
+    }
+
+    /* Project cards */
+    .work-grid {
+      display: grid;
+      grid-template-columns: repeat(12, 1fr);
+      gap: 20px;
+    }
+    .card {
+      grid-column: span 6;
+      background: var(--bg-2);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 32px;
+      display: flex;
+      flex-direction: column;
+      gap: 16px;
+      position: relative;
+      overflow: hidden;
+      transition: all 0.25s ease;
+      text-decoration: none;
+      color: inherit;
+    }
+    .card:hover {
+      transform: translateY(-4px);
+      box-shadow: var(--shadow-2);
+      border-color: var(--accent, var(--indigo));
+    }
+    /* First card spans full width — hero project */
+    .card.featured { grid-column: span 12; padding: 48px; }
+    .card.featured .card-title { font-size: 38px; }
+    .card.featured .card-desc  { font-size: 17px; max-width: 700px; }
+    .card.featured .icon-wrap  { width: 80px; height: 80px; }
+    .card.featured .icon-wrap svg { width: 44px; height: 44px; }
+
+    .card::before {
+      content: '';
+      position: absolute;
+      top: 0; left: 0; right: 0;
+      height: 4px;
+      background: var(--accent, var(--indigo));
+      opacity: 0.85;
+    }
+    .card .card-deco {
+      position: absolute;
+      right: -40px;
+      bottom: -40px;
+      width: 200px;
+      height: 200px;
+      opacity: 0.08;
+      pointer-events: none;
+      color: var(--accent);
+      transition: opacity 0.3s ease, transform 0.5s ease;
+    }
+    .card:hover .card-deco {
+      opacity: 0.15;
+      transform: scale(1.05) rotate(-5deg);
+    }
+    .card-head {
+      display: flex;
+      align-items: center;
+      gap: 16px;
+    }
+    .icon-wrap {
+      width: 56px;
+      height: 56px;
+      background: var(--accent);
+      border-radius: 14px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: white;
+      flex-shrink: 0;
+      box-shadow: 0 6px 16px var(--accent-glow, rgba(99,102,241,0.30));
+    }
+    .icon-wrap svg { width: 30px; height: 30px; }
+    .card-meta {
+      font-size: 11px;
+      font-weight: 600;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      color: var(--accent);
+    }
+    .card-title {
+      font-size: 24px;
+      font-weight: 700;
+      letter-spacing: -0.015em;
+      color: var(--text);
+      margin-top: 2px;
+    }
+    .card-desc {
+      color: var(--text-2);
+      font-size: 15px;
+      line-height: 1.6;
+      flex: 1;
+    }
+    .card-actions {
+      display: flex;
+      gap: 10px;
+      margin-top: 8px;
+    }
+    .btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      padding: 9px 18px;
+      border-radius: 999px;
+      font-size: 13px;
+      font-weight: 600;
+      text-decoration: none;
+      transition: all 0.15s ease;
+      border: 1.5px solid transparent;
+    }
+    .btn.primary {
+      background: var(--accent);
+      color: white;
+    }
+    .btn.primary:hover { transform: translateY(-1px); box-shadow: 0 6px 14px var(--accent-glow, rgba(99,102,241,0.30)); }
+    .btn.ghost {
+      background: transparent;
+      color: var(--text-2);
+      border-color: var(--border-2);
+    }
+    .btn.ghost:hover { color: var(--accent); border-color: var(--accent); }
+
+    /* Coming-soon cards — lighter look */
+    .coming-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+      gap: 16px;
+    }
+    .coming-card {
+      background: var(--bg-2);
+      border: 1.5px dashed var(--border-2);
+      border-radius: var(--radius);
+      padding: 24px;
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+      position: relative;
+      transition: all 0.2s ease;
+    }
+    .coming-card:hover {
+      border-style: solid;
+      border-color: var(--accent, var(--indigo));
+      transform: translateY(-2px);
+    }
+    .coming-card .icon-wrap {
+      width: 44px; height: 44px; border-radius: 11px;
+      box-shadow: 0 4px 12px var(--accent-glow, rgba(99,102,241,0.25));
+    }
+    .coming-card .icon-wrap svg { width: 22px; height: 22px; }
+    .coming-card .card-title { font-size: 18px; }
+    .coming-card .card-desc { font-size: 14px; }
+    .coming-tag {
+      position: absolute;
+      top: 16px; right: 16px;
+      font-size: 10px;
+      font-weight: 700;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      color: var(--accent);
+      background: var(--accent-light, rgba(99,102,241,0.10));
+      padding: 3px 9px;
+      border-radius: 999px;
+    }
+
+    /* About */
+    .about-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 60px;
+      align-items: start;
+    }
+    .about-text p {
+      font-size: 17px;
+      color: var(--text-2);
+      margin-bottom: 18px;
+    }
+    .about-text em {
+      font-family: 'Instrument Serif', serif;
+      font-style: italic;
+      color: var(--text);
+    }
+    .principles {
+      display: flex;
+      flex-direction: column;
+      gap: 14px;
+    }
+    .principle {
+      padding: 20px 22px;
+      background: var(--bg-2);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      border-left: 4px solid var(--accent);
+    }
+    .principle-title {
+      font-size: 14px;
+      font-weight: 700;
+      margin-bottom: 4px;
+      color: var(--text);
+    }
+    .principle-desc {
+      font-size: 14px;
+      color: var(--text-3);
+    }
+
+    /* Footer */
+    footer {
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 60px 28px 80px;
+      text-align: center;
+      border-top: 1px solid var(--border);
+      margin-top: 60px;
+      color: var(--text-3);
+      font-size: 14px;
+    }
+    footer a {
+      color: var(--indigo);
+      text-decoration: none;
+      font-weight: 500;
+    }
+    footer a:hover { text-decoration: underline; }
+    footer .meta {
+      font-family: ui-monospace, 'SF Mono', Menlo, monospace;
+      font-size: 11px;
+      color: var(--text-mute);
+      margin-top: 12px;
+    }
+
+    /* Mobile */
+    @media (max-width: 760px) {
+      .hero { padding: 60px 20px 40px; }
+      .hero .stats { gap: 18px; padding: 14px 18px; }
+      .section { padding: 60px 20px; }
+      .card { grid-column: span 12 !important; padding: 28px; }
+      .card.featured { padding: 32px; }
+      .card.featured .card-title { font-size: 28px; }
+      .about-grid { grid-template-columns: 1fr; gap: 32px; }
+      .nav-links { gap: 14px; }
+      .nav-links a { font-size: 13px; }
+    }
+  </style>
+</head>
+<body>
+
+  <div class="mesh"></div>
+
+  <!-- SVG sprite for icons -->
+  <svg width="0" height="0" style="position:absolute" xmlns="http://www.w3.org/2000/svg">
+    <defs>
+      <symbol id="i-bolt" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+        <path d="M13 2 L4 14 H11 L10 22 L20 10 H13 L13 2 Z"/>
+      </symbol>
+      <symbol id="i-grid" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+        <rect x="3" y="3" width="7" height="7" rx="1"/>
+        <rect x="14" y="3" width="7" height="7" rx="1"/>
+        <rect x="3" y="14" width="7" height="7" rx="1"/>
+        <rect x="14" y="14" width="7" height="7" rx="1"/>
+        <line x1="10" y1="6.5" x2="14" y2="6.5"/>
+        <line x1="10" y1="17.5" x2="14" y2="17.5"/>
+        <line x1="6.5" y1="10" x2="6.5" y2="14"/>
+        <line x1="17.5" y1="10" x2="17.5" y2="14"/>
+      </symbol>
+      <symbol id="i-flame" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+        <path d="M12 2c1 4 5 6 5 11a5 5 0 0 1-10 0c0-2 1-3 1-4 0 0 1 1 2 1 0-2-1-4 2-8z"/>
+      </symbol>
+      <symbol id="i-pencil" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+        <path d="M17 3a2.828 2.828 0 0 1 4 4L7.5 20.5 2 22l1.5-5.5L17 3z"/>
+        <line x1="14" y1="6" x2="18" y2="10"/>
+      </symbol>
+      <symbol id="i-waves" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+        <path d="M2 8c2-2 4 0 6-1 2-1 4 2 6 1 2-1 4 1 6 0"/>
+        <path d="M2 14c2-2 4 0 6-1 2-1 4 2 6 1 2-1 4 1 6 0"/>
+        <path d="M2 20c2-2 4 0 6-1 2-1 4 2 6 1 2-1 4 1 6 0"/>
+      </symbol>
+      <symbol id="i-hardhat" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+        <path d="M2 18h20"/>
+        <path d="M2 18v-1a1 1 0 0 1 1-1h18a1 1 0 0 1 1 1v1"/>
+        <path d="M5 16v-3a7 7 0 0 1 14 0v3"/>
+        <line x1="10" y1="6" x2="14" y2="6"/>
+      </symbol>
+      <symbol id="i-sun" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+        <circle cx="12" cy="12" r="4"/>
+        <path d="M12 2v2"/><path d="M12 20v2"/>
+        <path d="m4.93 4.93 1.41 1.41"/><path d="m17.66 17.66 1.41 1.41"/>
+        <path d="M2 12h2"/><path d="M20 12h2"/>
+        <path d="m6.34 17.66-1.41 1.41"/><path d="m19.07 4.93-1.41 1.41"/>
+      </symbol>
+      <symbol id="i-book" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+        <path d="M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2z"/>
+        <path d="M22 3h-6a4 4 0 0 0-4 4v14a3 3 0 0 1 3-3h7z"/>
+      </symbol>
+      <symbol id="i-brain" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+        <path d="M9.5 2A2.5 2.5 0 0 1 12 4.5V20a2 2 0 0 1-2 2 2 2 0 0 1-2-2H7a2 2 0 0 1-2-2v-2.5A2.5 2.5 0 0 1 7.5 13v-1A2.5 2.5 0 0 1 5 9.5v-1A2.5 2.5 0 0 1 7.5 6v-1A2.5 2.5 0 0 1 9.5 2.5z"/>
+        <path d="M14.5 2A2.5 2.5 0 0 0 12 4.5V20a2 2 0 0 0 2 2 2 2 0 0 0 2-2h1a2 2 0 0 0 2-2v-2.5a2.5 2.5 0 0 0-2.5-2.5v-1A2.5 2.5 0 0 0 19 9.5v-1A2.5 2.5 0 0 0 16.5 6v-1A2.5 2.5 0 0 0 14.5 2.5z"/>
+      </symbol>
+    </defs>
+  </svg>
+
+  <!-- Nav -->
+  <header class="nav">
+    <div class="nav-inner">
+      <div class="brand"><span class="star">✦</span> Studio</div>
+      <nav class="nav-links">
+        <a href="#work">Work</a>
+        <a href="#coming">Coming Soon</a>
+        <a href="#about">About</a>
+      </nav>
+    </div>
+  </header>
+
+  <main>
+
+    <!-- Hero -->
+    <section class="hero">
+      <span class="eyebrow">Studio · Australia</span>
+      <h1>Australian energy intelligence<br><span class="accent">and applied tools.</span></h1>
+      <p>A focused portfolio of renewable-energy market analytics, technical curricula, and applied software — built end-to-end and shipped iteratively.</p>
+      <div class="stats">
+        <div class="stat"><div class="num">5</div><div class="lbl">Live</div></div>
+        <div class="stat-divider"></div>
+        <div class="stat"><div class="num">4</div><div class="lbl">In flight</div></div>
+        <div class="stat-divider"></div>
+        <div class="stat"><div class="num">116</div><div class="lbl">Lessons shipped</div></div>
+      </div>
+    </section>
+
+    <!-- Featured Work -->
+    <section class="section" id="work">
+      <div class="section-eyebrow">
+        <span class="num">01</span>
+        <span class="line"></span>
+        <span class="label">Featured Work</span>
+      </div>
+      <h2>Live projects, <em>shipped</em>.</h2>
+      <p class="section-intro">Each project is a progressive web app — open in any browser, no install required.</p>
+
+      <div class="work-grid">
+
+        <!-- AURES (featured wide) -->
+        <a class="card featured" href="https://travis-coder712.github.io/aures-db/" target="_blank"
+           style="--accent: var(--emerald); --accent-glow: rgba(16,185,129,0.30); --accent-light: rgba(16,185,129,0.10);">
+          <svg class="card-deco"><use href="#i-bolt"/></svg>
+          <div class="card-head">
+            <div class="icon-wrap"><svg><use href="#i-bolt"/></svg></div>
+            <div>
+              <div class="card-meta">Australian Renewable Energy System</div>
+              <div class="card-title">AURES Intelligence</div>
+            </div>
+          </div>
+          <p class="card-desc">Live database tracking every significant Australian renewable project across the NEM and WEM. CIS / LTESA / ESEM scheme tracker, per-project value analyses (wind, solar, BESS, hybrid), and an 11-module learning curriculum with 116 lessons spanning energy transition, project finance, planning, connection, valuation, and market synthesis.</p>
+          <div class="card-actions">
+            <span class="btn primary">Open AURES →</span>
+            <span class="btn ghost">v2.97.0 · Active</span>
+          </div>
+        </a>
+
+        <!-- GridRival Showcase -->
+        <a class="card" href="https://travis-coder712.github.io/gridrival-showcase/" target="_blank"
+           style="--accent: var(--violet); --accent-glow: rgba(139,92,246,0.30); --accent-light: rgba(139,92,246,0.10);">
+          <svg class="card-deco"><use href="#i-grid"/></svg>
+          <div class="card-head">
+            <div class="icon-wrap"><svg><use href="#i-grid"/></svg></div>
+            <div>
+              <div class="card-meta">Game · NEM Education</div>
+              <div class="card-title">GridRival Showcase</div>
+            </div>
+          </div>
+          <p class="card-desc">Standalone playable minigames teaching how the Australian energy market actually works — retail, hedging, investment, energy transition, and battery forecasting against real 2024 AEMO data.</p>
+          <div class="card-actions">
+            <span class="btn primary">Play →</span>
+          </div>
+        </a>
+
+        <!-- Wings of Fire RPG -->
+        <a class="card" href="https://travis-coder712.github.io/wings-of-fire-rpg/" target="_blank"
+           style="--accent: var(--rose); --accent-glow: rgba(244,63,94,0.30); --accent-light: rgba(244,63,94,0.10);">
+          <svg class="card-deco"><use href="#i-flame"/></svg>
+          <div class="card-head">
+            <div class="icon-wrap"><svg><use href="#i-flame"/></svg></div>
+            <div>
+              <div class="card-meta">Game · PWA</div>
+              <div class="card-title">Wings of Fire RPG</div>
+            </div>
+          </div>
+          <p class="card-desc">A manga-style RPG PWA. A small game built for fun.</p>
+          <div class="card-actions">
+            <span class="btn primary">Play →</span>
+          </div>
+        </a>
+
+        <!-- Drawing Adventure -->
+        <a class="card" href="https://travis-coder712.github.io/Drawing_adventure/" target="_blank"
+           style="--accent: var(--amber); --accent-glow: rgba(245,158,11,0.30); --accent-light: rgba(245,158,11,0.10);">
+          <svg class="card-deco"><use href="#i-pencil"/></svg>
+          <div class="card-head">
+            <div class="icon-wrap"><svg><use href="#i-pencil"/></svg></div>
+            <div>
+              <div class="card-meta">Creative · Kids</div>
+              <div class="card-title">Drawing Adventure</div>
+            </div>
+          </div>
+          <p class="card-desc">A drawing app made for younger family — open in any browser, no install.</p>
+          <div class="card-actions">
+            <span class="btn primary">Open →</span>
+          </div>
+        </a>
+
+        <!-- JJCC Surf Check -->
+        <a class="card" href="https://travis-coder712.github.io/JJCC-Surf-Check/" target="_blank"
+           style="--accent: var(--teal); --accent-glow: rgba(20,184,166,0.30); --accent-light: rgba(20,184,166,0.10);">
+          <svg class="card-deco"><use href="#i-waves"/></svg>
+          <div class="card-head">
+            <div class="icon-wrap"><svg><use href="#i-waves"/></svg></div>
+            <div>
+              <div class="card-meta">Utility · Coastal</div>
+              <div class="card-title">JJCC Surf Check</div>
+            </div>
+          </div>
+          <p class="card-desc">Quick surf-conditions look-up for the JJCC corner of the coast.</p>
+          <div class="card-actions">
+            <span class="btn primary">Open →</span>
+          </div>
+        </a>
+
+      </div>
+    </section>
+
+    <!-- Coming Soon -->
+    <section class="section" id="coming">
+      <div class="section-eyebrow">
+        <span class="num">02</span>
+        <span class="line"></span>
+        <span class="label">Coming Soon</span>
+      </div>
+      <h2>In <em>development</em>.</h2>
+      <p class="section-intro">Active build-out — projects being moved into their own deployments, and new modules in progress.</p>
+
+      <div class="coming-grid">
+
+        <div class="coming-card" style="--accent: var(--orange); --accent-glow: rgba(251,146,60,0.25); --accent-light: rgba(251,146,60,0.10);">
+          <span class="coming-tag">Extracting</span>
+          <div class="icon-wrap"><svg><use href="#i-hardhat"/></svg></div>
+          <div class="card-title">Brisbane Builder Guide</div>
+          <p class="card-desc">Bathroom-renovation PWA — practical scoping, costing, and trade-coordination notes.</p>
+        </div>
+
+        <div class="coming-card" style="--accent: var(--amber); --accent-glow: rgba(245,158,11,0.25); --accent-light: rgba(245,158,11,0.10);">
+          <span class="coming-tag">Extracting</span>
+          <div class="icon-wrap"><svg><use href="#i-sun"/></svg></div>
+          <div class="card-title">Acknowledge Country</div>
+          <p class="card-desc">Acknowledgement of Country PWA — share or learn from any browser.</p>
+        </div>
+
+        <div class="coming-card" style="--accent: var(--emerald); --accent-glow: rgba(16,185,129,0.25); --accent-light: rgba(16,185,129,0.10);">
+          <span class="coming-tag">Soon</span>
+          <div class="icon-wrap"><svg><use href="#i-book"/></svg></div>
+          <div class="card-title">Studio Learn</div>
+          <p class="card-desc">A standalone, shareable copy of the AURES learning modules — energy transition, finance, market structure, project valuation.</p>
+        </div>
+
+        <div class="coming-card" style="--accent: var(--fuchsia); --accent-glow: rgba(217,70,239,0.25); --accent-light: rgba(217,70,239,0.10);">
+          <span class="coming-tag">New</span>
+          <div class="icon-wrap"><svg><use href="#i-brain"/></svg></div>
+          <div class="card-title">AI Learning</div>
+          <p class="card-desc">A forthcoming module set on practical AI — same depth-over-breadth approach as the energy curriculum.</p>
+        </div>
+
+      </div>
+    </section>
+
+    <!-- About -->
+    <section class="section" id="about">
+      <div class="section-eyebrow">
+        <span class="num">03</span>
+        <span class="line"></span>
+        <span class="label">About</span>
+      </div>
+      <h2>About <em>Studio</em>.</h2>
+
+      <div class="about-grid">
+        <div class="about-text">
+          <p>Studio is a portfolio of work spanning Australian renewable-energy market intelligence, technical curricula, and applied software.</p>
+          <p>Each project is researched to defensible depth, built end-to-end, and iterated transparently — with methodology, data sources, and limitations documented inline.</p>
+        </div>
+        <div class="principles">
+          <div class="principle" style="--accent: var(--indigo)">
+            <div class="principle-title">Analytical depth</div>
+            <div class="principle-desc">Sources cited inline. Assumptions explicit. Calculations traceable.</div>
+          </div>
+          <div class="principle" style="--accent: var(--sky)">
+            <div class="principle-title">Open methodology</div>
+            <div class="principle-desc">Data inputs and analytical approach are documented and verifiable.</div>
+          </div>
+          <div class="principle" style="--accent: var(--emerald)">
+            <div class="principle-title">Built for use</div>
+            <div class="principle-desc">Each tool answers a specific question practitioners actually ask.</div>
+          </div>
+          <div class="principle" style="--accent: var(--teal)">
+            <div class="principle-title">Continuous iteration</div>
+            <div class="principle-desc">Versions ship regularly; improvements compound.</div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+  </main>
+
+  <footer>
+    <p>Travis Hughes · <a href="https://github.com/Travis-coder712" target="_blank">github.com/Travis-coder712</a></p>
+    <p class="meta">© 2026 · Studio · last updated 2026-05-13</p>
+  </footer>
+
+</body>
+</html>
