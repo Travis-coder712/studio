@@ -662,6 +662,31 @@
       <h2>Live projects, <em>shipped</em>.</h2>
       <p class="section-intro">Professional work — Australian energy intelligence, applied AI literacy, market-education games. Each is a progressive web app: open in any browser, no install required.</p>
 
+      <!-- ============================================================
+           CARD VERSION / COUNT CHECKLIST  (keep in sync when you ship)
+           These values are hard-coded below but live in other repos.
+           After releasing any project, re-check and update its card.
+
+           AURES  — version label ("v3.14.0 · Active"):
+             source: ~/aures-db/frontend/public/data/metadata/version.json
+             live:   https://travis-coder712.github.io/aures-db/data/metadata/version.json
+             check:  curl -s https://travis-coder712.github.io/aures-db/data/metadata/version.json
+
+           AURES / STUDIO LEARN — module + lesson counts (same curriculum):
+             source: ~/aures-db/frontend/src/data/learning-modules.ts
+                     (studio-learn mirrors this: Travis-coder712/studio-learn src/data/learning-modules.ts)
+             check (run in the repo):
+               grep -cE "^\s+lessons:\s*\["            learning-modules.ts   # = modules
+               grep -cE "^\s*\{\s*id:.*number:\s*[0-9]+" learning-modules.ts   # = lessons
+             appears in: AURES card desc, Studio Learn card desc + count label
+
+           PRAXIS — version label ("v1.3 · 10 modules live"):
+             source: ~/praxis/package.json  ("version")
+             counts: ~/praxis/src/data/curriculum.ts  (MODULES.length = modules; totalLessons() = lessons)
+
+           Everything else uses descriptive labels (no version to maintain).
+           ============================================================ -->
+
       <div class="work-grid">
 
         <!-- AURES (featured wide) -->
