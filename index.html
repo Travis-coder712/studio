@@ -382,6 +382,48 @@
     }
     .btn.ghost:hover { color: var(--accent); border-color: var(--accent); }
 
+    /* Copy-link button — sits top-right of each linked card so a specific
+       item's URL can be copied and shared without exposing the Studio URL
+       (handy on mobile/home-screen where the address bar is hidden). */
+    .copy-btn {
+      position: absolute;
+      top: 14px; right: 14px;
+      z-index: 3;
+      display: inline-flex;
+      align-items: center;
+      gap: 5px;
+      padding: 7px 12px;
+      border-radius: 999px;
+      font-size: 12px;
+      font-weight: 600;
+      font-family: 'Inter', sans-serif;
+      color: var(--text-3);
+      background: var(--bg-2);
+      border: 1.5px solid var(--border-2);
+      cursor: pointer;
+      transition: all 0.15s ease;
+      -webkit-tap-highlight-color: transparent;
+    }
+    .copy-btn svg { width: 15px; height: 15px; flex-shrink: 0; }
+    .copy-btn .copy-label { line-height: 1; }
+    .copy-btn:hover {
+      color: var(--accent, var(--indigo));
+      border-color: var(--accent, var(--indigo));
+    }
+    .copy-btn.copied {
+      color: var(--emerald);
+      border-color: var(--emerald);
+      background: rgba(16,185,129,0.08);
+    }
+    /* Keep card title/head clear of the copy button */
+    .card .card-head { padding-right: 92px; }
+    .card.featured .card-head { padding-right: 0; }
+    .card.featured .copy-btn { top: 20px; right: 20px; }
+    @media (max-width: 760px) {
+      .copy-btn { top: 12px; right: 12px; padding: 8px 12px; }
+      .card .card-head { padding-right: 84px; }
+    }
+
     /* Coming-soon cards — lighter look */
     .coming-grid {
       display: grid;
@@ -555,6 +597,31 @@
         <path d="M9.5 2A2.5 2.5 0 0 1 12 4.5V20a2 2 0 0 1-2 2 2 2 0 0 1-2-2H7a2 2 0 0 1-2-2v-2.5A2.5 2.5 0 0 1 7.5 13v-1A2.5 2.5 0 0 1 5 9.5v-1A2.5 2.5 0 0 1 7.5 6v-1A2.5 2.5 0 0 1 9.5 2.5z"/>
         <path d="M14.5 2A2.5 2.5 0 0 0 12 4.5V20a2 2 0 0 0 2 2 2 2 0 0 0 2-2h1a2 2 0 0 0 2-2v-2.5a2.5 2.5 0 0 0-2.5-2.5v-1A2.5 2.5 0 0 0 19 9.5v-1A2.5 2.5 0 0 0 16.5 6v-1A2.5 2.5 0 0 0 14.5 2.5z"/>
       </symbol>
+      <symbol id="i-controller" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+        <path d="M6 11h4M8 9v4"/>
+        <circle cx="15" cy="12" r="1"/>
+        <circle cx="17.5" cy="9.5" r="1"/>
+        <rect x="2" y="6" width="20" height="12" rx="4"/>
+      </symbol>
+      <symbol id="i-heart" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+        <path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/>
+      </symbol>
+      <symbol id="i-spark" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+        <path d="M12 3v4M12 17v4M3 12h4M17 12h4M5.6 5.6l2.8 2.8M15.6 15.6l2.8 2.8M18.4 5.6l-2.8 2.8M8.4 15.6l-2.8 2.8"/>
+        <circle cx="12" cy="12" r="2.5"/>
+      </symbol>
+      <symbol id="i-pyramid" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+        <path d="M12 3 22 21 H2 Z"/>
+        <path d="M7.5 12h9"/>
+        <path d="M9.7 7.5h4.6"/>
+      </symbol>
+      <symbol id="i-link" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+        <path d="M10 13a5 5 0 0 0 7.07 0l3-3a5 5 0 0 0-7.07-7.07l-1.5 1.5"/>
+        <path d="M14 11a5 5 0 0 0-7.07 0l-3 3a5 5 0 0 0 7.07 7.07l1.5-1.5"/>
+      </symbol>
+      <symbol id="i-check" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+        <path d="M20 6 9 17l-5-5"/>
+      </symbol>
     </defs>
   </svg>
 
@@ -579,7 +646,7 @@
       <h1>Australian energy intelligence<br><span class="accent">and applied tools.</span></h1>
       <p>A focused portfolio of renewable-energy market analytics, technical curricula, and applied software — built end-to-end and shipped iteratively.</p>
       <div class="stats">
-        <div class="stat"><div class="num">9</div><div class="lbl">Live</div></div>
+        <div class="stat"><div class="num">11</div><div class="lbl">Live</div></div>
         <div class="stat-divider"></div>
         <div class="stat"><div class="num">166</div><div class="lbl">Lessons shipped</div></div>
       </div>
@@ -633,6 +700,24 @@
           </div>
         </a>
 
+        <!-- Copilot Starter Track — standalone one-and-done, deep-linked into Praxis -->
+        <a class="card" href="https://travis-coder712.github.io/praxis/start" target="_blank"
+           style="--accent: #06b6d4; --accent-glow: rgba(6,182,212,0.30); --accent-light: rgba(6,182,212,0.10);">
+          <svg class="card-deco"><use href="#i-spark"/></svg>
+          <div class="card-head">
+            <div class="icon-wrap"><svg><use href="#i-spark"/></svg></div>
+            <div>
+              <div class="card-meta">Copilot · One-and-Done</div>
+              <div class="card-title">Copilot Starter Track</div>
+            </div>
+          </div>
+          <p class="card-desc">A single, light pass through the essentials for anyone who just got a Microsoft Copilot licence. How AI works, a 4-part prompting recipe (with a copy-in-one-click starter prompt library), and a guided tour of Copilot across Word, Outlook, Teams and Excel. Five short lessons, about 30 minutes end to end — shareable as a direct link.</p>
+          <div class="card-actions">
+            <span class="btn primary">Start here →</span>
+            <span class="btn ghost">5 lessons · ~30 min</span>
+          </div>
+        </a>
+
         <!-- GridRival Showcase -->
         <a class="card" href="https://travis-coder712.github.io/gridrival-showcase/" target="_blank"
            style="--accent: var(--violet); --accent-glow: rgba(139,92,246,0.30); --accent-light: rgba(139,92,246,0.10);">
@@ -665,6 +750,24 @@
           <div class="card-actions">
             <span class="btn primary">Open Studio Learn →</span>
             <span class="btn ghost">11 modules · 166 lessons</span>
+          </div>
+        </a>
+
+        <!-- The Pyramid Principle -->
+        <a class="card" href="https://travis-coder712.github.io/pyramid-principle/" target="_blank"
+           style="--accent: #c4881a; --accent-glow: rgba(196,136,26,0.30); --accent-light: rgba(196,136,26,0.10);">
+          <svg class="card-deco"><use href="#i-pyramid"/></svg>
+          <div class="card-head">
+            <div class="icon-wrap"><svg><use href="#i-pyramid"/></svg></div>
+            <div>
+              <div class="card-meta">Communication · One-and-Done</div>
+              <div class="card-title">The Pyramid Principle</div>
+            </div>
+          </div>
+          <p class="card-desc">A one-and-done module on Barbara Minto's method for clear business writing: lead with the answer, structure ideas into a pyramid, open with SCQA, keep groups MECE. Worked before/after examples, hands-on SCQA and pyramid builders (with an AI-critique prompt generator), and a downloadable PowerPoint toolkit of reusable templates.</p>
+          <div class="card-actions">
+            <span class="btn primary">Open module →</span>
+            <span class="btn ghost">~20 min · PPTX toolkit</span>
           </div>
         </a>
 
@@ -782,7 +885,29 @@
       <p class="section-intro">Active build-out — more modules and tools in progress.</p>
 
       <div class="coming-grid">
-        <!-- Add new in-progress items here as they reach planning. -->
+
+        <!-- Aged Care, decoded -->
+        <div class="coming-card"
+             style="--accent: var(--rose); --accent-glow: rgba(244,63,94,0.30); --accent-light: rgba(244,63,94,0.10);">
+          <div class="coming-tag">In research</div>
+          <div class="icon-wrap" style="background: var(--accent-light); color: var(--accent);">
+            <svg><use href="#i-heart"/></svg>
+          </div>
+          <div class="card-title">Aged Care, decoded</div>
+          <p class="card-desc">The end-to-end map of moving an Australian parent into aged care — the conversation, the ACAT assessment, the My Aged Care portal, Home Care Packages vs residential, the RAD / DAP / means-test trade-off, the paperwork stack, and what entry day actually looks like. Drawn from a real, in-flight family experience, with the costs, decisions, and quiet trade-offs laid out plainly so the next family doesn't have to learn it the hard way.</p>
+        </div>
+
+        <!-- Games — playable experiments -->
+        <div class="coming-card"
+             style="--accent: var(--amber); --accent-glow: rgba(245,158,11,0.30); --accent-light: rgba(245,158,11,0.10);">
+          <div class="coming-tag">Exploring</div>
+          <div class="icon-wrap" style="background: var(--accent-light); color: var(--accent);">
+            <svg><use href="#i-controller"/></svg>
+          </div>
+          <div class="card-title">Games — playable experiments</div>
+          <p class="card-desc">An open exploration of what the AI-assisted build stack can actually produce in the games space. Short, sharp, browser-only experiments — mechanics-first, no installs, share-as-a-URL. From educational sims and family-made oddities to one-night-stand prototypes that test a single idea and ship the same day.</p>
+        </div>
+
       </div>
     </section>
 
@@ -827,6 +952,82 @@
     <p>Travis Hughes · <a href="https://github.com/Travis-coder712" target="_blank">github.com/Travis-coder712</a></p>
     <p class="meta">© 2026 · Studio · last updated 2026-05-15</p>
   </footer>
+
+  <script>
+    // Add a "Copy link" button to every linked project card so a specific
+    // item's URL can be copied and shared directly — without revealing the
+    // Studio URL, and usable on mobile where the address bar is hidden.
+    (function () {
+      var COPY_SVG = '<svg viewBox="0 0 24 24"><use href="#i-link"/></svg>';
+      var DONE_SVG = '<svg viewBox="0 0 24 24"><use href="#i-check"/></svg>';
+
+      function legacyCopy(text) {
+        return new Promise(function (resolve, reject) {
+          try {
+            var ta = document.createElement('textarea');
+            ta.value = text;
+            ta.style.position = 'fixed';
+            ta.style.top = '-1000px';
+            ta.setAttribute('readonly', '');
+            document.body.appendChild(ta);
+            ta.focus();
+            ta.select();
+            ta.setSelectionRange(0, text.length);
+            var ok = document.execCommand('copy');
+            document.body.removeChild(ta);
+            ok ? resolve() : reject(new Error('execCommand failed'));
+          } catch (e) { reject(e); }
+        });
+      }
+
+      function copyToClipboard(text) {
+        if (navigator.clipboard && window.isSecureContext) {
+          // Prefer the async Clipboard API, but fall back to execCommand
+          // if it rejects (e.g. permission quirks on mobile Safari).
+          return navigator.clipboard.writeText(text).catch(function () {
+            return legacyCopy(text);
+          });
+        }
+        return legacyCopy(text);
+      }
+
+      document.querySelectorAll('a.card[href]').forEach(function (card) {
+        var url = card.getAttribute('href');
+        if (!url) return;
+
+        var btn = document.createElement('span');
+        btn.className = 'copy-btn';
+        btn.setAttribute('role', 'button');
+        btn.setAttribute('tabindex', '0');
+        btn.setAttribute('aria-label', 'Copy link to this item');
+        btn.innerHTML = COPY_SVG + '<span class="copy-label">Copy link</span>';
+
+        var resetTimer;
+        function doCopy(e) {
+          e.preventDefault();
+          e.stopPropagation();
+          copyToClipboard(url).then(function () {
+            btn.classList.add('copied');
+            btn.innerHTML = DONE_SVG + '<span class="copy-label">Copied!</span>';
+            clearTimeout(resetTimer);
+            resetTimer = setTimeout(function () {
+              btn.classList.remove('copied');
+              btn.innerHTML = COPY_SVG + '<span class="copy-label">Copy link</span>';
+            }, 2000);
+          }).catch(function () {
+            btn.innerHTML = COPY_SVG + '<span class="copy-label">Press ⌘C</span>';
+          });
+        }
+
+        btn.addEventListener('click', doCopy);
+        btn.addEventListener('keydown', function (e) {
+          if (e.key === 'Enter' || e.key === ' ') doCopy(e);
+        });
+
+        card.appendChild(btn);
+      });
+    })();
+  </script>
 
 </body>
 </html>
