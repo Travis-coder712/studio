@@ -76,9 +76,33 @@
   /* segmented control */
   .seg{display:flex;background:var(--bg2);border:1px solid var(--border2);border-radius:12px;
     padding:4px;gap:4px;margin-bottom:16px}
-  .seg button{flex:1;background:none;border:none;color:var(--muted);font-weight:700;font-size:12.5px;
-    padding:9px 4px;border-radius:9px}
+  .seg button{flex:1;background:none;border:none;color:var(--muted);font-weight:700;font-size:11px;
+    padding:9px 2px;border-radius:9px}
   .seg button.on{background:var(--gold);color:#1a1200}
+
+  /* tracker */
+  .trk{display:flex;gap:11px;padding:13px 0;border-bottom:1px solid var(--border)}
+  .trk:last-child{border-bottom:none}
+  .trk.done{opacity:.5}
+  .trkbox{flex:none;width:24px;height:24px;border-radius:7px;border:2px solid var(--border2);background:var(--bg2);
+    color:#1a1200;font-weight:900;font-size:14px;display:grid;place-items:center;margin-top:1px}
+  .trkbox.on{background:var(--gold);border-color:var(--gold)}
+  .trkmain{flex:1;min-width:0}
+  .trktitle{font-weight:750;font-size:13.5px}
+  .trk.done .trktitle{text-decoration:line-through}
+  .own{font-size:10px;font-weight:800;padding:2px 8px;border-radius:20px;border:1px solid var(--c);color:var(--c);margin-left:2px}
+  .trkwhen{margin-top:4px;display:flex;gap:8px;align-items:center;flex-wrap:wrap}
+  .trkwhen .when{font-size:11.5px;color:var(--gold-soft);font-weight:700}
+  .cd{font-size:9.5px;font-weight:800;text-transform:uppercase;padding:2px 7px;border-radius:20px;letter-spacing:.3px}
+  .cd.now{background:rgba(248,113,113,.15);color:#fca5a5}
+  .cd.soon{background:rgba(245,179,1,.15);color:var(--gold-soft)}
+  .cd.later{background:var(--card2);color:var(--muted)}
+  .cd.passed{background:var(--card2);color:var(--faint)}
+  .trkdetail{font-size:12px;color:var(--muted);margin-top:5px}
+  .trkacts{display:flex;gap:7px;flex-wrap:wrap;margin-top:9px;align-items:center}
+  .trkacts button,.trkacts a{font-size:11.5px;font-weight:700;background:var(--card2);border:1px solid var(--border2);
+    color:var(--gold-soft);border-radius:8px;padding:6px 10px}
+  .trkacts select{font-size:11.5px;padding:6px 8px;border-radius:8px}
 
   /* events */
   .evt-top{display:flex;gap:12px;align-items:flex-start}
@@ -306,11 +330,13 @@
     <h2 class="vt">🗓️ Schedule</h2>
     <p class="view-intro">Your master plan. The <b>Booking Plan</b> works out the smart order to lock tickets &amp; flights; the <b>Itinerary</b> builds itself from your picks; <b>Travellers</b> sets everyone's dates.</p>
     <div class="seg" id="schSeg">
-      <button data-seg="plan" class="on">Booking Plan</button>
+      <button data-seg="plan" class="on">Plan</button>
+      <button data-seg="trk">Tracker</button>
       <button data-seg="itin">Itinerary</button>
-      <button data-seg="trav">Travellers</button>
+      <button data-seg="trav">People</button>
     </div>
     <div id="sch-plan"></div>
+    <div id="sch-trk" style="display:none"></div>
     <div id="sch-itin" style="display:none"></div>
     <div id="sch-trav" style="display:none"></div>
   </section>
@@ -433,7 +459,7 @@ const TK = {
     aus:"Buy online at tickets.worldtestchampionship.com (up to 20/transaction). Watch for the ICC 'priority' pre-sale (ICC newsletter / ICC Family) ~48h before general sale — that's how 2025 ran.",
     uk:"Same online sale; a UK friend can buy in the same window. WTC-final tickets generally aren't name-locked, but confirm at checkout.",
     life:"Australia's spot isn't confirmed until ~early June 2027, so treat this as a bonus, not the anchor. If Australia makes it, hospitality (from ~£349+VAT/day via ICC Travel & Tours / Seat Unique) is the guaranteed fallback.",
-    members:"Melbourne CC full members: request a Lord's Letter of Introduction (Marylebone reciprocal) — gives visitor access to clubhouse facilities, not a guaranteed match ticket, but worth a call to MCC membership.",
+    members:"Melbourne CC full members: request a Lord's Letter of Introduction (Marylebone reciprocal) — visitor access to clubhouse facilities, not a guaranteed match ticket, but worth a call to MCC membership. Going via Marylebone-member friends is a long shot: their own international-match tickets are limited & balloted among members.",
     resale:"Twickets (face value) if any surface; official hospitality otherwise.",
     ops:"ICC Travel & Tours (official packages); Seat Unique (hospitality)."
   },
@@ -443,7 +469,7 @@ const TK = {
     aus:"Use the ECB International Tickets page + the venue's own site. Join the free 'We Are England Cricket Supporters' for the priority window (~a week before general sale). Ballots apply to the hottest days — enter several to raise your odds.",
     uk:"The best 'in': join the HOST COUNTY as a member for priority buying at exclusive prices. A UK mate joining the relevant county is the single strongest route — see each Test below for which county.",
     life:"Ask a UK friend to enter the England-Supporters priority / county window for you. Or go hospitality for the one bucket-list day (guaranteed seat + lunch) and ballot for the rest. Email the venue's group-sales team early — a 50th 'trip of a lifetime' block request is exactly what they field.",
-    members:"Melbourne CC → Lord's reciprocal (for the Lord's Tests) via Letter of Introduction. SACA members: check your reciprocal-club list and ask SACA membership — cricket-association reciprocals can open member areas.",
+    members:"Melbourne CC → Lord's reciprocal (for the Lord's Tests) via a Letter of Introduction — clubhouse access, not a guaranteed match ticket. Marylebone-member friends rarely have spare international tickets (limited & balloted), so don't count on that route. SACA members: check your reciprocal-club list and ask SACA membership.",
     resale:"Twickets (ethical, face-value) and each venue's OFFICIAL resale/exchange first. Be wary of Viagogo/StubHub — Test tickets can be name-checked and are heavily marked up; buy official where you can.",
     ops:"Australian Cricket Tours, AST Sports, Sport Tours, Events Travel, Global Sports, AOK Events; The Fanatics (the classic Aussie supporters' tour — tickets + social)."
   },
@@ -484,7 +510,7 @@ const TK = {
 /* per-Ashes-Test county lines */
 const ASH_COUNTY = {
   ash1:"Host county: <b>Warwickshire</b> (Edgbaston). Their '1882' membership gives priority Major-Match access at the best prices.",
-  ash2:"Host: <b>MCC / Middlesex</b> (Lord's). MCC (Marylebone) members get the pavilion & priority — Melbourne CC members can request a reciprocal Letter of Introduction.",
+  ash2:"Host: <b>MCC / Middlesex</b> (Lord's). Marylebone members' own match tickets are scarce & balloted among members (a long shot to borrow), but <b>Melbourne CC</b> members can request a reciprocal Letter of Introduction for clubhouse access.",
   ash3:"Host county: <b>Nottinghamshire</b> (Trent Bridge). County membership = priority international tickets.",
   ash4:"Host county: <b>Hampshire</b> (Utilita/Ageas Bowl). First-ever men's Ashes Test here — membership gives priority.",
   ash5:"Host county: <b>Surrey</b> (The Oval). A Surrey membership gives priority on up to 8 Test tickets at exclusive prices — one of the best 'ins' going."
@@ -523,7 +549,8 @@ function defaultState(){
       {id:"t3", name:"Friend 1", color:"#c084fc", arrive:"2027-06-28", depart:"2027-07-19"},
       {id:"t4", name:"Friend 2", color:"#38bdf8", arrive:"2027-07-01", depart:"2027-07-22"}
     ],
-    ui:{ filter:"all", itinFilter:"all", seg:"plan", eseg:"uk" }
+    ui:{ filter:"all", itinFilter:"all", seg:"plan", eseg:"uk" },
+    tracker:{}
   };
 }
 
@@ -538,6 +565,7 @@ function migrate(s){
   (s.events||[]).forEach(e=>{ if(!def.events.find(x=>x.id===e.id)) def.events.push(e); });
   if(s.travellers) def.travellers=s.travellers;
   if(s.ui) def.ui={...def.ui, ...s.ui};
+  if(s.tracker) def.tracker=s.tracker;
   return def;
 }
 function save(){ try{ localStorage.setItem(KEY, JSON.stringify(S)); }catch(e){} }
@@ -626,9 +654,11 @@ function ticketIntel(e,tk){
 function renderSchedule(){
   document.getElementById("schSeg").querySelectorAll("button").forEach(b=>b.classList.toggle("on",b.dataset.seg===S.ui.seg));
   document.getElementById("sch-plan").style.display=S.ui.seg==="plan"?"":"none";
+  document.getElementById("sch-trk").style.display=S.ui.seg==="trk"?"":"none";
   document.getElementById("sch-itin").style.display=S.ui.seg==="itin"?"":"none";
   document.getElementById("sch-trav").style.display=S.ui.seg==="trav"?"":"none";
   if(S.ui.seg==="plan") renderPlan();
+  if(S.ui.seg==="trk") renderTracker();
   if(S.ui.seg==="itin") renderItinerary();
   if(S.ui.seg==="trav") renderTravellers();
 }
@@ -666,7 +696,82 @@ function renderPlan(){
 
   document.getElementById("sch-plan").innerHTML = reco +
     `<div class="section-label">Action timeline</div><div class="card">${timeline}</div>
-     <p class="mini" style="padding:0 4px">This plan updates as you tick events on/off in the Events tab. Ticket-buying know-how (Aussie vs UK vs "please help us" routes, MCC/SACA/county) is under each event.</p>`;
+     <p class="mini" style="padding:0 4px">✅ Want reminders? The <b>Tracker</b> (tab above) turns these into a ticked checklist with add-to-calendar alerts &amp; group jobs. Ticket know-how (Aussie vs UK vs "please help us" routes, MCC/SACA/county) is under each event.</p>`;
+}
+
+/* Tracker — live ballot / on-sale checklist with countdowns, reminders & assignment */
+function buildTracker(){
+  const has = id => S.events.find(e=>e.id===id)?.include;
+  const anyAsh = ["ash1","ash2","ash3","ash4","ash5"].some(has);
+  const it=[];
+  it.push({id:"oneclub",title:"Join The One Club (free)",tag:"golf",when:"Now",anchor:"2026-07-05",detail:"Free membership you need before entering The Open ballot — set it up today.",url:"https://www.theopen.com/",show:has("open")});
+  it.push({id:"open-open",title:"The Open ballot OPENS",tag:"golf",when:"~6 Jul 2026",anchor:"2026-07-06",detail:"Apply for St Andrews the moment it opens. 100-year anniversary = huge demand. Most time-critical item on the trip.",url:"https://www.theopen.com/",show:has("open")});
+  it.push({id:"open-close",title:"The Open ballot closes",tag:"golf",when:"~early Aug 2026",anchor:"2026-08-06",detail:"Ballot runs ~1 month — make sure you're in before it shuts.",url:"https://www.theopen.com/",show:has("open")});
+  it.push({id:"mywim",title:"Create a MyWimbledon account",tag:"tennis",when:"Now",anchor:"2026-07-05",detail:"Needed to enter the ballot — get set up before it opens.",url:"https://www.wimbledon.com/",show:has("wimb")});
+  it.push({id:"reward",title:"Grab Qantas/Velocity reward seats",tag:"flights",when:"~now (353d out)",anchor:"2026-07-12",detail:"Classic-reward seats for peak June-2027 dates open ~now — book the second they load.",url:"",show:true});
+  it.push({id:"silv-presale",title:"Register for the Silverstone presale",tag:"f1",when:"Mid-2026",anchor:"2026-08-01",detail:"The GP sells out & uses dynamic pricing — presale = first access.",url:"https://www.silverstone.co.uk/events/formula-1-british-grand-prix",show:has("silv")});
+  it.push({id:"open-result",title:"The Open ballot results",tag:"golf",when:"Aug 2026",anchor:"2026-08-20",detail:"Results announced in stages during August — you'll know before committing to flights.",url:"",show:has("open")});
+  it.push({id:"ecb",title:"ECB confirms exact Ashes dates",tag:"key",when:"Summer 2026",anchor:"2026-08-31",detail:"Watch for this — it unlocks your real target dates. Then update the dates in the Events tab.",url:"https://www.ecb.co.uk/",show:anyAsh});
+  it.push({id:"wim-open",title:"Enter the Wimbledon ballot (overseas)",tag:"tennis",when:"~Aug–Sep 2026",anchor:"2026-08-20",detail:"UK & overseas ballots are separate — enter the overseas one.",url:"https://www.wimbledon.com/en_GB/tickets/ballot",show:has("wimb")});
+  it.push({id:"supporters",title:"Join 'We Are England Cricket Supporters'",tag:"cricket",when:"Before Oct 2026",anchor:"2026-09-15",detail:"Gets you the priority window before the general Ashes sale.",url:"https://www.ecb.co.uk/watch-cricket/international-tickets",show:anyAsh});
+  it.push({id:"county",title:"Consider a host-county membership",tag:"cricket",when:"By autumn 2026",anchor:"2026-09-20",detail:"Best UK-resident hack — Surrey (Oval) gives priority on up to 8 Test tickets. A UK friend joining works too.",url:"",show:anyAsh});
+  it.push({id:"silv-sale",title:"Silverstone GP tickets on sale",tag:"f1",when:"~Sep 2026",anchor:"2026-09-15",detail:"Buy early if it's a must — dynamic pricing climbs as it fills.",url:"https://www.silverstone.co.uk/",show:has("silv")});
+  it.push({id:"wim-close",title:"Wimbledon ballot closes",tag:"tennis",when:"~Sep 2026",anchor:"2026-09-30",detail:"Get your entry in before the window shuts.",url:"",show:has("wimb")});
+  it.push({id:"ash-priority",title:"Ashes priority/supporters window",tag:"cricket",when:"~mid-Oct 2026",anchor:"2026-10-12",detail:"Priority buyers get first crack — be logged in and ready.",url:"https://www.ecb.co.uk/watch-cricket/international-tickets",show:anyAsh});
+  it.push({id:"ash-general",title:"Ashes general on sale",tag:"cricket",when:"~Nov 2026",anchor:"2026-11-01",detail:"Secure your anchor cricket day. Enter ballots for the hottest days to lift your odds.",url:"https://www.ecb.co.uk/watch-cricket/international-tickets",show:anyAsh});
+  it.push({id:"flights",title:"★ Book flights (once cricket secured)",tag:"flights",when:"Oct 26 – Jan 27",anchor:"2026-11-15",detail:"Best window for Jun–Jul 2027 travel — book right after your anchor ticket is in hand.",url:"",show:true});
+  it.push({id:"wtc-sale",title:"WTC Final tickets on sale",tag:"cricket",when:"~Jan–Feb 2027",anchor:"2027-01-31",detail:"Bonus only — teams unknown until early June, so don't hinge the trip on it.",url:"https://www.lords.org/",show:has("wtc")});
+  it.push({id:"wim-result",title:"Wimbledon ballot results",tag:"tennis",when:"~Early 2027",anchor:"2027-02-15",detail:"If you miss, fall back to The Queue or the daily official Resale.",url:"",show:has("wimb")});
+  return it.filter(x=>x.show).sort((a,b)=> a.anchor.localeCompare(b.anchor));
+}
+function countdown(anchor){
+  const days=Math.round((parse(anchor)-TODAY)/864e5);
+  if(days<0) return {t:"passed",cls:"passed"};
+  if(days===0) return {t:"today",cls:"now"};
+  if(days<=13) return {t:"in "+days+"d",cls:"now"};
+  if(days<=70) return {t:"in "+Math.round(days/7)+"w",cls:"soon"};
+  return {t:"in "+Math.round(days/30.4)+"mo",cls:"later"};
+}
+function renderTracker(){
+  const items=buildTracker(); const st=S.tracker||{};
+  const total=items.length, done=items.filter(i=>st[i.id]&&st[i.id].done).length;
+  const next=items.find(i=>!(st[i.id]&&st[i.id].done) && countdown(i.anchor).cls!=="passed");
+  const sum=`<div class="reco"><h3>✅ Ticket &amp; booking tracker</h3>
+    <p><b>${done}/${total}</b> done.${next?` Next up: <b>${next.title}</b> — <span style="color:var(--gold-soft)">${next.when}</span>.`:" All caught up 🎉"}</p>
+    <p style="margin:0;font-size:12px;color:var(--muted)">Tick things off as you go, tap <b>⏰ Remind me</b> to drop a dated alert into your calendar, and <b>Assign</b> jobs across the group. The list adapts to the events you've ticked in Events.</p></div>`;
+  if(!items.length){ document.getElementById("sch-trk").innerHTML=sum+`<div class="empty"><div class="big">🎟️</div>Tick some events in the <b>Events</b> tab and their deadlines appear here.</div>`; return; }
+  const rows=items.map(i=>{
+    const rec=st[i.id]||{}, isDone=!!rec.done, cd=countdown(i.anchor);
+    const owner=rec.owner?S.travellers.find(t=>t.id===rec.owner):null;
+    const opts=`<option value="">Assign…</option>`+S.travellers.map(t=>`<option value="${t.id}" ${rec.owner===t.id?"selected":""}>${esc(t.name)}</option>`).join("");
+    return `<div class="trk ${isDone?'done':''}">
+      <button class="trkbox ${isDone?'on':''}" data-trkdone="${i.id}">${isDone?'✓':''}</button>
+      <div class="trkmain">
+        <div><span class="trktitle">${i.title}</span> <span class="cmd-tag">${i.tag}</span>${owner?` <span class="own" style="--c:${owner.color}">${owner.name}</span>`:''}</div>
+        <div class="trkwhen"><span class="when">${i.when}</span> <span class="cd ${isDone?'later':cd.cls}">${isDone?'done':cd.t}</span></div>
+        <div class="trkdetail">${i.detail}</div>
+        <div class="trkacts">
+          <button data-trkics="${i.id}">⏰ Remind me</button>
+          ${i.url?`<a href="${i.url}" target="_blank" rel="noopener">Act ↗</a>`:''}
+          <select data-trkowner="${i.id}">${opts}</select>
+        </div>
+      </div></div>`;
+  }).join("");
+  document.getElementById("sch-trk").innerHTML=sum+`<div class="section-label">Deadlines &amp; to-dos</div><div class="card" style="padding:2px 15px">${rows}</div>`;
+}
+function trackerICS(id){
+  const it=buildTracker().find(i=>i.id===id); if(!it) return;
+  const d=it.anchor.replace(/-/g,""); const nd=iso(new Date(parse(it.anchor).getTime()+864e5)).replace(/-/g,"");
+  const stamp=new Date().toISOString().replace(/[-:]/g,"").split(".")[0]+"Z";
+  const esc2=s=>(s||"").replace(/([,;])/g,"\\$1");
+  const ics=["BEGIN:VCALENDAR","VERSION:2.0","PRODID:-//The Fifty Tour//EN","CALSCALE:GREGORIAN",
+    "BEGIN:VEVENT","UID:"+id+"@fiftytour","DTSTAMP:"+stamp,"DTSTART;VALUE=DATE:"+d,"DTEND;VALUE=DATE:"+nd,
+    "SUMMARY:Fifty Tour — "+esc2(it.title),"DESCRIPTION:"+esc2(it.detail),
+    "BEGIN:VALARM","TRIGGER:-P2D","ACTION:DISPLAY","DESCRIPTION:"+esc2(it.title),"END:VALARM",
+    "END:VEVENT","END:VCALENDAR"].join("\r\n");
+  const blob=new Blob([ics],{type:"text/calendar"}); const a=document.createElement("a");
+  a.href=URL.createObjectURL(blob); a.download="fifty-tour-"+id+".ics"; a.click(); URL.revokeObjectURL(a.href);
+  toast("Reminder created — open the file to add it");
 }
 function buildItems(){
   const items=[];
@@ -919,11 +1024,15 @@ document.addEventListener("change",e=>{
   if(t.dataset.tarr!==undefined){ trav(t.dataset.tarr).arrive=t.value; save(); renderTravellers(); return; }
   if(t.dataset.tdep!==undefined){ trav(t.dataset.tdep).depart=t.value; save(); renderTravellers(); return; }
   if(t.dataset.tcol!==undefined){ trav(t.dataset.tcol).color=t.value; save(); renderTravellers(); return; }
+  if(t.dataset.trkowner!==undefined){ const id=t.dataset.trkowner; S.tracker[id]=S.tracker[id]||{}; S.tracker[id].owner=t.value||null; save(); renderTracker(); return; }
   if(["estCabin","estPax","estTiming"].includes(t.id)) runEstimator();
 });
 document.addEventListener("click",e=>{
   const tk=e.target.closest("[data-tk]");
   if(tk){ const b=document.getElementById("tk-"+tk.dataset.tk); if(b){ b.classList.toggle("open"); tk.innerHTML=tk.innerHTML.replace(b.classList.contains("open")?"▾":"▴", b.classList.contains("open")?"▴":"▾"); } return; }
+  const trk=e.target.closest("[data-trkdone],[data-trkics]");
+  if(trk){ if(trk.dataset.trkdone!==undefined){ const id=trk.dataset.trkdone; S.tracker[id]=S.tracker[id]||{}; S.tracker[id].done=!S.tracker[id].done; save(); renderTracker(); }
+    else if(trk.dataset.trkics!==undefined){ trackerICS(trk.dataset.trkics); } return; }
   const t=e.target.closest("[data-day],[data-f],[data-if],[data-tdel],[data-seg],[data-eseg],#addTrav");
   if(!t) return;
   if(t.id==="addTrav"){ const cols=["#f5b301","#4ade80","#c084fc","#38bdf8","#f472b6","#fb923c","#22d3ee","#a3e635"]; S.travellers.push({id:"t"+Date.now(),name:"New traveller",color:cols[S.travellers.length%cols.length],arrive:"2027-06-28",depart:"2027-07-12"}); save(); renderTravellers(); return; }
