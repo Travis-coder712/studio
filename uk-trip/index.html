@@ -52,9 +52,12 @@
     background:rgba(16,20,29,.94);backdrop-filter:blur(14px);border-top:1px solid var(--border);
     padding-bottom:var(--safe-b)}
   nav.tabs button{flex:1;background:none;border:none;color:var(--faint);
-    padding:8px 1px 7px;display:flex;flex-direction:column;align-items:center;gap:2px;
-    font-size:9.5px;font-weight:600;letter-spacing:.1px;position:relative}
-  nav.tabs button .ic{font-size:18px;line-height:1}
+    padding:7px 1px 6px;display:flex;flex-direction:column;align-items:center;gap:2px;
+    font-size:8.5px;font-weight:600;letter-spacing:0;position:relative}
+  nav.tabs button .ic{font-size:16.5px;line-height:1}
+  .goto{display:inline-flex;align-items:center;gap:5px;font-size:12px;font-weight:700;background:var(--card2);
+    border:1px solid var(--border2);color:var(--gold-soft);border-radius:9px;padding:8px 12px;margin:4px 6px 0 0}
+  .goto:active{transform:scale(.97)}
   nav.tabs button.active{color:var(--gold-soft)}
   nav.tabs button.active::before{content:"";position:absolute;top:0;width:24px;height:3px;
     border-radius:0 0 4px 4px;background:var(--gold)}
@@ -325,8 +328,15 @@
 </header>
 
 <main>
+  <!-- ============ TL;DR ============ -->
+  <section class="view active" id="view-tldr">
+    <h2 class="vt">📋 TL;DR</h2>
+    <p class="view-intro">The whole trip on one screen — share this, then dive into the other tabs.</p>
+    <div id="tldrBody"></div>
+  </section>
+
   <!-- ============ SCHEDULE ============ -->
-  <section class="view active" id="view-schedule">
+  <section class="view" id="view-schedule">
     <h2 class="vt">🗓️ Schedule</h2>
     <p class="view-intro">Your master plan. The <b>Booking Plan</b> works out the smart order to lock tickets &amp; flights; the <b>Itinerary</b> builds itself from your picks; <b>Travellers</b> sets everyone's dates.</p>
     <div class="seg" id="schSeg">
@@ -416,7 +426,8 @@
 </main>
 
 <nav class="tabs" id="tabs">
-  <button data-tab="schedule" class="active"><span class="ic">🗓️</span>Schedule</button>
+  <button data-tab="tldr" class="active"><span class="ic">📋</span>TL;DR</button>
+  <button data-tab="schedule"><span class="ic">🗓️</span>Schedule</button>
   <button data-tab="events"><span class="ic">🎟️</span>Events</button>
   <button data-tab="stays"><span class="ic">🏰</span>Stays</button>
   <button data-tab="flights"><span class="ic">✈️</span>Flights</button>
@@ -648,6 +659,59 @@ function ticketIntel(e,tk){
     <div class="intel"><h4>♻️ Resale &amp; second-hand</h4><p>${tk.resale}</p></div>
     <div class="intel"><h4>🧳 Tour &amp; hospitality operators</h4><p>${tk.ops}</p></div>
     <a class="go" href="${tk.official}" target="_blank" rel="noopener" style="font-size:12.5px;font-weight:700">Official ticket page ↗</a>`;
+}
+
+/* ============ TL;DR TAB ============ */
+function renderTldr(){
+  const next=buildTracker().find(i=>!(S.tracker[i.id]&&S.tracker[i.id].done)&&countdown(i.anchor).cls!=="passed");
+  const nextLine=next?`<b>${next.title}</b> — <span style="color:var(--gold-soft)">${next.when}</span> (${countdown(next.anchor).t})`:"—";
+  document.getElementById("tldrBody").innerHTML=`
+    <div class="callout" style="margin-bottom:14px">
+      <h3>🎉 The plan in a nutshell</h3>
+      <p>A group trip to the UK for Travis's <b>50th</b>, summer <b>2027</b>. Core mission: watch <b>at least one day of Ashes cricket</b> (Australia feature in the Ashes <i>and</i> the World Test Championship Final). Optional extras: Wimbledon, the British Grand Prix, The Open golf — plus <b>Oxford</b> (Travis's old town) and <b>Bath</b>. Everyone comes for different lengths (1–5 weeks).</p>
+    </div>
+    <div class="urgent" style="margin-bottom:16px">🚨 <b>Do this now — free, 2 minutes:</b><br>
+      • <b>The Open golf ballot opens ~6 July 2026</b> — join <a href="https://www.theopen.com/" target="_blank" rel="noopener">The One Club</a> (free) &amp; enter. Massive demand for the St Andrews anniversary.<br>
+      • Create a free <a href="https://www.wimbledon.com/" target="_blank" rel="noopener">MyWimbledon</a> account for the tennis ballot (opens Aug–Sep 2026).<br>
+      • Set MEL→London flight price alerts (Google Flights / Skyscanner).</div>
+
+    <div class="section-label">📅 Key dates — Summer 2027</div>
+    <div class="card">
+      <div class="route"><div class="from">🏏 WTC Final <span>· Lord's, London</span></div><div class="time">9–13 Jun*</div></div>
+      <div class="route"><div class="from">🏏 The Ashes <span>· 5 Tests, 5 cities</span></div><div class="time">Jun–Aug*</div></div>
+      <div class="route"><div class="from">🎾 Wimbledon <span>· London</span></div><div class="time">28 Jun–11 Jul</div></div>
+      <div class="route"><div class="from">🏎️ British GP <span>· Silverstone</span></div><div class="time">2–4 Jul*</div></div>
+      <div class="route"><div class="from">⛳ The Open <span>· St Andrews</span></div><div class="time">15–18 Jul</div></div>
+      <p class="mini">*Provisional — the ECB confirms exact Ashes dates in summer 2026; the rest are fixed. Ashes venues: Edgbaston, Lord's, Trent Bridge, Southampton, The Oval.</p>
+    </div>
+
+    <div class="section-label">🎟️ When tickets go on sale</div>
+    <div class="card">
+      <div class="route"><div class="from">The Open (free ballot)</div><div class="time">~now, Jul 2026</div></div>
+      <div class="route"><div class="from">Wimbledon (free ballot)</div><div class="time">Aug–Sep 2026</div></div>
+      <div class="route"><div class="from">Silverstone GP</div><div class="time">~Sep 2026</div></div>
+      <div class="route"><div class="from">The Ashes</div><div class="time">~Oct–Nov 2026</div></div>
+      <div class="route"><div class="from">WTC Final</div><div class="time">~Jan–Feb 2027</div></div>
+    </div>
+
+    <div class="section-label">🧠 The one-rule booking logic</div>
+    <div class="card block"><p style="margin-top:0">Register the free ballots <b>now</b> → wait for the ECB to confirm Ashes dates (<b>summer 2026</b>) → grab your anchor cricket ticket when the Ashes goes on sale (<b>Oct–Nov 2026</b>) → <b>book flights right after</b>, in the Oct 2026–Jan 2027 sweet spot (~A$2,200–2,800 return economy at peak). Full reasoning &amp; a live countdown tracker are in the Schedule tab.</p>
+      <p class="mini">⏭️ Next live deadline: ${nextLine}</p></div>
+
+    <div class="section-label">📱 How to use this planner</div>
+    <div class="card block">
+      <ul class="tick" style="margin-top:0">
+        <li><b>Events</b> — tick what you want to see, pick days, and open each event's full ticket how-to (Aussie vs UK-resident vs "trip-of-a-lifetime" routes, MCC/SACA/county, resale, tour packages).</li>
+        <li><b>Schedule</b> — a smart booking plan, a live deadline <b>Tracker</b> (calendar reminders you can assign to people), an auto-itinerary, and everyone's travel dates.</li>
+        <li><b>Stays · Flights · Travel · Explore</b> — accommodation ideas, flight-cost tips, getting around the UK, and things to do (incl. a France/Italy/Spain leg).</li>
+      </ul>
+      <div style="margin-top:10px">
+        <button class="goto" data-goto="events">🎟️ Events &amp; tickets →</button>
+        <button class="goto" data-goto="schedule" data-seg="trk">✅ Deadline tracker →</button>
+        <button class="goto" data-goto="flights">✈️ Flights →</button>
+      </div>
+    </div>
+    <p class="mini" style="text-align:center;padding:6px 10px">Tap <b>⋯</b> (top-right) → <b>Copy shareable link</b> to send your picks to the group.</p>`;
 }
 
 /* ============ SCHEDULE TAB ============ */
@@ -1033,6 +1097,8 @@ document.addEventListener("click",e=>{
   const trk=e.target.closest("[data-trkdone],[data-trkics]");
   if(trk){ if(trk.dataset.trkdone!==undefined){ const id=trk.dataset.trkdone; S.tracker[id]=S.tracker[id]||{}; S.tracker[id].done=!S.tracker[id].done; save(); renderTracker(); }
     else if(trk.dataset.trkics!==undefined){ trackerICS(trk.dataset.trkics); } return; }
+  const go=e.target.closest("[data-goto]");
+  if(go){ if(go.dataset.seg){ S.ui.seg=go.dataset.seg; save(); } switchTab(go.dataset.goto); return; }
   const t=e.target.closest("[data-day],[data-f],[data-if],[data-tdel],[data-seg],[data-eseg],#addTrav");
   if(!t) return;
   if(t.id==="addTrav"){ const cols=["#f5b301","#4ade80","#c084fc","#38bdf8","#f472b6","#fb923c","#22d3ee","#a3e635"]; S.travellers.push({id:"t"+Date.now(),name:"New traveller",color:cols[S.travellers.length%cols.length],arrive:"2027-06-28",depart:"2027-07-12"}); save(); renderTravellers(); return; }
@@ -1046,7 +1112,7 @@ document.addEventListener("click",e=>{
 function trav(id){ return S.travellers.find(t=>t.id===id); }
 
 /* ============ tabs ============ */
-const R={schedule:renderSchedule,events:renderEvents,stays:renderStays,flights:renderFlights,logistics:renderLogistics,explore:renderExplore};
+const R={tldr:renderTldr,schedule:renderSchedule,events:renderEvents,stays:renderStays,flights:renderFlights,logistics:renderLogistics,explore:renderExplore};
 document.getElementById("tabs").addEventListener("click",e=>{ const b=e.target.closest("button"); if(b) switchTab(b.dataset.tab); });
 function switchTab(name){
   document.querySelectorAll("nav.tabs button").forEach(b=>b.classList.toggle("active",b.dataset.tab===name));
@@ -1074,7 +1140,7 @@ document.getElementById("actInstall").addEventListener("click",()=>{ if(deferred
 /* ============ boot ============ */
 (function boot(){
   if(location.hash.startsWith("#plan=")){ try{ const inc=decodeState(location.hash.slice(6)); if(confirm("Open the shared trip plan? This replaces the plan on this device.")){ S=migrate(inc); save(); } }catch(e){} history.replaceState(null,"",location.pathname); }
-  renderSchedule();
+  renderTldr();
 })();
 if("serviceWorker" in navigator && location.protocol.startsWith("http")){ window.addEventListener("load",()=>navigator.serviceWorker.register("sw.js").catch(()=>{})); }
 </script>
