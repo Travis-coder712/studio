@@ -4,7 +4,7 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <title>The Fifty Tour — UK 2027</title>
-<meta name="description" content="Plan a 50th-birthday cricket &amp; sport trip to the UK in 2027 — Ashes, World Test Championship, Wimbledon, Silverstone, The Open, plus Oxford &amp; Bath.">
+<meta name="description" content="Plan a 50th-birthday cricket &amp; sport trip to the UK in 2027 — Ashes, World Test Championship, Wimbledon, Silverstone, The Open, plus Oxford, Bath &amp; a European leg. Tickets, flights, logistics &amp; a smart booking plan.">
 <meta name="theme-color" content="#0b0e14">
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
@@ -19,7 +19,7 @@
     --text:#e9edf4; --muted:#93a0b4; --faint:#65718a;
     --gold:#f5b301; --gold-soft:#ffcf4d;
     --cricket:#4ade80; --tennis:#c084fc; --f1:#f05252; --golf:#fbbf24; --place:#38bdf8; --home:#64748b;
-    --ok:#4ade80; --warn:#fb923c; --bad:#f87171;
+    --ok:#4ade80; --warn:#fb923c; --bad:#f87171; --info:#38bdf8;
     --shadow:0 8px 30px rgba(0,0,0,.35);
     --r:16px;
     --safe-b: env(safe-area-inset-bottom, 0px);
@@ -28,102 +28,116 @@
   html,body{background:var(--bg);color:var(--text);
     font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;
     -webkit-font-smoothing:antialiased;line-height:1.5}
-  body{padding-bottom:calc(76px + var(--safe-b))}
+  body{padding-bottom:calc(72px + var(--safe-b))}
   a{color:var(--gold-soft);text-decoration:none}
   button{font-family:inherit;cursor:pointer}
   .serif{font-family:Georgia,"Times New Roman",serif}
 
-  /* ---------- Header ---------- */
   header{position:sticky;top:0;z-index:40;
     background:linear-gradient(180deg,rgba(11,14,20,.96),rgba(11,14,20,.82));
-    backdrop-filter:blur(12px);border-bottom:1px solid var(--border);
-    padding:14px 18px calc(12px);}
-  .brand{display:flex;align-items:center;gap:12px}
-  .roundel{width:44px;height:44px;border-radius:50%;flex:none;
+    backdrop-filter:blur(12px);border-bottom:1px solid var(--border);padding:13px 18px}
+  .brand{display:flex;align-items:center;gap:12px;max-width:900px;margin:0 auto}
+  .roundel{width:42px;height:42px;border-radius:50%;flex:none;
     background:radial-gradient(circle at 30% 25%,#2a3242,#12161f);
-    border:2px solid var(--gold);display:grid;place-items:center;
-    box-shadow:0 0 18px rgba(245,179,1,.25)}
-  .roundel b{font-family:Georgia,serif;font-size:20px;color:var(--gold-soft);line-height:1}
-  .brand h1{font-size:18px;font-weight:800;letter-spacing:.2px}
-  .brand .sub{font-size:12px;color:var(--muted);font-weight:500}
+    border:2px solid var(--gold);display:grid;place-items:center;box-shadow:0 0 18px rgba(245,179,1,.25)}
+  .roundel b{font-family:Georgia,serif;font-size:19px;color:var(--gold-soft);line-height:1}
+  .brand h1{font-size:17px;font-weight:800}
+  .brand .sub{font-size:11.5px;color:var(--muted);font-weight:500}
   .brand .spacer{flex:1}
   .hbtn{background:var(--card2);border:1px solid var(--border2);color:var(--muted);
-    width:38px;height:38px;border-radius:11px;display:grid;place-items:center;font-size:17px}
+    width:36px;height:36px;border-radius:10px;display:grid;place-items:center;font-size:16px}
   .hbtn:active{transform:scale(.94)}
 
-  /* ---------- Tabs ---------- */
-  nav.tabs{position:fixed;bottom:0;left:0;right:0;z-index:50;
-    display:flex;background:rgba(16,20,29,.94);backdrop-filter:blur(14px);
-    border-top:1px solid var(--border);padding-bottom:var(--safe-b)}
+  nav.tabs{position:fixed;bottom:0;left:0;right:0;z-index:50;display:flex;
+    background:rgba(16,20,29,.94);backdrop-filter:blur(14px);border-top:1px solid var(--border);
+    padding-bottom:var(--safe-b)}
   nav.tabs button{flex:1;background:none;border:none;color:var(--faint);
-    padding:9px 2px 8px;display:flex;flex-direction:column;align-items:center;gap:3px;
-    font-size:10.5px;font-weight:600;letter-spacing:.2px;position:relative}
-  nav.tabs button .ic{font-size:19px;line-height:1}
+    padding:8px 1px 7px;display:flex;flex-direction:column;align-items:center;gap:2px;
+    font-size:9.5px;font-weight:600;letter-spacing:.1px;position:relative}
+  nav.tabs button .ic{font-size:18px;line-height:1}
   nav.tabs button.active{color:var(--gold-soft)}
-  nav.tabs button.active::before{content:"";position:absolute;top:0;width:26px;height:3px;
+  nav.tabs button.active::before{content:"";position:absolute;top:0;width:24px;height:3px;
     border-radius:0 0 4px 4px;background:var(--gold)}
 
-  /* ---------- Layout ---------- */
-  main{max-width:840px;margin:0 auto;padding:18px 16px 30px}
-  .view{display:none;animation:fade .3s ease}
+  main{max-width:840px;margin:0 auto;padding:16px 15px 26px}
+  .view{display:none;animation:fade .28s ease}
   .view.active{display:block}
   @keyframes fade{from{opacity:0;transform:translateY(6px)}to{opacity:1;transform:none}}
-  .view-intro{color:var(--muted);font-size:13.5px;margin:-2px 0 16px}
-  h2.vt{font-size:22px;font-weight:800;margin-bottom:2px}
-  .section-label{font-size:12px;font-weight:700;letter-spacing:1.2px;text-transform:uppercase;
+  .view-intro{color:var(--muted);font-size:13px;margin:-2px 0 15px}
+  h2.vt{font-size:21px;font-weight:800;margin-bottom:2px;display:flex;align-items:center;gap:9px}
+  .section-label{font-size:11.5px;font-weight:700;letter-spacing:1.1px;text-transform:uppercase;
     color:var(--faint);margin:22px 0 10px}
+  .section-label:first-child{margin-top:6px}
 
-  /* ---------- Cards ---------- */
   .card{background:var(--card);border:1px solid var(--border);border-radius:var(--r);
-    padding:15px 15px;margin-bottom:12px;box-shadow:var(--shadow);position:relative;overflow:hidden}
+    padding:15px;margin-bottom:11px;box-shadow:var(--shadow);position:relative;overflow:hidden}
   .card.on{border-color:var(--border2)}
+
+  /* segmented control */
+  .seg{display:flex;background:var(--bg2);border:1px solid var(--border2);border-radius:12px;
+    padding:4px;gap:4px;margin-bottom:16px}
+  .seg button{flex:1;background:none;border:none;color:var(--muted);font-weight:700;font-size:12.5px;
+    padding:9px 4px;border-radius:9px}
+  .seg button.on{background:var(--gold);color:#1a1200}
+
+  /* events */
   .evt-top{display:flex;gap:12px;align-items:flex-start}
   .evt-ic{width:42px;height:42px;border-radius:12px;flex:none;display:grid;place-items:center;
     font-size:22px;background:var(--card2);border:1px solid var(--border)}
   .evt-main{flex:1;min-width:0}
   .evt-name{font-weight:750;font-size:15.5px;line-height:1.25}
-  .evt-meta{font-size:12.5px;color:var(--muted);margin-top:2px;display:flex;flex-wrap:wrap;gap:4px 10px}
+  .evt-meta{font-size:12.5px;color:var(--muted);margin-top:2px;display:flex;flex-wrap:wrap;gap:4px 10px;align-items:center}
   .evt-meta .pin::before{content:"📍 "}
-  .badge{display:inline-block;font-size:10px;font-weight:800;letter-spacing:.4px;
-    padding:2px 7px;border-radius:20px;text-transform:uppercase;vertical-align:middle}
+  .badge{display:inline-block;font-size:9.5px;font-weight:800;letter-spacing:.4px;
+    padding:2px 7px;border-radius:20px;text-transform:uppercase}
   .b-conf{background:rgba(74,222,128,.14);color:#7ee6a3;border:1px solid rgba(74,222,128,.3)}
   .b-prov{background:rgba(251,146,60,.13);color:#fdba74;border:1px solid rgba(251,146,60,.32)}
-  .cat-tag{font-size:10px;font-weight:800;letter-spacing:.5px;text-transform:uppercase;padding:2px 7px;border-radius:6px}
+  .cat-tag{font-size:9.5px;font-weight:800;letter-spacing:.5px;text-transform:uppercase;padding:2px 7px;border-radius:6px}
 
-  /* toggle switch */
-  .switch{position:relative;width:48px;height:28px;flex:none}
+  .switch{position:relative;width:46px;height:27px;flex:none}
   .switch input{opacity:0;width:0;height:0;position:absolute}
-  .slider{position:absolute;inset:0;background:#2a3345;border:1px solid var(--border2);
-    border-radius:20px;transition:.2s}
-  .slider::before{content:"";position:absolute;height:20px;width:20px;left:3px;top:3px;
-    background:#cbd5e1;border-radius:50%;transition:.2s}
+  .slider{position:absolute;inset:0;background:#2a3345;border:1px solid var(--border2);border-radius:20px;transition:.2s}
+  .slider::before{content:"";position:absolute;height:19px;width:19px;left:3px;top:3px;background:#cbd5e1;border-radius:50%;transition:.2s}
   .switch input:checked + .slider{background:var(--gold);border-color:var(--gold)}
-  .switch input:checked + .slider::before{transform:translateX(20px);background:#1a1200}
+  .switch input:checked + .slider::before{transform:translateX(19px);background:#1a1200}
 
-  /* day picker */
   .days{display:flex;flex-wrap:wrap;gap:7px;margin-top:13px;padding-top:13px;border-top:1px dashed var(--border)}
-  .daychip{border:1px solid var(--border2);background:var(--card2);color:var(--muted);
-    border-radius:10px;padding:7px 10px;font-size:12px;font-weight:600;text-align:center;
-    min-width:56px;line-height:1.25;transition:.15s}
+  .daychip{border:1px solid var(--border2);background:var(--card2);color:var(--muted);border-radius:10px;
+    padding:7px 10px;font-size:12px;font-weight:600;text-align:center;min-width:54px;line-height:1.25}
   .daychip .dn{display:block;font-size:10px;color:var(--faint);font-weight:700;text-transform:uppercase}
-  .daychip.on{background:linear-gradient(160deg,rgba(245,179,1,.22),rgba(245,179,1,.08));
-    border-color:var(--gold);color:#ffe08a}
+  .daychip.on{background:linear-gradient(160deg,rgba(245,179,1,.22),rgba(245,179,1,.08));border-color:var(--gold);color:#ffe08a}
   .daychip.on .dn{color:var(--gold-soft)}
-  .daychip:active{transform:scale(.95)}
   .day-hint{font-size:11.5px;color:var(--faint);margin-top:8px}
 
   .mini{font-size:11.5px;color:var(--muted);margin-top:10px}
-  .editrow{display:flex;gap:8px;align-items:center;margin-top:12px;padding-top:12px;
-    border-top:1px dashed var(--border);flex-wrap:wrap}
+  .editrow{display:flex;gap:8px;align-items:center;margin-top:12px;padding-top:12px;border-top:1px dashed var(--border);flex-wrap:wrap}
   .editrow label{font-size:11px;color:var(--faint);font-weight:700;text-transform:uppercase}
-  input[type=date],input[type=text],input[type=number],select{
-    background:var(--bg2);border:1px solid var(--border2);color:var(--text);
-    border-radius:9px;padding:8px 10px;font-size:13px;font-family:inherit}
+  input[type=date],input[type=text],input[type=number],select{background:var(--bg2);border:1px solid var(--border2);
+    color:var(--text);border-radius:9px;padding:8px 10px;font-size:13px;font-family:inherit}
   input[type=date]{color-scheme:dark}
-  .ghost-link{color:var(--faint);font-size:12px;font-weight:700}
 
-  /* filters */
-  .filterbar{display:flex;gap:8px;overflow-x:auto;padding:4px 0 6px;margin-bottom:6px;-webkit-overflow-scrolling:touch}
+  /* ticket expander */
+  .tkbtn{margin-top:12px;width:100%;background:var(--card2);border:1px solid var(--border2);color:var(--gold-soft);
+    border-radius:11px;padding:11px;font-weight:750;font-size:13px;display:flex;align-items:center;justify-content:center;gap:8px}
+  .tkbtn:active{transform:scale(.99)}
+  .tkbody{margin-top:11px;border-top:1px solid var(--border);padding-top:13px;display:none}
+  .tkbody.open{display:block}
+  .tkstat{display:flex;flex-wrap:wrap;gap:8px;margin-bottom:13px}
+  .tkstat .s{flex:1;min-width:96px;background:var(--bg2);border:1px solid var(--border2);border-radius:10px;padding:9px 10px}
+  .tkstat .s .k{font-size:9.5px;color:var(--faint);font-weight:700;text-transform:uppercase;letter-spacing:.3px}
+  .tkstat .s .v{font-size:13px;font-weight:700;margin-top:2px}
+  .conf{font-size:9.5px;font-weight:800;padding:2px 7px;border-radius:20px;text-transform:uppercase}
+  .conf.high{background:rgba(74,222,128,.15);color:#7ee6a3}
+  .conf.medium{background:rgba(251,146,60,.15);color:#fdba74}
+  .conf.low{background:rgba(248,113,113,.15);color:#fca5a5}
+  .intel{margin-bottom:12px}
+  .intel h4{font-size:12.5px;font-weight:800;display:flex;align-items:center;gap:7px;margin-bottom:3px}
+  .intel p{font-size:12.5px;color:var(--muted)}
+  .urgent{background:linear-gradient(160deg,rgba(248,113,113,.14),transparent);border:1px solid rgba(248,113,113,.4);
+    border-radius:10px;padding:10px 12px;margin-bottom:12px;font-size:12.5px}
+  .urgent b{color:#fca5a5}
+
+  .filterbar{display:flex;gap:8px;overflow-x:auto;padding:4px 0 6px;margin-bottom:6px}
   .filterbar::-webkit-scrollbar{display:none}
   .fchip{white-space:nowrap;border:1px solid var(--border2);background:var(--card);color:var(--muted);
     padding:7px 13px;border-radius:20px;font-size:12.5px;font-weight:700;display:flex;align-items:center;gap:5px}
@@ -135,19 +149,18 @@
   .trav-name input{background:transparent;border:none;font-size:15px;font-weight:700;color:var(--text);padding:2px 0;width:100%}
   .trav-dur{font-size:12px;color:var(--muted)}
   .win-row{display:flex;gap:10px;margin-top:12px;flex-wrap:wrap}
-  .win-row .f{flex:1;min-width:130px}
+  .win-row .f{flex:1;min-width:120px}
   .win-row .f label{display:block;font-size:10.5px;color:var(--faint);font-weight:700;text-transform:uppercase;margin-bottom:4px}
   .win-row .f input{width:100%}
   .del{background:none;border:none;color:var(--faint);font-size:18px;padding:4px 6px}
   .addbtn{width:100%;background:var(--card2);border:1px dashed var(--border2);color:var(--muted);
     padding:13px;border-radius:12px;font-weight:700;font-size:13.5px;margin-top:4px}
-  .addbtn:active{transform:scale(.99)}
 
   /* itinerary */
-  .stats{display:grid;grid-template-columns:repeat(4,1fr);gap:9px;margin-bottom:18px}
-  .stat{background:var(--card);border:1px solid var(--border);border-radius:13px;padding:12px 8px;text-align:center}
-  .stat .n{font-size:22px;font-weight:800;color:var(--gold-soft);line-height:1}
-  .stat .l{font-size:10px;color:var(--muted);font-weight:600;margin-top:5px;text-transform:uppercase;letter-spacing:.4px}
+  .stats{display:grid;grid-template-columns:repeat(4,1fr);gap:8px;margin-bottom:16px}
+  .stat{background:var(--card);border:1px solid var(--border);border-radius:13px;padding:11px 6px;text-align:center}
+  .stat .n{font-size:21px;font-weight:800;color:var(--gold-soft);line-height:1}
+  .stat .l{font-size:9.5px;color:var(--muted);font-weight:600;margin-top:5px;text-transform:uppercase;letter-spacing:.3px}
   .tl-day{margin-bottom:14px}
   .tl-date{display:flex;align-items:center;gap:9px;margin-bottom:8px}
   .tl-date .d{font-weight:800;font-size:14px}
@@ -165,81 +178,112 @@
   .who .p .d2{width:8px;height:8px;border-radius:50%}
   .clash{background:rgba(248,113,113,.1);border:1px solid rgba(248,113,113,.35);color:#fca5a5;
     font-size:11.5px;font-weight:600;padding:7px 11px;border-radius:9px;margin-bottom:8px;display:flex;gap:7px;align-items:center}
-  .empty{text-align:center;color:var(--faint);padding:40px 20px;font-size:14px}
-  .empty .big{font-size:38px;margin-bottom:10px}
-  .flexbucket{background:linear-gradient(160deg,rgba(56,189,248,.08),transparent);
-    border:1px dashed rgba(56,189,248,.35)}
+  .empty{text-align:center;color:var(--faint);padding:36px 20px;font-size:14px}
+  .empty .big{font-size:36px;margin-bottom:10px}
+  .flexbucket{background:linear-gradient(160deg,rgba(56,189,248,.08),transparent);border:1px dashed rgba(56,189,248,.35)}
 
-  /* stays */
+  /* command centre / booking plan */
+  .reco{background:linear-gradient(155deg,rgba(245,179,1,.14),rgba(245,179,1,.03));border:1px solid rgba(245,179,1,.32);
+    border-radius:14px;padding:15px;margin-bottom:16px}
+  .reco h3{font-size:14px;font-weight:800;color:var(--gold-soft);margin-bottom:6px;display:flex;gap:8px;align-items:center}
+  .reco p{font-size:13px;color:var(--text);margin-bottom:8px}
+  .reco p:last-child{margin-bottom:0}
+  .reco .next{background:rgba(248,113,113,.12);border:1px solid rgba(248,113,113,.35);border-radius:10px;padding:9px 11px;font-size:12.5px;margin-top:4px}
+  .reco .next b{color:#fca5a5}
+  .cmd-item{display:flex;gap:12px;padding:12px 0;border-bottom:1px solid var(--border)}
+  .cmd-item:last-child{border-bottom:none}
+  .cmd-when{flex:none;width:88px;font-size:11px;font-weight:800;text-transform:uppercase;letter-spacing:.2px;padding-top:2px}
+  .cmd-when.now{color:#fca5a5}
+  .cmd-when.soon{color:var(--gold-soft)}
+  .cmd-when.later{color:var(--muted)}
+  .cmd-body{flex:1;border-left:2px solid var(--border2);padding-left:12px;position:relative}
+  .cmd-body::before{content:"";position:absolute;left:-6px;top:4px;width:9px;height:9px;border-radius:50%;background:var(--border2)}
+  .cmd-body.flight::before{background:var(--gold)}
+  .cmd-body.ticket::before{background:var(--cricket)}
+  .cmd-body.confirm::before{background:var(--info)}
+  .cmd-body.act::before{background:#fca5a5}
+  .cmd-body .t{font-size:13.5px;font-weight:750}
+  .cmd-body .d{font-size:12px;color:var(--muted);margin-top:2px}
+  .cmd-tag{display:inline-block;font-size:9px;font-weight:800;text-transform:uppercase;letter-spacing:.4px;
+    padding:1px 6px;border-radius:5px;margin-left:6px;vertical-align:middle;background:var(--card2);color:var(--faint)}
+
+  /* stays / providers */
   .prov{display:flex;gap:12px;align-items:flex-start}
   .prov .logo{width:40px;height:40px;border-radius:10px;flex:none;display:grid;place-items:center;font-size:20px;background:var(--card2);border:1px solid var(--border)}
   .prov h3{font-size:15px;font-weight:750}
   .prov .tagline{font-size:12px;color:var(--gold-soft);font-weight:600}
-  .prov p{font-size:13px;color:var(--muted);margin-top:6px}
+  .prov p{font-size:12.5px;color:var(--muted);margin-top:6px}
   .prov .go{display:inline-block;margin-top:9px;font-size:12.5px;font-weight:700;color:var(--gold-soft)}
   .hub{border-left:3px solid var(--place)}
   .hub h3{font-size:14.5px;font-weight:750;display:flex;align-items:center;gap:8px}
   .hub .near{font-size:11.5px;color:var(--faint);margin-top:2px}
-  .hub ul{margin:9px 0 0;padding-left:2px;list-style:none}
-  .hub li{font-size:12.5px;color:var(--muted);padding:4px 0 4px 16px;position:relative}
-  .hub li::before{content:"›";position:absolute;left:2px;color:var(--gold)}
+  ul.tick{margin:9px 0 0;padding-left:2px;list-style:none}
+  ul.tick li{font-size:12.5px;color:var(--muted);padding:4px 0 4px 16px;position:relative}
+  ul.tick li::before{content:"›";position:absolute;left:2px;color:var(--gold)}
+  ul.tick li b{color:var(--text)}
 
   /* flights */
-  .callout{background:linear-gradient(160deg,rgba(245,179,1,.12),rgba(245,179,1,.03));
-    border:1px solid rgba(245,179,1,.3);border-radius:14px;padding:15px}
+  .callout{background:linear-gradient(160deg,rgba(245,179,1,.12),rgba(245,179,1,.03));border:1px solid rgba(245,179,1,.3);border-radius:14px;padding:15px}
   .callout h3{font-size:14px;font-weight:800;color:var(--gold-soft);margin-bottom:5px;display:flex;gap:8px;align-items:center}
   .callout p{font-size:13px;color:var(--text)}
   .tip{display:flex;gap:11px;padding:11px 0;border-bottom:1px solid var(--border)}
   .tip:last-child{border-bottom:none}
   .tip .k{font-size:19px;flex:none;width:26px;text-align:center}
-  .tip .b{font-size:13px}
+  .tip .b{font-size:12.5px}
   .tip .b b{color:var(--text)}
   .tip .b span{color:var(--muted)}
   .estimator .row{display:flex;gap:10px;flex-wrap:wrap;margin-bottom:12px}
-  .estimator .row .f{flex:1;min-width:120px}
+  .estimator .row .f{flex:1;min-width:110px}
   .estimator .row .f label{display:block;font-size:10.5px;color:var(--faint);font-weight:700;text-transform:uppercase;margin-bottom:5px}
   .estimator select,.estimator input{width:100%}
   .est-out{background:var(--bg2);border:1px solid var(--border2);border-radius:12px;padding:15px;text-align:center;margin-top:6px}
   .est-out .pp{font-size:13px;color:var(--muted)}
   .est-out .pp b{color:var(--gold-soft);font-size:16px}
-  .est-out .total{font-size:28px;font-weight:800;color:var(--text);margin-top:8px}
-  .est-out .tl2{font-size:11px;color:var(--faint);text-transform:uppercase;letter-spacing:.5px}
+  .est-out .total{font-size:27px;font-weight:800;margin-top:8px}
+  .est-out .tl2{font-size:10.5px;color:var(--faint);text-transform:uppercase;letter-spacing:.5px}
   .est-note{font-size:11px;color:var(--faint);margin-top:10px;line-height:1.5}
-  .timeline-book{margin:14px 0}
   .tb-track{height:10px;border-radius:6px;background:var(--bg2);border:1px solid var(--border2);position:relative;overflow:hidden;margin:26px 0 8px}
   .tb-win{position:absolute;top:0;bottom:0;background:linear-gradient(90deg,rgba(74,222,128,.5),rgba(245,179,1,.6));border-radius:6px}
   .tb-now{position:absolute;top:-6px;bottom:-6px;width:2px;background:var(--text)}
-  .tb-now::after{content:"today";position:absolute;top:-18px;left:50%;transform:translateX(-50%);
-    font-size:9px;font-weight:800;color:var(--text);white-space:nowrap}
+  .tb-now::after{content:"today";position:absolute;top:-18px;left:50%;transform:translateX(-50%);font-size:9px;font-weight:800;color:var(--text);white-space:nowrap}
   .tb-labels{display:flex;justify-content:space-between;font-size:10px;color:var(--faint);font-weight:600}
-  .cal{display:grid;grid-template-columns:1fr;gap:0}
   .calrow{display:flex;gap:12px;padding:9px 0;border-bottom:1px solid var(--border);align-items:baseline}
-  .calrow .mo{font-size:11px;font-weight:800;color:var(--gold-soft);width:82px;flex:none;text-transform:uppercase;letter-spacing:.3px}
+  .calrow:last-child{border-bottom:none}
+  .calrow .mo{font-size:11px;font-weight:800;color:var(--gold-soft);width:84px;flex:none;text-transform:uppercase;letter-spacing:.3px}
   .calrow .ev{font-size:12.5px;color:var(--muted)}
 
-  .toast{position:fixed;left:50%;bottom:calc(88px + var(--safe-b));transform:translateX(-50%) translateY(20px);
+  /* generic content blocks (logistics/explore) */
+  .block h3{font-size:15px;font-weight:750;display:flex;align-items:center;gap:8px}
+  .block .sub{font-size:11.5px;color:var(--faint);margin-top:1px}
+  .block p{font-size:12.5px;color:var(--muted);margin-top:8px}
+  .route{display:flex;gap:10px;padding:9px 0;border-bottom:1px solid var(--border);align-items:baseline}
+  .route:last-child{border-bottom:none}
+  .route .from{flex:1;font-size:12.5px;font-weight:650}
+  .route .from span{color:var(--muted);font-weight:400}
+  .route .time{font-size:11.5px;color:var(--gold-soft);font-weight:700;white-space:nowrap}
+  .pill-row{display:flex;flex-wrap:wrap;gap:6px;margin-top:10px}
+  .pill{font-size:11px;font-weight:700;padding:4px 9px;border-radius:20px;background:var(--card2);border:1px solid var(--border);color:var(--muted)}
+  .country-tag{font-size:10px;font-weight:800;letter-spacing:.5px;text-transform:uppercase;padding:2px 8px;border-radius:6px}
+
+  .toast{position:fixed;left:50%;bottom:calc(84px + var(--safe-b));transform:translateX(-50%) translateY(20px);
     background:var(--text);color:#0b0e14;font-weight:700;font-size:13px;padding:11px 18px;border-radius:30px;
     box-shadow:0 8px 24px rgba(0,0,0,.4);opacity:0;pointer-events:none;transition:.25s;z-index:100;white-space:nowrap}
   .toast.show{opacity:1;transform:translateX(-50%) translateY(0)}
 
   .sheet-bg{position:fixed;inset:0;background:rgba(0,0,0,.6);z-index:80;opacity:0;pointer-events:none;transition:.2s}
   .sheet-bg.show{opacity:1;pointer-events:auto}
-  .sheet{position:fixed;left:0;right:0;bottom:0;z-index:81;background:var(--bg2);
-    border-radius:22px 22px 0 0;border-top:1px solid var(--border2);padding:20px 18px calc(28px + var(--safe-b));
-    transform:translateY(105%);transition:.28s cubic-bezier(.3,.9,.3,1);max-height:86vh;overflow:auto}
+  .sheet{position:fixed;left:0;right:0;bottom:0;z-index:81;background:var(--bg2);border-radius:22px 22px 0 0;
+    border-top:1px solid var(--border2);padding:20px 18px calc(28px + var(--safe-b));transform:translateY(105%);
+    transition:.28s cubic-bezier(.3,.9,.3,1);max-height:86vh;overflow:auto}
   .sheet.show{transform:none}
   .sheet h3{font-size:17px;font-weight:800;margin-bottom:4px}
   .sheet p{font-size:13px;color:var(--muted);margin-bottom:14px}
-  .sheet .act{width:100%;text-align:left;background:var(--card);border:1px solid var(--border2);
-    border-radius:12px;padding:14px;font-size:14px;font-weight:600;color:var(--text);margin-bottom:9px;display:flex;gap:11px;align-items:center}
-  .sheet .act .ic2{font-size:19px}
-  .sheet .act.danger{color:#fca5a5}
+  .sheet .act2{width:100%;text-align:left;background:var(--card);border:1px solid var(--border2);border-radius:12px;
+    padding:14px;font-size:14px;font-weight:600;color:var(--text);margin-bottom:9px;display:flex;gap:11px;align-items:center}
+  .sheet .act2.danger{color:#fca5a5}
   .grab{width:40px;height:4px;border-radius:3px;background:var(--border2);margin:0 auto 16px}
 
-  @media(min-width:620px){
-    .stats{gap:12px}
-    nav.tabs button .ic{font-size:20px}
-  }
+  @media(min-width:620px){ .stats{gap:11px} nav.tabs button{font-size:10.5px} nav.tabs button .ic{font-size:20px} }
 </style>
 </head>
 <body>
@@ -257,112 +301,101 @@
 </header>
 
 <main>
-  <!-- ============ EVENTS ============ -->
-  <section class="view active" id="view-events">
-    <h2 class="vt">Events</h2>
-    <p class="view-intro">Tick what the group wants to see. For multi-day events, pick the exact days. Dates marked <span class="badge b-prov">Provisional</span> aren't officially confirmed yet — tap <b>Edit</b> to update them when the ECB / organisers publish the 2027 schedule.</p>
+  <!-- ============ SCHEDULE ============ -->
+  <section class="view active" id="view-schedule">
+    <h2 class="vt">🗓️ Schedule</h2>
+    <p class="view-intro">Your master plan. The <b>Booking Plan</b> works out the smart order to lock tickets &amp; flights; the <b>Itinerary</b> builds itself from your picks; <b>Travellers</b> sets everyone's dates.</p>
+    <div class="seg" id="schSeg">
+      <button data-seg="plan" class="on">Booking Plan</button>
+      <button data-seg="itin">Itinerary</button>
+      <button data-seg="trav">Travellers</button>
+    </div>
+    <div id="sch-plan"></div>
+    <div id="sch-itin" style="display:none"></div>
+    <div id="sch-trav" style="display:none"></div>
+  </section>
+
+  <!-- ============ EVENTS / TICKETS ============ -->
+  <section class="view" id="view-events">
+    <h2 class="vt">🎟️ Events &amp; tickets</h2>
+    <p class="view-intro">Tick what the group wants to see, pick the exact days, then open <b>Tickets &amp; how to get them</b> for the full playbook — the Aussie way, the UK-resident way, the "trip-of-a-lifetime" way, plus MCC/SACA/county angles, resale &amp; tour packages.</p>
     <div class="filterbar" id="evtFilter"></div>
     <div id="eventsList"></div>
   </section>
 
-  <!-- ============ TRAVELLERS ============ -->
-  <section class="view" id="view-travellers">
-    <h2 class="vt">Travellers</h2>
-    <p class="view-intro">Everyone's here for a different length of time. Set each person's arrival &amp; departure window — the itinerary automatically shows who can make each event.</p>
-    <div id="travList"></div>
-    <button class="addbtn" id="addTrav">+ Add traveller</button>
-  </section>
-
-  <!-- ============ ITINERARY ============ -->
-  <section class="view" id="view-itinerary">
-    <h2 class="vt">Itinerary</h2>
-    <p class="view-intro">Auto-built from your ticked events &amp; days, in date order. Coloured chips show who's in the country for each one. Filter to one person to see their personal run.</p>
-    <div class="filterbar" id="itinFilter"></div>
-    <div class="stats" id="itinStats"></div>
-    <div id="itinList"></div>
-  </section>
-
   <!-- ============ STAYS ============ -->
   <section class="view" id="view-stays">
-    <h2 class="vt">Stays</h2>
-    <p class="view-intro">Somewhere memorable to base the trip. These are the "novel" UK accommodation sites — historic towers, lighthouses, treehouses and Oxford college rooms — plus a location guide for each event hub.</p>
+    <h2 class="vt">🏰 Stays</h2>
+    <p class="view-intro">Somewhere memorable to base the trip — the "novel" UK sites (historic towers, lighthouses, treehouses, Oxford college rooms) plus a per-hub guide. This list will keep growing.</p>
     <div class="section-label">Novel &amp; unique stay sites</div>
     <div id="provList"></div>
     <div class="section-label">Where to base yourselves</div>
     <div id="hubList"></div>
-    <div class="card" style="margin-top:8px">
-      <div class="prov"><div class="logo">💡</div><div>
-        <h3>Booking tips for the good stuff</h3>
-        <p>National Trust &amp; Landmark Trust properties release ~<b>11–12 months ahead</b> and the best ones (towers, lighthouses, castles) sell out within days — set a reminder to book the moment the 2027 dates open. A big cottage split between the group is often cheaper per head than hotels, and Landmark places sleep 4–12. For Oxford, <b>University Rooms</b> lets you stay inside a college in summer vacation.</p>
-      </div></div>
-    </div>
+    <div class="card" style="margin-top:6px"><div class="prov"><div class="logo">💡</div><div>
+      <h3>Booking the good stuff</h3>
+      <p>Landmark &amp; National Trust properties release ~<b>11–12 months ahead</b> and the iconic ones (towers, lighthouses, castles) vanish in days — diarise the on-sale. A big cottage split between the group usually beats hotels per head, and Landmark places sleep 4–12. For Oxford, <b>University Rooms</b> puts you inside a college over summer vacation. One person should be the "booking captain" and pay the deposit, then split it.</p>
+    </div></div></div>
   </section>
 
   <!-- ============ FLIGHTS ============ -->
   <section class="view" id="view-flights">
-    <h2 class="vt">Flights</h2>
-    <p class="view-intro">Melbourne → London for peak Northern-summer travel is the single biggest cost. Here's when to book, the tricks to cut it down, and a rough estimator for the group.</p>
-
+    <h2 class="vt">✈️ Flights</h2>
+    <p class="view-intro">Melbourne → London is the biggest single cost. Here's when to book, the tricks to cut it, and a group estimator. The <b>timing logic vs tickets</b> lives in Schedule → Booking Plan.</p>
     <div class="callout" style="margin-bottom:16px">
       <h3>⏰ The one-line answer</h3>
-      <p>For June–July 2027 travel, start watching fares <b>now</b> and aim to book in the <b>Jan 2027 airline sales</b> (or the Black Friday sales, late Nov 2026). Booking ~6–9 months out for peak summer is the sweet spot — leave it past March 2027 and prices climb steeply.</p>
+      <p>For June–July 2027 travel, register the free ballots <b>now</b>, wait for the ECB to confirm exact Ashes dates (<b>summer 2026</b>), then book flights in the <b>Oct 2026 – Jan 2027</b> window once your anchor cricket day is secured. That overlaps the cheap-fare sweet spot; leaving it past March 2027 gets dear.</p>
     </div>
-
     <div class="section-label">When should we book?</div>
     <div class="card">
-      <div class="timeline-book">
-        <div class="tb-track" id="tbTrack">
-          <div class="tb-win" id="tbWin"></div>
-          <div class="tb-now" id="tbNow"></div>
-        </div>
-        <div class="tb-labels"><span>Jul 2026</span><span>Ideal booking window</span><span>Depart Jun 2027</span></div>
-      </div>
-      <p class="mini">Green–gold band = the ideal booking window (<b>Sep 2026 – Feb 2027</b>). Reward-seat hunters: Qantas/Velocity classic-reward seats for peak dates open ~353 days ahead, so the earliest June-2027 seats appear around <b>mid-2026</b> — grab them the moment they load.</p>
+      <div class="tb-track" id="tbTrack"><div class="tb-win" id="tbWin"></div><div class="tb-now" id="tbNow"></div></div>
+      <div class="tb-labels"><span>Jul 2026</span><span>Ideal window</span><span>Depart Jun 2027</span></div>
+      <p class="mini">Green–gold band = ideal booking window (<b>Sep 2026 – Feb 2027</b>). Qantas/Velocity classic-reward seats for peak June-2027 dates open ~353 days ahead (around now) — grab them the moment they load.</p>
     </div>
-
     <div class="section-label">Group cost estimator</div>
     <div class="card estimator">
       <div class="row">
-        <div class="f"><label>Cabin</label>
-          <select id="estCabin">
-            <option value="eco">Economy</option>
-            <option value="prem">Premium economy</option>
-            <option value="biz">Business</option>
-          </select></div>
-        <div class="f"><label>Travellers</label>
-          <input type="number" id="estPax" min="1" max="12" value="4"></div>
-        <div class="f"><label>When you book</label>
-          <select id="estTiming">
-            <option value="0.85">Early (Sep–Jan sales)</option>
-            <option value="1" selected>Standard (~6mo out)</option>
-            <option value="1.35">Last-minute (&lt;3mo)</option>
-          </select></div>
+        <div class="f"><label>Cabin</label><select id="estCabin"><option value="eco">Economy</option><option value="prem">Premium economy</option><option value="biz">Business</option></select></div>
+        <div class="f"><label>Travellers</label><input type="number" id="estPax" min="1" max="12" value="4"></div>
+        <div class="f"><label>When you book</label><select id="estTiming"><option value="0.85">Early (Sep–Jan sales)</option><option value="1" selected>Standard (~6mo out)</option><option value="1.35">Last-minute (&lt;3mo)</option></select></div>
       </div>
-      <div class="est-out">
-        <div class="pp">Return per person ≈ <b id="estPP">—</b></div>
-        <div class="total" id="estTotal">—</div>
-        <div class="tl2">estimated group total (return)</div>
-      </div>
+      <div class="est-out"><div class="pp">Return per person ≈ <b id="estPP">—</b></div><div class="total" id="estTotal">—</div><div class="tl2">estimated group total (return)</div></div>
       <p class="est-note" id="estNote"></p>
     </div>
-
     <div class="section-label">Tricks to keep it down</div>
     <div class="card" id="tipsList"></div>
-
     <div class="section-label">When the specials land</div>
-    <div class="card"><div class="cal" id="salesCal"></div></div>
-
+    <div class="card" id="salesCal"></div>
     <div class="section-label">Routings from Melbourne</div>
     <div class="card" id="routings"></div>
+  </section>
+
+  <!-- ============ LOGISTICS ============ -->
+  <section class="view" id="view-logistics">
+    <h2 class="vt">🚆 Logistics</h2>
+    <p class="view-intro">Getting between the key areas. Short version: <b>base in London, day-trip by train.</b> Scotland (The Open) is the one that needs its own plan.</p>
+    <div id="logisticsBody"></div>
+  </section>
+
+  <!-- ============ EXPLORE ============ -->
+  <section class="view" id="view-explore">
+    <h2 class="vt">🧭 Explore</h2>
+    <p class="view-intro">Beyond the sport — the must-dos (Oxford especially, your old home of 5 years), and a tag-along European leg for your brother's 5-week trip with his son (26) and daughter (19).</p>
+    <div class="seg" id="expSeg">
+      <button data-eseg="uk" class="on">🇬🇧 UK</button>
+      <button data-eseg="eu">🇪🇺 Europe leg</button>
+    </div>
+    <div id="exp-uk"></div>
+    <div id="exp-eu" style="display:none"></div>
   </section>
 </main>
 
 <nav class="tabs" id="tabs">
-  <button data-tab="events" class="active"><span class="ic">🎟️</span>Events</button>
-  <button data-tab="travellers"><span class="ic">👥</span>People</button>
-  <button data-tab="itinerary"><span class="ic">🗓️</span>Itinerary</button>
+  <button data-tab="schedule" class="active"><span class="ic">🗓️</span>Schedule</button>
+  <button data-tab="events"><span class="ic">🎟️</span>Events</button>
   <button data-tab="stays"><span class="ic">🏰</span>Stays</button>
   <button data-tab="flights"><span class="ic">✈️</span>Flights</button>
+  <button data-tab="logistics"><span class="ic">🚆</span>Travel</button>
+  <button data-tab="explore"><span class="ic">🧭</span>Explore</button>
 </nav>
 
 <div class="toast" id="toast"></div>
@@ -370,24 +403,20 @@
 <div class="sheet" id="sheet">
   <div class="grab"></div>
   <h3>Trip options</h3>
-  <p>Your plan is saved on this device. Share it so the group can see the same picks.</p>
-  <button class="act" id="actShare"><span class="ic2">🔗</span> Copy shareable link</button>
-  <button class="act" id="actExport"><span class="ic2">⬇️</span> Export plan (JSON file)</button>
-  <button class="act" id="actImport"><span class="ic2">⬆️</span> Import a plan</button>
-  <button class="act" id="actInstall"><span class="ic2">📲</span> Install app to home screen</button>
-  <button class="act danger" id="actReset"><span class="ic2">↺</span> Reset to default plan</button>
+  <p>Your plan is saved on this device. Share it so the group sees the same picks.</p>
+  <button class="act2" id="actShare">🔗 Copy shareable link</button>
+  <button class="act2" id="actExport">⬇️ Export plan (JSON file)</button>
+  <button class="act2" id="actImport">⬆️ Import a plan</button>
+  <button class="act2" id="actInstall">📲 Install app to home screen</button>
+  <button class="act2 danger" id="actReset">↺ Reset to default plan</button>
   <input type="file" id="fileIn" accept="application/json" hidden>
 </div>
 
 <script>
 "use strict";
-/* ------------------------------------------------------------------ *
- *  The Fifty Tour — UK & Europe 2027 trip planner
- *  Single-file PWA. All state in localStorage. No dependencies.
- * ------------------------------------------------------------------ */
+/* ================= The Fifty Tour — UK & Europe 2027 ================= */
 const KEY = "fiftytour_v1";
 const TODAY = new Date("2026-07-05T00:00:00");
-
 const CATS = {
   cricket:{label:"Cricket", em:"🏏", color:"var(--cricket)"},
   tennis:{label:"Tennis", em:"🎾", color:"var(--tennis)"},
@@ -396,54 +425,97 @@ const CATS = {
   place:{label:"Places", em:"📍", color:"var(--place)"}
 };
 
-/* ---- Seed data (best-estimate 2027; provisional where noted) ---- */
+/* ---------- Ticket intelligence per event (researched, best-estimate) ---------- */
+const TK = {
+  wtc:{
+    onSale:"~Jan–Feb 2027", confirm:"Teams confirmed early June 2027", priceFrom:"£45 adult · £15 U16", conf:"low",
+    urgent:"", official:"https://www.lords.org/",
+    aus:"Buy online at tickets.worldtestchampionship.com (up to 20/transaction). Watch for the ICC 'priority' pre-sale (ICC newsletter / ICC Family) ~48h before general sale — that's how 2025 ran.",
+    uk:"Same online sale; a UK friend can buy in the same window. WTC-final tickets generally aren't name-locked, but confirm at checkout.",
+    life:"Australia's spot isn't confirmed until ~early June 2027, so treat this as a bonus, not the anchor. If Australia makes it, hospitality (from ~£349+VAT/day via ICC Travel & Tours / Seat Unique) is the guaranteed fallback.",
+    members:"Melbourne CC full members: request a Lord's Letter of Introduction (Marylebone reciprocal) — gives visitor access to clubhouse facilities, not a guaranteed match ticket, but worth a call to MCC membership.",
+    resale:"Twickets (face value) if any surface; official hospitality otherwise.",
+    ops:"ICC Travel & Tours (official packages); Seat Unique (hospitality)."
+  },
+  ash:{ /* shared Ashes base; per-Test county added below */
+    onSale:"~Oct–Nov 2026", confirm:"ECB confirms exact dates summer 2026", priceFrom:"~£70–200/day (~A$140–400)", conf:"high",
+    urgent:"", official:"https://www.ecb.co.uk/watch-cricket/international-tickets",
+    aus:"Use the ECB International Tickets page + the venue's own site. Join the free 'We Are England Cricket Supporters' for the priority window (~a week before general sale). Ballots apply to the hottest days — enter several to raise your odds.",
+    uk:"The best 'in': join the HOST COUNTY as a member for priority buying at exclusive prices. A UK mate joining the relevant county is the single strongest route — see each Test below for which county.",
+    life:"Ask a UK friend to enter the England-Supporters priority / county window for you. Or go hospitality for the one bucket-list day (guaranteed seat + lunch) and ballot for the rest. Email the venue's group-sales team early — a 50th 'trip of a lifetime' block request is exactly what they field.",
+    members:"Melbourne CC → Lord's reciprocal (for the Lord's Tests) via Letter of Introduction. SACA members: check your reciprocal-club list and ask SACA membership — cricket-association reciprocals can open member areas.",
+    resale:"Twickets (ethical, face-value) and each venue's OFFICIAL resale/exchange first. Be wary of Viagogo/StubHub — Test tickets can be name-checked and are heavily marked up; buy official where you can.",
+    ops:"Australian Cricket Tours, AST Sports, Sport Tours, Events Travel, Global Sports, AOK Events; The Fanatics (the classic Aussie supporters' tour — tickets + social)."
+  },
+  wimb:{
+    onSale:"Ballot opens ~Aug–Sep 2026", confirm:"Dates fixed: 28 Jun–11 Jul 2027", priceFrom:"Grounds Pass £33 · show courts £65–315", conf:"medium",
+    urgent:"Create a free MyWimbledon account now so you're ready when the ballot opens (Aug–Sep 2026). UK & overseas ballots are separate.",
+    official:"https://www.wimbledon.com/en_GB/tickets/ballot",
+    aus:"Enter the OVERSEAS public ballot (free registration at wimbledon.com). Or plan for The Queue — turn up early for same-day Grounds Passes and a limited number of show-court tickets.",
+    uk:"Enter the (separate) UK ballot. Once on the grounds, the daily online Resale releases returned show-court seats very cheaply (~£15–30) to people already inside.",
+    life:"The bucket-list move is The Queue with a Grounds Pass — camping overnight is part of the legend. Debentures are the ONLY transferable tickets (premium Centre/No.1, sold via official brokers — pricey but guaranteed). Keith Prowse = official hospitality.",
+    members:"No cricket-membership route here. Debenture holders (or their guests) are the only 'members' with guaranteed access.",
+    resale:"Official daily Resale ONLY. Every non-debenture ticket is name-tied & strictly non-transferable — Viagogo/StubHub listings risk being void. Don't.",
+    ops:"Keith Prowse (official hospitality); Championship debenture brokers."
+  },
+  silv:{
+    onSale:"~Sep 2026 (sign up for presale)", confirm:"Provisional 2–4 Jul 2027", priceFrom:"GA from £70/day · grandstands £329–479", conf:"medium",
+    urgent:"Register for the Silverstone presale email — the GP sells out and uses dynamic pricing, so first access matters.",
+    official:"https://www.silverstone.co.uk/events/formula-1-british-grand-prix",
+    aus:"Buy direct at silverstone.co.uk — join the presale list for first access. Same process from AUS or UK. GA is walk-anywhere; grandstands are reserved seats. Friday (practice) is far cheaper than Sunday (race).",
+    uk:"Identical to the above. UK friends near Northants can help with a local base or car — parking/traffic on race weekend is brutal.",
+    life:"F1 Experiences = official hospitality & paddock packages (expensive but unforgettable). Circuit camping is the budget bucket-list option and a great atmosphere.",
+    members:"No membership route; it's first-come. The 'in' is being on the presale list.",
+    resale:"Silverstone runs an official resale/exchange; photo-ID rules can apply. Avoid touts.",
+    ops:"F1 Experiences (official); Silverstone hospitality; GP travel operators."
+  },
+  open:{
+    onSale:"Ballot ~6 Jul – early Aug 2026", confirm:"Dates fixed: 15–18 Jul 2027 (practice 12–14)", priceFrom:"Practice £40 · comp days £150 · final £190", conf:"medium",
+    urgent:"⚡ Most time-critical: The Open ballot opens ~6 July 2026 (basically now) via 'The One Club' — free to join, no backlog. It's the 100-year Bobby Jones anniversary at St Andrews, so demand will be huge. Enter immediately.",
+    official:"https://www.theopen.com/",
+    aus:"Join The One Club (free, Mastercard-backed) and enter the ballot NOW — identical for overseas & UK, no membership waiting list. Results come out in stages during August 2026. Kids under 16 go free; 16–24 discounted.",
+    uk:"Same ballot. UK friends can also enter and combine — but you each apply via your own One Club account.",
+    life:"Official hospitality via The Open, or golf-travel operators (PerryGolf, Your Golf Travel) that bundle tickets + a St Andrews stay. Practice days (£40) are a cheap way to walk the Old Course if the ballot for comp days misses.",
+    members:"No cricket link. 'Membership' = free One Club registration for the ballot.",
+    resale:"Official channels only; treat secondary sites with caution.",
+    ops:"PerryGolf, Your Golf Travel (packages); The Open official hospitality."
+  }
+};
+/* per-Ashes-Test county lines */
+const ASH_COUNTY = {
+  ash1:"Host county: <b>Warwickshire</b> (Edgbaston). Their '1882' membership gives priority Major-Match access at the best prices.",
+  ash2:"Host: <b>MCC / Middlesex</b> (Lord's). MCC (Marylebone) members get the pavilion & priority — Melbourne CC members can request a reciprocal Letter of Introduction.",
+  ash3:"Host county: <b>Nottinghamshire</b> (Trent Bridge). County membership = priority international tickets.",
+  ash4:"Host county: <b>Hampshire</b> (Utilita/Ageas Bowl). First-ever men's Ashes Test here — membership gives priority.",
+  ash5:"Host county: <b>Surrey</b> (The Oval). A Surrey membership gives priority on up to 8 Test tickets at exclusive prices — one of the best 'ins' going."
+};
+
+/* ---------- Seed state ---------- */
 function defaultState(){
   return {
     events:[
-      {id:"wtc", cat:"cricket", name:"World Test Championship Final", venue:"Lord's, London",
-       city:"London", start:"2027-06-09", end:"2027-06-13", status:"prov",
-       url:"https://www.lords.org/", note:"ICC confirms exact dates in early June 2027. Australia in contention to feature.",
-       include:false, days:[]},
-      {id:"ash1", cat:"cricket", name:"Ashes · 1st Test", venue:"Edgbaston, Birmingham",
-       city:"Birmingham", start:"2027-06-23", end:"2027-06-27", status:"prov",
-       url:"https://www.edgbaston.com/", note:"Edgbaston confirmed to host the series opener. Exact dates from ECB in summer 2026.",
-       include:false, days:[]},
-      {id:"ash2", cat:"cricket", name:"Ashes · 2nd Test", venue:"Lord's, London",
-       city:"London", start:"2027-07-01", end:"2027-07-05", status:"prov",
-       url:"https://www.lords.org/", note:"Lord's confirmed as 2nd Test venue. Dates provisional.",
-       include:false, days:[]},
-      {id:"ash3", cat:"cricket", name:"Ashes · 3rd Test", venue:"Trent Bridge, Nottingham",
-       city:"Nottingham", start:"2027-07-15", end:"2027-07-19", status:"prov",
-       url:"https://trentbridge.co.uk/", note:"Venue confirmed; order & dates of Tests 3–5 provisional.",
-       include:false, days:[]},
-      {id:"ash4", cat:"cricket", name:"Ashes · 4th Test", venue:"Utilita (Ageas) Bowl, Southampton",
-       city:"Southampton", start:"2027-07-29", end:"2027-08-02", status:"prov",
-       url:"https://www.utilitabowl.com/", note:"Southampton hosts its first-ever men's Ashes Test in 2027. Dates provisional.",
-       include:false, days:[]},
-      {id:"ash5", cat:"cricket", name:"Ashes · 5th Test", venue:"The Kia Oval, London",
-       city:"London", start:"2027-08-12", end:"2027-08-16", status:"prov",
-       url:"https://www.kiaoval.com/", note:"The Oval confirmed as a 2027 venue. Dates provisional.",
-       include:false, days:[]},
-      {id:"wimb", cat:"tennis", name:"Wimbledon Championships", venue:"All England Club, London",
-       city:"London", start:"2027-06-28", end:"2027-07-11", status:"conf",
-       url:"https://www.wimbledon.com/", note:"Confirmed: 28 Jun – 11 Jul 2027. Most tickets via the public ballot (opens ~autumn 2026) or resale/queue.",
-       include:false, days:[]},
-      {id:"silv", cat:"f1", name:"British Grand Prix", venue:"Silverstone Circuit",
-       city:"Silverstone", start:"2027-07-02", end:"2027-07-04", status:"prov",
-       url:"https://www.silverstone.co.uk/", note:"Provisional F1 date 2–4 Jul 2027 (race Sunday). Confirmed on the final 2027 calendar. Fri practice / Sat quali / Sun race.",
-       include:false, days:[]},
-      {id:"open", cat:"golf", name:"The Open Championship (155th)", venue:"St Andrews (Old Course), Scotland",
-       city:"St Andrews", start:"2027-07-15", end:"2027-07-18", status:"conf",
-       url:"https://www.theopen.com/", note:"Confirmed: 15–18 Jul 2027 at St Andrews — 100 years since Bobby Jones' 1927 win. Practice rounds 12–14 Jul.",
-       include:false, days:[]},
-      {id:"oxford", cat:"place", name:"Oxford (old stomping ground)", venue:"Oxford",
-       city:"Oxford", start:"", end:"", status:"conf", flexible:true,
-       url:"https://www.experienceoxfordshire.org/", note:"A must — where you used to live. ~1h by train from London Paddington. Flexible: set a date once the fixed events are locked.",
-       include:true, days:[], flexDate:"", nights:2},
-      {id:"bath", cat:"place", name:"Bath (Cousin's city)", venue:"Bath, Somerset",
-       city:"Bath", start:"", end:"", status:"conf", flexible:true,
-       url:"https://visitbath.co.uk/", note:"A must — your cousin's old city. ~1h30 from London Paddington; easy to pair with a Bristol/Cotswolds leg. Flexible date.",
-       include:true, days:[], flexDate:"", nights:2}
+      {id:"wtc", cat:"cricket", name:"World Test Championship Final", venue:"Lord's, London", city:"London", start:"2027-06-09", end:"2027-06-13", status:"prov", tk:"wtc",
+        note:"ICC confirms exact dates in early June 2027. Australia in contention to feature.", include:false, days:[]},
+      {id:"ash1", cat:"cricket", name:"Ashes · 1st Test", venue:"Edgbaston, Birmingham", city:"Birmingham", start:"2027-06-23", end:"2027-06-27", status:"prov", tk:"ash",
+        note:"Edgbaston confirmed to host the series opener. Exact dates from ECB in summer 2026.", include:false, days:[]},
+      {id:"ash2", cat:"cricket", name:"Ashes · 2nd Test", venue:"Lord's, London", city:"London", start:"2027-07-01", end:"2027-07-05", status:"prov", tk:"ash",
+        note:"Lord's confirmed as 2nd Test venue. Dates provisional.", include:false, days:[]},
+      {id:"ash3", cat:"cricket", name:"Ashes · 3rd Test", venue:"Trent Bridge, Nottingham", city:"Nottingham", start:"2027-07-15", end:"2027-07-19", status:"prov", tk:"ash",
+        note:"Venue confirmed; order & dates of Tests 3–5 provisional.", include:false, days:[]},
+      {id:"ash4", cat:"cricket", name:"Ashes · 4th Test", venue:"Utilita (Ageas) Bowl, Southampton", city:"Southampton", start:"2027-07-29", end:"2027-08-02", status:"prov", tk:"ash",
+        note:"Southampton hosts its first-ever men's Ashes Test in 2027. Dates provisional.", include:false, days:[]},
+      {id:"ash5", cat:"cricket", name:"Ashes · 5th Test", venue:"The Kia Oval, London", city:"London", start:"2027-08-12", end:"2027-08-16", status:"prov", tk:"ash",
+        note:"The Oval confirmed as a 2027 venue. Dates provisional.", include:false, days:[]},
+      {id:"wimb", cat:"tennis", name:"Wimbledon Championships", venue:"All England Club, London", city:"London", start:"2027-06-28", end:"2027-07-11", status:"conf", tk:"wimb",
+        note:"Confirmed: 28 Jun – 11 Jul 2027.", include:false, days:[]},
+      {id:"silv", cat:"f1", name:"British Grand Prix", venue:"Silverstone Circuit", city:"Silverstone", start:"2027-07-02", end:"2027-07-04", status:"prov", tk:"silv",
+        note:"Provisional 2–4 Jul 2027 (race Sunday). Fri practice / Sat quali / Sun race.", include:false, days:[]},
+      {id:"open", cat:"golf", name:"The Open Championship (155th)", venue:"St Andrews (Old Course), Scotland", city:"St Andrews", start:"2027-07-15", end:"2027-07-18", status:"conf", tk:"open",
+        note:"Confirmed: 15–18 Jul 2027 — 100 years since Bobby Jones' 1927 win. Practice 12–14 Jul.", include:false, days:[]},
+      {id:"oxford", cat:"place", name:"Oxford (my old town, 5 years)", venue:"Oxford", city:"Oxford", start:"", end:"", status:"conf", flexible:true,
+        note:"A must — show the friends the old haunts. ~1h by train from London Paddington/Marylebone.", include:true, days:[], flexDate:"", nights:2},
+      {id:"bath", cat:"place", name:"Bath (Cousin's city)", venue:"Bath, Somerset", city:"Bath", start:"", end:"", status:"conf", flexible:true,
+        note:"A must — your cousin's old city. ~1h30 from London Paddington; pairs with the Cotswolds.", include:true, days:[], flexDate:"", nights:2}
     ],
     travellers:[
       {id:"t1", name:"Me (Travis)", color:"#f5b301", arrive:"2027-06-28", depart:"2027-07-11"},
@@ -451,485 +523,451 @@ function defaultState(){
       {id:"t3", name:"Friend 1", color:"#c084fc", arrive:"2027-06-28", depart:"2027-07-19"},
       {id:"t4", name:"Friend 2", color:"#38bdf8", arrive:"2027-07-01", depart:"2027-07-22"}
     ],
-    ui:{ filter:"all", itinFilter:"all" }
+    ui:{ filter:"all", itinFilter:"all", seg:"plan", eseg:"uk" }
   };
 }
 
-/* ---------------- state / persistence ---------------- */
 let S = load();
-function load(){
-  try{
-    const raw = localStorage.getItem(KEY);
-    if(raw){ return migrate(JSON.parse(raw)); }
-  }catch(e){}
-  return defaultState();
-}
+function load(){ try{ const raw=localStorage.getItem(KEY); if(raw) return migrate(JSON.parse(raw)); }catch(e){} return defaultState(); }
 function migrate(s){
-  // ensure any new seed events exist; keep user's include/days/dates
-  const def = defaultState();
-  const byId = Object.fromEntries((s.events||[]).map(e=>[e.id,e]));
-  def.events = def.events.map(de=>{
-    const ue = byId[de.id];
-    return ue ? {...de, ...ue} : de;
-  });
-  // keep any custom events the user added
+  const def=defaultState();
+  const byId=Object.fromEntries((s.events||[]).map(e=>[e.id,e]));
+  def.events=def.events.map(de=>{ const ue=byId[de.id];
+    // keep user selections/edits but always refresh static content (note/tk/venue)
+    return ue ? {...de, include:ue.include, days:ue.days||[], start:ue.start||de.start, end:ue.end||de.end, flexDate:ue.flexDate||de.flexDate, nights:ue.nights||de.nights} : de; });
   (s.events||[]).forEach(e=>{ if(!def.events.find(x=>x.id===e.id)) def.events.push(e); });
-  if(s.travellers) def.travellers = s.travellers;
-  if(s.ui) def.ui = {...def.ui, ...s.ui};
+  if(s.travellers) def.travellers=s.travellers;
+  if(s.ui) def.ui={...def.ui, ...s.ui};
   return def;
 }
 function save(){ try{ localStorage.setItem(KEY, JSON.stringify(S)); }catch(e){} }
 
-/* ---------------- date helpers ---------------- */
+/* ---------- date helpers ---------- */
 function parse(d){ return d ? new Date(d+"T00:00:00") : null; }
-function iso(dt){ const y=dt.getFullYear(), m=String(dt.getMonth()+1).padStart(2,"0"), d=String(dt.getDate()).padStart(2,"0"); return `${y}-${m}-${d}`; }
-const WD=["Sun","Mon","Tue","Wed","Thu","Fri","Sat"];
-const MO=["Jan","Feb","Mar","Apr","May","Jun","Jul","Aug","Sep","Oct","Nov","Dec"];
+function iso(dt){ const y=dt.getFullYear(),m=String(dt.getMonth()+1).padStart(2,"0"),d=String(dt.getDate()).padStart(2,"0"); return `${y}-${m}-${d}`; }
+const WD=["Sun","Mon","Tue","Wed","Thu","Fri","Sat"], MO=["Jan","Feb","Mar","Apr","May","Jun","Jul","Aug","Sep","Oct","Nov","Dec"];
 function fmt(d){ const dt=parse(d); if(!dt) return ""; return `${WD[dt.getDay()]} ${dt.getDate()} ${MO[dt.getMonth()]}`; }
 function fmtShort(d){ const dt=parse(d); return `${dt.getDate()} ${MO[dt.getMonth()]}`; }
-function fmtRange(a,b){ if(!a) return "Flexible"; if(a===b||!b) return fmt(a);
-  const A=parse(a),B=parse(b);
+function fmtRange(a,b){ if(!a) return "Flexible"; if(a===b||!b) return fmt(a); const A=parse(a),B=parse(b);
   if(A.getMonth()===B.getMonth()) return `${A.getDate()}–${B.getDate()} ${MO[A.getMonth()]} ${A.getFullYear()}`;
   return `${fmtShort(a)} – ${fmtShort(b)} ${B.getFullYear()}`; }
-function eachDay(a,b){ const out=[]; if(!a) return out; let d=parse(a); const e=parse(b||a);
-  while(d<=e){ out.push(iso(d)); d=new Date(d.getTime()+864e5); } return out; }
+function eachDay(a,b){ const out=[]; if(!a) return out; let d=parse(a); const e=parse(b||a); while(d<=e){ out.push(iso(d)); d=new Date(d.getTime()+864e5); } return out; }
 function daysBetween(a,b){ return Math.round((parse(b)-parse(a))/864e5); }
-function inWindow(date,t){ if(!date||!t.arrive||!t.depart) return false;
-  return date>=t.arrive && date<=t.depart; }
+function inWindow(date,t){ if(!date||!t.arrive||!t.depart) return false; return date>=t.arrive && date<=t.depart; }
+function esc(s){ return (s||"").replace(/"/g,"&quot;"); }
 
-/* ---------------- rendering: EVENTS ---------------- */
+/* ============ EVENTS TAB ============ */
 function renderFilters(){
-  const el = document.getElementById("evtFilter");
-  const cats = ["all",...Object.keys(CATS)];
-  el.innerHTML = cats.map(c=>{
-    const lab = c==="all" ? "All" : CATS[c].label;
-    const em = c==="all" ? "✦" : CATS[c].em;
-    return `<button class="fchip ${S.ui.filter===c?'active':''}" data-f="${c}">${em} ${lab}</button>`;
-  }).join("");
+  const el=document.getElementById("evtFilter");
+  const cats=["all",...Object.keys(CATS)];
+  el.innerHTML=cats.map(c=>{ const lab=c==="all"?"All":CATS[c].label, em=c==="all"?"✦":CATS[c].em;
+    return `<button class="fchip ${S.ui.filter===c?'active':''}" data-f="${c}">${em} ${lab}</button>`; }).join("");
 }
 function renderEvents(){
   renderFilters();
-  const list = document.getElementById("eventsList");
-  const f = S.ui.filter;
-  const evts = S.events.filter(e=> f==="all" || e.cat===f);
-  // sort: dated events chronologically, flexible/place last
-  evts.sort((a,b)=>{
-    if(a.flexible&&!b.flexible) return 1;
-    if(b.flexible&&!a.flexible) return -1;
-    return (a.start||"9").localeCompare(b.start||"9");
-  });
-  list.innerHTML = evts.map(evtCard).join("") ||
-    `<div class="empty"><div class="big">🔍</div>No events in this filter.</div>`;
+  const list=document.getElementById("eventsList"); const f=S.ui.filter;
+  const evts=S.events.filter(e=> f==="all"||e.cat===f);
+  evts.sort((a,b)=>{ if(a.flexible&&!b.flexible) return 1; if(b.flexible&&!a.flexible) return -1; return (a.start||"9").localeCompare(b.start||"9"); });
+  list.innerHTML=evts.map(evtCard).join("") || `<div class="empty"><div class="big">🔍</div>No events in this filter.</div>`;
 }
 function evtCard(e){
-  const c = CATS[e.cat];
-  const badge = e.flexible ? "" :
-    (e.status==="conf" ? `<span class="badge b-conf">Confirmed</span>` : `<span class="badge b-prov">Provisional</span>`);
-  const dateLine = e.flexible ? "Flexible — you choose" : fmtRange(e.start,e.end);
-  let daysHtml = "";
+  const c=CATS[e.cat];
+  const badge=e.flexible?"":(e.status==="conf"?`<span class="badge b-conf">Confirmed</span>`:`<span class="badge b-prov">Provisional</span>`);
+  const dateLine=e.flexible?"Flexible — you choose":fmtRange(e.start,e.end);
+  let daysHtml="";
   if(e.include && !e.flexible){
-    const dd = eachDay(e.start,e.end);
-    const picked = new Set(e.days.length?e.days:dd);
-    daysHtml = `<div class="days">${dd.map(d=>{
-      const dt=parse(d);
-      return `<button class="daychip ${picked.has(d)?'on':''}" data-day="${e.id}|${d}">
-        <span class="dn">${WD[dt.getDay()]}</span>${dt.getDate()} ${MO[dt.getMonth()]}</button>`;
-    }).join("")}</div>
-    <div class="day-hint">${e.cat==='cricket'?'Tip: Day 1 (fresh pitch) & Day 5 (a chase / result) are the classics — but any day counts.':'Tap the days you plan to attend.'}</div>`;
+    const dd=eachDay(e.start,e.end); const picked=new Set(e.days.length?e.days:dd);
+    daysHtml=`<div class="days">${dd.map(d=>{ const dt=parse(d);
+      return `<button class="daychip ${picked.has(d)?'on':''}" data-day="${e.id}|${d}"><span class="dn">${WD[dt.getDay()]}</span>${dt.getDate()} ${MO[dt.getMonth()]}</button>`; }).join("")}</div>
+      <div class="day-hint">${e.cat==='cricket'?'Day 1 (fresh pitch) & Day 5 (a chase/result) are the classics — but any day counts.':'Tap the days you plan to attend.'}</div>
+      <div class="editrow"><label>Edit dates</label><input type="date" data-start="${e.id}" value="${e.start}"><span style="color:var(--faint)">→</span><input type="date" data-end="${e.id}" value="${e.end}"></div>`;
   }
   if(e.include && e.flexible){
-    daysHtml = `<div class="editrow">
-      <label>Pencil in</label>
-      <input type="date" data-flexdate="${e.id}" value="${e.flexDate||''}" min="2027-06-01" max="2027-09-15">
-      <label>Nights</label>
-      <input type="number" data-nights="${e.id}" value="${e.nights||2}" min="1" max="14" style="width:64px">
-      <span class="mini" style="margin:0">Leave the date blank to keep it floating in the itinerary.</span>
-    </div>`;
+    daysHtml=`<div class="editrow"><label>Pencil in</label><input type="date" data-flexdate="${e.id}" value="${e.flexDate||''}" min="2027-06-01" max="2027-09-15"><label>Nights</label><input type="number" data-nights="${e.id}" value="${e.nights||2}" min="1" max="14" style="width:60px"></div>`;
   }
-  const editHtml = (e.include && !e.flexible) ? `<div class="editrow">
-      <label>Edit dates</label>
-      <input type="date" data-start="${e.id}" value="${e.start}">
-      <span style="color:var(--faint)">→</span>
-      <input type="date" data-end="${e.id}" value="${e.end}">
-    </div>` : "";
+  const tk=e.tk?TK[e.tk]:null;
+  const tkHtml = tk ? `<button class="tkbtn" data-tk="${e.id}">🎟️ Tickets &amp; how to get them ▾</button>
+    <div class="tkbody" id="tk-${e.id}">${ticketIntel(e,tk)}</div>` : "";
   return `<div class="card ${e.include?'on':''}">
     <div class="evt-top">
       <div class="evt-ic" style="border-color:${c.color}55">${c.em}</div>
       <div class="evt-main">
         <div class="evt-name">${e.name}</div>
-        <div class="evt-meta">
-          <span class="cat-tag" style="color:${c.color};background:${c.color}1a">${c.label}</span>
-          <span>${dateLine}</span> ${badge}
-        </div>
+        <div class="evt-meta"><span class="cat-tag" style="color:${c.color};background:${c.color}1a">${c.label}</span><span>${dateLine}</span>${badge?" "+badge:""}</div>
         <div class="evt-meta"><span class="pin">${e.venue}</span></div>
       </div>
       <label class="switch"><input type="checkbox" data-inc="${e.id}" ${e.include?'checked':''}><span class="slider"></span></label>
     </div>
-    <div class="mini">${e.note} ${e.url?`· <a href="${e.url}" target="_blank" rel="noopener">tickets & info ↗</a>`:''}</div>
-    ${daysHtml}${editHtml}
+    <div class="mini">${e.note}</div>
+    ${daysHtml}${tkHtml}
   </div>`;
 }
+function ticketIntel(e,tk){
+  const county = ASH_COUNTY[e.id] ? `<div class="intel"><h4>🏟️ This venue</h4><p>${ASH_COUNTY[e.id]}</p></div>` : "";
+  const urg = tk.urgent ? `<div class="urgent">${tk.urgent}</div>` : "";
+  return `${urg}
+    <div class="tkstat">
+      <div class="s"><div class="k">On sale</div><div class="v">${tk.onSale}</div></div>
+      <div class="s"><div class="k">From</div><div class="v">${tk.priceFrom}</div></div>
+      <div class="s"><div class="k">Odds</div><div class="v"><span class="conf ${tk.conf}">${tk.conf}</span></div></div>
+    </div>
+    <div class="intel"><h4>📅 Dates</h4><p>${tk.confirm}.</p></div>
+    <div class="intel"><h4>🇦🇺 The Aussie / overseas way</h4><p>${tk.aus}</p></div>
+    <div class="intel"><h4>🇬🇧 The UK-resident way</h4><p>${tk.uk}</p></div>
+    <div class="intel"><h4>✨ The "trip-of-a-lifetime" way</h4><p>${tk.life}</p></div>
+    <div class="intel"><h4>🎫 Members (MCC / SACA / county)</h4><p>${tk.members}</p></div>
+    ${county}
+    <div class="intel"><h4>♻️ Resale &amp; second-hand</h4><p>${tk.resale}</p></div>
+    <div class="intel"><h4>🧳 Tour &amp; hospitality operators</h4><p>${tk.ops}</p></div>
+    <a class="go" href="${tk.official}" target="_blank" rel="noopener" style="font-size:12.5px;font-weight:700">Official ticket page ↗</a>`;
+}
 
-/* ---------------- rendering: TRAVELLERS ---------------- */
+/* ============ SCHEDULE TAB ============ */
+function renderSchedule(){
+  document.getElementById("schSeg").querySelectorAll("button").forEach(b=>b.classList.toggle("on",b.dataset.seg===S.ui.seg));
+  document.getElementById("sch-plan").style.display=S.ui.seg==="plan"?"":"none";
+  document.getElementById("sch-itin").style.display=S.ui.seg==="itin"?"":"none";
+  document.getElementById("sch-trav").style.display=S.ui.seg==="trav"?"":"none";
+  if(S.ui.seg==="plan") renderPlan();
+  if(S.ui.seg==="itin") renderItinerary();
+  if(S.ui.seg==="trav") renderTravellers();
+}
+/* Booking Command Centre — the interrelated ticket↔flight logic */
+function renderPlan(){
+  const on = id => S.events.find(e=>e.id===id)?.include;
+  const anyCricket = S.events.some(e=>e.cat==="cricket"&&e.include);
+  const items=[];
+  // fixed + derived milestones
+  items.push({when:"Now",cls:"now",type:"act",t:"Register the free ballots",d:"Zero cost, keeps every option open. It's the smartest first move — do it before anything else."});
+  if(on("open")) items.push({when:"~6 Jul 2026",cls:"now",type:"ticket",t:"⚡ Enter The Open ballot",d:"Opens ~now via The One Club (free). Results in Aug. Most time-critical item on the whole trip.",tag:"golf"});
+  if(on("wimb")) items.push({when:"Aug–Sep 2026",cls:"soon",type:"ticket",t:"Enter the Wimbledon ballot",d:"Create a free MyWimbledon account now; overseas ballot opens Aug–Sep 2026.",tag:"tennis"});
+  items.push({when:"Summer 2026",cls:"soon",type:"confirm",t:"ECB confirms exact Ashes dates",d:"This unlocks your real target dates. The F1 2027 calendar (Silverstone) is also confirmed around now.",tag:"key"});
+  if(on("open")) items.push({when:"Aug 2026",cls:"soon",type:"confirm",t:"The Open ballot results",d:"You'll know if you've got golf before you commit to flights."});
+  if(on("silv")) items.push({when:"~Sep 2026",cls:"soon",type:"ticket",t:"Silverstone GP tickets on sale",d:"Sells out & uses dynamic pricing — be on the presale list. Buy this early if it's a must.",tag:"f1"});
+  if(anyCricket) items.push({when:"Oct–Nov 2026",cls:"soon",type:"ticket",t:"Ashes tickets on sale",d:"Supporters/priority window ~Oct, general sale ~Nov. Secure your anchor cricket day here.",tag:"cricket"});
+  items.push({when:"Oct 26–Jan 27",cls:"soon",type:"flight",t:"★ Book flights in this window",d:"Once your anchor cricket ticket is in hand, book. This overlaps the cheap-fare sweet spot for Jun–Jul 2027 travel.",tag:"flights"});
+  if(on("wtc")) items.push({when:"Jan–Feb 2027",cls:"later",type:"ticket",t:"WTC Final tickets on sale",d:"But teams aren't confirmed until early June — treat as a bonus, not the anchor."});
+  if(on("wimb")) items.push({when:"Early 2027",cls:"later",type:"confirm",t:"Wimbledon ballot results",d:"If you miss, fall back to The Queue or the daily official Resale."});
+  items.push({when:"Jun–Jul 2027",cls:"later",type:"act",t:"Travel · trip of a lifetime 🎉",d:"WTC finalists known early June. Last-chance resale (Twickets/official exchange) mops up any gaps."});
+
+  const cricketDays = S.events.filter(e=>e.cat==="cricket"&&e.include).length;
+  const reco = `<div class="reco">
+    <h3>🧠 Your booking brain</h3>
+    <p>The tension: flights are cheapest ~6–9 months out, but you don't want to commit before you know the <b>dates</b> and have <b>tickets</b>. The good news — for a 5-Test Ashes across five cities, getting <b>at least one day's cricket is high-confidence</b>, and tickets go on sale (Oct 2026–early 2027) right as the cheap-flight window opens. So they line up.</p>
+    <p><b>The play:</b> ① register free ballots now → ② wait for ECB to confirm Ashes dates (summer 2026) → ③ secure your anchor cricket day when tickets drop (Oct–Nov 2026) → ④ book flights immediately after, inside the Oct 2026–Jan 2027 sweet spot. Use flexible/refundable fares if you want to jump before tickets are 100% locked.</p>
+    ${on("open")?`<div class="next">🚨 <b>Do this week:</b> The Open (St Andrews) ballot opens ~6 July 2026 via The One Club — free, no backlog, huge demand for the 100-year anniversary. Enter now.</div>`:``}
+    ${!anyCricket?`<div class="next">Tip: you haven't ticked any cricket yet — the Ashes is your anchor. Add at least one Test in the Events tab to sharpen this plan.</div>`:``}
+  </div>`;
+
+  const timeline = items.map(i=>`<div class="cmd-item">
+    <div class="cmd-when ${i.cls}">${i.when}</div>
+    <div class="cmd-body ${i.type}"><div class="t">${i.t}${i.tag?`<span class="cmd-tag">${i.tag}</span>`:""}</div><div class="d">${i.d}</div></div>
+  </div>`).join("");
+
+  document.getElementById("sch-plan").innerHTML = reco +
+    `<div class="section-label">Action timeline</div><div class="card">${timeline}</div>
+     <p class="mini" style="padding:0 4px">This plan updates as you tick events on/off in the Events tab. Ticket-buying know-how (Aussie vs UK vs "please help us" routes, MCC/SACA/county) is under each event.</p>`;
+}
+function buildItems(){
+  const items=[];
+  S.events.forEach(e=>{ if(!e.include) return;
+    if(e.flexible){ if(e.flexDate){ for(let i=0;i<(e.nights||1);i++){ const d=iso(new Date(parse(e.flexDate).getTime()+i*864e5)); items.push({date:d,e,flexible:true,nightNo:i+1,nights:e.nights||1}); } }
+      else items.push({date:null,e,flexible:true,floating:true}); }
+    else { const dd=eachDay(e.start,e.end); const picked=e.days.length?e.days:dd; picked.forEach(d=>items.push({date:d,e})); } });
+  return items;
+}
+function renderItinerary(){
+  const host=document.getElementById("sch-itin");
+  const items=buildItems();
+  const dated=items.filter(i=>i.date&&!i.flexible);
+  const cities=new Set(items.map(i=>i.e.city));
+  const dsorted=dated.map(i=>i.date).sort();
+  const span=dsorted.length?daysBetween(dsorted[0],dsorted[dsorted.length-1])+1:0;
+  const stats=`<div class="stats">
+    <div class="stat"><div class="n">${dated.length}</div><div class="l">Event days</div></div>
+    <div class="stat"><div class="n">${new Set(items.map(i=>i.e.id)).size}</div><div class="l">Events</div></div>
+    <div class="stat"><div class="n">${cities.size}</div><div class="l">Places</div></div>
+    <div class="stat"><div class="n">${span||'—'}</div><div class="l">Day span</div></div></div>`;
+  const fb=`<div class="filterbar" id="itinFilter">${
+    [`<button class="fchip ${S.ui.itinFilter==='all'?'active':''}" data-if="all">✦ Everyone</button>`]
+    .concat(S.travellers.map(t=>`<button class="fchip ${S.ui.itinFilter===t.id?'active':''}" data-if="${t.id}"><span class="dot" style="color:${t.color};width:9px;height:9px"></span>${t.name}</button>`)).join("")}</div>`;
+
+  if(!items.length){ host.innerHTML=fb+stats+`<div class="empty"><div class="big">🗓️</div>No events picked yet.<br>Head to <b>Events</b> and tick what you fancy.</div>`; return; }
+
+  const flt=S.ui.itinFilter, travById=Object.fromEntries(S.travellers.map(t=>[t.id,t]));
+  const floating=items.filter(i=>i.floating);
+  let dItems=items.filter(i=>i.date);
+  if(flt!=="all"){ const t=travById[flt]; dItems=dItems.filter(i=> i.flexible?true:inWindow(i.date,t)); }
+  dItems.sort((a,b)=> a.date.localeCompare(b.date)||a.e.name.localeCompare(b.e.name));
+  const byDate={}; dItems.forEach(i=>{ (byDate[i.date]=byDate[i.date]||[]).push(i); });
+  let html="";
+  Object.keys(byDate).sort().forEach(date=>{
+    const day=byDate[date]; const cityset=new Set(day.map(i=>i.e.city)); const dt=parse(date);
+    html+=`<div class="tl-day"><div class="tl-date"><span class="d">${fmt(date)}</span><span class="wk">${dt.getFullYear()}</span><span class="ln"></span></div>`;
+    if(cityset.size>1) html+=`<div class="clash">⚠️ Two places on one day (${[...cityset].join(" & ")}) — you'll need to choose.</div>`;
+    day.forEach(i=>{ const c=CATS[i.e.cat];
+      const present=S.travellers.filter(t=> i.flexible?true:inWindow(date,t));
+      const who=present.length?present.map(t=>`<span class="p"><span class="d2" style="background:${t.color}"></span>${t.name}</span>`).join("")
+        :`<span class="p" style="color:var(--bad)">Nobody's window covers this day</span>`;
+      const sub=i.flexible?`${i.e.venue} · night ${i.nightNo}/${i.nights}`:i.e.venue;
+      html+=`<div class="tl-item" style="border-left-color:${c.color}"><div class="r1"><span class="em">${c.em}</span><span class="nm">${i.e.name}</span></div><div class="tl-loc">📍 ${sub}</div><div class="who">${who}</div></div>`; });
+    html+=`</div>`;
+  });
+  if(floating.length){ html+=`<div class="tl-day"><div class="tl-date"><span class="d">Flexible — to slot in</span><span class="ln"></span></div>`;
+    floating.forEach(i=>{ const c=CATS[i.e.cat]; html+=`<div class="tl-item flexbucket" style="border-left-color:${c.color}"><div class="r1"><span class="em">${c.em}</span><span class="nm">${i.e.name}</span></div><div class="tl-loc">📍 ${i.e.venue} · ${i.e.nights||2} nights · set a date in Events to place it</div></div>`; });
+    html+=`</div>`; }
+  host.innerHTML=fb+stats+html;
+}
 function renderTravellers(){
-  const list = document.getElementById("travList");
-  list.innerHTML = S.travellers.map(t=>{
-    const dur = (t.arrive&&t.depart) ? `${daysBetween(t.arrive,t.depart)} days · ${fmtShort(t.arrive)} → ${fmtShort(t.depart)}` : "Set dates";
-    return `<div class="card">
-      <div class="trav">
-        <span class="dot" style="color:${t.color}"></span>
-        <div class="trav-name"><input type="text" data-tname="${t.id}" value="${t.name.replace(/"/g,'&quot;')}"></div>
-        <button class="del" data-tdel="${t.id}" title="Remove">✕</button>
-      </div>
+  const host=document.getElementById("sch-trav");
+  host.innerHTML=S.travellers.map(t=>{
+    const dur=(t.arrive&&t.depart)?`${daysBetween(t.arrive,t.depart)} days · ${fmtShort(t.arrive)} → ${fmtShort(t.depart)}`:"Set dates";
+    return `<div class="card"><div class="trav"><span class="dot" style="color:${t.color}"></span>
+      <div class="trav-name"><input type="text" data-tname="${t.id}" value="${esc(t.name)}"></div>
+      <button class="del" data-tdel="${t.id}">✕</button></div>
       <div class="trav-dur">${dur}</div>
       <div class="win-row">
         <div class="f"><label>Arrive UK</label><input type="date" data-tarr="${t.id}" value="${t.arrive}" min="2027-05-15" max="2027-09-30"></div>
         <div class="f"><label>Depart UK</label><input type="date" data-tdep="${t.id}" value="${t.depart}" min="2027-05-15" max="2027-09-30"></div>
         <div class="f"><label>Colour</label><input type="color" data-tcol="${t.id}" value="${t.color}" style="width:52px;height:38px;padding:3px;background:var(--bg2)"></div>
-      </div>
-    </div>`;
-  }).join("");
+      </div></div>`; }).join("") + `<button class="addbtn" id="addTrav">+ Add traveller</button>`;
 }
 
-/* ---------------- rendering: ITINERARY ---------------- */
-function buildItems(){
-  const items=[];
-  S.events.forEach(e=>{
-    if(!e.include) return;
-    if(e.flexible){
-      if(e.flexDate){
-        for(let i=0;i<(e.nights||1);i++){
-          const d=iso(new Date(parse(e.flexDate).getTime()+i*864e5));
-          items.push({date:d, e, flexible:true, nightNo:i+1, nights:e.nights||1});
-        }
-      } else {
-        items.push({date:null, e, flexible:true, floating:true});
-      }
-    } else {
-      const dd = eachDay(e.start,e.end);
-      const picked = e.days.length?e.days:dd;
-      picked.forEach(d=> items.push({date:d, e}));
-    }
-  });
-  return items;
-}
-function renderItinerary(){
-  // filter chips (per traveller)
-  const fb = document.getElementById("itinFilter");
-  fb.innerHTML = [`<button class="fchip ${S.ui.itinFilter==='all'?'active':''}" data-if="all">✦ Everyone</button>`]
-    .concat(S.travellers.map(t=>`<button class="fchip ${S.ui.itinFilter===t.id?'active':''}" data-if="${t.id}">
-      <span class="dot" style="color:${t.color};width:9px;height:9px"></span>${t.name}</button>`)).join("");
-
-  const items = buildItems();
-  const flt = S.ui.itinFilter;
-  const travById = Object.fromEntries(S.travellers.map(t=>[t.id,t]));
-
-  // stats (unaffected by person filter)
-  const dated = items.filter(i=>i.date && !i.flexible);
-  const cities = new Set(items.map(i=>i.e.city));
-  const dates = dated.map(i=>i.date).sort();
-  const span = dates.length ? daysBetween(dates[0],dates[dates.length-1])+1 : 0;
-  document.getElementById("itinStats").innerHTML = `
-    <div class="stat"><div class="n">${dated.length}</div><div class="l">Event days</div></div>
-    <div class="stat"><div class="n">${new Set(items.filter(i=>i.e.include).map(i=>i.e.id)).size}</div><div class="l">Events</div></div>
-    <div class="stat"><div class="n">${cities.size}</div><div class="l">Places</div></div>
-    <div class="stat"><div class="n">${span||'—'}</div><div class="l">Day span</div></div>`;
-
-  // group by date
-  const floating = items.filter(i=>i.floating);
-  let dItems = items.filter(i=>i.date);
-  // apply person filter: keep items where that person is in window
-  if(flt!=="all"){
-    const t = travById[flt];
-    dItems = dItems.filter(i=> i.flexible ? true : inWindow(i.date,t));
-  }
-  dItems.sort((a,b)=> a.date.localeCompare(b.date) || a.e.name.localeCompare(b.e.name));
-
-  const byDate={};
-  dItems.forEach(i=>{ (byDate[i.date]=byDate[i.date]||[]).push(i); });
-
-  const list = document.getElementById("itinList");
-  const keys = Object.keys(byDate).sort();
-  let html="";
-
-  if(!items.filter(i=>i.e.include).length){
-    list.innerHTML = `<div class="empty"><div class="big">🗓️</div>No events picked yet.<br>Head to <b>Events</b> and tick what you fancy.</div>`;
-    return;
-  }
-
-  keys.forEach(date=>{
-    const dayItems=byDate[date];
-    const cityset=new Set(dayItems.map(i=>i.e.city));
-    const dt=parse(date);
-    html += `<div class="tl-day"><div class="tl-date">
-      <span class="d">${fmt(date)}</span><span class="wk">${dt.getFullYear()}</span><span class="ln"></span></div>`;
-    if(cityset.size>1){
-      html += `<div class="clash">⚠️ Two places on one day (${[...cityset].join(" & ")}) — you'll need to choose.</div>`;
-    }
-    dayItems.forEach(i=>{
-      const c=CATS[i.e.cat];
-      const present = S.travellers.filter(t=> i.flexible ? true : inWindow(date,t));
-      const who = present.length ? present.map(t=>`<span class="p"><span class="d2" style="background:${t.color}"></span>${t.name}</span>`).join("")
-        : `<span class="p" style="color:var(--bad)">Nobody's window covers this day</span>`;
-      const sub = i.flexible ? `${i.e.venue} · night ${i.nightNo}/${i.nights}` : i.e.venue;
-      html += `<div class="tl-item" style="border-left-color:${c.color}">
-        <div class="r1"><span class="em">${c.em}</span><span class="nm">${i.e.name}</span></div>
-        <div class="tl-loc">📍 ${sub}</div>
-        <div class="who">${who}</div>
-      </div>`;
-    });
-    html += `</div>`;
-  });
-
-  if(floating.length){
-    html += `<div class="tl-day"><div class="tl-date"><span class="d">Flexible — to slot in</span><span class="ln"></span></div>`;
-    floating.forEach(i=>{
-      const c=CATS[i.e.cat];
-      html += `<div class="tl-item flexbucket" style="border-left-color:${c.color}">
-        <div class="r1"><span class="em">${c.em}</span><span class="nm">${i.e.name}</span></div>
-        <div class="tl-loc">📍 ${i.e.venue} · ${i.e.nights||2} nights · set a date in Events to place it</div>
-      </div>`;
-    });
-    html += `</div>`;
-  }
-  list.innerHTML = html;
-}
-
-/* ---------------- rendering: STAYS ---------------- */
-const PROVIDERS = [
-  {em:"🏰", name:"Landmark Trust", tag:"Historic buildings, restored & rentable",
-   desc:"Castles, follies, towers, gatehouses and lighthouses saved from ruin. Sleeps 2–12 — brilliant for the group. Book ~12 months ahead; the iconic ones vanish fast.",
-   url:"https://www.landmarktrust.org.uk/"},
-  {em:"🌳", name:"National Trust Holidays", tag:"Quirky cottages on Trust estates",
-   desc:"Turreted towers, former observatories, fisherman's cottages, lighthouses and estate lodges. A stay gets you free entry to Trust places during your trip.",
-   url:"https://www.nationaltrust.org.uk/holidays"},
-  {em:"🎓", name:"University Rooms — Oxford", tag:"Sleep inside an Oxford college",
-   desc:"In the summer vacation you can stay in college rooms across Oxford (and Cambridge, Bath, St Andrews). Perfect for your Oxford pilgrimage — atmospheric and good value.",
-   url:"https://www.universityrooms.com/en-GB/city/oxford/home/"},
-  {em:"⛺", name:"Canopy & Stars", tag:"Treehouses, cabins & glamping",
-   desc:"Sawday's collection of treehouses, shepherd's huts, wagons and off-grid cabins — a memorable night between the cricket legs, especially in the Cotswolds near Oxford/Bath.",
-   url:"https://www.canopyandstars.co.uk/"},
-  {em:"🗝️", name:"Unique Homestays", tag:"Design-led one-off houses",
-   desc:"Hand-picked luxury boltholes with serious character — worth a look for a special 50th base if the group wants to splash out for a few nights.",
-   url:"https://www.uniquehomestays.com/"},
-  {em:"🏡", name:"Host Unusual", tag:"Directory of the weird & wonderful",
-   desc:"An aggregator of unusual UK stays — windmills, water towers, converted chapels — with links out to each. Good for browsing ideas by region.",
-   url:"https://www.hostunusual.com/"}
+/* ============ STAYS ============ */
+const PROVIDERS=[
+  {em:"🏰",name:"Landmark Trust",tag:"Historic buildings, restored & rentable",desc:"Castles, follies, towers, gatehouses and lighthouses saved from ruin. Sleeps 2–12 — brilliant for the group. Book ~12 months ahead; the icons vanish fast.",url:"https://www.landmarktrust.org.uk/"},
+  {em:"🌳",name:"National Trust Holidays",tag:"Quirky cottages on Trust estates",desc:"Turreted towers, former observatories, fisherman's cottages, lighthouses and estate lodges. A stay gets you free entry to Trust places during your trip.",url:"https://www.nationaltrust.org.uk/holidays"},
+  {em:"🎓",name:"University Rooms — Oxford",tag:"Sleep inside an Oxford college",desc:"Over the summer vacation you can stay in college rooms across Oxford (also Cambridge, Bath, St Andrews). Perfect for your Oxford pilgrimage — atmospheric & good value.",url:"https://www.universityrooms.com/en-GB/city/oxford/home/"},
+  {em:"⛺",name:"Canopy & Stars",tag:"Treehouses, cabins & glamping",desc:"Sawday's collection of treehouses, shepherd's huts and off-grid cabins — a memorable night between cricket legs, especially in the Cotswolds near Oxford/Bath.",url:"https://www.canopyandstars.co.uk/"},
+  {em:"🗝️",name:"Unique Homestays",tag:"Design-led one-off houses",desc:"Hand-picked luxury boltholes with real character — worth a look for a special 50th base if the group wants to splash out for a few nights.",url:"https://www.uniquehomestays.com/"},
+  {em:"🏡",name:"Host Unusual",tag:"Directory of the weird & wonderful",desc:"An aggregator of unusual UK stays — windmills, water towers, converted chapels — with links out to each. Great for browsing ideas by region.",url:"https://www.hostunusual.com/"},
+  {em:"🛏️",name:"Sykes Holiday Cottages",tag:"Big mainstream cottage range",desc:"Huge inventory of self-catering cottages UK-wide, incl. many near National Trust sites — handy when the boutique options are booked out.",url:"https://www.sykescottages.co.uk/"}
 ];
-const HUBS = [
-  {city:"London", near:"Lord's · The Oval · Wimbledon · WTC Final",
-   tips:["Best hub for the London Tests + Wimbledon — base once, day-trip out.",
-     "Landmark Trust has a few flats in the city; otherwise a group Airbnb in a zone-2 area near a tube line.",
-     "For Wimbledon week, staying SW London (Southfields/Wimbledon) saves a slog to the queue."]},
-  {city:"Oxford", near:"Your old home · ~1h from London",
-   tips:["University Rooms = stay inside a college in summer vac.","Old Parsonage / Old Bank for a treat; The Randolph for grandeur.",
-     "Great Cotswolds base — pair with a Canopy & Stars night."]},
-  {city:"Bath", near:"Cousin's city · ~1h30 from London · near Bristol",
-   tips:["Georgian townhouse B&Bs around the Royal Crescent.","Landmark Trust has properties in the surrounding countryside.",
-     "Easy to fold in with a west-country leg or the Cotswolds."]},
-  {city:"Birmingham", near:"Edgbaston · Ashes 1st Test",
-   tips:["Stay central (Brindleyplace/Mailbox) — tram/walk to Edgbaston.","Only ~1h20 from London by train, so a day-trip from London is very doable for a single day's play."]},
-  {city:"Silverstone / Northants", near:"British Grand Prix",
-   tips:["Accommodation near the circuit books out & spikes on GP weekend — lock it early or camp at the circuit.","Towcester, Northampton or Milton Keynes as a base; or day-trip from Oxford/London."]},
-  {city:"St Andrews / Fife", near:"The Open · Scotland",
-   tips:["The Open makes Fife rooms scarce & pricey — book the moment you commit.","University Rooms has St Andrews options; or base in Edinburgh (~1h30) and commute.",
-     "Consider flying Edinburgh and doing an open-jaw home (see Flights)."]}
+const HUBS=[
+  {city:"London",near:"Lord's · The Oval · Wimbledon · WTC Final",tips:["Best hub for the London Tests + Wimbledon — base once, day-trip out.","A group Airbnb in a zone-2 area near a tube line beats scattered hotel rooms.","For Wimbledon week, staying SW London (Southfields/Wimbledon) shortens the queue slog."]},
+  {city:"Oxford",near:"Your old home · ~1h from London",tips:["<b>University Rooms</b> = stay inside a college over summer vac.","Old Parsonage or Old Bank for a treat; The Randolph for grandeur.","Great Cotswolds base — pair with a Canopy & Stars night."]},
+  {city:"Bath",near:"Cousin's city · ~1h30 from London",tips:["Georgian townhouse B&Bs around the Royal Crescent.","Landmark Trust has properties in the surrounding countryside.","Easy to fold in with a west-country or Cotswolds leg."]},
+  {city:"Birmingham",near:"Edgbaston · Ashes 1st Test",tips:["Stay central (Brindleyplace/Mailbox) — tram/walk to Edgbaston.","Only ~1h20 from London by train, so a single day's play is an easy day-trip from London too."]},
+  {city:"Silverstone / Northants",near:"British Grand Prix",tips:["Rooms near the circuit spike & sell out on GP weekend — lock early or camp at the circuit.","Towcester, Northampton or Milton Keynes as a base; or day-trip from Oxford/London."]},
+  {city:"St Andrews / Fife",near:"The Open · Scotland",tips:["The Open makes Fife rooms scarce & pricey — book the moment you commit.","University Rooms has St Andrews options; or base in Edinburgh (~1h30) and commute.","Consider flying into Edinburgh and doing an open-jaw home (see Flights)."]}
 ];
 function renderStays(){
-  document.getElementById("provList").innerHTML = PROVIDERS.map(p=>`
-    <div class="card"><div class="prov">
-      <div class="logo">${p.em}</div>
-      <div><h3>${p.name}</h3><div class="tagline">${p.tag}</div>
-      <p>${p.desc}</p>
-      <a class="go" href="${p.url}" target="_blank" rel="noopener">Browse ${p.name} ↗</a></div>
-    </div></div>`).join("");
-  document.getElementById("hubList").innerHTML = HUBS.map(h=>`
-    <div class="card hub"><h3>📍 ${h.city}</h3><div class="near">${h.near}</div>
-      <ul>${h.tips.map(t=>`<li>${t}</li>`).join("")}</ul></div>`).join("");
+  document.getElementById("provList").innerHTML=PROVIDERS.map(p=>`<div class="card"><div class="prov"><div class="logo">${p.em}</div><div><h3>${p.name}</h3><div class="tagline">${p.tag}</div><p>${p.desc}</p><a class="go" href="${p.url}" target="_blank" rel="noopener">Browse ${p.name} ↗</a></div></div></div>`).join("");
+  document.getElementById("hubList").innerHTML=HUBS.map(h=>`<div class="card hub"><h3>📍 ${h.city}</h3><div class="near">${h.near}</div><ul class="tick">${h.tips.map(t=>`<li>${t}</li>`).join("")}</ul></div>`).join("");
 }
 
-/* ---------------- rendering: FLIGHTS ---------------- */
+/* ============ FLIGHTS ============ */
 const TIPS=[
-  {k:"🔀", t:"Fly open-jaw", d:"Into London, home from Edinburgh or Glasgow (or vice-versa). Given the St Andrews / Scotland leg for The Open, this saves a backtrack and often costs the same as a return."},
-  {k:"🛑", t:"Use a free stopover", d:"Singapore, Doha or Dubai carriers often let you break the 24-hour trip for a few nights at no extra airfare — turns a slog into part of the holiday."},
-  {k:"📅", t:"Go midweek & dodge school holidays", d:"Tue/Wed departures are cheaper. Note Aussie school holidays (late Jun–mid Jul) overlap your dates and push fares up — the brother's flexibility can dodge the peak."},
-  {k:"🔔", t:"Set price alerts", d:"Google Flights, Skyscanner and Hopper alerts on MEL→LON. Watch deal feeds (I Know The Pilot, Flight Deals) for error fares and flash sales."},
-  {k:"🎫", t:"Book seats individually", d:"Airline 'group' fares (10+) are often dearer and less flexible. Book as individuals on the same flights and just coordinate."},
-  {k:"⭐", t:"Chase reward seats early", d:"Qantas/Velocity classic-reward seats release ~353 days out. Peak-summer seats are gold — be ready to book the minute they load."},
-  {k:"✂️", t:"Consider self-transfer", d:"Sometimes MEL→Asia + a separate cheap Asia→London beats a through-fare. Only with long layovers & travel insurance — you own the risk if a leg is late."},
-  {k:"🛡️", t:"Flexible fare + insurance", d:"It's a year out and some event dates are provisional. A fare with cheap date-changes, plus travel insurance, is worth it for a big trip."}
+  {k:"🔀",t:"Fly open-jaw",d:"Into London, home from Edinburgh or Glasgow (or reverse). Given the St Andrews leg for The Open, this saves a backtrack and often costs the same as a return."},
+  {k:"🛑",t:"Use a free stopover",d:"Singapore, Doha or Dubai carriers often let you break the 24-hour trip for a few nights at no extra airfare — turns a slog into part of the holiday."},
+  {k:"📅",t:"Go midweek & dodge school holidays",d:"Tue/Wed departures are cheaper. Aussie school holidays (late Jun–mid Jul) overlap your dates and lift fares — the 5-week brother can dodge the peak."},
+  {k:"🔔",t:"Set price alerts",d:"Google Flights, Skyscanner and Hopper alerts on MEL→LON. Watch deal feeds (I Know The Pilot, Flight Deals) for error fares & flash sales."},
+  {k:"🎫",t:"Book seats individually",d:"Airline 'group' fares (10+) are often dearer and less flexible. Book as individuals on the same flights and coordinate."},
+  {k:"⭐",t:"Chase reward seats early",d:"Qantas/Velocity classic-reward seats release ~353 days out. Peak-summer seats are gold — be ready to book the minute they load."},
+  {k:"✂️",t:"Consider self-transfer",d:"Sometimes MEL→Asia + a separate cheap Asia→London beats a through-fare. Only with long layovers & travel insurance — you own the risk if a leg is late."},
+  {k:"🛡️",t:"Flexible fare + insurance",d:"It's a year out and some dates/tickets are provisional. A fare with cheap date-changes plus travel insurance is worth it for a trip this big."}
 ];
 const SALES=[
-  {mo:"Now – Nov 26", ev:"Watch & set alerts. Reward seats for early-June 2027 start appearing ~mid-2026."},
-  {mo:"Late Nov 26", ev:"Black Friday / Cyber Monday — one of the biggest airfare sale events of the year."},
-  {mo:"Jan 2027", ev:"New-Year 'travel sales' — historically strong for ex-Australia long-haul. Prime booking window."},
-  {mo:"Feb–Mar 27", ev:"Still good value; last comfortable window before peak-summer prices firm up."},
-  {mo:"Apr–May 27", ev:"Prices climbing. Book by now unless you're chasing a last-minute gamble."},
-  {mo:"Jun–Jul 27", ev:"Travel window — peak. Expect the highest fares if still unbooked."}
+  {mo:"Now – Nov 26",ev:"Watch & set alerts. Reward seats for early-June 2027 start appearing ~now."},
+  {mo:"Late Nov 26",ev:"Black Friday / Cyber Monday — one of the biggest airfare sale events of the year."},
+  {mo:"Jan 2027",ev:"New-Year 'travel sales' — historically strong for ex-Australia long-haul. Prime booking window."},
+  {mo:"Feb–Mar 27",ev:"Still good value; last comfortable window before peak-summer prices firm up."},
+  {mo:"Apr–May 27",ev:"Climbing. Book by now unless chasing a last-minute gamble."},
+  {mo:"Jun–Jul 27",ev:"Travel window — peak. Highest fares if still unbooked."}
 ];
 const ROUTES=[
-  {n:"Via the Middle East", d:"Qatar (Doha), Emirates (Dubai), Etihad (Abu Dhabi) — usually the best-value one-stop, strong service, easy free stopovers."},
-  {n:"Via Asia", d:"Singapore Airlines, Cathay (Hong Kong), Malaysia (KL), China Southern — competitive, great for a stopover holiday on the way."},
-  {n:"Qantas one-stop", d:"MEL–London via Perth or Singapore. Premium price but a single airline & alliance points; watch for nonstop 'Project Sunrise' options nearer 2027."}
+  {n:"Via the Middle East",d:"Qatar (Doha), Emirates (Dubai), Etihad (Abu Dhabi) — usually best-value one-stop, strong service, easy free stopovers."},
+  {n:"Via Asia",d:"Singapore Airlines, Cathay (Hong Kong), Malaysia (KL), China Southern — competitive, great for a stopover on the way."},
+  {n:"Qantas one-stop",d:"MEL–London via Perth or Singapore. Premium price but single airline & alliance points; watch for nonstop 'Project Sunrise' options nearer 2027."}
 ];
+const FARES={eco:[2200,2800],prem:[4000,5500],biz:[8500,12000]};
 function renderFlights(){
-  document.getElementById("tipsList").innerHTML = TIPS.map(t=>`
-    <div class="tip"><div class="k">${t.k}</div><div class="b"><b>${t.t}.</b> <span>${t.d}</span></div></div>`).join("");
-  document.getElementById("salesCal").innerHTML = SALES.map(s=>`
-    <div class="calrow"><div class="mo">${s.mo}</div><div class="ev">${s.ev}</div></div>`).join("");
-  document.getElementById("routings").innerHTML = ROUTES.map(r=>`
-    <div class="tip"><div class="k">✈️</div><div class="b"><b>${r.n}.</b> <span>${r.d}</span></div></div>`).join("");
-  renderBookTimeline();
+  document.getElementById("tipsList").innerHTML=TIPS.map(t=>`<div class="tip"><div class="k">${t.k}</div><div class="b"><b>${t.t}.</b> <span>${t.d}</span></div></div>`).join("");
+  document.getElementById("salesCal").innerHTML=SALES.map(s=>`<div class="calrow"><div class="mo">${s.mo}</div><div class="ev">${s.ev}</div></div>`).join("");
+  document.getElementById("routings").innerHTML=ROUTES.map(r=>`<div class="tip"><div class="k">✈️</div><div class="b"><b>${r.n}.</b> <span>${r.d}</span></div></div>`).join("");
+  const t0=new Date("2026-07-01").getTime(),t1=new Date("2027-06-30").getTime();
+  const pct=d=>Math.max(0,Math.min(100,(new Date(d).getTime()-t0)/(t1-t0)*100));
+  const win=document.getElementById("tbWin"),a=pct("2026-09-01"),b=pct("2027-02-28");
+  win.style.left=a+"%"; win.style.width=(b-a)+"%"; document.getElementById("tbNow").style.left=pct(iso(TODAY))+"%";
   runEstimator();
 }
-function renderBookTimeline(){
-  // track from 1 Jul 2026 → 30 Jun 2027
-  const t0=new Date("2026-07-01").getTime(), t1=new Date("2027-06-30").getTime();
-  const pct=(d)=> Math.max(0,Math.min(100,(new Date(d).getTime()-t0)/(t1-t0)*100));
-  const win=document.getElementById("tbWin");
-  const a=pct("2026-09-01"), b=pct("2027-02-28");
-  win.style.left=a+"%"; win.style.width=(b-a)+"%";
-  document.getElementById("tbNow").style.left=pct(iso(TODAY))+"%";
-}
-const FARES={eco:[2200,2800], prem:[4000,5500], biz:[8500,12000]};
 function runEstimator(){
-  const cabin=document.getElementById("estCabin").value;
-  const pax=Math.max(1,parseInt(document.getElementById("estPax").value||"1",10));
-  const mult=parseFloat(document.getElementById("estTiming").value);
-  const [lo,hi]=FARES[cabin];
-  const plo=Math.round(lo*mult/50)*50, phi=Math.round(hi*mult/50)*50;
-  const fmt$=n=>"A$"+n.toLocaleString();
-  document.getElementById("estPP").textContent=`${fmt$(plo)} – ${fmt$(phi)}`;
-  document.getElementById("estTotal").textContent=`${fmt$(plo*pax)} – ${fmt$(phi*pax)}`;
-  const notes={0.85:"Early booking (Sep–Jan sales) — the discount baked in here.",1:"Standard ~6 months out.",1.35:"Last-minute premium applied — try to avoid this."};
-  document.getElementById("estNote").textContent=
-    `Ballpark return economy MEL⇄London runs A$2,200–2,800 in peak summer; premium economy ~A$4–5.5k; business ~A$8.5–12k. ${notes[mult]} Figures are indicative — always check live fares.`;
+  const cabin=document.getElementById("estCabin").value, pax=Math.max(1,parseInt(document.getElementById("estPax").value||"1",10)), mult=parseFloat(document.getElementById("estTiming").value);
+  const [lo,hi]=FARES[cabin]; const plo=Math.round(lo*mult/50)*50, phi=Math.round(hi*mult/50)*50; const f=n=>"A$"+n.toLocaleString();
+  document.getElementById("estPP").textContent=`${f(plo)} – ${f(phi)}`;
+  document.getElementById("estTotal").textContent=`${f(plo*pax)} – ${f(phi*pax)}`;
+  const notes={0.85:"Early booking (Sep–Jan sales) — discount baked in.",1:"Standard ~6 months out.",1.35:"Last-minute premium applied — try to avoid."};
+  document.getElementById("estNote").textContent=`Ballpark return economy MEL⇄London runs A$2,200–2,800 in peak summer; premium economy ~A$4–5.5k; business ~A$8.5–12k. ${notes[mult]} Indicative only — always check live fares.`;
 }
 
-/* ---------------- events / interactions ---------------- */
-document.addEventListener("change", e=>{
+/* ============ LOGISTICS ============ */
+const ROUTES_UK=[
+  {from:"London → <span>Oxford</span>",time:"~1h · £15–30"},
+  {from:"London → <span>Bath</span>",time:"~1h30 · £30–60"},
+  {from:"London → <span>Birmingham (Edgbaston)</span>",time:"~1h20–1h40 · £15–50"},
+  {from:"London → <span>Nottingham (Trent Bridge)</span>",time:"~1h45–2h · £25–60"},
+  {from:"London → <span>Southampton (Ageas Bowl)</span>",time:"~1h15 · £20–45"},
+  {from:"London → <span>Silverstone (via Milton Keynes/Northampton)</span>",time:"~50min + shuttle"},
+  {from:"Oxford ↔ <span>Bath</span>",time:"~1h30–2h (via Didcot)"},
+  {from:"London → <span>Edinburgh</span> (for The Open)",time:"~4h30 train / ~1h15 fly"},
+  {from:"Edinburgh → <span>St Andrews</span> (Leuchars + bus)",time:"~1h15"}
+];
+function renderLogistics(){
+  document.getElementById("logisticsBody").innerHTML=`
+    <div class="card block"><h3>🚄 Trains are the answer</h3><div class="sub">National Rail across England · Scotland</div>
+      <p>Base in London and day-trip. Book <b>Advance singles ~12 weeks out</b> (when they're released) for the cheapest fares via Trainline or the operator sites — walk-up "Anytime" fares are 2–4× the price.</p>
+      <ul class="tick">
+        <li><b>GroupSave:</b> 3–9 adults travelling together off-peak in England/Wales get ~34% off — ideal for the group.</li>
+        <li><b>Split-ticketing</b> (e.g. Trainline "SplitSave") can undercut a single through-fare — worth a check.</li>
+        <li>Different London terminals: <b>Paddington</b> (Oxford, Bath), <b>Euston/Marylebone</b> (Birmingham), <b>St Pancras</b> (Nottingham), <b>Waterloo</b> (Southampton). Allow tube time between them.</li>
+        <li>A <b>Two Together</b> or <b>Network Railcard</b> can pay off if you qualify — otherwise Advance fares are the win for short visits.</li>
+      </ul></div>
+
+    <div class="card block"><h3>📍 Key journeys from London</h3><div class="sub">Approx times & rough off-peak fares</div>
+      <div style="margin-top:10px">${ROUTES_UK.map(r=>`<div class="route"><div class="from">${r.from}</div><div class="time">${r.time}</div></div>`).join("")}</div></div>
+
+    <div class="card block"><h3>🏴󠁧󠁢󠁳󠁣󠁴󠁿 The Scotland problem (The Open)</h3><div class="sub">St Andrews is the outlier</div>
+      <p>St Andrews is ~7–8h from London by road/rail. Don't day-trip it. Two smart plays:</p>
+      <ul class="tick">
+        <li><b>Open-jaw flights:</b> fly home out of Edinburgh (see Flights) so Scotland is the last leg, no backtrack.</li>
+        <li><b>Base in Edinburgh</b> (great city, ~1h30 to the course) and commute to the golf; or stay in Fife right by St Andrews if you book very early.</li>
+        <li>On golf days, use the <b>Park & Ride</b> — driving into St Andrews on championship days is a nightmare.</li>
+      </ul></div>
+
+    <div class="card block"><h3>🚗 Driving & cars</h3>
+      <ul class="tick">
+        <li>Drive on the <b>left</b>. A car is great for the Cotswolds / rural stays but a liability in London (<b>ULEZ + congestion charge</b>, no parking) — don't drive in the city.</li>
+        <li><b>Silverstone GP weekend</b> traffic is legendary — arrive very early or use official park & ride / camping.</li>
+        <li>Motorways: M40 (Oxford), M4 (Bath/Bristol), M6/M40 (Birmingham).</li>
+        <li>Hire cars: book early for July; automatics cost more and sell out.</li>
+      </ul></div>
+
+    <div class="card block"><h3>💷 Cheaper still</h3>
+      <ul class="tick">
+        <li><b>Coaches</b> (National Express, Megabus) are much cheaper than trains if you're not time-poor.</li>
+        <li>In London: <b>contactless/Oyster</b>, daily caps, never buy paper singles.</li>
+        <li>Cluster same-city events (both Lord's Tests, Wimbledon, The Oval are all London) to cut inter-city trips.</li>
+      </ul></div>`;
+}
+
+/* ============ EXPLORE ============ */
+const UK_BLOCKS=[
+  {em:"🎓",title:"Oxford — your old town",sub:"5 years of your life — show it off",tips:[
+    "Punting on the Cherwell (Magdalen Bridge boathouse) — the quintessential afternoon.",
+    "The <b>Bodleian & Radcliffe Camera</b>, Divinity School, and a wander through the college quads.",
+    "<b>Christ Church</b> (the Hogwarts hall & Tom Quad) and the Meadow walk.",
+    "Your old pubs: <b>Turf Tavern</b> (hidden alley), Eagle & Child, The Bear.",
+    "Covered Market, Blackwell's bookshop, Port Meadow for a sunset pint at The Perch/Trout.",
+    "Day trips: <b>Blenheim Palace</b> (Churchill's birthplace) and the Cotswolds villages."]},
+  {em:"🏛️",title:"London",sub:"Between the Tests",tips:[
+    "The classics: Westminster, the South Bank, British Museum, a West End show.",
+    "Cricket pilgrimage: the <b>Lord's tour & MCC Museum</b> (the Ashes urn lives there).",
+    "Borough Market, a Thames river bus, and the view from the Sky Garden (free)."]},
+  {em:"♨️",title:"Bath",sub:"Your cousin's city",tips:[
+    "The <b>Roman Baths</b> & Pump Room, the Royal Crescent & Circus.",
+    "Jane Austen's Bath; a soak at the rooftop <b>Thermae Bath Spa</b>.",
+    "Easy hop to Bristol, Wells, Cheddar Gorge or the Cotswolds."]},
+  {em:"🌄",title:"Further afield",sub:"If time allows",tips:[
+    "<b>The Cotswolds</b> — postcard villages, perfect between Oxford & Bath.",
+    "<b>Edinburgh</b> — pairs naturally with The Open (castle, Royal Mile, Arthur's Seat).",
+    "<b>Stonehenge & Salisbury</b> — near Bath. Cambridge for another college city.",
+    "Lake District or Cornwall if the brother's crew wants a nature leg."]}
+];
+const EU_BLOCKS=[
+  {em:"🧭",title:"The idea",sub:"Brother + son (26) + daughter (19), ~3–4 weeks after the cricket",tips:[
+    "A France → Italy → Spain arc suits a mixed-age trio: icon sights for everyone, food & nightlife for the 19/26-year-olds.",
+    "5 weeks total sits fine inside the Schengen <b>90-days-in-180</b> rule — no visa headache for Aussies.",
+    "July is <b>hot</b> in Italy/Spain (35°C+) and busy; book intercity trains & headline sights ahead."]},
+  {em:"🇫🇷",title:"France",sub:"Start here — easy from the UK",tips:[
+    "<b>Eurostar</b> London→Paris in ~2h20 (book early). Paris: 3–4 nights.",
+    "Then south: the <b>Riviera</b> (Nice, Antibes, Monaco) for beaches & nightlife, or <b>Lyon</b> for food.",
+    "TGV trains are fast & cheap if booked early (SNCF Connect)."]},
+  {em:"🇮🇹",title:"Italy",sub:"The heartland",tips:[
+    "<b>Rome</b> (Colosseum, Vatican, Trastevere nightlife), <b>Florence</b> (art + Tuscany), <b>Venice</b>.",
+    "For the young adults: <b>Amalfi Coast</b> or <b>Cinque Terre</b>, and beach clubs.",
+    "Avoid <b>Ferragosto</b> (mid-Aug) when many places shut; book Trenitalia/Italo early."]},
+  {em:"🇪🇸",title:"Spain",sub:"Big finish",tips:[
+    "<b>Barcelona</b> — Gaudí by day, superb nightlife (great for 19/26).",
+    "<b>Madrid</b>, <b>San Sebastián</b> (food heaven), or <b>Seville/Andalusia</b> for flamenco & tapas.",
+    "Renfe AVE high-speed trains connect the big cities; book on renfe.com early."]},
+  {em:"🚆",title:"Getting around Europe",sub:"Trains vs budget flights",tips:[
+    "A <b>Eurail Global Pass</b> suits non-EU visitors doing lots of countries — price it against point-to-point.",
+    "Budget flights (Ryanair, easyJet, Vueling) beat trains on long hops (e.g. Nice→Rome, Rome→Barcelona) — watch bag fees.",
+    "One-way intercity trains booked early are usually cheapest; validate/reserve seats on high-speed lines."]},
+  {em:"🗺️",title:"A sample 3-week loop",sub:"One way to string it",tips:[
+    "London → <b>Paris</b> (Eurostar, 3n) → <b>Nice</b> (2n) → fly <b>Rome</b> (3n) → <b>Florence</b> (2n) → <b>Venice</b> (2n) → fly <b>Barcelona</b> (3n) → <b>Madrid</b> (2n) → fly home.",
+    "Reverse it, or swap in San Sebastián/Amalfi — it's a skeleton, not a rule."]}
+];
+function renderExplore(){
+  document.getElementById("expSeg").querySelectorAll("button").forEach(b=>b.classList.toggle("on",b.dataset.eseg===S.ui.eseg));
+  document.getElementById("exp-uk").style.display=S.ui.eseg==="uk"?"":"none";
+  document.getElementById("exp-eu").style.display=S.ui.eseg==="eu"?"":"none";
+  const blk=b=>`<div class="card block"><h3>${b.em} ${b.title}</h3><div class="sub">${b.sub}</div><ul class="tick">${b.tips.map(t=>`<li>${t}</li>`).join("")}</ul></div>`;
+  document.getElementById("exp-uk").innerHTML=UK_BLOCKS.map(blk).join("");
+  document.getElementById("exp-eu").innerHTML=EU_BLOCKS.map(blk).join("");
+}
+
+/* ============ interactions ============ */
+document.addEventListener("change",e=>{
   const t=e.target;
-  if(t.dataset.inc!==undefined){
-    const ev=S.events.find(x=>x.id===t.dataset.inc);
-    ev.include=t.checked;
-    if(ev.include && !ev.flexible && !ev.days.length) ev.days=eachDay(ev.start,ev.end);
-    save(); renderEvents(); return;
-  }
+  if(t.dataset.inc!==undefined){ const ev=S.events.find(x=>x.id===t.dataset.inc); ev.include=t.checked; if(ev.include&&!ev.flexible&&!ev.days.length) ev.days=eachDay(ev.start,ev.end); save(); renderEvents(); return; }
   if(t.dataset.start!==undefined){ const ev=S.events.find(x=>x.id===t.dataset.start); ev.start=t.value; ev.days=eachDay(ev.start,ev.end); save(); renderEvents(); return; }
   if(t.dataset.end!==undefined){ const ev=S.events.find(x=>x.id===t.dataset.end); ev.end=t.value; ev.days=eachDay(ev.start,ev.end); save(); renderEvents(); return; }
-  if(t.dataset.flexdate!==undefined){ const ev=S.events.find(x=>x.id===t.dataset.flexdate); ev.flexDate=t.value; save(); return; }
-  if(t.dataset.nights!==undefined){ const ev=S.events.find(x=>x.id===t.dataset.nights); ev.nights=parseInt(t.value||"1",10); save(); return; }
-  // travellers
+  if(t.dataset.flexdate!==undefined){ S.events.find(x=>x.id===t.dataset.flexdate).flexDate=t.value; save(); return; }
+  if(t.dataset.nights!==undefined){ S.events.find(x=>x.id===t.dataset.nights).nights=parseInt(t.value||"1",10); save(); return; }
   if(t.dataset.tname!==undefined){ trav(t.dataset.tname).name=t.value; save(); return; }
   if(t.dataset.tarr!==undefined){ trav(t.dataset.tarr).arrive=t.value; save(); renderTravellers(); return; }
   if(t.dataset.tdep!==undefined){ trav(t.dataset.tdep).depart=t.value; save(); renderTravellers(); return; }
   if(t.dataset.tcol!==undefined){ trav(t.dataset.tcol).color=t.value; save(); renderTravellers(); return; }
-  // estimator
-  if(["estCabin","estPax","estTiming"].includes(t.id)){ runEstimator(); }
+  if(["estCabin","estPax","estTiming"].includes(t.id)) runEstimator();
 });
-document.addEventListener("click", e=>{
-  const t=e.target.closest("[data-day],[data-f],[data-if],[data-tdel]");
+document.addEventListener("click",e=>{
+  const tk=e.target.closest("[data-tk]");
+  if(tk){ const b=document.getElementById("tk-"+tk.dataset.tk); if(b){ b.classList.toggle("open"); tk.innerHTML=tk.innerHTML.replace(b.classList.contains("open")?"▾":"▴", b.classList.contains("open")?"▴":"▾"); } return; }
+  const t=e.target.closest("[data-day],[data-f],[data-if],[data-tdel],[data-seg],[data-eseg],#addTrav");
   if(!t) return;
-  if(t.dataset.day!==undefined){
-    const [id,day]=t.dataset.day.split("|");
-    const ev=S.events.find(x=>x.id===id);
-    let set=new Set(ev.days.length?ev.days:eachDay(ev.start,ev.end));
-    if(set.has(day)) set.delete(day); else set.add(day);
-    ev.days=[...set].sort();
-    save(); renderEvents(); return;
-  }
+  if(t.id==="addTrav"){ const cols=["#f5b301","#4ade80","#c084fc","#38bdf8","#f472b6","#fb923c","#22d3ee","#a3e635"]; S.travellers.push({id:"t"+Date.now(),name:"New traveller",color:cols[S.travellers.length%cols.length],arrive:"2027-06-28",depart:"2027-07-12"}); save(); renderTravellers(); return; }
+  if(t.dataset.day!==undefined){ const [id,day]=t.dataset.day.split("|"); const ev=S.events.find(x=>x.id===id); let set=new Set(ev.days.length?ev.days:eachDay(ev.start,ev.end)); set.has(day)?set.delete(day):set.add(day); ev.days=[...set].sort(); save(); renderEvents(); return; }
   if(t.dataset.f!==undefined){ S.ui.filter=t.dataset.f; save(); renderEvents(); return; }
   if(t.dataset.if!==undefined){ S.ui.itinFilter=t.dataset.if; save(); renderItinerary(); return; }
-  if(t.dataset.tdel!==undefined){
-    if(S.travellers.length<=1){ toast("Keep at least one traveller"); return; }
-    S.travellers=S.travellers.filter(x=>x.id!==t.dataset.tdel); save(); renderTravellers(); renderItinerary(); return;
-  }
+  if(t.dataset.seg!==undefined){ S.ui.seg=t.dataset.seg; save(); renderSchedule(); return; }
+  if(t.dataset.eseg!==undefined){ S.ui.eseg=t.dataset.eseg; save(); renderExplore(); return; }
+  if(t.dataset.tdel!==undefined){ if(S.travellers.length<=1){ toast("Keep at least one traveller"); return; } S.travellers=S.travellers.filter(x=>x.id!==t.dataset.tdel); save(); renderTravellers(); return; }
 });
 function trav(id){ return S.travellers.find(t=>t.id===id); }
 
-document.getElementById("addTrav").addEventListener("click", ()=>{
-  const cols=["#f5b301","#4ade80","#c084fc","#38bdf8","#f472b6","#fb923c","#22d3ee","#a3e635"];
-  S.travellers.push({id:"t"+Date.now(), name:"New traveller",
-    color:cols[S.travellers.length%cols.length], arrive:"2027-06-28", depart:"2027-07-12"});
-  save(); renderTravellers();
-});
-
-/* ---------------- tabs ---------------- */
-const tabRenderers={events:renderEvents, travellers:renderTravellers, itinerary:renderItinerary, stays:renderStays, flights:renderFlights};
-document.getElementById("tabs").addEventListener("click", e=>{
-  const b=e.target.closest("button"); if(!b) return;
-  switchTab(b.dataset.tab);
-});
+/* ============ tabs ============ */
+const R={schedule:renderSchedule,events:renderEvents,stays:renderStays,flights:renderFlights,logistics:renderLogistics,explore:renderExplore};
+document.getElementById("tabs").addEventListener("click",e=>{ const b=e.target.closest("button"); if(b) switchTab(b.dataset.tab); });
 function switchTab(name){
   document.querySelectorAll("nav.tabs button").forEach(b=>b.classList.toggle("active",b.dataset.tab===name));
   document.querySelectorAll(".view").forEach(v=>v.classList.toggle("active",v.id==="view-"+name));
-  tabRenderers[name] && tabRenderers[name]();
-  window.scrollTo(0,0);
+  R[name]&&R[name](); window.scrollTo(0,0);
 }
 
-/* ---------------- toast / sheet ---------------- */
-let toastT;
-function toast(msg){ const el=document.getElementById("toast"); el.textContent=msg; el.classList.add("show");
-  clearTimeout(toastT); toastT=setTimeout(()=>el.classList.remove("show"),2200); }
-const sheet=document.getElementById("sheet"), sheetBg=document.getElementById("sheetBg");
-function openSheet(){ sheet.classList.add("show"); sheetBg.classList.add("show"); }
-function closeSheet(){ sheet.classList.remove("show"); sheetBg.classList.remove("show"); }
-document.getElementById("menuBtn").addEventListener("click", openSheet);
-sheetBg.addEventListener("click", closeSheet);
-
-/* ---------------- share / export / import ---------------- */
+/* ============ toast / sheet / share ============ */
+let toastT; function toast(m){ const el=document.getElementById("toast"); el.textContent=m; el.classList.add("show"); clearTimeout(toastT); toastT=setTimeout(()=>el.classList.remove("show"),2200); }
+const sheet=document.getElementById("sheet"),sheetBg=document.getElementById("sheetBg");
+function openSheet(){ sheet.classList.add("show"); sheetBg.classList.add("show"); } function closeSheet(){ sheet.classList.remove("show"); sheetBg.classList.remove("show"); }
+document.getElementById("menuBtn").addEventListener("click",openSheet); sheetBg.addEventListener("click",closeSheet);
 function encodeState(){ return btoa(unescape(encodeURIComponent(JSON.stringify(S)))); }
-function decodeState(str){ return JSON.parse(decodeURIComponent(escape(atob(str)))); }
-document.getElementById("actShare").addEventListener("click", ()=>{
-  const url=location.origin+location.pathname+"#plan="+encodeState();
-  const done=()=>{ toast("Link copied — send it to the group"); closeSheet(); };
-  if(navigator.clipboard){ navigator.clipboard.writeText(url).then(done).catch(()=>fallbackCopy(url,done)); }
-  else fallbackCopy(url,done);
-});
-function fallbackCopy(text,cb){ const ta=document.createElement("textarea"); ta.value=text; document.body.appendChild(ta);
-  ta.select(); try{document.execCommand("copy");}catch(e){} ta.remove(); cb&&cb(); }
-document.getElementById("actExport").addEventListener("click", ()=>{
-  const blob=new Blob([JSON.stringify(S,null,2)],{type:"application/json"});
-  const a=document.createElement("a"); a.href=URL.createObjectURL(blob);
-  a.download="fifty-tour-plan.json"; a.click(); URL.revokeObjectURL(a.href); closeSheet();
-});
-document.getElementById("actImport").addEventListener("click", ()=>document.getElementById("fileIn").click());
-document.getElementById("fileIn").addEventListener("change", e=>{
-  const f=e.target.files[0]; if(!f) return; const r=new FileReader();
-  r.onload=()=>{ try{ S=migrate(JSON.parse(r.result)); save(); switchTab("events"); closeSheet(); toast("Plan imported"); }
-    catch(err){ toast("Couldn't read that file"); } };
-  r.readAsText(f);
-});
-document.getElementById("actReset").addEventListener("click", ()=>{
-  if(confirm("Reset everything to the default plan? This clears your picks on this device.")){
-    S=defaultState(); save(); switchTab("events"); closeSheet(); toast("Reset to default");
-  }
-});
+function decodeState(s){ return JSON.parse(decodeURIComponent(escape(atob(s)))); }
+document.getElementById("actShare").addEventListener("click",()=>{ const url=location.origin+location.pathname+"#plan="+encodeState(); const done=()=>{ toast("Link copied — send it to the group"); closeSheet(); };
+  if(navigator.clipboard) navigator.clipboard.writeText(url).then(done).catch(()=>fallbackCopy(url,done)); else fallbackCopy(url,done); });
+function fallbackCopy(text,cb){ const ta=document.createElement("textarea"); ta.value=text; document.body.appendChild(ta); ta.select(); try{document.execCommand("copy");}catch(e){} ta.remove(); cb&&cb(); }
+document.getElementById("actExport").addEventListener("click",()=>{ const blob=new Blob([JSON.stringify(S,null,2)],{type:"application/json"}); const a=document.createElement("a"); a.href=URL.createObjectURL(blob); a.download="fifty-tour-plan.json"; a.click(); URL.revokeObjectURL(a.href); closeSheet(); });
+document.getElementById("actImport").addEventListener("click",()=>document.getElementById("fileIn").click());
+document.getElementById("fileIn").addEventListener("change",e=>{ const f=e.target.files[0]; if(!f) return; const r=new FileReader(); r.onload=()=>{ try{ S=migrate(JSON.parse(r.result)); save(); switchTab("schedule"); closeSheet(); toast("Plan imported"); }catch(err){ toast("Couldn't read that file"); } }; r.readAsText(f); });
+document.getElementById("actReset").addEventListener("click",()=>{ if(confirm("Reset everything to the default plan? This clears your picks on this device.")){ S=defaultState(); save(); switchTab("schedule"); closeSheet(); toast("Reset to default"); } });
+let deferredPrompt=null; window.addEventListener("beforeinstallprompt",e=>{ e.preventDefault(); deferredPrompt=e; });
+document.getElementById("actInstall").addEventListener("click",()=>{ if(deferredPrompt){ deferredPrompt.prompt(); deferredPrompt=null; closeSheet(); } else toast("On iPhone: Share → Add to Home Screen"); });
 
-/* ---------------- install prompt ---------------- */
-let deferredPrompt=null;
-window.addEventListener("beforeinstallprompt", e=>{ e.preventDefault(); deferredPrompt=e; });
-document.getElementById("actInstall").addEventListener("click", ()=>{
-  if(deferredPrompt){ deferredPrompt.prompt(); deferredPrompt=null; closeSheet(); }
-  else{ toast("On iPhone: Share → Add to Home Screen"); }
-});
-
-/* ---------------- boot ---------------- */
+/* ============ boot ============ */
 (function boot(){
-  // load a shared plan from URL hash
-  if(location.hash.startsWith("#plan=")){
-    try{ const inc=decodeState(location.hash.slice(6));
-      if(confirm("Open the shared trip plan? This replaces the plan on this device.")){ S=migrate(inc); save(); }
-    }catch(e){}
-    history.replaceState(null,"",location.pathname);
-  }
-  renderEvents();
+  if(location.hash.startsWith("#plan=")){ try{ const inc=decodeState(location.hash.slice(6)); if(confirm("Open the shared trip plan? This replaces the plan on this device.")){ S=migrate(inc); save(); } }catch(e){} history.replaceState(null,"",location.pathname); }
+  renderSchedule();
 })();
-
-/* ---------------- service worker ---------------- */
-if("serviceWorker" in navigator && location.protocol.startsWith("http")){
-  window.addEventListener("load", ()=>navigator.serviceWorker.register("sw.js").catch(()=>{}));
-}
+if("serviceWorker" in navigator && location.protocol.startsWith("http")){ window.addEventListener("load",()=>navigator.serviceWorker.register("sw.js").catch(()=>{})); }
 </script>
 </body>
 </html>
