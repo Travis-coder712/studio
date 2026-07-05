@@ -330,6 +330,9 @@
   .stop-badge{font-size:8.5px;font-weight:900;letter-spacing:.4px;padding:3px 6px;border-radius:6px}
   .stop-badge.sf{background:rgba(52,211,153,.16);color:#5fe0ad}
   .stop-badge.sc{background:rgba(245,179,1,.16);color:var(--gold-soft)}
+  .climbtag{font-size:9px;font-weight:900;letter-spacing:.4px;text-transform:uppercase;padding:2px 7px;border-radius:6px;vertical-align:middle;margin-left:4px}
+  .climbtag.awesome{background:rgba(251,91,109,.16);color:var(--f1)}
+  .climbtag.scenic{background:rgba(72,182,240,.16);color:var(--place)}
 
   /* generic content blocks (logistics/explore) */
   .block h3{font-size:15px;font-weight:750;display:flex;align-items:center;gap:8px}
@@ -435,6 +438,8 @@
   <symbol id="n-flights" viewBox="0 0 24 24"><path d="M17.8 19.2 16 11l3.5-3.5C21 6 21.5 4 21 3c-1-.5-3 0-4.5 1.5L13 8 4.8 6.2c-.5-.1-.9.1-1.1.5l-.3.5c-.2.5-.1 1 .3 1.3L9 12l-2 3H4l-1 1 3 2 2 3 1-1v-3l3-2 3.5 5.3c.3.4.8.5 1.3.3l.5-.2c.4-.3.6-.7.5-1.2z"/></symbol>
   <symbol id="n-travel" viewBox="0 0 24 24"><rect x="4" y="3" width="16" height="15" rx="2"/><path d="M4 11h16M12 3v8"/><path d="m7 18-2 3M17 18l2 3"/><path d="M8.5 15h.01M15.5 15h.01"/></symbol>
   <symbol id="n-explore" viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="m15.6 8.4-2.1 5.1-5.1 2.1 2.1-5.1z"/></symbol>
+  <symbol id="n-bike" viewBox="0 0 24 24"><circle cx="5.5" cy="17.5" r="3.5"/><circle cx="18.5" cy="17.5" r="3.5"/><circle cx="15" cy="5" r="1"/><path d="M12 17.5V14l-3-3 4-3 2 3h2"/></symbol>
+  <symbol id="n-budget" viewBox="0 0 24 24"><rect x="2" y="6" width="20" height="12" rx="2"/><circle cx="12" cy="12" r="2.5"/><path d="M6 12h.01M18 12h.01"/></symbol>
   <symbol id="c-cricket" viewBox="0 0 24 24"><path d="M8 5v11M12 5v11M16 5v11"/><path d="M7 5.5h10"/><path d="M9.5 19h5"/></symbol>
   <symbol id="c-tennis" viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="M5 5.5c4 3 4 10 0 13M19 5.5c-4 3-4 10 0 13"/></symbol>
   <symbol id="c-f1" viewBox="0 0 24 24"><path d="M6 3v18"/><rect x="6" y="4" width="13" height="9" rx="0.5"/><path d="M6 4h6.5v4.5H6zM12.5 8.5H19V13h-6.5z" fill="currentColor" stroke="none"/></symbol>
@@ -460,8 +465,10 @@
     <button data-tab="events"><svg class="i"><use href="#n-events"/></svg>Events</button>
     <button data-tab="stays"><svg class="i"><use href="#n-stays"/></svg>Stays</button>
     <button data-tab="flights"><svg class="i"><use href="#n-flights"/></svg>Flights</button>
+    <button data-tab="budget"><svg class="i"><use href="#n-budget"/></svg>Budget</button>
     <button data-tab="logistics"><svg class="i"><use href="#n-travel"/></svg>Travel</button>
     <button data-tab="explore"><svg class="i"><use href="#n-explore"/></svg>Explore</button>
+    <button data-tab="letour"><svg class="i"><use href="#n-bike"/></svg>Le Tour</button>
   </nav>
 </div>
 
@@ -567,6 +574,20 @@
     <div id="exp-uk"></div>
     <div id="exp-oxford" style="display:none"></div>
     <div id="exp-eu" style="display:none"></div>
+  </section>
+
+  <!-- ============ BUDGET ============ -->
+  <section class="view" id="view-budget">
+    <h2 class="vt">Budget</h2>
+    <p class="view-intro">What it costs on the ground, in <b>£ (with A$ in brackets)</b>. Three comfort tiers — from camping to a treat — with real examples, group deals for 4–6, and a quick per-person estimator. Flights live in their own tab.</p>
+    <div id="budgetBody"></div>
+  </section>
+
+  <!-- ============ LE TOUR ============ -->
+  <section class="view" id="view-letour">
+    <h2 class="vt">Le Tour</h2>
+    <p class="view-intro">The best twist of 2027: the <b>Tour de France starts in Britain</b> — right in your trip window. Watch a stage without leaving the UK, ride some of the route, or chase the big French climbs on a longer leg.</p>
+    <div id="letourBody"></div>
   </section>
 </main>
 
@@ -1409,6 +1430,7 @@ document.addEventListener("change",e=>{
   if(t.dataset.tcol!==undefined){ trav(t.dataset.tcol).color=t.value; save(); renderTravellers(); return; }
   if(t.dataset.trkowner!==undefined){ const id=t.dataset.trkowner; S.tracker[id]=S.tracker[id]||{}; S.tracker[id].owner=t.value||null; save(); renderTracker(); return; }
   if(["estCabin","estPax","estTiming"].includes(t.id)) runEstimator();
+  if(["budTier","budNights","budCabin"].includes(t.id)) runBudget();
 });
 document.addEventListener("click",e=>{
   const tk=e.target.closest("[data-tk]");
@@ -1435,7 +1457,100 @@ document.addEventListener("click",e=>{
 function trav(id){ return S.travellers.find(t=>t.id===id); }
 
 /* ============ tabs ============ */
-const R={tldr:renderTldr,schedule:renderSchedule,events:renderEvents,stays:renderStays,flights:renderFlights,logistics:renderLogistics,explore:renderExplore};
+/* ============ BUDGET TAB ============ */
+const ACCOM=[
+  {t:"🏕️ Camp / thrifty", pp:"£15–35 pp/night", au:"A$30–70", ex:"Campsites (£8–20/pitch) &amp; glamping pods, YHA hostels (£25–40pp), basic self-catering. Camp in the Lakes for the Tour, or near a Test — cheap, and a laugh with the crew."},
+  {t:"🛏️ Comfortable", pp:"£45–80 pp/night", au:"A$90–155", ex:"The sweet spot: a big shared cottage/Airbnb split 4–6 (often ~£30–50pp), a good B&amp;B (£45–70pp), or a Premier Inn. A group self-catering house is the best value going."},
+  {t:"✨ Treat", pp:"£90–160 pp/night", au:"A$175–310", ex:"A Landmark Trust castle/tower or a boutique inn split among the group, a smart hotel for a couple of nights, or Oxford college rooms for the character. Special, not blow-the-doors luxury."}
+];
+const FOOD=[
+  {t:"🏕️ Thrifty", pp:"£15–25 pp/day", au:"A$30–50", ex:"Self-cater breakfast, a supermarket/bakery lunch (£4–6), and a pub meal or cook-in. A Wetherspoons pint-and-meal is the budget classic."},
+  {t:"🛏️ Comfortable", pp:"£35–55 pp/day", au:"A$70–105", ex:"Pub lunch, a casual dinner out (pub/bistro main £14–20) and a few pints (£5–7, London £6–8). The everyday holiday rhythm."},
+  {t:"✨ Treat", pp:"£70–110 pp/day", au:"A$135–215", ex:"A proper dinner with wine (£35–60pp), a gastropub blow-out, a nice lunch at the cricket. Save it for the big nights."}
+];
+const DAYRATE={thrifty:[95,150], comfortable:[200,300], treat:[400,560]}; // A$/person/day incl. accom+food+local transport
+function renderBudget(){
+  const tierCard=(x,unit)=>`<div class="card block"><h3>${x.t}</h3><div class="sub" style="color:var(--gold-soft);font-weight:700">${x.pp} · ${x.au}</div><p>${x.ex}</p></div>`;
+  const html=`
+    <div class="section-label">Accommodation · per person / night</div>
+    ${ACCOM.map(tierCard).join("")}
+    <div class="card block"><h3>📍 Location &amp; group tips</h3><ul class="tick">
+      <li><b>Split a big place.</b> A 6–12 berth cottage is the cheapest per head and the most fun for 4–6 of you.</li>
+      <li><b>London runs ~30–50% dearer</b> than the countryside — the counties (Birmingham, Nottingham) are much cheaper.</li>
+      <li><b>The Open (Fife) &amp; the Silverstone GP weekend spike hard</b> and sell out — book those first, months ahead.</li>
+      <li>Landmark Trust / National Trust release ~<b>12 months out</b> — diarise it.</li>
+    </ul></div>
+    <div class="section-label">Food &amp; drink · per person / day</div>
+    ${FOOD.map(tierCard).join("")}
+    <div class="card block"><h3>🚆 Getting around (reference)</h3><p>Rough on-ground transport: intercity <b>Advance train singles</b> £15–60 (book ~12 weeks out), <b>car hire</b> £40–70/day + fuel (~£1.45/L), coaches cheaper, London on <b>contactless</b> with daily caps. Full detail in the Travel tab.</p></div>
+    <div class="section-label">Quick per-person estimator</div>
+    <div class="card estimator">
+      <div class="row">
+        <div class="f"><label>Comfort tier</label><select id="budTier"><option value="thrifty">Camp / thrifty</option><option value="comfortable" selected>Comfortable</option><option value="treat">Treat</option></select></div>
+        <div class="f"><label>Nights in UK</label><input type="number" id="budNights" min="1" max="60" value="12"></div>
+        <div class="f"><label>Flights (cabin)</label><select id="budCabin"><option value="eco" selected>Economy</option><option value="prem">Prem econ</option><option value="biz">Business</option></select></div>
+      </div>
+      <div class="est-out"><div class="pp">On the ground ≈ <b id="budGround">—</b></div><div class="total" id="budTotal">—</div><div class="tl2">estimated per-person total (incl. flights)</div></div>
+      <p class="est-note" id="budNote"></p>
+    </div>`;
+  document.getElementById("budgetBody").innerHTML=html;
+  runBudget();
+}
+function runBudget(){
+  const tier=document.getElementById("budTier").value, nights=Math.max(1,parseInt(document.getElementById("budNights").value||"1",10)), cab=document.getElementById("budCabin").value;
+  const [dl,dh]=DAYRATE[tier], [fl,fh]=FARES[cab];
+  const gl=nights*dl, gh=nights*dh, tl=fl+gl, th=fh+gh;
+  const money=n=>"A$"+(Math.round(n/50)*50).toLocaleString();
+  document.getElementById("budGround").textContent=`${money(gl)} – ${money(gh)}`;
+  document.getElementById("budTotal").textContent=`${money(tl)} – ${money(th)}`;
+  const pax=S.travellers.length;
+  document.getElementById("budNote").textContent=`${nights} nights on the '${tier}' tier ≈ A$${(Math.round(dl/50)*50).toLocaleString()}–${(Math.round(dh/50)*50).toLocaleString()}/day/person (accommodation + food + local transport), plus return flights. × ${pax} people ≈ ${money(tl*pax)}–${money(th*pax)} for the group. Indicative only.`;
+}
+
+/* ============ LE TOUR TAB ============ */
+const UK_STAGES=[
+  {n:"Stage 1 · Fri 2 Jul", route:"Edinburgh → Carlisle", desc:"The Grand Départ. Out of Edinburgh through Midlothian and the Scottish Borders (the Côte de Melrose), tracing the border into Cumberland to finish in Carlisle."},
+  {n:"Stage 2 · Sat 3 Jul", route:"Keswick → Lancashire", desc:"The scenic one — south from Keswick through the heart of the Lake District, past the lakes and along Morecambe Bay, into the Lancashire fells via Lancaster."},
+  {n:"Stage 3 · Sun 4 Jul", route:"Welshpool → Cardiff", desc:"Into Wales for a punchy leg south from Welshpool in Powys to a big-city finish in Cardiff."}
+];
+const CLIMBS=[
+  {name:"Mont Ventoux", tag:"awesome", stat:"21 km · avg 7.5% · 1,910 m", why:"'The Giant of Provence' — a barren, lunar-moonscape summit and the Tour's most mythical climb. The bucket-list ascent from Bédoin."},
+  {name:"Alpe d'Huez", tag:"awesome", stat:"13.8 km · avg 8.1% · 21 bends", why:"The most famous climb in cycling — 21 numbered, named hairpins packed with history and roadside crowds."},
+  {name:"Col du Tourmalet", tag:"awesome", stat:"19 km · avg 7.4% · 2,115 m", why:"The Pyrenees' giant and the most-climbed pass in Tour history. A proper rite of passage."},
+  {name:"Col du Galibier", tag:"awesome", stat:"~18 km · 2,642 m", why:"High, wild and spectacular — one of the great alpine passes, often the roof of the Tour."},
+  {name:"Col d'Izoard", tag:"scenic", stat:"~15 km · 2,360 m", why:"The surreal 'Casse Déserte' near the top — a lunar field of stone pinnacles. Beautiful and special."},
+  {name:"Col de la Bonette", tag:"scenic", stat:"~24 km · 2,802 m", why:"Among the highest paved roads in Europe — huge, empty and panoramic. A quieter epic."},
+  {name:"Gorges du Verdon", tag:"scenic", stat:"rolling gorge roads", why:"Not a climb — turquoise-river canyon riding with gentle gradients. Pure scenic joy for a rest-day spin."},
+  {name:"Lac d'Annecy loop", tag:"scenic", stat:"~40 km · flat", why:"A gorgeous, mostly-flat lakeside loop on a dedicated cycle path — the group ride everyone can enjoy."}
+];
+function renderLeTour(){
+  const hero=`<div class="tour-note" style="background:linear-gradient(155deg,rgba(245,179,1,.14),rgba(56,189,248,.06));border-color:rgba(245,179,1,.32)">🇬🇧🚴 <b>The 2027 Tour de France starts in Britain.</b> The Grand Départ rolls out of <b>Edinburgh on Fri 2 July 2027</b>, with three days of racing across Scotland, the Lake District and Wales before transferring to France (finish: Paris, Sun 25 July). That's slap in the middle of your trip — so you can watch, or ride, without even crossing the Channel. <span style="color:var(--faint)">Full French route announced Oct 2026 — provisional until then.</span></div>`;
+  const stages=`<div class="section-label">Watch · the UK Grand Départ</div>
+    ${UK_STAGES.map(s=>`<div class="card block"><h3>🏁 ${s.route}</h3><div class="sub">${s.n} · roadside viewing is free</div><p>${s.desc}</p></div>`).join("")}
+    <div class="card block"><h3>⚠️ Mind the clash</h3><p>The UK stages (2–4 Jul) land on the <b>same weekend as the Silverstone GP and Wimbledon's first week</b> — a huge sporting weekend. Pick your battle: e.g. Stage 2 in the Lakes on the Saturday, or catch the peloton near a town start/finish. Get there early, grab a spot on a climb, and soak up the publicity caravan.</p></div>`;
+  const ukride=`<div class="section-label">Ride · in the UK</div>
+    <div class="card block"><h3>🚵 Ride the route</h3><ul class="tick">
+      <li><b>Lake District (Stage 2 country):</b> the classic passes — Honister, Newlands, Kirkstone — are short but savage; gentler lake-side loops around Derwentwater/Buttermere are just as stunning without the pain.</li>
+      <li><b>Scottish Borders (Stage 1):</b> quiet, rolling roads and big views — very rideable at a cruising pace.</li>
+      <li>Hire road or e-bikes in Keswick/Ambleside; the Tour will have signage and buzz all over these roads in 2027.</li>
+    </ul></div>`;
+  const climbs=`<div class="section-label">Ride · the iconic French climbs</div>
+    <div class="card"><p class="mini" style="margin:0 0 6px">Tourist pace, not race pace — pick a couple as bucket-list days. <span style="color:var(--f1);font-weight:700">● awesome/extreme</span> · <span style="color:var(--place);font-weight:700">● scenic/special</span></p></div>
+    ${CLIMBS.map(c=>`<div class="card block" style="border-left:3px solid ${c.tag==='awesome'?'var(--f1)':'var(--place)'}"><h3>${c.name} <span class="climbtag ${c.tag}">${c.tag==='awesome'?'awesome':'scenic'}</span></h3><div class="sub">${c.stat}</div><p>${c.why}</p></div>`).join("")}`;
+  const fit=`<div class="section-label">How to do it (avid ≠ race-fit)</div>
+    <div class="card block"><ul class="tick">
+      <li><b>Pick ONE marquee climb</b> and ride it at your own pace — the road doesn't care if you take 1 hour or 3; the summit selfie is the same.</li>
+      <li><b>An e-bike is no shame</b> — it turns Ventoux or the Alpe into a grin instead of a grovel, and keeps the group together.</li>
+      <li><b>Go supported.</b> A guided tour with a van (bags carried, snacks, a lift if the legs go) makes the big cols achievable and social.</li>
+      <li>Book a <b>hire bike ahead</b> (road/gravel/e-bike); bring your own pedals, shoes &amp; helmet if you can.</li>
+      <li>Fly home <b>open-jaw out of a French city</b> (see Flights) so the France leg is the grand finale.</li>
+    </ul></div>`;
+  const france=`<div class="section-label">France · the mountain stages (Ace's leg)</div>
+    <div class="card block"><h3>🇫🇷 Chase the high mountains</h3><p>After the British start the Tour transfers to France, where the race is won and lost in the <b>Alps and Pyrenees through mid-to-late July</b>, finishing on the Champs-Élysées on <b>Sunday 25 July 2027</b>. Perfect for Ace's longer 5-week trip: roadside on a mountain col is free and unforgettable — choose a climb, arrive early, and live the day.</p><p class="mini">Exact French stages, towns and dates land in <b>October 2026</b> — tell me then and I'll drop the specifics (and any climbs you want to ride) right in here.</p></div>`;
+  document.getElementById("letourBody").innerHTML=hero+stages+ukride+climbs+fit+france;
+}
+
+const R={tldr:renderTldr,schedule:renderSchedule,events:renderEvents,stays:renderStays,flights:renderFlights,budget:renderBudget,logistics:renderLogistics,explore:renderExplore,letour:renderLeTour};
 document.getElementById("tabs").addEventListener("click",e=>{ const b=e.target.closest("button"); if(b) switchTab(b.dataset.tab); });
 function switchTab(name){
   document.querySelectorAll("nav.tabs button").forEach(b=>b.classList.toggle("active",b.dataset.tab===name));
