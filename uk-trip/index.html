@@ -346,6 +346,29 @@
   .sheet .act2.danger{color:#fca5a5}
   .grab{width:40px;height:4px;border-radius:3px;background:var(--border2);margin:0 auto 16px}
 
+  /* welcome / how-to overlay */
+  .wel-bg{position:fixed;inset:0;z-index:95;background:rgba(8,8,14,.72);backdrop-filter:blur(4px);
+    display:grid;place-items:center;padding:20px;opacity:0;pointer-events:none;transition:.25s}
+  .wel-bg.show{opacity:1;pointer-events:auto}
+  .welcome{background:var(--card);border:1px solid var(--border2);border-radius:18px;max-width:430px;width:100%;
+    padding:22px 20px calc(20px + var(--safe-b));box-shadow:0 24px 60px rgba(0,0,0,.55);max-height:88vh;overflow:auto;
+    transform:translateY(14px) scale(.98);transition:.28s cubic-bezier(.3,.9,.3,1)}
+  .wel-bg.show .welcome{transform:none}
+  .welcome .wtag{font-size:10.5px;font-weight:800;letter-spacing:1.3px;text-transform:uppercase;color:var(--gold-soft)}
+  .welcome h2{font-size:22px;font-weight:800;letter-spacing:-.02em;margin:3px 0 5px}
+  .welcome .lead{font-size:13.5px;color:var(--muted);margin-bottom:14px}
+  .wstep{display:flex;gap:12px;align-items:flex-start;padding:10px 0;border-bottom:1px solid var(--border)}
+  .wstep:last-of-type{border-bottom:none}
+  .wstep .wico{width:34px;height:34px;border-radius:9px;background:var(--card2);border:1px solid var(--border);
+    display:grid;place-items:center;color:var(--gold-soft);flex:none}
+  .wstep .wico svg.i{width:18px;height:18px}
+  .wstep .wb{font-size:12.5px;color:var(--muted);padding-top:3px}
+  .wstep .wb b{color:var(--text)}
+  .wnote{font-size:11.5px;color:var(--faint);line-height:1.55;margin:14px 0 16px}
+  .wbtn{width:100%;background:var(--gold);color:#241900;border:none;border-radius:12px;padding:14px;font-weight:800;font-size:15px}
+  .wbtn:active{transform:scale(.99)}
+  .wreopen{text-align:center;font-size:11px;color:var(--faint);margin-top:11px}
+
   /* oxford tour */
   .tour-note{background:linear-gradient(155deg,rgba(56,189,248,.12),rgba(56,189,248,.03));border:1px solid rgba(56,189,248,.32);
     border-radius:12px;padding:14px;margin-bottom:18px;font-size:12.5px;color:var(--text)}
@@ -532,12 +555,28 @@
   <div class="grab"></div>
   <h3>Trip options</h3>
   <p>Your plan is saved on this device. Share it so the group sees the same picks.</p>
+  <button class="act2" id="actHelp">❓ How to use this app</button>
   <button class="act2" id="actShare">🔗 Copy shareable link</button>
   <button class="act2" id="actExport">⬇️ Export plan (JSON file)</button>
   <button class="act2" id="actImport">⬆️ Import a plan</button>
   <button class="act2" id="actInstall">📲 Install app to home screen</button>
   <button class="act2 danger" id="actReset">↺ Reset to default plan</button>
   <input type="file" id="fileIn" accept="application/json" hidden>
+</div>
+
+<div class="wel-bg" id="welBg">
+  <div class="welcome">
+    <span class="wtag">Welcome aboard</span>
+    <h2>🏏 Raising the Bat</h2>
+    <p class="lead">Our shared planner for the 2027 UK sporting tour — cricket, mates &amp; a few 50ths. Here's the lay of the land:</p>
+    <div class="wstep"><div class="wico"><svg class="i"><use href="#n-events"/></svg></div><div class="wb"><b>Events — start here.</b> Tick the events you fancy, pick the days, and choose who's going to each.</div></div>
+    <div class="wstep"><div class="wico"><svg class="i"><use href="#n-schedule"/></svg></div><div class="wb"><b>Schedule.</b> Your itinerary builds itself — view it by date or per person — plus a smart booking plan.</div></div>
+    <div class="wstep"><div class="wico"><svg class="i"><use href="#n-tldr"/></svg></div><div class="wb"><b>Tracker.</b> A live countdown of ballot &amp; ticket-sale deadlines, with calendar reminders you can share out.</div></div>
+    <div class="wstep"><div class="wico"><svg class="i"><use href="#n-explore"/></svg></div><div class="wb"><b>Stays, Flights, Travel &amp; Explore.</b> Ideas, tips, and a personal Oxford tour.</div></div>
+    <p class="wnote">Everything you tick saves on your device. Tap <b>⋯ → Copy link</b> to send the group your picks. Dates marked <i>provisional</i> firm up as 2027 schedules are confirmed.</p>
+    <button class="wbtn" id="welGo">Got it — let's plan →</button>
+    <div class="wreopen">You can reopen this anytime from the ⋯ menu</div>
+  </div>
 </div>
 
 <script>
@@ -1361,10 +1400,21 @@ document.getElementById("actReset").addEventListener("click",()=>{ if(confirm("R
 let deferredPrompt=null; window.addEventListener("beforeinstallprompt",e=>{ e.preventDefault(); deferredPrompt=e; });
 document.getElementById("actInstall").addEventListener("click",()=>{ if(deferredPrompt){ deferredPrompt.prompt(); deferredPrompt=null; closeSheet(); } else toast("On iPhone: Share → Add to Home Screen"); });
 
+/* ============ welcome / how-to ============ */
+const INTRO_KEY="rtb_intro_v1";
+const welBg=document.getElementById("welBg");
+function showWelcome(){ welBg.classList.add("show"); }
+function hideWelcome(){ welBg.classList.remove("show"); try{localStorage.setItem(INTRO_KEY,"1");}catch(e){} }
+document.getElementById("welGo").addEventListener("click",hideWelcome);
+welBg.addEventListener("click",e=>{ if(e.target===welBg) hideWelcome(); });
+document.getElementById("actHelp").addEventListener("click",()=>{ closeSheet(); showWelcome(); });
+
 /* ============ boot ============ */
 (function boot(){
   if(location.hash.startsWith("#plan=")){ try{ const inc=decodeState(location.hash.slice(6)); if(confirm("Open the shared trip plan? This replaces the plan on this device.")){ S=migrate(inc); save(); } }catch(e){} history.replaceState(null,"",location.pathname); }
   renderTldr();
+  let seen; try{ seen=localStorage.getItem(INTRO_KEY); }catch(e){}
+  if(!seen) setTimeout(showWelcome,400);
 })();
 if("serviceWorker" in navigator && location.protocol.startsWith("http")){ window.addEventListener("load",()=>navigator.serviceWorker.register("sw.js").catch(()=>{})); }
 </script>
