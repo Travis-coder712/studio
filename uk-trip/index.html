@@ -17,13 +17,13 @@
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap">
 <style>
   :root{
-    --bg:#0f1727; --bg2:#141d30; --card:#18233a; --card2:#202c47;
-    --border:#2a3650; --border2:#39476a;
-    --text:#eef2f8; --muted:#9caac0; --faint:#6e7c96;
+    --bg:#141522; --bg2:#1a1b2b; --card:#1e2033; --card2:#282a42;
+    --border:#33354f; --border2:#454869;
+    --text:#f3f0ea; --muted:#a8a4b6; --faint:#78748c;
     --gold:#f5b301; --gold-soft:#ffce4a;
-    --cricket:#34d399; --tennis:#a78bfa; --f1:#fb5b6d; --golf:#f6a723; --place:#38bdf8; --home:#64748b;
-    --ok:#34d399; --warn:#fbbf24; --bad:#f87171; --info:#60a5fa;
-    --shadow:0 4px 16px rgba(0,0,0,.25);
+    --cricket:#34d399; --tennis:#b48bff; --f1:#fb5b6d; --golf:#f6a723; --place:#48b6f0; --home:#7c7891;
+    --ok:#34d399; --warn:#fbbf24; --bad:#f8817c; --info:#6aa8f0;
+    --shadow:0 6px 20px rgba(0,0,0,.32);
     --r:12px; --r-sm:9px;
     --safe-b: env(safe-area-inset-bottom, 0px);
   }
@@ -32,7 +32,10 @@
     font-family:'Inter',-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;
     -webkit-font-smoothing:antialiased;-moz-osx-font-smoothing:grayscale;line-height:1.5;letter-spacing:-.01em}
   body{min-height:100dvh;padding-bottom:30px;
-    background-image:radial-gradient(1100px 440px at 50% -160px,rgba(70,105,170,.18),transparent 70%);background-attachment:fixed}
+    background-image:radial-gradient(1150px 480px at 50% -170px,rgba(245,179,1,.13),transparent 72%),radial-gradient(900px 520px at 88% 6%,rgba(150,105,180,.10),transparent 70%);
+    background-attachment:fixed}
+  .bgart{position:fixed;inset:0;z-index:-1;pointer-events:none;opacity:.055}
+  .bgart svg{width:100%;height:100%;display:block}
   a{color:var(--gold-soft);text-decoration:none}
   button{font-family:inherit;cursor:pointer}
   .serif{font-family:Georgia,"Times New Roman",serif}
@@ -40,12 +43,12 @@
   ::-webkit-scrollbar{width:7px;height:7px}
   ::-webkit-scrollbar-thumb{background:var(--border2);border-radius:4px}
 
-  .topbar{position:sticky;top:0;z-index:40;background:rgba(15,23,39,.86);
+  .topbar{position:sticky;top:0;z-index:40;background:rgba(20,21,34,.82);
     backdrop-filter:saturate(150%) blur(12px);border-bottom:1px solid var(--border)}
   header{padding:11px 16px 7px;max-width:900px;margin:0 auto}
   .brand{display:flex;align-items:center;gap:11px}
   .roundel{width:40px;height:40px;border-radius:11px;flex:none;
-    background:linear-gradient(150deg,#22304c,#141d30);border:1.5px solid var(--gold);display:grid;place-items:center}
+    background:linear-gradient(150deg,#312c4a,#1a1b2b);border:1.5px solid var(--gold);display:grid;place-items:center}
   .roundel b{font-family:Georgia,serif;font-size:18px;color:var(--gold-soft);line-height:1}
   .brand h1{font-size:16.5px;font-weight:800;letter-spacing:-.02em}
   .brand .sub{font-size:11px;color:var(--muted);font-weight:500;letter-spacing:0}
@@ -217,6 +220,31 @@
   .empty .big{font-size:36px;margin-bottom:10px}
   .flexbucket{background:linear-gradient(160deg,rgba(56,189,248,.08),transparent);border:1px dashed rgba(56,189,248,.35)}
 
+  /* attendee chips (events tab) */
+  .attendees{margin-top:13px;padding-top:13px;border-top:1px dashed var(--border)}
+  .att-label{font-size:11px;color:var(--faint);font-weight:700;text-transform:uppercase;letter-spacing:.5px;margin-bottom:8px}
+  .att-chips{display:flex;flex-wrap:wrap;gap:7px}
+  .attchip{display:inline-flex;align-items:center;gap:6px;border:1px solid var(--border2);background:var(--card2);
+    color:var(--muted);border-radius:20px;padding:6px 11px;font-size:12px;font-weight:700}
+  .attchip .d3{width:9px;height:9px;border-radius:50%;background:var(--border2);transition:.15s}
+  .attchip.on{border-color:var(--c);color:var(--text)}
+  .attchip.on .d3{background:var(--c);box-shadow:0 0 7px var(--c)}
+  .attchip:active{transform:scale(.96)}
+
+  /* itinerary view toggle + per-person */
+  .ivtoggle{display:inline-flex;background:var(--bg2);border:1px solid var(--border2);border-radius:10px;padding:3px;gap:3px;margin-bottom:12px}
+  .ivtoggle button{background:none;border:none;color:var(--muted);font-weight:700;font-size:12px;padding:7px 14px;border-radius:7px}
+  .ivtoggle button.on{background:var(--gold);color:#241900}
+  .person-block{background:var(--card);border:1px solid var(--border);border-radius:12px;padding:13px 14px;margin-bottom:11px;box-shadow:var(--shadow)}
+  .person-head{display:flex;align-items:center;gap:8px;font-weight:800;font-size:15px;padding-bottom:9px;margin-bottom:4px;border-bottom:1px solid var(--border)}
+  .person-head .pcount{margin-left:auto;font-size:10.5px;font-weight:700;color:var(--faint);text-transform:uppercase;letter-spacing:.4px}
+  .pl-item{display:flex;align-items:center;gap:10px;padding:7px 0;border-bottom:1px solid var(--border)}
+  .pl-item:last-child{border-bottom:none}
+  .pl-date{font-size:11px;font-weight:800;color:var(--gold-soft);width:52px;flex:none}
+  .pl-item .em{display:flex}.pl-item .em svg.i{width:17px;height:17px}
+  .pl-nm{font-size:13px;font-weight:600}
+  .pl-empty{font-size:12px;color:var(--faint);padding:6px 0}
+
   /* command centre / booking plan */
   .reco{background:linear-gradient(155deg,rgba(245,179,1,.14),rgba(245,179,1,.03));border:1px solid rgba(245,179,1,.32);
     border-radius:14px;padding:15px;margin-bottom:16px}
@@ -343,6 +371,22 @@
 </style>
 </head>
 <body>
+
+<div class="bgart" aria-hidden="true">
+  <svg viewBox="0 0 1440 1024" preserveAspectRatio="xMidYMid slice" xmlns="http://www.w3.org/2000/svg">
+    <g fill="none" stroke="#f5b301" stroke-width="1.4">
+      <path d="M-80,60 C260,105 560,15 860,60 S1320,105 1540,60"/>
+      <path d="M-80,180 C260,135 560,225 860,180 S1320,135 1540,180"/>
+      <path d="M-80,300 C260,345 560,255 860,300 S1320,345 1540,300"/>
+      <path d="M-80,420 C260,375 560,465 860,420 S1320,375 1540,420"/>
+      <path d="M-80,540 C260,585 560,495 860,540 S1320,585 1540,540"/>
+      <path d="M-80,660 C260,615 560,705 860,660 S1320,615 1540,660"/>
+      <path d="M-80,780 C260,825 560,735 860,780 S1320,825 1540,780"/>
+      <path d="M-80,900 C260,855 560,945 860,900 S1320,855 1540,900"/>
+      <path d="M-80,1020 C260,1065 560,975 860,1020 S1320,1065 1540,1020"/>
+    </g>
+  </svg>
+</div>
 
 <svg width="0" height="0" style="position:absolute" aria-hidden="true">
   <symbol id="n-tldr" viewBox="0 0 24 24"><rect x="8" y="3" width="8" height="4" rx="1"/><path d="M9 5H6a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V7a2 2 0 0 0-2-2h-3"/><path d="M8 11h8M8 15h6"/></symbol>
@@ -608,7 +652,7 @@ function defaultState(){
       {id:"t3", name:"Friend 1", color:"#c084fc", arrive:"2027-06-28", depart:"2027-07-19"},
       {id:"t4", name:"Friend 2", color:"#38bdf8", arrive:"2027-07-01", depart:"2027-07-22"}
     ],
-    ui:{ filter:"all", itinFilter:"all", seg:"plan", eseg:"uk" },
+    ui:{ filter:"all", itinFilter:"all", itinView:"date", seg:"plan", eseg:"uk" },
     tracker:{}, tour:{}
   };
 }
@@ -620,7 +664,7 @@ function migrate(s){
   const byId=Object.fromEntries((s.events||[]).map(e=>[e.id,e]));
   def.events=def.events.map(de=>{ const ue=byId[de.id];
     // keep user selections/edits but always refresh static content (note/tk/venue)
-    return ue ? {...de, include:ue.include, days:ue.days||[], start:ue.start||de.start, end:ue.end||de.end, flexDate:ue.flexDate||de.flexDate, nights:ue.nights||de.nights} : de; });
+    return ue ? {...de, include:ue.include, days:ue.days||[], start:ue.start||de.start, end:ue.end||de.end, flexDate:ue.flexDate||de.flexDate, nights:ue.nights||de.nights, ...(Array.isArray(ue.who)?{who:ue.who}:{})} : de; });
   (s.events||[]).forEach(e=>{ if(!def.events.find(x=>x.id===e.id)) def.events.push(e); });
   if(s.travellers) def.travellers=s.travellers;
   if(s.ui) def.ui={...def.ui, ...s.ui};
@@ -642,6 +686,10 @@ function fmtRange(a,b){ if(!a) return "Flexible"; if(a===b||!b) return fmt(a); c
 function eachDay(a,b){ const out=[]; if(!a) return out; let d=parse(a); const e=parse(b||a); while(d<=e){ out.push(iso(d)); d=new Date(d.getTime()+864e5); } return out; }
 function daysBetween(a,b){ return Math.round((parse(b)-parse(a))/864e5); }
 function inWindow(date,t){ if(!date||!t.arrive||!t.depart) return false; return date>=t.arrive && date<=t.depart; }
+/* attendees: explicit per-event selection, defaulting to whoever's date-window covers it */
+function eventDates(e){ if(e.flexible) return e.flexDate?eachDay(e.flexDate, iso(new Date(parse(e.flexDate).getTime()+(((e.nights||1)-1)*864e5)))):[]; const dd=eachDay(e.start,e.end); return e.days.length?e.days:dd; }
+function defaultAttendees(e){ const dates=eventDates(e); if(!dates.length) return S.travellers.map(t=>t.id); return S.travellers.filter(t=>dates.some(d=>inWindow(d,t))).map(t=>t.id); }
+function attendeesOf(e){ return Array.isArray(e.who) ? e.who.filter(id=>S.travellers.some(t=>t.id===id)) : defaultAttendees(e); }
 function esc(s){ return (s||"").replace(/"/g,"&quot;"); }
 
 /* ============ EVENTS TAB ============ */
@@ -676,6 +724,11 @@ function evtCard(e){
   const tk=e.tk?TK[e.tk]:null;
   const tkHtml = tk ? `<button class="tkbtn" data-tk="${e.id}">🎟️ Tickets &amp; how to get them ▾</button>
     <div class="tkbody" id="tk-${e.id}">${ticketIntel(e,tk)}</div>` : "";
+  const goingIds=e.include?attendeesOf(e):[];
+  const att = e.include ? `<div class="attendees"><div class="att-label">Who's going?</div><div class="att-chips">${
+    S.travellers.map(t=>{ const on=goingIds.includes(t.id);
+      return `<button class="attchip ${on?'on':''}" data-att="${e.id}|${t.id}" style="--c:${t.color}"><span class="d3"></span>${t.name}</button>`; }).join("")
+    }</div></div>` : "";
   return `<div class="card ${e.include?'on':''}">
     <div class="evt-top">
       <div class="evt-ic" style="border-color:${c.color}55">${catIcon(e.cat)}</div>
@@ -687,7 +740,7 @@ function evtCard(e){
       <label class="switch"><input type="checkbox" data-inc="${e.id}" ${e.include?'checked':''}><span class="slider"></span></label>
     </div>
     <div class="mini">${e.note}</div>
-    ${daysHtml}${tkHtml}
+    ${daysHtml}${att}${tkHtml}
   </div>`;
 }
 function ticketIntel(e,tk){
@@ -906,35 +959,51 @@ function renderItinerary(){
     <div class="stat"><div class="n">${new Set(items.map(i=>i.e.id)).size}</div><div class="l">Events</div></div>
     <div class="stat"><div class="n">${cities.size}</div><div class="l">Places</div></div>
     <div class="stat"><div class="n">${span||'—'}</div><div class="l">Day span</div></div></div>`;
+  const view=S.ui.itinView||"date";
+  const toggle=`<div class="ivtoggle"><button data-iv="date" class="${view==='date'?'on':''}">By date</button><button data-iv="person" class="${view==='person'?'on':''}">By person</button></div>`;
+
+  if(!items.length){ host.innerHTML=toggle+stats+`<div class="empty"><div class="big">🗓️</div>No events picked yet.<br>Head to <b>Events</b> and tick what you fancy.</div>`; return; }
+  if(view==="person"){ host.innerHTML=toggle+stats+renderByPerson(items); return; }
+
   const fb=`<div class="filterbar" id="itinFilter">${
     [`<button class="fchip ${S.ui.itinFilter==='all'?'active':''}" data-if="all">✦ Everyone</button>`]
     .concat(S.travellers.map(t=>`<button class="fchip ${S.ui.itinFilter===t.id?'active':''}" data-if="${t.id}"><span class="dot" style="color:${t.color};width:9px;height:9px"></span>${t.name}</button>`)).join("")}</div>`;
-
-  if(!items.length){ host.innerHTML=fb+stats+`<div class="empty"><div class="big">🗓️</div>No events picked yet.<br>Head to <b>Events</b> and tick what you fancy.</div>`; return; }
-
   const flt=S.ui.itinFilter, travById=Object.fromEntries(S.travellers.map(t=>[t.id,t]));
   const floating=items.filter(i=>i.floating);
   let dItems=items.filter(i=>i.date);
-  if(flt!=="all"){ const t=travById[flt]; dItems=dItems.filter(i=> i.flexible?true:inWindow(i.date,t)); }
+  if(flt!=="all") dItems=dItems.filter(i=>attendeesOf(i.e).includes(flt));
   dItems.sort((a,b)=> a.date.localeCompare(b.date)||a.e.name.localeCompare(b.e.name));
   const byDate={}; dItems.forEach(i=>{ (byDate[i.date]=byDate[i.date]||[]).push(i); });
   let html="";
   Object.keys(byDate).sort().forEach(date=>{
     const day=byDate[date]; const cityset=new Set(day.map(i=>i.e.city)); const dt=parse(date);
     html+=`<div class="tl-day"><div class="tl-date"><span class="d">${fmt(date)}</span><span class="wk">${dt.getFullYear()}</span><span class="ln"></span></div>`;
-    if(cityset.size>1) html+=`<div class="clash">⚠️ Two places on one day (${[...cityset].join(" & ")}) — you'll need to choose.</div>`;
+    if(cityset.size>1) html+=`<div class="clash">⚠️ Two places on one day (${[...cityset].join(" & ")}) — someone will have to choose.</div>`;
     day.forEach(i=>{ const c=CATS[i.e.cat];
-      const present=S.travellers.filter(t=> i.flexible?true:inWindow(date,t));
-      const who=present.length?present.map(t=>`<span class="p"><span class="d2" style="background:${t.color}"></span>${t.name}</span>`).join("")
-        :`<span class="p" style="color:var(--bad)">Nobody's window covers this day</span>`;
+      const going=attendeesOf(i.e).map(id=>travById[id]).filter(Boolean);
+      const who=going.length?going.map(t=>`<span class="p"><span class="d2" style="background:${t.color}"></span>${t.name}</span>`).join("")
+        :`<span class="p" style="color:var(--bad)">No-one assigned yet</span>`;
       const sub=i.flexible?`${i.e.venue} · night ${i.nightNo}/${i.nights}`:i.e.venue;
       html+=`<div class="tl-item" style="border-left-color:${c.color}"><div class="r1"><span class="em">${catIcon(i.e.cat)}</span><span class="nm">${i.e.name}</span></div><div class="tl-loc">📍 ${sub}</div><div class="who">${who}</div></div>`; });
     html+=`</div>`;
   });
-  if(floating.length){ html+=`<div class="tl-day"><div class="tl-date"><span class="d">Flexible — to slot in</span><span class="ln"></span></div>`;
-    floating.forEach(i=>{ const c=CATS[i.e.cat]; html+=`<div class="tl-item flexbucket" style="border-left-color:${c.color}"><div class="r1"><span class="em">${catIcon(i.e.cat)}</span><span class="nm">${i.e.name}</span></div><div class="tl-loc">📍 ${i.e.venue} · ${i.e.nights||2} nights · set a date in Events to place it</div></div>`; });
+  const fl=floating.filter(i=>flt==="all"||attendeesOf(i.e).includes(flt));
+  if(fl.length){ html+=`<div class="tl-day"><div class="tl-date"><span class="d">Flexible — to slot in</span><span class="ln"></span></div>`;
+    fl.forEach(i=>{ const c=CATS[i.e.cat]; html+=`<div class="tl-item flexbucket" style="border-left-color:${c.color}"><div class="r1"><span class="em">${catIcon(i.e.cat)}</span><span class="nm">${i.e.name}</span></div><div class="tl-loc">📍 ${i.e.venue} · ${i.e.nights||2} nights · set a date in Events to place it</div></div>`; });
     html+=`</div>`; }
-  host.innerHTML=fb+stats+html;
+  host.innerHTML=toggle+fb+stats+html;
+}
+function renderByPerson(items){
+  return S.travellers.map(t=>{
+    const theirs=items.filter(i=>attendeesOf(i.e).includes(t.id));
+    const dated=theirs.filter(i=>i.date).sort((a,b)=>a.date.localeCompare(b.date));
+    const flex=theirs.filter(i=>i.floating);
+    const dayCount=new Set(dated.map(i=>i.date)).size;
+    let rows=dated.map(i=>`<div class="pl-item"><span class="pl-date">${fmtShort(i.date)}</span><span class="em">${catIcon(i.e.cat)}</span><span class="pl-nm">${i.e.name}</span></div>`).join("");
+    rows+=flex.map(i=>`<div class="pl-item"><span class="pl-date">flex</span><span class="em">${catIcon(i.e.cat)}</span><span class="pl-nm">${i.e.name}</span></div>`).join("");
+    if(!theirs.length) rows=`<div class="pl-empty">Not going to anything yet — assign them under each event in the Events tab.</div>`;
+    return `<div class="person-block"><div class="person-head"><span class="dot" style="color:${t.color}"></span>${t.name}<span class="pcount">${dayCount} event day${dayCount!==1?'s':''}</span></div>${rows}</div>`;
+  }).join("");
 }
 function renderTravellers(){
   const host=document.getElementById("sch-trav");
@@ -1241,12 +1310,14 @@ document.addEventListener("click",e=>{
   if(go){ if(go.dataset.seg){ S.ui.seg=go.dataset.seg; save(); } switchTab(go.dataset.goto); return; }
   const stp=e.target.closest("[data-stop]");
   if(stp){ const id=stp.dataset.stop; if(S.tour[id]) delete S.tour[id]; else S.tour[id]=true; save(); renderOxford(); return; }
-  const t=e.target.closest("[data-day],[data-f],[data-if],[data-tdel],[data-seg],[data-eseg],#addTrav");
+  const t=e.target.closest("[data-day],[data-att],[data-f],[data-if],[data-iv],[data-tdel],[data-seg],[data-eseg],#addTrav");
   if(!t) return;
   if(t.id==="addTrav"){ const cols=["#f5b301","#4ade80","#c084fc","#38bdf8","#f472b6","#fb923c","#22d3ee","#a3e635"]; S.travellers.push({id:"t"+Date.now(),name:"New traveller",color:cols[S.travellers.length%cols.length],arrive:"2027-06-28",depart:"2027-07-12"}); save(); renderTravellers(); return; }
   if(t.dataset.day!==undefined){ const [id,day]=t.dataset.day.split("|"); const ev=S.events.find(x=>x.id===id); let set=new Set(ev.days.length?ev.days:eachDay(ev.start,ev.end)); set.has(day)?set.delete(day):set.add(day); ev.days=[...set].sort(); save(); renderEvents(); return; }
+  if(t.dataset.att!==undefined){ const [id,tid]=t.dataset.att.split("|"); const ev=S.events.find(x=>x.id===id); let set=new Set(attendeesOf(ev)); set.has(tid)?set.delete(tid):set.add(tid); ev.who=[...set]; save(); renderEvents(); return; }
   if(t.dataset.f!==undefined){ S.ui.filter=t.dataset.f; save(); renderEvents(); return; }
   if(t.dataset.if!==undefined){ S.ui.itinFilter=t.dataset.if; save(); renderItinerary(); return; }
+  if(t.dataset.iv!==undefined){ S.ui.itinView=t.dataset.iv; save(); renderItinerary(); return; }
   if(t.dataset.seg!==undefined){ S.ui.seg=t.dataset.seg; save(); renderSchedule(); return; }
   if(t.dataset.eseg!==undefined){ S.ui.eseg=t.dataset.eseg; save(); renderExplore(); return; }
   if(t.dataset.tdel!==undefined){ if(S.travellers.length<=1){ toast("Keep at least one traveller"); return; } S.travellers=S.travellers.filter(x=>x.id!==t.dataset.tdel); save(); renderTravellers(); return; }
@@ -1271,7 +1342,7 @@ function b64e(str){ return btoa(unescape(encodeURIComponent(str))).replace(/\+/g
 function b64d(s){ s=s.replace(/-/g,"+").replace(/_/g,"/"); while(s.length%4) s+="="; return decodeURIComponent(escape(atob(s))); }
 /* Only serialise the user's choices (not the static event text) → short, URL-safe link */
 function shareState(){ return {
-  events:S.events.map(e=>({id:e.id,include:e.include,days:e.days,start:e.start,end:e.end,flexDate:e.flexDate,nights:e.nights})),
+  events:S.events.map(e=>({id:e.id,include:e.include,days:e.days,start:e.start,end:e.end,flexDate:e.flexDate,nights:e.nights,who:e.who})),
   travellers:S.travellers, tracker:S.tracker, ui:S.ui }; }
 function encodeState(){ return b64e(JSON.stringify(shareState())); }
 function decodeState(s){ return JSON.parse(b64d(s)); }
