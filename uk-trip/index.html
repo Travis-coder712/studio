@@ -1156,6 +1156,27 @@ const CYCLE_ROUTE=[
   "Past the <b>Turf Tavern</b>, the <b>Bodleian Library</b>, and up to the <b>Museum</b> (Natural History / Pitt Rivers).",
   "Down past the riverside college, the <b>Isis</b> and the bridge — then back to <b>Cowley</b> where you started."
 ];
+/* A curated, ordered, guided pub crawl — St Giles down to the river */
+const CRAWL=[
+  {id:"pub-eagle",name:"The Eagle and Child",period:"St Giles",q:"The Eagle and Child, Oxford",
+   desc:"Start north at the 'Bird & Baby'. From the 1930s–60s the Inklings — Tolkien, C.S. Lewis and friends — met in the back Rabbit Room to read early drafts of The Hobbit and Narnia."},
+  {id:"pub-lamb",name:"The Lamb & Flag",period:"St Giles · opposite",q:"The Lamb and Flag, Oxford",
+   desc:"Straight across the road — where the Inklings decamped when the Eagle got too busy. Licensed since 1613; its profits long funded graduate scholarships."},
+  {id:"pub-ka",name:"The King's Arms",period:"Holywell St",q:"The Kings Arms, Oxford",
+   desc:"The 'KA', licensed in 1607. Once said to hold the highest IQ per square foot of any pub in the world; women weren't served in the back bar until 1973."},
+  {id:"pub-white",name:"The White Horse",period:"Broad St",q:"The White Horse, Broad Street, Oxford",
+   desc:"A tiny single-room 16th-century squeeze wedged between the Blackwell's shops — and a favourite Inspector Morse filming spot."},
+  {id:"pub-turf",name:"The Turf Tavern",period:"St Helen's Passage",q:"Turf Tavern, Oxford",
+   desc:"Hidden down a medieval alley against the old city wall, parts 13th-century. 'An education in intoxication' — a young Bill Clinton reputedly 'did not inhale' here."},
+  {id:"pub-bear",name:"The Bear Inn",period:"Alfred St",q:"The Bear Inn, Oxford",
+   desc:"One of Oxford's oldest pubs, trading since 1242. Thousands of snipped-off club and regimental ties line the walls — donate yours for a possible free half."},
+  {id:"pub-chequers",name:"The Chequers",period:"off High St",q:"The Chequers, Oxford",
+   desc:"Down a narrow passage off the High, a 16th-century inn around a medieval money-changer's courtyard (hence the name)."},
+  {id:"pub-crown",name:"The Crown",period:"Cornmarket",q:"The Crown, Cornmarket, Oxford",
+   desc:"A 16th-century coaching inn up an alley; Shakespeare is said to have lodged next door on his trips between Stratford and London."},
+  {id:"pub-head",name:"The Head of the River",period:"Folly Bridge",q:"The Head of the River, Oxford",
+   desc:"Finish by the Thames in a converted wharf warehouse — watch the rowers and punts drift by with a riverside pint as the sun drops."}
+];
 function oxStop(o,i){ const d=!!S.tour[o.id];
   return `<div class="stop ${d?'done':''}">
     <div class="stopnum">${d?'✓':i+1}</div>
@@ -1175,11 +1196,10 @@ function renderOxford(){
   const lived=`<div class="section-label">Where we lived · 2001–05</div><div class="card">${RESIDENCES.map(oxStop).join("")}</div>`;
   const cycle=`<div class="section-label">The river cycle loop</div><div class="card block"><h3>🚲 The old ride</h3><div class="sub">Combines with the 'where we lived' stops — Jericho, Botley, Wolvercote &amp; Iffley all sit on or near it</div><ul class="tick">${CYCLE_ROUTE.map(s=>`<li>${s}</li>`).join("")}</ul><p class="mini">Oxford is flat and bike-mad — hire wheels for the day and do the residence tour on two wheels.</p></div>`;
   const walk=`<div class="section-label">The dreaming-spires walk</div><div class="card">${OXFORD_TOUR.map(oxStop).join("")}</div>`;
-  const key=[["Turf Tavern","Turf Tavern, Oxford"],["The Bear Inn","The Bear Inn, Oxford"],["Eagle and Child","The Eagle and Child, Oxford"]];
-  const pubs=`<div class="section-label">Pubs to plan around</div><div class="card block"><h3>🍺 The three to build around</h3>
-    <ul class="tick">${key.map(p=>`<li><b>${p[0]}</b> · ${mapChip(p[1])}</li>`).join("")}</ul>
-    <p class="mini"><b>Your old locals</b> (from the stories, worth a sentimental pint): The Gardener's Arms (Jericho) · The Perch &amp; The Trout (Port Meadow/Wolvercote) · the Bookbinders Arms (Jericho) · The White Hart (Wolvercote) · The George (Botley) · the Magdalen Arms (Iffley).</p>
-    <p class="mini">🏆 <b>The legendary Z–A crawl</b> — 26 pubs, all half-pints. Tell me which of my 15 suggested historic pubs were on the list and I'll rebuild the route right here. (A Bath crawl's on the cards too.)</p></div>`;
+  const pubs=`<div class="section-label">The Oxford pub crawl</div>
+    <div class="card block" style="margin-bottom:11px"><h3>🍺 A guided crawl — north down to the river</h3><div class="sub">Nine historic pubs, walkable in order from St Giles to Folly Bridge — your three anchors (Turf, Bear, Eagle &amp; Child) are all on it. Half-pints recommended.</div></div>
+    <div class="card">${CRAWL.map(oxStop).join("")}</div>
+    <div class="card block"><h3>Your old locals</h3><p class="mini">Further out but worth a sentimental pint: The Gardener's Arms (Jericho) · The Perch (Binsey) &amp; The Trout (Wolvercote) · the Bookbinders (Jericho) · The White Hart (Wolvercote) · The George (Botley) · the Magdalen Arms (Iffley).</p><p class="mini">Send any favourites from the old Z–A crawl and I'll swap them into the route.</p></div>`;
   const extras=`<div class="section-label">Two nostalgic extras</div>
     <div class="card block"><h3>🏏 Cricket in the Parks</h3><p>The visiting-county warm-up you remember has sadly ended — Oxford lost first-class status in <b>2021</b>. But <b>free</b> cricket still runs in University Parks from ~<b>April to late June</b> (Blues, Varsity, MCC/Arabs). Your late-June window <i>might</i> catch the tail of the season; a July visit likely misses the university term. Check <a href="https://cricketintheparks.org.uk/" target="_blank" rel="noopener">cricketintheparks.org.uk</a> nearer the time — and you can wander in and watch for free.</p></div>
     <div class="card block"><h3>🎾 Grass tennis in the Parks</h3><p>Good news for you &amp; Wenners — the <b>8 grass courts</b> in University Parks are up <b>April–September</b>, playable 10am–8pm daily, so <b>July works</b>. It's members-only (you can join the Oxford University Parks Tennis Association as a visitor) and <b>whites are required</b>.</p></div>`;
