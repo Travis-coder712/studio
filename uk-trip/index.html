@@ -314,6 +314,22 @@
   .calrow:last-child{border-bottom:none}
   .calrow .mo{font-size:11px;font-weight:800;color:var(--gold-soft);width:84px;flex:none;text-transform:uppercase;letter-spacing:.3px}
   .calrow .ev{font-size:12.5px;color:var(--muted)}
+  /* fare benchmark gauge + table */
+  .gauge-row{display:flex;gap:11px;align-items:flex-start;padding:8px 0;border-bottom:1px solid var(--border)}
+  .gauge-row:last-child{border-bottom:none}
+  .gauge-bar{width:5px;align-self:stretch;border-radius:3px;flex:none;min-height:34px}
+  .gauge-k{font-size:13px;font-weight:800}
+  .gauge-d{font-size:12px;color:var(--muted);margin-top:2px}
+  .bench-head{display:flex;justify-content:space-between;font-size:10px;font-weight:800;letter-spacing:.4px;
+    text-transform:uppercase;color:var(--faint);padding-bottom:8px;border-bottom:1px solid var(--border2);margin-bottom:2px}
+  .bench-row{display:grid;grid-template-columns:1fr auto;gap:3px 10px;padding:10px 0;border-bottom:1px solid var(--border)}
+  .bench-air{font-size:13.5px;font-weight:600}
+  .bench-air span{color:var(--muted);font-weight:400;font-size:12px;margin-left:5px}
+  .bench-price{font-size:13px;font-weight:800;color:var(--gold-soft);white-space:nowrap;text-align:right}
+  .bench-note{grid-column:1/-1;font-size:11.5px;color:var(--muted);margin-top:1px}
+  .stop-badge{font-size:8.5px;font-weight:900;letter-spacing:.4px;padding:3px 6px;border-radius:6px}
+  .stop-badge.sf{background:rgba(52,211,153,.16);color:#5fe0ad}
+  .stop-badge.sc{background:rgba(245,179,1,.16);color:var(--gold-soft)}
 
   /* generic content blocks (logistics/explore) */
   .block h3{font-size:15px;font-weight:750;display:flex;align-items:center;gap:8px}
@@ -519,6 +535,11 @@
       <div class="est-out"><div class="pp">Return per person ≈ <b id="estPP">—</b></div><div class="total" id="estTotal">—</div><div class="tl2">estimated group total (return)</div></div>
       <p class="est-note" id="estNote"></p>
     </div>
+    <div class="section-label">Is it a good deal? — fare benchmarks</div>
+    <div class="card" id="benchGauge"></div>
+    <div class="card" id="benchTable"></div>
+    <div class="section-label">Stopovers — get put up, often free</div>
+    <div class="card" id="stopovers"></div>
     <div class="section-label">Tricks to keep it down</div>
     <div class="card" id="tipsList"></div>
     <div class="section-label">When the specials land</div>
@@ -1112,10 +1133,44 @@ const ROUTES=[
   {n:"Qantas one-stop",d:"MEL–London via Perth or Singapore. Premium price but single airline & alliance points; watch for nonstop 'Project Sunrise' options nearer 2027."}
 ];
 const FARES={eco:[2200,2800],prem:[4000,5500],biz:[8500,12000]};
+/* Benchmark: indicative PEAK-summer (Jun-Aug) return ECONOMY, MEL<->London, per person, A$ */
+const BENCH=[
+  {air:"China Southern", via:"Guangzhou", lo:1700, hi:2300, note:"Cheapest full-service; longer routing. Free Guangzhou stopover hotel on long layovers."},
+  {air:"Vietnam Airlines", via:"Ho Chi Minh / Hanoi", lo:1800, hi:2400, note:"Cheap and decent; good Skytrax rating for the price."},
+  {air:"Malaysia Airlines", via:"Kuala Lumpur", lo:1900, hi:2500, note:"Solid value oneworld carrier; easy KL stopover."},
+  {air:"Turkish Airlines", via:"Istanbul", lo:2000, hi:2600, note:"Longer routing, but 1 FREE hotel night + free 'TourIstanbul' city tours on long layovers."},
+  {air:"Cathay Pacific", via:"Hong Kong", lo:2000, hi:2600, note:"Reliable, well-rated; good HK stopover."},
+  {air:"Qatar Airways", via:"Doha", lo:2100, hi:2700, note:"Perennial 'world's best'. +Qatar stopover hotels from ~US$14/night."},
+  {air:"Etihad", via:"Abu Dhabi", lo:2100, hi:2700, note:"Abu Dhabi Stopover: up to 2 FREE hotel nights."},
+  {air:"Emirates", via:"Dubai", lo:2200, hi:2800, note:"A380 comfort. Dubai Connect: FREE hotel + meals on long layovers."},
+  {air:"Qantas", via:"Perth or Singapore", lo:2300, hi:2900, note:"One-stop, Aussie service, points & status. Watch nonstop 'Project Sunrise' (premium)."},
+  {air:"Singapore Airlines", via:"Singapore", lo:2300, hi:2900, note:"Top-tier product; discounted Singapore Stopover Holiday."}
+];
+const GAUGE=[
+  {c:"var(--ok)", k:"🟢 Great", v:"under ~A$1,900", d:"Snap it up — that's a genuine peak-summer bargain."},
+  {c:"var(--gold-soft)", k:"🟡 Fair / normal", v:"~A$1,900–2,500", d:"A reasonable peak fare. Book if the dates & routing suit."},
+  {c:"var(--warn)", k:"🟠 Pricey", v:"~A$2,500–3,100", d:"Only worth it for specific dates/airline/short layover."},
+  {c:"var(--bad)", k:"🔴 Too high", v:"over ~A$3,100", d:"Keep looking (unless it's last-minute and you're stuck)."}
+];
+const STOPOVERS=[
+  {air:"Emirates — Dubai Connect", free:"FREE", d:"Free hotel, meals & transfers when your Dubai layover is long (roughly 8–24h) and there's no shorter same-day connection. Applied automatically if eligible."},
+  {air:"Etihad — Abu Dhabi Stopover", free:"FREE", d:"Book a deliberate stopover and get up to 2 free nights in a 4/5-star Abu Dhabi hotel."},
+  {air:"Turkish — Stopover in Istanbul", free:"FREE", d:"1 free hotel night in economy (2 in business) on long layovers, plus free guided 'TourIstanbul' city tours."},
+  {air:"China Southern — Guangzhou", free:"FREE", d:"Complimentary stopover hotel on qualifying long layovers — a cheap way to break the trip."},
+  {air:"Qatar — +Qatar", free:"CHEAP", d:"Not free, but Doha hotels from ~US$14/night (4★) or ~US$24 (5★) added to your ticket."},
+  {air:"Singapore — Stopover Holiday", free:"CHEAP", d:"Discounted hotel + attraction bundle to turn a Changi layover into a mini-break."}
+];
 function renderFlights(){
   document.getElementById("tipsList").innerHTML=TIPS.map(t=>`<div class="tip"><div class="k">${t.k}</div><div class="b"><b>${t.t}.</b> <span>${t.d}</span></div></div>`).join("");
   document.getElementById("salesCal").innerHTML=SALES.map(s=>`<div class="calrow"><div class="mo">${s.mo}</div><div class="ev">${s.ev}</div></div>`).join("");
   document.getElementById("routings").innerHTML=ROUTES.map(r=>`<div class="tip"><div class="k">✈️</div><div class="b"><b>${r.n}.</b> <span>${r.d}</span></div></div>`).join("");
+  document.getElementById("benchGauge").innerHTML=`<p class="mini" style="margin:0 0 11px">What a <b>return economy</b> seat MEL⇄London should cost <b>in peak summer</b> (your travel window). Off-peak, shift every band down ~A$500–700.</p>`+
+    GAUGE.map(g=>`<div class="gauge-row"><span class="gauge-bar" style="background:${g.c}"></span><div><div class="gauge-k">${g.k} · <span style="color:var(--text)">${g.v}</span></div><div class="gauge-d">${g.d}</div></div></div>`).join("");
+  document.getElementById("benchTable").innerHTML=`<div class="bench-head"><span>Airline · via</span><span>Return econ (peak)</span></div>`+
+    BENCH.map(b=>`<div class="bench-row"><div class="bench-air"><b>${b.air}</b><span>via ${b.via}</span></div><div class="bench-price">A$${b.lo.toLocaleString()}–${b.hi.toLocaleString()}</div><div class="bench-note">${b.note}</div></div>`).join("")+
+    `<p class="est-note">Indicative bands for planning — always check live fares. Budget self-connect (Scoot / AirAsia X via SIN/KL) can dip to ~A$1,300–2,000 but with no bags/meals and self-transfer risk.</p>`;
+  document.getElementById("stopovers").innerHTML=`<p class="mini" style="margin:0 0 11px">The 24-hour haul has a silver lining: several airlines will <b>put you up</b> to break the journey — turn a dead layover into a mini-holiday (great on the way home).</p>`+
+    STOPOVERS.map(s=>`<div class="tip"><div class="k"><span class="stop-badge ${s.free==='FREE'?'sf':'sc'}">${s.free}</span></div><div class="b"><b>${s.air}.</b> <span>${s.d}</span></div></div>`).join("");
   const t0=new Date("2026-07-01").getTime(),t1=new Date("2027-06-30").getTime();
   const pct=d=>Math.max(0,Math.min(100,(new Date(d).getTime()-t0)/(t1-t0)*100));
   const win=document.getElementById("tbWin"),a=pct("2026-09-01"),b=pct("2027-02-28");
@@ -1304,19 +1359,30 @@ function oxStop(o,i){ const d=!!S.tour[o.id];
       </div>
     </div></div>`; }
 function mapChip(q){ return `<a href="https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(q)}" target="_blank" rel="noopener">map ↗</a>`; }
+function routeLink(stops){ const p=stops.map(s=>encodeURIComponent(s.q)); return `https://www.google.com/maps/dir/?api=1&travelmode=walking&origin=${p[0]}&destination=${p[p.length-1]}&waypoints=${p.slice(1,-1).join("%7C")}`; }
+function routeBtn(stops,label){ return `<a class="goto" style="margin:11px 0 4px" href="${routeLink(stops)}" target="_blank" rel="noopener">🗺️ ${label}</a>`; }
 function renderOxford(){
   const note=`<div class="tour-note">🎓 <b>Travis &amp; Jess's Oxford, 2001–2005.</b> Your old front doors, the river cycle loop, the pubs, and a couple of nostalgic extras — a tour to walk the friends through your old town. Tick places off as you revisit them.</div>`;
-  const lived=`<div class="section-label">Where we lived · 2001–05</div><div class="card">${RESIDENCES.map(oxStop).join("")}</div>`;
+  const lived=`<div class="section-label">Where we lived · 2001–05</div><div class="card">${RESIDENCES.map(oxStop).join("")}${routeBtn(RESIDENCES,"The 'where we lived' route in Google Maps")}</div>`;
   const cycle=`<div class="section-label">The river cycle loop</div><div class="card block"><h3>🚲 The old ride</h3><div class="sub">Combines with the 'where we lived' stops — Jericho, Botley, Wolvercote &amp; Iffley all sit on or near it</div><ul class="tick">${CYCLE_ROUTE.map(s=>`<li>${s}</li>`).join("")}</ul><p class="mini">Oxford is flat and bike-mad — hire wheels for the day and do the residence tour on two wheels.</p></div>`;
-  const walk=`<div class="section-label">The dreaming-spires walk</div><div class="card">${OXFORD_TOUR.map(oxStop).join("")}</div>`;
+  const walk=`<div class="section-label">The dreaming-spires walk</div><div class="card">${OXFORD_TOUR.map(oxStop).join("")}${routeBtn(OXFORD_TOUR,"The spires walk in Google Maps")}</div>`;
+  const blenheim=`<div class="section-label">A day out · Woodstock &amp; Blenheim</div>
+    <div class="card block"><h3>🏰 Blenheim Palace grounds — for free</h3><div class="sub">Woodstock · ~8 miles NW of Oxford</div>
+    <p>Churchill's birthplace and a UNESCO World Heritage Site. You can roam the 2,000-acre 'Capability' Brown park <b>for free</b> on the public footpaths — the classic move is the <b>'secret' green gate (No. 95)</b> in Woodstock: a 5–10 minute walk that brings you in right by the lake and the Grand Bridge. (The Palace interior &amp; formal gardens are ticketed; the grounds via the footpath are free.)</p>
+    <ul class="tick">
+      <li>Getting there: the <b>S3 bus</b> from Oxford (~30 min), or drive/cycle. Woodstock's a handsome market town with good pubs (The Woodstock Arms, The Bear Hotel).</li>
+      <li>Nearby <b>Bladon</b> churchyard holds Winston Churchill's grave — a short hop on.</li>
+      <li>Rules can change — sanity-check current free access at <a href="https://www.freeblenheim.com/" target="_blank" rel="noopener">freeblenheim.com</a> before you go.</li>
+    </ul>
+    <a class="goto" style="margin:11px 0 4px" href="https://www.google.com/maps/search/?api=1&query=${encodeURIComponent("Blenheim Palace, Woodstock")}" target="_blank" rel="noopener">📍 Blenheim / Woodstock in Maps</a></div>`;
   const pubs=`<div class="section-label">The Oxford pub crawl</div>
-    <div class="card block" style="margin-bottom:11px"><h3>🍺 A guided crawl — north down to the river</h3><div class="sub">Nine historic pubs, walkable in order from St Giles to Folly Bridge — your three anchors (Turf, Bear, Eagle &amp; Child) are all on it. Half-pints recommended.</div></div>
+    <div class="card block" style="margin-bottom:11px"><h3>🍺 A guided crawl — north down to the river</h3><div class="sub">Nine historic pubs, walkable in order from St Giles to Folly Bridge — your three anchors (Turf, Bear, Eagle &amp; Child) are all on it. Half-pints recommended.</div>${routeBtn(CRAWL,"Open the whole crawl in Google Maps")}</div>
     <div class="card">${CRAWL.map(oxStop).join("")}</div>
     <div class="card block"><h3>Your old locals</h3><p class="mini">Further out but worth a sentimental pint: The Gardener's Arms (Jericho) · The Perch (Binsey) &amp; The Trout (Wolvercote) · the Bookbinders (Jericho) · The White Hart (Wolvercote) · The George (Botley) · the Magdalen Arms (Iffley).</p><p class="mini">Send any favourites from the old Z–A crawl and I'll swap them into the route.</p></div>`;
   const extras=`<div class="section-label">Two nostalgic extras</div>
     <div class="card block"><h3>🏏 Cricket in the Parks</h3><p>The visiting-county warm-up you remember has sadly ended — Oxford lost first-class status in <b>2021</b>. But <b>free</b> cricket still runs in University Parks from ~<b>April to late June</b> (Blues, Varsity, MCC/Arabs). Your late-June window <i>might</i> catch the tail of the season; a July visit likely misses the university term. Check <a href="https://cricketintheparks.org.uk/" target="_blank" rel="noopener">cricketintheparks.org.uk</a> nearer the time — and you can wander in and watch for free.</p></div>
     <div class="card block"><h3>🎾 Grass tennis in the Parks</h3><p>Good news for you &amp; Wenners — the <b>8 grass courts</b> in University Parks are up <b>April–September</b>, playable 10am–8pm daily, so <b>July works</b>. It's members-only (you can join the Oxford University Parks Tennis Association as a visitor) and <b>whites are required</b>.</p></div>`;
-  document.getElementById("exp-oxford").innerHTML=note+lived+cycle+walk+pubs+extras;
+  document.getElementById("exp-oxford").innerHTML=note+lived+cycle+walk+blenheim+pubs+extras;
 }
 function renderExplore(){
   document.getElementById("expSeg").querySelectorAll("button").forEach(b=>b.classList.toggle("on",b.dataset.eseg===S.ui.eseg));
