@@ -333,6 +333,7 @@
   .stop.done .stopname{color:var(--muted)}
   .stopdesc{font-size:12.5px;color:var(--muted);margin-top:4px}
   .stopmine{font-size:12.5px;color:var(--gold-soft);margin-top:7px;padding-left:9px;border-left:2px solid var(--gold)}
+  .stopwhen{font-size:11px;color:var(--gold-soft);font-weight:800;letter-spacing:.3px;text-transform:uppercase;margin-top:2px}
   .stopacts{display:flex;gap:8px;flex-wrap:wrap;margin-top:9px;align-items:center}
   .stopacts a,.stopacts button{font-size:11.5px;font-weight:700;background:var(--card2);border:1px solid var(--border2);
     color:var(--place);border-radius:8px;padding:6px 10px;display:inline-flex;align-items:center;gap:5px}
@@ -1121,7 +1122,7 @@ const OXFORD_TOUR=[
   {id:"market",name:"Covered Market",q:"Covered Market, Oxford",desc:"Duck into the 1774 market for a coffee and a warm Ben's Cookie — a proper Oxford institution that's barely changed."},
   {id:"bod",name:"Bodleian Library & Radcliffe Camera",q:"Radcliffe Camera, Oxford",desc:"The heart of the university: the domed Radcliffe Camera, the Old Schools Quad and the medieval Divinity School (a Hogwarts filming spot)."},
   {id:"sighs",name:"Sheldonian & Bridge of Sighs",q:"Bridge of Sighs, Oxford",desc:"Wren's Sheldonian Theatre and the emperors' heads, then Hertford's photogenic Bridge of Sighs arching over New College Lane."},
-  {id:"turf",name:"Turf Tavern",q:"Turf Tavern, Oxford",desc:"Down a tiny medieval alley (St Helen's Passage) — a hidden 13th-century pub billed as 'an education in intoxication'.",mine:"Travis — was this your local? Send your Turf story and it goes right here."},
+  {id:"turf",name:"Turf Tavern",q:"Turf Tavern, Oxford",desc:"Down a tiny medieval alley (St Helen's Passage) — a hidden 13th-century pub billed as 'an education in intoxication'. One of your three to build around."},
   {id:"newcol",name:"New College",q:"New College, Oxford",desc:"Cloisters, the ancient city wall and a 14th-century chapel — one of the most beautiful (and misleadingly named) colleges."},
   {id:"magdalen",name:"Magdalen College & Bridge",q:"Magdalen College, Oxford",desc:"Arguably the prettiest college — the bell tower, deer park and cloisters, right beside the River Cherwell."},
   {id:"punt",name:"Punting at Magdalen Bridge",q:"Magdalen Bridge Boathouse, Oxford",desc:"Hire a punt at the boathouse and pole up the Cherwell — the quintessential lazy Oxford afternoon (Pimm's optional)."},
@@ -1130,22 +1131,59 @@ const OXFORD_TOUR=[
   {id:"inklings",name:"Jericho & the Eagle and Child",q:"The Eagle and Child, Oxford",desc:"Wander to bohemian Jericho for the 'Bird & Baby', where Tolkien and C.S. Lewis's Inklings met over a pint."},
   {id:"portmeadow",name:"Port Meadow & The Trout",q:"The Trout Inn, Wolvercote, Oxford",desc:"Finish with a riverside pint at The Perch, or walk on to The Trout at Wolvercote — sunset over the meadow, cattle and all."}
 ];
+/* Travis & Jess's Oxford addresses, 2001–05 (first date corrected from an obvious typo) */
+const RESIDENCES=[
+  {id:"r-jericho",period:"Aug 2001 – Mar 2002",name:"8 Longworth Road, Jericho",q:"Jericho, Oxford",
+   story:"The below-ground bottom level of a four-storey house — no bedroom, a bed that folded out into the lounge, and no shower. The morning ritual: alarm off, run the bath, hit snooze, and 8 minutes later climb into a hot bath. Local boozer: The Gardener's Arms. Best of all, the walk across the canal to Port Meadow — an enormous flood plain, iced over in winter — with The Perch across the way and the long amble up to Wolvercote for The Trout."},
+  {id:"r-guycourt",period:"Mar 2002 – Mar 2003",name:"Flat 20, Guy Court, Walton St",q:"Guy Court, Walton Street, Oxford",
+   story:"Just down Walton Street, overlooking the primary school at the back. Long afternoons in the garden (Jude the Obscure next door, from memory) and a wintery Christmas break holed up at the Bookbinders Arms."},
+  {id:"r-botley",period:"Mar 2003 – Mar 2004",name:"8 Longworth Road, Botley",q:"Longworth Road, Botley, Oxford",
+   story:"Right by work at ERM (Osney House?). A massive share house with a glorious backyard — so much fun. No great pub on the doorstep (The George was the work local). On the bikes you'd reach it out via Wolvercote with lunch at The White Hart (if it's still going — it was superb), plus a good pub up the hill in Botley whose name is lost to time."},
+  {id:"r-percy",period:"Mar 2004 – May 2004",name:"~76 Percy Street",q:"Percy Street, Oxford",
+   story:"A short stint off the Cowley Road — the house number's a bit hazy (76-ish)."},
+  {id:"r-iffley",period:"May 2004 – May 2005",name:"Flat 5, 220 Iffley Road",q:"220 Iffley Road, Oxford",
+   story:"'Iffy Road' — where Mum, Aunty Pam and Aunty Carolyn came to stay, and the Magdalen Arms copped a pasting. Wenners and I played tennis at the Iffley Road ground — the very track where Roger Bannister broke the four-minute mile in 1954."},
+  {id:"r-cave",period:"May 2005 – Aug 2005",name:"5 Cave Street — 'The Cave'",q:"Cave Street, Oxford",
+   story:"Wenners' house, and the final Oxford chapter."}
+];
+const CYCLE_ROUTE=[
+  "Start at <b>Cowley</b> (off the Cowley Road) — where the ride begins.",
+  "Pick up the Thames tow-path past <b>Christ Church Meadow</b> and the <b>Head of the River</b>.",
+  "Follow the river west out towards <b>Botley</b>.",
+  "<b>Botley → Wolvercote</b> along the water.",
+  "From <b>Wolvercote</b> swing towards <b>Port Meadow</b> — pause at <b>The Trout</b>, or cut straight across the meadow.",
+  "Back along the tow-path into the city.",
+  "Past the <b>Turf Tavern</b>, the <b>Bodleian Library</b>, and up to the <b>Museum</b> (Natural History / Pitt Rivers).",
+  "Down past the riverside college, the <b>Isis</b> and the bridge — then back to <b>Cowley</b> where you started."
+];
+function oxStop(o,i){ const d=!!S.tour[o.id];
+  return `<div class="stop ${d?'done':''}">
+    <div class="stopnum">${d?'✓':i+1}</div>
+    <div class="stopmain">
+      <div class="stopname">${o.name}</div>
+      ${o.period?`<div class="stopwhen">${o.period}</div>`:''}
+      <div class="stopdesc">${o.desc||o.story}</div>
+      ${o.mine?`<div class="stopmine">${o.mine}</div>`:''}
+      <div class="stopacts">
+        ${o.q?`<a href="https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(o.q)}" target="_blank" rel="noopener">📍 Open in Maps</a>`:''}
+        <button data-stop="${o.id}" class="${d?'on':''}">${d?'Visited ✓':'Mark visited'}</button>
+      </div>
+    </div></div>`; }
+function mapChip(q){ return `<a href="https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(q)}" target="_blank" rel="noopener">map ↗</a>`; }
 function renderOxford(){
-  const st=S.tour||{}, done=OXFORD_TOUR.filter(s=>st[s.id]).length;
-  const note=`<div class="tour-note">🎓 <b>A self-guided Oxford loop</b> — roughly 2–3 hours on foot through the centre, ending with a riverside pint. Tick stops off as you go.<br><br><b>Travis:</b> this is a starting route — send your old college, your house, your local &amp; the stories and I'll weave them in so it becomes <i>your</i> Oxford. <span style="color:var(--place);font-weight:700">${done}/${OXFORD_TOUR.length} visited</span></div>`;
-  const stops=OXFORD_TOUR.map((s,i)=>{ const d=!!st[s.id];
-    return `<div class="stop ${d?'done':''}">
-      <div class="stopnum">${d?'✓':i+1}</div>
-      <div class="stopmain">
-        <div class="stopname">${s.name}</div>
-        <div class="stopdesc">${s.desc}</div>
-        ${s.mine?`<div class="stopmine">${s.mine}</div>`:''}
-        <div class="stopacts">
-          <a href="https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(s.q)}" target="_blank" rel="noopener">📍 Open in Maps</a>
-          <button data-stop="${s.id}" class="${d?'on':''}">${d?'Visited ✓':'Mark visited'}</button>
-        </div>
-      </div></div>`; }).join("");
-  document.getElementById("exp-oxford").innerHTML=note+`<div class="card">${stops}</div>`;
+  const note=`<div class="tour-note">🎓 <b>Travis &amp; Jess's Oxford, 2001–2005.</b> Your old front doors, the river cycle loop, the pubs, and a couple of nostalgic extras — a tour to walk the friends through your old town. Tick places off as you revisit them.</div>`;
+  const lived=`<div class="section-label">Where we lived · 2001–05</div><div class="card">${RESIDENCES.map(oxStop).join("")}</div>`;
+  const cycle=`<div class="section-label">The river cycle loop</div><div class="card block"><h3>🚲 The old ride</h3><div class="sub">Combines with the 'where we lived' stops — Jericho, Botley, Wolvercote &amp; Iffley all sit on or near it</div><ul class="tick">${CYCLE_ROUTE.map(s=>`<li>${s}</li>`).join("")}</ul><p class="mini">Oxford is flat and bike-mad — hire wheels for the day and do the residence tour on two wheels.</p></div>`;
+  const walk=`<div class="section-label">The dreaming-spires walk</div><div class="card">${OXFORD_TOUR.map(oxStop).join("")}</div>`;
+  const key=[["Turf Tavern","Turf Tavern, Oxford"],["The Bear Inn","The Bear Inn, Oxford"],["Eagle and Child","The Eagle and Child, Oxford"]];
+  const pubs=`<div class="section-label">Pubs to plan around</div><div class="card block"><h3>🍺 The three to build around</h3>
+    <ul class="tick">${key.map(p=>`<li><b>${p[0]}</b> · ${mapChip(p[1])}</li>`).join("")}</ul>
+    <p class="mini"><b>Your old locals</b> (from the stories, worth a sentimental pint): The Gardener's Arms (Jericho) · The Perch &amp; The Trout (Port Meadow/Wolvercote) · the Bookbinders Arms (Jericho) · The White Hart (Wolvercote) · The George (Botley) · the Magdalen Arms (Iffley).</p>
+    <p class="mini">🏆 <b>The legendary Z–A crawl</b> — 26 pubs, all half-pints. Tell me which of my 15 suggested historic pubs were on the list and I'll rebuild the route right here. (A Bath crawl's on the cards too.)</p></div>`;
+  const extras=`<div class="section-label">Two nostalgic extras</div>
+    <div class="card block"><h3>🏏 Cricket in the Parks</h3><p>The visiting-county warm-up you remember has sadly ended — Oxford lost first-class status in <b>2021</b>. But <b>free</b> cricket still runs in University Parks from ~<b>April to late June</b> (Blues, Varsity, MCC/Arabs). Your late-June window <i>might</i> catch the tail of the season; a July visit likely misses the university term. Check <a href="https://cricketintheparks.org.uk/" target="_blank" rel="noopener">cricketintheparks.org.uk</a> nearer the time — and you can wander in and watch for free.</p></div>
+    <div class="card block"><h3>🎾 Grass tennis in the Parks</h3><p>Good news for you &amp; Wenners — the <b>8 grass courts</b> in University Parks are up <b>April–September</b>, playable 10am–8pm daily, so <b>July works</b>. It's members-only (you can join the Oxford University Parks Tennis Association as a visitor) and <b>whites are required</b>.</p></div>`;
+  document.getElementById("exp-oxford").innerHTML=note+lived+cycle+walk+pubs+extras;
 }
 function renderExplore(){
   document.getElementById("expSeg").querySelectorAll("button").forEach(b=>b.classList.toggle("on",b.dataset.eseg===S.ui.eseg));
