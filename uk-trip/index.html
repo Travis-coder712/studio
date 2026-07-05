@@ -392,6 +392,11 @@
   .tour-note{background:linear-gradient(155deg,rgba(56,189,248,.12),rgba(56,189,248,.03));border:1px solid rgba(56,189,248,.32);
     border-radius:12px;padding:14px;margin-bottom:18px;font-size:12.5px;color:var(--text)}
   .tour-note b{color:var(--place)}
+  .memoriam{background:linear-gradient(180deg,rgba(245,179,1,.07),transparent);border:1px solid var(--border2);
+    border-top:3px solid var(--gold);border-radius:12px;padding:20px 16px;margin-bottom:16px;text-align:center}
+  .memoriam .mem-top{font-size:10.5px;font-weight:800;letter-spacing:2px;text-transform:uppercase;color:var(--gold-soft)}
+  .memoriam h3{font-family:Georgia,"Times New Roman",serif;font-size:24px;font-weight:800;margin:7px 0 10px;letter-spacing:.2px}
+  .memoriam p{font-size:13px;color:var(--muted);line-height:1.65;max-width:440px;margin:0 auto}
   .stop{display:flex;gap:13px;padding-bottom:18px;position:relative}
   .stop:not(:last-child)::before{content:"";position:absolute;left:15px;top:34px;bottom:0;width:2px;background:var(--border2)}
   .stop.done:not(:last-child)::before{background:var(--place)}
@@ -568,11 +573,13 @@
     <p class="view-intro">Beyond the sport — the must-dos (Oxford especially, your old home of 5 years), and a tag-along European leg for your brother's 5-week trip with his son (26) and daughter (19).</p>
     <div class="seg" id="expSeg">
       <button data-eseg="uk" class="on">UK</button>
-      <button data-eseg="oxford">Oxford tour</button>
-      <button data-eseg="eu">Europe leg</button>
+      <button data-eseg="oxford">Oxford</button>
+      <button data-eseg="bath">Bath</button>
+      <button data-eseg="eu">Europe</button>
     </div>
     <div id="exp-uk"></div>
     <div id="exp-oxford" style="display:none"></div>
+    <div id="exp-bath" style="display:none"></div>
     <div id="exp-eu" style="display:none"></div>
   </section>
 
@@ -1372,7 +1379,7 @@ function oxStop(o,i){ const d=!!S.tour[o.id];
     <div class="stopmain">
       <div class="stopname">${o.name}</div>
       ${o.period?`<div class="stopwhen">${o.period}</div>`:''}
-      <div class="stopdesc">${o.desc||o.story}</div>
+      ${(o.desc||o.story)?`<div class="stopdesc">${o.desc||o.story}</div>`:''}
       ${o.mine?`<div class="stopmine">${o.mine}</div>`:''}
       <div class="stopacts">
         ${o.q?`<a href="https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(o.q)}" target="_blank" rel="noopener">📍 Open in Maps</a>`:''}
@@ -1409,11 +1416,39 @@ function renderExplore(){
   document.getElementById("expSeg").querySelectorAll("button").forEach(b=>b.classList.toggle("on",b.dataset.eseg===S.ui.eseg));
   document.getElementById("exp-uk").style.display=S.ui.eseg==="uk"?"":"none";
   document.getElementById("exp-oxford").style.display=S.ui.eseg==="oxford"?"":"none";
+  document.getElementById("exp-bath").style.display=S.ui.eseg==="bath"?"":"none";
   document.getElementById("exp-eu").style.display=S.ui.eseg==="eu"?"":"none";
   const blk=b=>`<div class="card block"><h3>${b.em} ${b.title}</h3><div class="sub">${b.sub}</div><ul class="tick">${b.tips.map(t=>`<li>${t}</li>`).join("")}</ul></div>`;
   document.getElementById("exp-uk").innerHTML=UK_BLOCKS.map(blk).join("");
   document.getElementById("exp-eu").innerHTML=EU_BLOCKS.map(blk).join("");
   renderOxford();
+  renderBath();
+}
+/* Big John Bradshaw's Bath Pub Tour — a memorial crawl */
+const BATH_CRAWL=[
+  {id:"bath-1", period:"11am – 12", name:"Crystal Palace", q:"Crystal Palace pub, Abbey Green, Bath", desc:"Abbey Green — a genteel start in the shadow of the Abbey."},
+  {id:"bath-2", period:"12 – 1pm", name:"The Boater", q:"The Boater, Bath", desc:"Riverside by Pulteney Weir — a pint out over the water."},
+  {id:"bath-3", period:"1 – 2pm", name:"The Rummer", q:"The Rummer, Bath", desc:"By the Market and Pulteney Bridge — right in the thick of it."},
+  {id:"bath-4", period:"2 – 3pm", name:"The Huntsman", q:"The Huntsman, North Parade, Bath", desc:"North Parade — a proper old Bath corner."},
+  {id:"bath-5", period:"3 – 4pm", name:"The Salamander", q:"The Salamander, John Street, Bath", desc:"John Street — Bath Ales in a handsome Georgian bar."},
+  {id:"bath-6", period:"4 – 5pm", name:"The Bell", q:"The Bell Inn, Walcot Street, Bath", desc:"Walcot Street. John's beloved Bell — the heart of the crawl. Settle in."},
+  {id:"bath-7", period:"5 – 6pm", name:"The Bell", q:"The Bell Inn, Walcot Street, Bath", desc:"Still at the Bell — live music, no machines, all soul."},
+  {id:"bath-8", period:"6 – 7pm", name:"The Bell", q:"The Bell Inn, Walcot Street, Bath", desc:"Three hours deep. This was John's kind of afternoon."},
+  {id:"bath-9", period:"7 – 8pm", name:"The Paragon", q:"The Paragon, Bath", desc:"Up the hill — kicking on into the evening."},
+  {id:"bath-10", period:"8 – 9pm", name:"The Farmhouse", q:"The Farmhouse, Lansdown Road, Bath", desc:"Lansdown Road — the evening rolls on."},
+  {id:"bath-11", period:"9 – 10pm", name:"The Beehive", q:"The Beehive, Belvedere, Bath", desc:"Belvedere — the penultimate stand."},
+  {id:"bath-12", period:"10 – 11pm", name:"The Bell", q:"The Bell Inn, Walcot Street, Bath", desc:"Last orders, back where it belongs. Raise the final one for Big John. 🍺"}
+];
+function renderBath(){
+  const done=BATH_CRAWL.filter(s=>S.tour[s.id]).length;
+  const memoriam=`<div class="memoriam"><div class="mem-top">In loving memory</div>
+    <h3>Big John Bradshaw</h3>
+    <p>Our great mate and cousin, who made Bath his home for many years and left us a legend — this pub crawl. Big John passed away suddenly, and this one's for him: a proper Bath session, 11 till 11, run exactly the way he drew it up. Do it right, and raise every single one for John. 🍺</p></div>`;
+  const routeStops=[0,1,2,3,4,5,8,9,10,11].map(i=>BATH_CRAWL[i]);
+  const head=`<div class="card block"><h3>🍺 The running order</h3><div class="sub">John's schedule, hour by hour — and yes, three straight hours in the Bell, then back to finish there. <b>${done}/12 done.</b></div>${routeBtn(routeStops,"Open Big John's crawl in Google Maps")}</div>`;
+  const stops=`<div class="card">${BATH_CRAWL.map(oxStop).join("")}</div>`;
+  const foot=`<div class="card block"><p class="mini" style="margin:0">Twelve sessions, one legend. Pace yourselves, look after each other, and toast the man who mapped it. 🍻</p></div>`;
+  document.getElementById("exp-bath").innerHTML=memoriam+`<div class="section-label">Big John Bradshaw's Bath Pub Tour</div>`+head+stops+foot;
 }
 
 /* ============ interactions ============ */
