@@ -3,12 +3,12 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-<title>The Fifty Tour — UK 2027</title>
+<title>Raising the Bat — UK 2027</title>
 <meta name="description" content="Plan a 50th-birthday cricket &amp; sport trip to the UK in 2027 — Ashes, World Test Championship, Wimbledon, Silverstone, The Open, plus Oxford, Bath &amp; a European leg. Tickets, flights, logistics &amp; a smart booking plan.">
 <meta name="theme-color" content="#0f1727">
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
-<meta name="apple-mobile-web-app-title" content="Fifty Tour">
+<meta name="apple-mobile-web-app-title" content="Raising the Bat">
 <link rel="manifest" href="manifest.webmanifest">
 <link rel="apple-touch-icon" href="icon.svg">
 <link rel="icon" href="icon.svg" type="image/svg+xml">
@@ -408,7 +408,7 @@
     <div class="brand">
       <div class="roundel"><b>50</b></div>
       <div>
-        <h1>The Fifty Tour</h1>
+        <h1>Raising the Bat</h1>
         <div class="sub">UK &amp; Europe · Summer 2027</div>
       </div>
       <div class="spacer"></div>
@@ -1349,7 +1349,7 @@ function decodeState(s){ return JSON.parse(b64d(s)); }
 document.getElementById("actShare").addEventListener("click",()=>{ const url=location.origin+location.pathname+"#plan="+encodeState(); const done=()=>{ toast("Link copied — send it to the group"); closeSheet(); };
   if(navigator.clipboard) navigator.clipboard.writeText(url).then(done).catch(()=>fallbackCopy(url,done)); else fallbackCopy(url,done); });
 function fallbackCopy(text,cb){ const ta=document.createElement("textarea"); ta.value=text; document.body.appendChild(ta); ta.select(); try{document.execCommand("copy");}catch(e){} ta.remove(); cb&&cb(); }
-document.getElementById("actExport").addEventListener("click",()=>{ const blob=new Blob([JSON.stringify(S,null,2)],{type:"application/json"}); const a=document.createElement("a"); a.href=URL.createObjectURL(blob); a.download="fifty-tour-plan.json"; a.click(); URL.revokeObjectURL(a.href); closeSheet(); });
+document.getElementById("actExport").addEventListener("click",()=>{ const blob=new Blob([JSON.stringify(S,null,2)],{type:"application/json"}); const a=document.createElement("a"); a.href=URL.createObjectURL(blob); a.download="raising-the-bat-plan.json"; a.click(); URL.revokeObjectURL(a.href); closeSheet(); });
 document.getElementById("actImport").addEventListener("click",()=>document.getElementById("fileIn").click());
 document.getElementById("fileIn").addEventListener("change",e=>{ const f=e.target.files[0]; if(!f) return; const r=new FileReader(); r.onload=()=>{ try{ S=migrate(JSON.parse(r.result)); save(); switchTab("schedule"); closeSheet(); toast("Plan imported"); }catch(err){ toast("Couldn't read that file"); } }; r.readAsText(f); });
 document.getElementById("actReset").addEventListener("click",()=>{ if(confirm("Reset everything to the default plan? This clears your picks on this device.")){ S=defaultState(); save(); switchTab("schedule"); closeSheet(); toast("Reset to default"); } });

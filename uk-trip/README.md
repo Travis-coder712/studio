@@ -1,4 +1,6 @@
-# The Fifty Tour — UK & Europe 2027
+# Raising the Bat — UK & Europe 2027
+
+*(a batsman's salute on reaching fifty)*
 
 A single-file progressive web app (PWA) for planning a 50th-birthday group trip to the UK in the summer of 2027 — built around watching cricket (the Ashes and the World Test Championship Final, with Australia in both), with optional Wimbledon, the British Grand Prix at Silverstone and The Open golf, plus personal legs to Oxford and Bath and a tag-along European trip.
 
