@@ -318,6 +318,26 @@
   .sheet .act2.danger{color:#fca5a5}
   .grab{width:40px;height:4px;border-radius:3px;background:var(--border2);margin:0 auto 16px}
 
+  /* oxford tour */
+  .tour-note{background:linear-gradient(155deg,rgba(56,189,248,.12),rgba(56,189,248,.03));border:1px solid rgba(56,189,248,.32);
+    border-radius:12px;padding:14px;margin-bottom:18px;font-size:12.5px;color:var(--text)}
+  .tour-note b{color:var(--place)}
+  .stop{display:flex;gap:13px;padding-bottom:18px;position:relative}
+  .stop:not(:last-child)::before{content:"";position:absolute;left:15px;top:34px;bottom:0;width:2px;background:var(--border2)}
+  .stop.done:not(:last-child)::before{background:var(--place)}
+  .stopnum{flex:none;width:32px;height:32px;border-radius:9px;border:1.5px solid var(--border2);background:var(--card2);
+    color:var(--text);font-weight:800;font-size:14px;display:grid;place-items:center;z-index:1}
+  .stop.done .stopnum{background:var(--place);border-color:var(--place);color:#06263a}
+  .stopmain{flex:1;min-width:0;padding-top:4px}
+  .stopname{font-weight:750;font-size:14.5px}
+  .stop.done .stopname{color:var(--muted)}
+  .stopdesc{font-size:12.5px;color:var(--muted);margin-top:4px}
+  .stopmine{font-size:12.5px;color:var(--gold-soft);margin-top:7px;padding-left:9px;border-left:2px solid var(--gold)}
+  .stopacts{display:flex;gap:8px;flex-wrap:wrap;margin-top:9px;align-items:center}
+  .stopacts a,.stopacts button{font-size:11.5px;font-weight:700;background:var(--card2);border:1px solid var(--border2);
+    color:var(--place);border-radius:8px;padding:6px 10px;display:inline-flex;align-items:center;gap:5px}
+  .stopacts button.on{background:var(--place);border-color:var(--place);color:#06263a}
+
   @media(min-width:620px){ .stats{gap:11px} main{padding:20px 18px 34px} nav.tabs button{font-size:13px} }
 </style>
 </head>
@@ -451,10 +471,12 @@
     <h2 class="vt">Explore</h2>
     <p class="view-intro">Beyond the sport — the must-dos (Oxford especially, your old home of 5 years), and a tag-along European leg for your brother's 5-week trip with his son (26) and daughter (19).</p>
     <div class="seg" id="expSeg">
-      <button data-eseg="uk" class="on">🇬🇧 UK</button>
-      <button data-eseg="eu">🇪🇺 Europe leg</button>
+      <button data-eseg="uk" class="on">UK</button>
+      <button data-eseg="oxford">Oxford tour</button>
+      <button data-eseg="eu">Europe leg</button>
     </div>
     <div id="exp-uk"></div>
+    <div id="exp-oxford" style="display:none"></div>
     <div id="exp-eu" style="display:none"></div>
   </section>
 </main>
@@ -586,7 +608,7 @@ function defaultState(){
       {id:"t4", name:"Friend 2", color:"#38bdf8", arrive:"2027-07-01", depart:"2027-07-22"}
     ],
     ui:{ filter:"all", itinFilter:"all", seg:"plan", eseg:"uk" },
-    tracker:{}
+    tracker:{}, tour:{}
   };
 }
 
@@ -602,6 +624,7 @@ function migrate(s){
   if(s.travellers) def.travellers=s.travellers;
   if(s.ui) def.ui={...def.ui, ...s.ui};
   if(s.tracker) def.tracker=s.tracker;
+  if(s.tour) def.tour=s.tour;
   return def;
 }
 function save(){ try{ localStorage.setItem(KEY, JSON.stringify(S)); }catch(e){} }
@@ -1092,13 +1115,47 @@ const EU_BLOCKS=[
     "London → <b>Paris</b> (Eurostar, 3n) → <b>Nice</b> (2n) → fly <b>Rome</b> (3n) → <b>Florence</b> (2n) → <b>Venice</b> (2n) → fly <b>Barcelona</b> (3n) → <b>Madrid</b> (2n) → fly home.",
     "Reverse it, or swap in San Sebastián/Amalfi — it's a skeleton, not a rule."]}
 ];
+/* Oxford self-guided walking loop — a starting route to personalise with Travis's memories */
+const OXFORD_TOUR=[
+  {id:"carfax",name:"Carfax Tower",q:"Carfax Tower, Oxford",desc:"Climb the 99 steps of this 13th-century tower for a rooftop view over the dreaming spires — the perfect way to get your bearings before setting off."},
+  {id:"market",name:"Covered Market",q:"Covered Market, Oxford",desc:"Duck into the 1774 market for a coffee and a warm Ben's Cookie — a proper Oxford institution that's barely changed."},
+  {id:"bod",name:"Bodleian Library & Radcliffe Camera",q:"Radcliffe Camera, Oxford",desc:"The heart of the university: the domed Radcliffe Camera, the Old Schools Quad and the medieval Divinity School (a Hogwarts filming spot)."},
+  {id:"sighs",name:"Sheldonian & Bridge of Sighs",q:"Bridge of Sighs, Oxford",desc:"Wren's Sheldonian Theatre and the emperors' heads, then Hertford's photogenic Bridge of Sighs arching over New College Lane."},
+  {id:"turf",name:"Turf Tavern",q:"Turf Tavern, Oxford",desc:"Down a tiny medieval alley (St Helen's Passage) — a hidden 13th-century pub billed as 'an education in intoxication'.",mine:"Travis — was this your local? Send your Turf story and it goes right here."},
+  {id:"newcol",name:"New College",q:"New College, Oxford",desc:"Cloisters, the ancient city wall and a 14th-century chapel — one of the most beautiful (and misleadingly named) colleges."},
+  {id:"magdalen",name:"Magdalen College & Bridge",q:"Magdalen College, Oxford",desc:"Arguably the prettiest college — the bell tower, deer park and cloisters, right beside the River Cherwell."},
+  {id:"punt",name:"Punting at Magdalen Bridge",q:"Magdalen Bridge Boathouse, Oxford",desc:"Hire a punt at the boathouse and pole up the Cherwell — the quintessential lazy Oxford afternoon (Pimm's optional)."},
+  {id:"botanic",name:"Oxford Botanic Garden",q:"Oxford Botanic Garden",desc:"Britain's oldest botanic garden (1621), right by the river — and the bench from His Dark Materials."},
+  {id:"christch",name:"Christ Church",q:"Christ Church, Oxford",desc:"Tom Quad, the Great Hall that inspired Hogwarts, and the meadow walk — Lewis Carroll dreamt up Alice here."},
+  {id:"inklings",name:"Jericho & the Eagle and Child",q:"The Eagle and Child, Oxford",desc:"Wander to bohemian Jericho for the 'Bird & Baby', where Tolkien and C.S. Lewis's Inklings met over a pint."},
+  {id:"portmeadow",name:"Port Meadow & The Trout",q:"The Trout Inn, Wolvercote, Oxford",desc:"Finish with a riverside pint at The Perch, or walk on to The Trout at Wolvercote — sunset over the meadow, cattle and all."}
+];
+function renderOxford(){
+  const st=S.tour||{}, done=OXFORD_TOUR.filter(s=>st[s.id]).length;
+  const note=`<div class="tour-note">🎓 <b>A self-guided Oxford loop</b> — roughly 2–3 hours on foot through the centre, ending with a riverside pint. Tick stops off as you go.<br><br><b>Travis:</b> this is a starting route — send your old college, your house, your local &amp; the stories and I'll weave them in so it becomes <i>your</i> Oxford. <span style="color:var(--place);font-weight:700">${done}/${OXFORD_TOUR.length} visited</span></div>`;
+  const stops=OXFORD_TOUR.map((s,i)=>{ const d=!!st[s.id];
+    return `<div class="stop ${d?'done':''}">
+      <div class="stopnum">${d?'✓':i+1}</div>
+      <div class="stopmain">
+        <div class="stopname">${s.name}</div>
+        <div class="stopdesc">${s.desc}</div>
+        ${s.mine?`<div class="stopmine">${s.mine}</div>`:''}
+        <div class="stopacts">
+          <a href="https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(s.q)}" target="_blank" rel="noopener">📍 Open in Maps</a>
+          <button data-stop="${s.id}" class="${d?'on':''}">${d?'Visited ✓':'Mark visited'}</button>
+        </div>
+      </div></div>`; }).join("");
+  document.getElementById("exp-oxford").innerHTML=note+`<div class="card">${stops}</div>`;
+}
 function renderExplore(){
   document.getElementById("expSeg").querySelectorAll("button").forEach(b=>b.classList.toggle("on",b.dataset.eseg===S.ui.eseg));
   document.getElementById("exp-uk").style.display=S.ui.eseg==="uk"?"":"none";
+  document.getElementById("exp-oxford").style.display=S.ui.eseg==="oxford"?"":"none";
   document.getElementById("exp-eu").style.display=S.ui.eseg==="eu"?"":"none";
   const blk=b=>`<div class="card block"><h3>${b.em} ${b.title}</h3><div class="sub">${b.sub}</div><ul class="tick">${b.tips.map(t=>`<li>${t}</li>`).join("")}</ul></div>`;
   document.getElementById("exp-uk").innerHTML=UK_BLOCKS.map(blk).join("");
   document.getElementById("exp-eu").innerHTML=EU_BLOCKS.map(blk).join("");
+  renderOxford();
 }
 
 /* ============ interactions ============ */
@@ -1124,6 +1181,8 @@ document.addEventListener("click",e=>{
     else if(trk.dataset.trkics!==undefined){ trackerICS(trk.dataset.trkics); } return; }
   const go=e.target.closest("[data-goto]");
   if(go){ if(go.dataset.seg){ S.ui.seg=go.dataset.seg; save(); } switchTab(go.dataset.goto); return; }
+  const stp=e.target.closest("[data-stop]");
+  if(stp){ const id=stp.dataset.stop; if(S.tour[id]) delete S.tour[id]; else S.tour[id]=true; save(); renderOxford(); return; }
   const t=e.target.closest("[data-day],[data-f],[data-if],[data-tdel],[data-seg],[data-eseg],#addTrav");
   if(!t) return;
   if(t.id==="addTrav"){ const cols=["#f5b301","#4ade80","#c084fc","#38bdf8","#f472b6","#fb923c","#22d3ee","#a3e635"]; S.travellers.push({id:"t"+Date.now(),name:"New traveller",color:cols[S.travellers.length%cols.length],arrive:"2027-06-28",depart:"2027-07-12"}); save(); renderTravellers(); return; }
