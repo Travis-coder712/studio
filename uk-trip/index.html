@@ -647,10 +647,10 @@ function defaultState(){
         note:"A must — your cousin's old city. ~1h30 from London Paddington; pairs with the Cotswolds.", include:true, days:[], flexDate:"", nights:2}
     ],
     travellers:[
-      {id:"t1", name:"Me (Travis)", color:"#f5b301", arrive:"2027-06-28", depart:"2027-07-11"},
-      {id:"t2", name:"My brother", color:"#4ade80", arrive:"2027-06-20", depart:"2027-07-25"},
-      {id:"t3", name:"Friend 1", color:"#c084fc", arrive:"2027-06-28", depart:"2027-07-19"},
-      {id:"t4", name:"Friend 2", color:"#38bdf8", arrive:"2027-07-01", depart:"2027-07-22"}
+      {id:"t2", name:"Ace", color:"#4ade80", arrive:"2027-06-20", depart:"2027-07-25"},
+      {id:"t3", name:"Northy", color:"#c084fc", arrive:"2027-06-28", depart:"2027-07-19"},
+      {id:"t4", name:"Boxy", color:"#38bdf8", arrive:"2027-07-01", depart:"2027-07-22"},
+      {id:"t1", name:"Travis", color:"#f5b301", arrive:"2027-06-28", depart:"2027-07-11"}
     ],
     ui:{ filter:"all", itinFilter:"all", itinView:"date", seg:"plan", eseg:"uk" },
     tracker:{}, tour:{}
@@ -666,7 +666,12 @@ function migrate(s){
     // keep user selections/edits but always refresh static content (note/tk/venue)
     return ue ? {...de, include:ue.include, days:ue.days||[], start:ue.start||de.start, end:ue.end||de.end, flexDate:ue.flexDate||de.flexDate, nights:ue.nights||de.nights, ...(Array.isArray(ue.who)?{who:ue.who}:{})} : de; });
   (s.events||[]).forEach(e=>{ if(!def.events.find(x=>x.id===e.id)) def.events.push(e); });
-  if(s.travellers) def.travellers=s.travellers;
+  if(s.travellers){
+    const RN={"Me (Travis)":"Travis","My brother":"Ace","Friend 1":"Northy","Friend 2":"Boxy"};
+    const ORD={t2:0,t3:1,t4:2,t1:3};
+    def.travellers=s.travellers.map(t=>({...t, name:RN[t.name]||t.name}))
+      .sort((a,b)=>((ORD[a.id]??9)-(ORD[b.id]??9)));
+  }
   if(s.ui) def.ui={...def.ui, ...s.ui};
   if(s.tracker) def.tracker=s.tracker;
   if(s.tour) def.tour=s.tour;
