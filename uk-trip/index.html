@@ -21,7 +21,7 @@
     --border:#33354f; --border2:#454869;
     --text:#f3f0ea; --muted:#a8a4b6; --faint:#78748c;
     --gold:#f5b301; --gold-soft:#ffce4a;
-    --cricket:#34d399; --tennis:#b48bff; --f1:#fb5b6d; --golf:#f6a723; --place:#48b6f0; --home:#7c7891;
+    --cricket:#34d399; --tennis:#b48bff; --f1:#fb5b6d; --golf:#f6a723; --place:#48b6f0; --cycling:#facc15; --home:#7c7891;
     --ok:#34d399; --warn:#fbbf24; --bad:#f8817c; --info:#6aa8f0;
     --shadow:0 6px 20px rgba(0,0,0,.32);
     --r:12px; --r-sm:9px;
@@ -573,11 +573,13 @@
     <p class="view-intro">Beyond the sport — the must-dos (Oxford especially, your old home of 5 years), and a tag-along European leg for your brother's 5-week trip with his son (26) and daughter (19).</p>
     <div class="seg" id="expSeg">
       <button data-eseg="uk" class="on">UK</button>
+      <button data-eseg="rambles">Walks</button>
       <button data-eseg="oxford">Oxford</button>
       <button data-eseg="bath">Bath</button>
       <button data-eseg="eu">Europe</button>
     </div>
     <div id="exp-uk"></div>
+    <div id="exp-rambles" style="display:none"></div>
     <div id="exp-oxford" style="display:none"></div>
     <div id="exp-bath" style="display:none"></div>
     <div id="exp-eu" style="display:none"></div>
@@ -638,6 +640,7 @@ const CATS = {
   tennis:{label:"Tennis", icon:"c-tennis", color:"var(--tennis)"},
   f1:{label:"Motorsport", icon:"c-f1", color:"var(--f1)"},
   golf:{label:"Golf", icon:"c-golf", color:"var(--golf)"},
+  cycling:{label:"Cycling", icon:"n-bike", color:"var(--cycling)"},
   place:{label:"Places", icon:"c-place", color:"var(--place)"}
 };
 function catIcon(cat){ const c=CATS[cat]; return `<svg class="i" style="color:${c.color}"><use href="#${c.icon}"/></svg>`; }
@@ -729,6 +732,12 @@ function defaultState(){
         note:"Provisional 2–4 Jul 2027 (race Sunday). Fri practice / Sat quali / Sun race.", include:false, days:[]},
       {id:"open", cat:"golf", name:"The Open Championship (155th)", venue:"St Andrews (Old Course), Scotland", city:"St Andrews", start:"2027-07-15", end:"2027-07-18", status:"conf", tk:"open",
         note:"Confirmed: 15–18 Jul 2027 — 100 years since Bobby Jones' 1927 win. Practice 12–14 Jul.", include:false, days:[]},
+      {id:"tdf1", cat:"cycling", name:"Tour de France · Stage 1 (Grand Départ)", venue:"Edinburgh → Carlisle", city:"Edinburgh", start:"2027-07-02", end:"2027-07-02", status:"prov",
+        note:"The 2027 Tour STARTS in Britain. Roadside viewing is free — no ticket. See the Le Tour tab for the plan.", include:false, days:[]},
+      {id:"tdf2", cat:"cycling", name:"Tour de France · Stage 2", venue:"Keswick → Lancashire (Lake District)", city:"Lake District", start:"2027-07-03", end:"2027-07-03", status:"prov",
+        note:"The scenic stage through the Lake District. Free roadside viewing. Clashes with the Silverstone GP weekend — choose wisely.", include:false, days:[]},
+      {id:"tdf3", cat:"cycling", name:"Tour de France · Stage 3", venue:"Welshpool → Cardiff, Wales", city:"Cardiff", start:"2027-07-04", end:"2027-07-04", status:"prov",
+        note:"The Welsh stage to a Cardiff finish, before the race transfers to France. Free roadside.", include:false, days:[]},
       {id:"oxford", cat:"place", name:"Oxford (my old town, 5 years)", venue:"Oxford", city:"Oxford", start:"", end:"", status:"conf", flexible:true,
         note:"A must — show the friends the old haunts. ~1h by train from London Paddington/Marylebone.", include:true, days:[], flexDate:"", nights:2},
       {id:"bath", cat:"place", name:"Bath (Cousin's city)", venue:"Bath, Somerset", city:"Bath", start:"", end:"", status:"conf", flexible:true,
@@ -1334,7 +1343,7 @@ const RESIDENCES=[
   {id:"r-guycourt",period:"Mar 2002 – Mar 2003",name:"Flat 20, Guy Court, Walton St",q:"Guy Court, Walton Street, Oxford",
    story:"Just down Walton Street, overlooking the primary school at the back. Long afternoons in the garden (Jude the Obscure next door, from memory) and a wintery Christmas break holed up at the Bookbinders Arms."},
   {id:"r-botley",period:"Mar 2003 – Mar 2004",name:"8 Longworth Road, Botley",q:"Longworth Road, Botley, Oxford",
-   story:"Right by work at ERM (Osney House?). A massive share house with a glorious backyard — so much fun. No great pub on the doorstep (The George was the work local). On the bikes you'd reach it out via Wolvercote with lunch at The White Hart (if it's still going — it was superb), plus a good pub up the hill in Botley whose name is lost to time."},
+   story:"Right by work at ERM (Eaton House). A massive share house with a glorious backyard — so much fun. No great pub on the doorstep (The George was the work local). On the bikes you'd reach it out via Wolvercote with lunch at The White Hart (if it's still going — it was superb), and the good pub up the hill in Botley: The Bear and Ragged Staff (with The Fox Inn nearby too)."},
   {id:"r-percy",period:"Mar 2004 – May 2004",name:"~76 Percy Street",q:"Percy Street, Oxford",
    story:"A short stint off the Cowley Road — the house number's a bit hazy (76-ish)."},
   {id:"r-iffley",period:"May 2004 – May 2005",name:"Flat 5, 220 Iffley Road",q:"220 Iffley Road, Oxford",
@@ -1343,14 +1352,13 @@ const RESIDENCES=[
    story:"Wenners' house, and the final Oxford chapter."}
 ];
 const CYCLE_ROUTE=[
-  "Start at <b>Cowley</b> (off the Cowley Road) — where the ride begins.",
-  "Pick up the Thames tow-path past <b>Christ Church Meadow</b> and the <b>Head of the River</b>.",
-  "Follow the river west out towards <b>Botley</b>.",
-  "<b>Botley → Wolvercote</b> along the water.",
-  "From <b>Wolvercote</b> swing towards <b>Port Meadow</b> — pause at <b>The Trout</b>, or cut straight across the meadow.",
-  "Back along the tow-path into the city.",
-  "Past the <b>Turf Tavern</b>, the <b>Bodleian Library</b>, and up to the <b>Museum</b> (Natural History / Pitt Rivers).",
-  "Down past the riverside college, the <b>Isis</b> and the bridge — then back to <b>Cowley</b> where you started."
+  "Start anywhere on the loop — here it's described from <b>Botley</b>.",
+  "Out of Botley via <b>Seacourt Lane</b> (or the Botley HI) up to <b>Wytham</b> and its ancient woods.",
+  "<b>Wytham → Godstow → Wolvercote</b>, past the ruins of <b>Godstow Abbey</b> and the lock.",
+  "Riverside refuel: the <b>Trout Inn</b> at Godstow, and the <b>Plough</b> at Wolvercote on the way.",
+  "Down the Thames <b>tow-path</b> — with a possible detour via <b>the Medley</b> and <b>The Perch</b> (Binsey).",
+  "Into town through the back streets: central Oxford, the <b>Turf Tavern</b>, the <b>Bear</b>, <b>New College</b>, <b>Magdalen College</b> and <b>Christ Church Meadow</b>, all the way to the <b>Head of the River</b>.",
+  "Then the bike path &amp; tow-path south to <b>The Fishes</b>, and back via <b>North Hinksey Lane</b> into Botley."
 ];
 /* A curated, ordered, guided pub crawl — St Giles down to the river */
 const CRAWL=[
@@ -1398,7 +1406,7 @@ function renderOxford(){
     <div class="card block"><h3>🏰 Blenheim Palace grounds — for free</h3><div class="sub">Woodstock · ~8 miles NW of Oxford</div>
     <p>Churchill's birthplace and a UNESCO World Heritage Site. You can roam the 2,000-acre 'Capability' Brown park <b>for free</b> on the public footpaths — the classic move is the <b>'secret' green gate (No. 95)</b> in Woodstock: a 5–10 minute walk that brings you in right by the lake and the Grand Bridge. (The Palace interior &amp; formal gardens are ticketed; the grounds via the footpath are free.)</p>
     <ul class="tick">
-      <li>Getting there: the <b>S3 bus</b> from Oxford (~30 min), or drive/cycle. Woodstock's a handsome market town with good pubs (The Woodstock Arms, The Bear Hotel).</li>
+      <li>Getting there: the <b>S3 bus</b> from Oxford (~30 min), or drive/cycle. Woodstock's a handsome market town — head for the local, <b>The Black Prince</b> (plus The Woodstock Arms &amp; The Bear Hotel).</li>
       <li>Nearby <b>Bladon</b> churchyard holds Winston Churchill's grave — a short hop on.</li>
       <li>Rules can change — sanity-check current free access at <a href="https://www.freeblenheim.com/" target="_blank" rel="noopener">freeblenheim.com</a> before you go.</li>
     </ul>
@@ -1406,7 +1414,7 @@ function renderOxford(){
   const pubs=`<div class="section-label">The Oxford pub crawl</div>
     <div class="card block" style="margin-bottom:11px"><h3>🍺 A guided crawl — north down to the river</h3><div class="sub">Nine historic pubs, walkable in order from St Giles to Folly Bridge — your three anchors (Turf, Bear, Eagle &amp; Child) are all on it. Half-pints recommended.</div>${routeBtn(CRAWL,"Open the whole crawl in Google Maps")}</div>
     <div class="card">${CRAWL.map(oxStop).join("")}</div>
-    <div class="card block"><h3>Your old locals</h3><p class="mini">Further out but worth a sentimental pint: The Gardener's Arms (Jericho) · The Perch (Binsey) &amp; The Trout (Wolvercote) · the Bookbinders (Jericho) · The White Hart (Wolvercote) · The George (Botley) · the Magdalen Arms (Iffley).</p><p class="mini">Send any favourites from the old Z–A crawl and I'll swap them into the route.</p></div>`;
+    <div class="card block"><h3>Your old locals</h3><p class="mini">Further out but worth a sentimental pint: The Gardener's Arms (Jericho) · the Bookbinders (Jericho) · The Perch (Binsey) · The Trout &amp; The Plough (Wolvercote) · The Fishes (North Hinksey) · The George, The Bear and Ragged Staff &amp; The Fox Inn (Botley) · The White Hart (Wolvercote) · the Magdalen Arms (Iffley).</p><p class="mini">Send any favourites from the old Z–A crawl and I'll swap them into the route.</p></div>`;
   const extras=`<div class="section-label">Two nostalgic extras</div>
     <div class="card block"><h3>🏏 Cricket in the Parks</h3><p>The visiting-county warm-up you remember has sadly ended — Oxford lost first-class status in <b>2021</b>. But <b>free</b> cricket still runs in University Parks from ~<b>April to late June</b> (Blues, Varsity, MCC/Arabs). Your late-June window <i>might</i> catch the tail of the season; a July visit likely misses the university term. Check <a href="https://cricketintheparks.org.uk/" target="_blank" rel="noopener">cricketintheparks.org.uk</a> nearer the time — and you can wander in and watch for free.</p></div>
     <div class="card block"><h3>🎾 Grass tennis in the Parks</h3><p>Good news for you &amp; Wenners — the <b>8 grass courts</b> in University Parks are up <b>April–September</b>, playable 10am–8pm daily, so <b>July works</b>. It's members-only (you can join the Oxford University Parks Tennis Association as a visitor) and <b>whites are required</b>.</p></div>`;
@@ -1415,6 +1423,7 @@ function renderOxford(){
 function renderExplore(){
   document.getElementById("expSeg").querySelectorAll("button").forEach(b=>b.classList.toggle("on",b.dataset.eseg===S.ui.eseg));
   document.getElementById("exp-uk").style.display=S.ui.eseg==="uk"?"":"none";
+  document.getElementById("exp-rambles").style.display=S.ui.eseg==="rambles"?"":"none";
   document.getElementById("exp-oxford").style.display=S.ui.eseg==="oxford"?"":"none";
   document.getElementById("exp-bath").style.display=S.ui.eseg==="bath"?"":"none";
   document.getElementById("exp-eu").style.display=S.ui.eseg==="eu"?"":"none";
@@ -1423,6 +1432,43 @@ function renderExplore(){
   document.getElementById("exp-eu").innerHTML=EU_BLOCKS.map(blk).join("");
   renderOxford();
   renderBath();
+  renderRambles();
+}
+/* Best & most unusual rambles near the trip bases */
+const RAMBLES=[
+  {name:"Blenheim Park via the free gate", area:"Woodstock · near Oxford", dist:"2–5 mi", q:"Blenheim Palace, Woodstock",
+   why:"Walk into 'Capability' Brown's 2,000-acre park for free on the public footpath (the green gate No. 95 in Woodstock) — lake, Grand Bridge and Churchill's birthplace, no ticket."},
+  {name:"Boars Hill — the dreaming-spires view", area:"~4 mi from Oxford", dist:"short", q:"Jarn Mound, Boars Hill, Oxford",
+   why:"The postcard view of Oxford's 'dreaming spires' (Matthew Arnold's line) from Jarn Mound and the surrounding reserves. Magic at dusk."},
+  {name:"Port Meadow to Godstow", area:"Oxford", dist:"~4 mi return", q:"Godstow Abbey, Oxford",
+   why:"Oxford's vast ancient meadow along the Thames to a ruined nunnery and the riverside Trout Inn — grazing horses, wild swimmers and a proper pub finish."},
+  {name:"Uffington White Horse & the Ridgeway", area:"~40 min from Oxford", dist:"5½ mi circular", q:"Uffington White Horse, Oxfordshire",
+   why:"A 3,000-year-old chalk horse cut into the hillside beside Dragon Hill and an Iron-Age fort, on Britain's oldest road — views over six counties. Genuinely otherworldly."},
+  {name:"Bath Skyline", area:"Bath", dist:"~6 mi circular", q:"Bath Skyline Walk, Bath",
+   why:"A National Trust loop right around the city through woods and secret valleys, with rooftop views over the Georgian crescents. Starts and ends in town."},
+  {name:"Two Tunnels Greenway", area:"Bath", dist:"~5 mi", q:"Two Tunnels Greenway, Bath",
+   why:"Walk or cycle through Victorian railway tunnels — Combe Down is one of the longest walkable tunnels in Britain, complete with a sound-and-light installation inside."},
+  {name:"Hampstead Heath & Kenwood", area:"North London", dist:"2–6 mi", q:"Parliament Hill, Hampstead Heath, London",
+   why:"800 acres of wild heath — the Parliament Hill panorama over the skyline, the bathing ponds and Kenwood House. Finish at the ancient Spaniards Inn."},
+  {name:"Richmond Park & the St Paul's view", area:"SW London", dist:"~7 mi loop", q:"King Henry's Mound, Richmond Park, London",
+   why:"2,000 acres, 600 wild deer, the Isabella Plantation — and a legally-protected keyhole view of St Paul's from King Henry's Mound, 10 miles away. Near Wimbledon."},
+  {name:"The Parkland Walk", area:"North London", dist:"~3 mi", q:"Parkland Walk, London",
+   why:"London's longest nature reserve, along a disused railway from Finsbury Park to Highgate — abandoned platforms, a green tunnel, and a mischievous 'spriggan' in the brickwork."},
+  {name:"Regent's Canal towpath", area:"Central London", dist:"~4 mi", q:"Regent's Canal, Camden, London",
+   why:"Little Venice through Regent's Park and the zoo to Camden and Islington — narrowboats, hidden backwaters, and a traffic-free wander across the city."},
+  {name:"Thames foreshore mudlarking", area:"Central London", dist:"low tide only", q:"Wapping foreshore, London",
+   why:"At low tide the river gives up its history — clay pipes, Tudor pottery, Roman tile. You need a permit to search, but walking the Wapping/Bankside foreshore is like nowhere else."},
+  {name:"Wimbledon Common & the windmill", area:"SW London", dist:"~3–5 mi", q:"Wimbledon Common Windmill, London",
+   why:"Heath, woods and an 1817 windmill right by the tennis — a gentle green escape on a Wimbledon day."},
+  {name:"Arthur's Seat", area:"Edinburgh", dist:"~2 mi, steep", q:"Arthur's Seat, Edinburgh",
+   why:"Climb an extinct volcano in the middle of the city for a 360° view — perfect for the Tour's Grand Départ or an Open base in Edinburgh."},
+  {name:"Catbells & Derwentwater", area:"Lake District", dist:"~4 mi", q:"Catbells, Keswick, Lake District",
+   why:"A little mountain with an enormous view over Derwentwater — the classic Lakeland fell, right on the Tour de France Stage 2 roads around Keswick."}
+];
+function renderRambles(){
+  const note=`<div class="tour-note">🥾 <b>Rambles &amp; walks near where you'll be.</b> From the free Blenheim gate to a 3,000-year-old chalk horse and a walk through Victorian railway tunnels — the best (and most unusual) leg-stretchers around your bases. Tap a pin to find the start.</div>`;
+  const cards=RAMBLES.map(r=>`<div class="card block"><h3>🥾 ${r.name}</h3><div class="sub">${r.area} · ${r.dist}</div><p>${r.why}</p><a class="goto" style="margin:11px 0 4px" href="https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(r.q)}" target="_blank" rel="noopener">📍 Find the start</a></div>`).join("");
+  document.getElementById("exp-rambles").innerHTML=note+`<div class="section-label">Best rambles &amp; walks</div>`+cards;
 }
 /* Big John Bradshaw's Bath Pub Tour — a memorial crawl */
 const BATH_CRAWL=[
@@ -1441,7 +1487,7 @@ const BATH_CRAWL=[
 ];
 function renderBath(){
   const done=BATH_CRAWL.filter(s=>S.tour[s.id]).length;
-  const memoriam=`<div class="memoriam"><div class="mem-top">In loving memory</div>
+  const memoriam=`<div class="memoriam">
     <h3>Big John Bradshaw</h3>
     <p>Our great mate and cousin, who made Bath his home for many years and left us a legend — this pub crawl. Big John passed away suddenly, and this one's for him: a proper Bath session, 11 till 11, run exactly the way he drew it up. Do it right, and raise every single one for John. 🍺</p></div>`;
   const routeStops=[0,1,2,3,4,5,8,9,10,11].map(i=>BATH_CRAWL[i]);
