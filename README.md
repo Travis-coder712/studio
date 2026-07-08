@@ -12,27 +12,36 @@ Edit the file directly; GitHub Actions deploys to Pages on every push.
 ## Structure
 
 - `index.html` — the whole site
+- `uk-trip/` — The Fifty Tour UK 2027 trip planner (standalone PWA)
 - `.github/workflows/deploy.yml` — auto-deploys to GitHub Pages on push to `main`
 
-## Sibling repos
+## Projects featured
 
-The projects featured here live in their own GitHub repos:
-
-- AURES Intelligence → `Travis-coder712/aures-db`
-- GridRival Showcase → `Travis-coder712/gridrival-showcase`
-- Wings of Fire RPG → `Travis-coder712/wings-of-fire-rpg`
-- Drawing Adventure → `Travis-coder712/Drawing_adventure`
-- JJCC Surf Check → `Travis-coder712/JJCC-Surf-Check`
-- Brisbane Builder Guide → *(repo extraction pending — currently in `aures-db`)*
-- Acknowledge Country → *(repo extraction pending — currently in `aures-db`)*
-- Studio Learn → *(repo pending — will sync from `aures-db` learning modules)*
+| Project | Repo / Location | Status |
+|---|---|---|
+| AURES Intelligence | `Travis-coder712/aures-db` | v3.19.3 · Active |
+| Praxis | *(in `aures-db`)* | Active |
+| Copilot Starter Track | *(in `aures-db`)* | Active |
+| GridRival Showcase | `Travis-coder712/gridrival-showcase` | Active |
+| Studio Learn | *(in `aures-db`)* | Active |
+| Decisions That Stick | *(in `aures-db`)* | Active |
+| ASX Stock Tracker | *(in `aures-db`)* | Active |
+| Claude Code Guide | *(in `aures-db`)* | Active |
+| The Pyramid Principle | *(in `aures-db`)* | Active |
+| The Fifty Tour — UK 2027 | `studio-public/uk-trip/` | Active |
+| Brisbane Builder Guide | *(in `aures-db`)* | Active |
+| JJCC Surf Check | `Travis-coder712/JJCC-Surf-Check` | Active |
+| Acknowledge Country | *(in `aures-db`)* | Active |
+| Wings of Fire RPG | `Travis-coder712/wings-of-fire-rpg` | Active |
+| Drawing Adventure | `Travis-coder712/Drawing_adventure` | Active |
+| A History of Alphington | *(in `aures-db`)* | Active |
 
 ## Editing
 
 ```bash
 cd ~/Studio/studio-public
 # edit index.html
-git add . && git commit -m "feature: ..." && git push
+git add . && git commit -m "update: ..." && git push
 ```
 
 GitHub Actions deploys within a minute or two.
