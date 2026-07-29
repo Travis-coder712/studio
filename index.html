@@ -567,6 +567,11 @@
       <symbol id="i-flame" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
         <path d="M12 2c1 4 5 6 5 11a5 5 0 0 1-10 0c0-2 1-3 1-4 0 0 1 1 2 1 0-2-1-4 2-8z"/>
       </symbol>
+      <symbol id="i-coffee" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+        <path d="M4 9h13v4a5 5 0 0 1-5 5H9a5 5 0 0 1-5-5z"/>
+        <path d="M17 10h2a2 2 0 0 1 0 5h-2"/>
+        <path d="M8 2v2M11 2v2M14 2v2"/>
+      </symbol>
       <symbol id="i-pencil" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
         <path d="M17 3a2.828 2.828 0 0 1 4 4L7.5 20.5 2 22l1.5-5.5L17 3z"/>
         <line x1="14" y1="6" x2="18" y2="10"/>
@@ -663,9 +668,60 @@
       <h1>Australian energy intelligence<br><span class="accent">and applied tools.</span></h1>
       <p>A focused portfolio of renewable-energy market analytics, technical curricula, and applied software — built end-to-end and shipped iteratively.</p>
       <div class="stats">
-        <div class="stat"><div class="num">14</div><div class="lbl">Live</div></div>
+        <div class="stat"><div class="num">15</div><div class="lbl">Live</div></div>
         <div class="stat-divider"></div>
         <div class="stat"><div class="num">219</div><div class="lbl">Lessons shipped</div></div>
+      </div>
+    </section>
+
+    <!-- Install tip — how to add any of these PWAs to a phone home screen -->
+    <style>
+      #install .install-card{background:var(--bg-2);border:1px solid var(--border);border-radius:18px;
+        padding:24px;box-shadow:0 8px 24px -16px rgba(15,23,42,.25)}
+      #install .install-head{display:flex;gap:14px;align-items:flex-start}
+      #install .install-emoji{font-size:30px;line-height:1}
+      #install .install-head h3{margin:0 0 4px;font-size:19px;color:var(--text)}
+      #install .install-head p{margin:0;color:var(--text-3);font-size:14px;max-width:60ch}
+      #install .install-cols{display:grid;grid-template-columns:1fr;gap:18px;margin:18px 0 6px}
+      @media(min-width:620px){#install .install-cols{grid-template-columns:1fr 1fr}}
+      #install .install-col h4{margin:0 0 8px;font-size:14px;color:var(--text-2);
+        border-bottom:1px solid var(--border);padding-bottom:8px}
+      #install .install-col ol{margin:0;padding-left:20px;color:var(--text-2);font-size:14px;line-height:1.7}
+      #install .install-copy{margin-top:12px;appearance:none;cursor:pointer;font:inherit;font-weight:600;
+        font-size:14px;color:#fff;background:var(--amber);border:0;border-radius:11px;padding:11px 18px;
+        transition:.15s;box-shadow:0 6px 16px -8px rgba(245,158,11,.7)}
+      #install .install-copy:hover{filter:brightness(1.05);transform:translateY(-1px)}
+    </style>
+    <section class="section" id="install">
+      <div class="install-card">
+        <div class="install-head">
+          <span class="install-emoji">📲</span>
+          <div>
+            <h3>Put any of these on your phone's home screen</h3>
+            <p>Every project here is a progressive web app. Add it to your home screen and it opens fullscreen with its own icon — just like a native app, and many work offline. Here's how (tap Copy to share these steps alongside a link):</p>
+          </div>
+        </div>
+        <div class="install-cols">
+          <div class="install-col">
+            <h4>🍏 iPhone &amp; iPad — Safari</h4>
+            <ol>
+              <li>Open the link in <b>Safari</b>.</li>
+              <li>Tap the <b>Share</b> icon (square with an up-arrow).</li>
+              <li>Scroll down, tap <b>Add to Home Screen</b>.</li>
+              <li>Tap <b>Add</b> — the icon appears on your home screen.</li>
+            </ol>
+          </div>
+          <div class="install-col">
+            <h4>🤖 Android — Chrome</h4>
+            <ol>
+              <li>Open the link in <b>Chrome</b>.</li>
+              <li>Tap the <b>⋮</b> menu (top-right).</li>
+              <li>Tap <b>Add to Home screen</b> / <b>Install app</b>.</li>
+              <li>Confirm — the icon lands in your app drawer.</li>
+            </ol>
+          </div>
+        </div>
+        <button class="install-copy" id="install-copy" type="button">📋 Copy these instructions</button>
       </div>
     </section>
 
@@ -725,6 +781,24 @@
         </a>
 
         <!-- Praxis -->
+        <!-- Pour Over Club -->
+        <a class="card" href="https://travis-coder712.github.io/pour-over-club/" target="_blank"
+           style="--accent: #c98a4b; --accent-glow: rgba(201,138,75,0.30); --accent-light: rgba(201,138,75,0.10);">
+          <svg class="card-deco"><use href="#i-coffee"/></svg>
+          <div class="card-head">
+            <div class="icon-wrap"><svg><use href="#i-coffee"/></svg></div>
+            <div>
+              <div class="card-meta">Coffee · Club PWA</div>
+              <div class="card-title">Pour Over Club</div>
+            </div>
+          </div>
+          <p class="card-desc">A tasting club in your pocket. Colleagues bring roasted beans home from their travels, brew a pour-over and rate it — this turns the club's spreadsheet into a living app: 15 rounds of history, the club's own 1–15 score scale, straight vs trimmed averages, a country-flag passport, hand-drawn charts, a full brew guide, and a tap-to-submit new-round form. Static, installable, offline.</p>
+          <div class="card-actions">
+            <span class="btn primary">Open the club →</span>
+            <span class="btn ghost">v1.0 · 15 rounds</span>
+          </div>
+        </a>
+
         <a class="card" href="https://travis-coder712.github.io/praxis/" target="_blank"
            style="--accent: var(--fuchsia); --accent-glow: rgba(217,70,239,0.30); --accent-light: rgba(217,70,239,0.10);">
           <svg class="card-deco"><use href="#i-brain"/></svg>
@@ -1175,6 +1249,27 @@
 
         card.appendChild(btn);
       });
+
+      // "Copy these instructions" button for the home-screen install tip —
+      // copies a plain-text version to paste alongside any shared link.
+      var installBtn = document.getElementById('install-copy');
+      if (installBtn) {
+        var INSTALL_TEXT =
+          '📲 Add this app to your phone’s home screen\n\n' +
+          'iPhone / iPad (Safari): open the link in Safari → tap Share (the square with an up-arrow) → Add to Home Screen → Add.\n\n' +
+          'Android (Chrome): open the link in Chrome → tap the ⋮ menu (top-right) → Add to Home screen / Install app → confirm.\n\n' +
+          'Once it’s on your home screen it opens fullscreen like a real app — and many work offline.';
+        var installDefault = installBtn.textContent;
+        installBtn.addEventListener('click', function () {
+          copyToClipboard(INSTALL_TEXT).then(function () {
+            installBtn.textContent = '✓ Copied — paste it with your link';
+            clearTimeout(installBtn._t);
+            installBtn._t = setTimeout(function () { installBtn.textContent = installDefault; }, 2400);
+          }).catch(function () {
+            installBtn.textContent = 'Press ⌘C to copy';
+          });
+        });
+      }
     })();
   </script>
 
