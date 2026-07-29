@@ -12,6 +12,14 @@
 
   <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Ctext y='80' font-size='80'%3E✦%3C/text%3E%3C/svg%3E">
 
+  <!-- Installable PWA: proper icon + name on the home screen, network-first offline -->
+  <link rel="manifest" href="manifest.webmanifest">
+  <meta name="theme-color" content="#fafbfc">
+  <link rel="apple-touch-icon" href="icon-180.png">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="default">
+  <meta name="apple-mobile-web-app-title" content="Studio">
+
   <style>
     :root {
       --bg:           #fafbfc;
@@ -1175,6 +1183,16 @@
     <p>Travis Hughes · <a href="https://github.com/Travis-coder712" target="_blank">github.com/Travis-coder712</a></p>
     <p class="meta">© 2026 · Studio · last updated 2026-05-31</p>
   </footer>
+
+  <script>
+    // Register the service worker so Studio is installable + works offline
+    // (network-first, so it always shows the latest when online).
+    if ('serviceWorker' in navigator) {
+      window.addEventListener('load', function () {
+        navigator.serviceWorker.register('sw.js').catch(function () {});
+      });
+    }
+  </script>
 
   <script>
     // Add a "Copy link" button to every linked project card so a specific
