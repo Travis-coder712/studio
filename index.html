@@ -652,6 +652,11 @@
       <symbol id="i-check" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
         <path d="M20 6 9 17l-5-5"/>
       </symbol>
+      <symbol id="i-database" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+        <ellipse cx="12" cy="5" rx="8" ry="3"/>
+        <path d="M4 5v6c0 1.66 3.58 3 8 3s8-1.34 8-3V5"/>
+        <path d="M4 11v6c0 1.66 3.58 3 8 3s8-1.34 8-3v-6"/>
+      </symbol>
     </defs>
   </svg>
 
@@ -676,7 +681,7 @@
       <h1>Australian energy intelligence<br><span class="accent">and applied tools.</span></h1>
       <p>A focused portfolio of renewable-energy market analytics, technical curricula, and applied software — built end-to-end and shipped iteratively.</p>
       <div class="stats">
-        <div class="stat"><div class="num">15</div><div class="lbl">Live</div></div>
+        <div class="stat"><div class="num">16</div><div class="lbl">Live</div></div>
         <div class="stat-divider"></div>
         <div class="stat"><div class="num">219</div><div class="lbl">Lessons shipped</div></div>
       </div>
@@ -785,6 +790,24 @@
           <div class="card-actions">
             <span class="btn primary">Open AURES →</span>
             <span class="btn ghost">v3.27.1 · Active</span>
+          </div>
+        </a>
+
+        <!-- The Lens — AusEnergy -->
+        <a class="card" href="https://ausenergy-lens.travishughes-836.workers.dev" target="_blank"
+           style="--accent: #0891b2; --accent-glow: rgba(8,145,178,0.30); --accent-light: rgba(8,145,178,0.10);">
+          <svg class="card-deco"><use href="#i-database"/></svg>
+          <div class="card-head">
+            <div class="icon-wrap"><svg><use href="#i-database"/></svg></div>
+            <div>
+              <div class="card-meta">NEM Data · In-Browser Query Engine</div>
+              <div class="card-title">The Lens — AusEnergy</div>
+            </div>
+          </div>
+          <p class="card-desc">The analyst's lens over Australia's National Electricity Market. 42 AEMO data tables live on Cloudflare, queried entirely in your browser via DuckDB-WASM — no server. Around 48 saved views span price, dispatch, demand and weather, the generation and fuel mix, rooftop solar, gas, batteries, and 2-year reliability outlooks. Ask a question in plain English and it writes the SQL; "Deep analysis" combines the data with Claude's reasoning; any digest generates a printable, grounded report. A daily pipeline keeps the data live.</p>
+          <div class="card-actions">
+            <span class="btn primary">Open the Lens →</span>
+            <span class="btn ghost">42 tables · ~48 views</span>
           </div>
         </a>
 
@@ -1181,7 +1204,7 @@
 
   <footer>
     <p>Travis Hughes · <a href="https://github.com/Travis-coder712" target="_blank">github.com/Travis-coder712</a></p>
-    <p class="meta">© 2026 · Studio · last updated 2026-05-31</p>
+    <p class="meta">© 2026 · Studio · last updated 2026-08-05</p>
   </footer>
 
   <script>
