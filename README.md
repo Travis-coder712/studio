@@ -19,7 +19,7 @@ Edit the file directly; GitHub Actions deploys to Pages on every push.
 
 | Project | Repo / Location | Status |
 |---|---|---|
-| AURES Intelligence | `Travis-coder712/aures-db` | v3.29.0 · Active |
+| AURES Intelligence | `Travis-coder712/aures-db` | v3.30.0 · Active |
 | Praxis | *(in `aures-db`)* | Active |
 | Copilot Starter Track | *(in `aures-db`)* | Active |
 | GridRival Showcase | `Travis-coder712/gridrival-showcase` | Active |
