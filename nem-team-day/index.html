@@ -647,6 +647,17 @@
       <li><b>The dawn:</b> cannibalisation is worst while coal still floods the midday and leaves evenings cheap. As coal <b>exits</b> (Yallourn 2028, Eraring 2029…) evening scarcity returns — and renewables that can <b>time-shift into it</b> (storage, or being firmed) recapture the value. The trough is a phase, not the destination — which is exactly the build-timing question.</li>
     </ul></div>
 
+    <div class="block-h"><span class="tc">◆</span> The battery mirror — spread, not value factor</div>
+    <p class="ds-lead">Value factor is a <i>generation</i> idea; it doesn't fit a battery. A battery's economics run on the <b>price spread</b> it arbitrages — buy the cheap trough, sell the expensive peak. And that spread behaves like the mirror image of solar's: as the fleet grows it compresses, but it still <b>cycles</b>.</p>
+    <div class="chartbox" style="padding:14px 14px 10px"><div class="ct">Battery arbitrage spread vs fleet size — top-2hr spread $/MWh (left) &amp; battery count (right), monthly</div>
+      <svg id="t4-bess-chart" viewBox="0 0 720 320" preserveAspectRatio="xMinYMin meet"></svg></div>
+    <div class="cyc-legend" id="t4-bess-legend"></div>
+    <div class="cyc-read"><div class="rh">Reading the trend — the scissors, and the cycle</div><ul>
+      <li>The <b>top-2-hour arbitrage spread</b> fell from ~$500–880/MWh (mid-2024, a handful of batteries) to <b>~$100–200</b> by 2026 as the fleet grew to ~<b>60 batteries</b>. More storage competing to buy the trough and sell the peak flattens the very spread it lives on — the mirror image of solar cannibalising its own midday.</li>
+      <li>But it's <b>not all batteries</b>. Spreads also compress when <b>coal baseload is still on the system</b>, in <b>benign weather</b>, and when <b>unit availability is high</b> — and they blow wide in scarcity (note the Jun-2025 spike to ~$1,100 and Jan-2026 to ~$480). So, like value factor, the spread <b>cycles</b> with the market, it doesn't just decay.</li>
+      <li><b>The fleet, in and coming:</b> ~<b>65 batteries / 12.7 GW</b> operating today, with <b>~19 GW / 65 GWh committed</b> and building — <i>more battery power than wind and solar combined</i> in the committed pipeline. Every one that arrives competes for the same spread, so the business case is a moving target — best while you're early, and best where the cycle still throws volatility.</li>
+    </ul></div>
+
     <div class="block-h"><span class="tc">◆</span> The data on the table</div>
     <div class="stats">
       <div class="stat"><div class="v tnum">1.06→0.37×</div><div class="l">VIC solar value factor, 2019→2024 trough — it cannibalised itself</div></div>
@@ -1360,6 +1371,28 @@
     g+=`<text x="${px(2023.5).toFixed(1)}" y="${(py(0.37)+15).toFixed(1)}" text-anchor="middle" font-size="8.5" font-family="${mono}" fill="${mut}">well-supplied trough</text>`;
     svg.innerHTML=g;
     document.getElementById('t4-vf-legend').innerHTML=`<span class="lg"><span class="sw" style="background:${t4}"></span>Solar value factor</span><span class="lg"><span class="sw" style="background:${t2}"></span>Wind value factor</span>`;
+  })();
+
+  /* ===================== TOPIC 4 — BESS arbitrage spread vs fleet size ===================== */
+  (function drawBESS(){
+    const svg=document.getElementById('t4-bess-chart'); if(!svg) return;
+    const W=720,H=320,padL=48,padR=52,padT=26,padB=34,x0=padL,x1=W-padR,y0=H-padB,y1=padT;
+    const spread=[878,751,422,326,666,415,309,405,233,261,276,1102,350,230,200,204,234,218,482,196,121,116,98,213];
+    const count=[4,12,20,27,28,29,29,31,32,33,35,35,37,39,42,45,46,47,49,54,56,59,60,59];
+    const xs=[]; let yy=2024,mm=7; for(let i=0;i<24;i++){xs.push(yy+(mm-1)/12);mm++;if(mm>12){mm=1;yy++;}}
+    const xmin=2024.5,xmax=xs[xs.length-1],smax=1200,cmax=70;
+    const px=v=>x0+(v-xmin)/(xmax-xmin)*(x1-x0),pyS=v=>y0-(v/smax)*(y0-y1),pyC=v=>y0-(v/cmax)*(y0-y1);
+    const grid=css('--grid'),mut=css('--muted'),mono=css('--mono'),t4=css('--t4'),acc=css('--accent');
+    let g='';
+    for(let t=0;t<=smax;t+=300){const y=pyS(t);g+=`<line x1="${x0}" y1="${y.toFixed(1)}" x2="${x1}" y2="${y.toFixed(1)}" stroke="${grid}" stroke-width="1"/><text x="${x0-6}" y="${(y+3).toFixed(1)}" text-anchor="end" font-size="9.5" font-family="${mono}" fill="${mut}">$${t}</text>`;}
+    [0,35,70].forEach(c=>{const y=pyC(c);g+=`<text x="${x1+6}" y="${(y+3).toFixed(1)}" text-anchor="start" font-size="9.5" font-family="${mono}" fill="${acc}">${c}</text>`;});
+    [[2024.5,"Jul '24"],[2025,"Jan '25"],[2025.5,"Jul '25"],[2026,"Jan '26"],[2026.42,"now"]].forEach(([t,l])=>{g+=`<text x="${px(t).toFixed(1)}" y="${(y0+16).toFixed(1)}" text-anchor="middle" font-size="9" font-family="${mono}" fill="${mut}">${l}</text>`;});
+    const spL=spread.map((v,i)=>[px(xs[i]),pyS(v)]),coL=count.map((v,i)=>[px(xs[i]),pyC(v)]);
+    g+=`<path d="${lp(coL)}" fill="none" stroke="${acc}" stroke-width="2" stroke-dasharray="5 4"/>`;
+    g+=`<path d="${lp(spL)}" fill="none" stroke="${t4}" stroke-width="2.4"/>`;
+    g+=`<text x="${(x1-2).toFixed(1)}" y="${(y1+8).toFixed(1)}" text-anchor="end" font-size="9" font-style="italic" font-family="${mono}" fill="${acc}">batteries (right axis) →</text>`;
+    svg.innerHTML=g;
+    document.getElementById('t4-bess-legend').innerHTML=`<span class="lg"><span class="sw" style="background:${t4}"></span>Top-2hr arbitrage spread ($/MWh)</span><span class="lg"><span class="sw" style="background:${acc}"></span>Batteries in the fleet (count)</span>`;
   })();
 })();
 </script>
