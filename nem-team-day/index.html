@@ -241,6 +241,9 @@
   .pcard .pacts{display:flex;gap:8px;margin-top:auto;padding-top:4px}
   .pcard .pbtn{appearance:none;font-family:var(--sans);font-size:12.5px;font-weight:600;border:1px solid var(--pc);border-radius:8px;padding:6px 12px;cursor:pointer;background:none;color:var(--pc)}
   .pcard .pbtn.solid{background:var(--pc);color:#fff}
+  .dl-btn{display:inline-flex;align-items:center;gap:8px;font-family:var(--sans);font-size:14px;font-weight:650;color:#fff;background:var(--accent);border:1px solid var(--accent);border-radius:9px;padding:9px 16px;text-decoration:none}
+  .dl-btn:hover{background:var(--accent-ink)}
+  .dl-note{font-size:12px;color:var(--dim);margin-left:10px}
   .qr-teasers{display:grid;gap:7px;margin:6px 0 4px}
   .qt-row{display:grid;grid-template-columns:104px 1fr;gap:11px;align-items:baseline;font-size:13px}
   @media(max-width:520px){.qt-row{grid-template-columns:1fr;gap:1px}}
@@ -310,7 +313,8 @@
     </div>
 
     <div class="block-h">The five topics — pick up your pack</div>
-    <p class="ds-lead">Each table gets a topic. Open it live, or print the one-page pack to run it on paper. (Printing works from the shared web link or the local file.)</p>
+    <p class="ds-lead">Everyone gets their own <b>PowerPoint pack</b> — the session plan plus all the data and provocations — to browse and form their own hypothesis. Or open a topic live, or print its one-page card.</p>
+    <p style="margin:2px 0 16px"><a class="dl-btn" href="Reading-the-NEM-Team-Day.pptx" download>⬇ Download the PowerPoint pack (.pptx)</a><span class="dl-note">26 themed slides · hand one to each person · distribute digitally or print. (Downloads from the shared link or local file.)</span></p>
     <div class="plan-grid" id="plan-grid"></div>
   </div>
 
