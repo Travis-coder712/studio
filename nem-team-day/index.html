@@ -216,6 +216,52 @@
   .assume summary{cursor:pointer;font-size:12px;color:var(--tc);font-weight:600;font-family:var(--mono)}
   .assume .body{font-size:12.5px;color:var(--muted);margin-top:8px;line-height:1.55}
 
+  /* session plan */
+  .ros{display:grid;gap:1px;background:var(--line);border:1px solid var(--line);border-radius:12px;overflow:hidden;margin:4px 0 8px}
+  .ros .r{display:grid;grid-template-columns:96px 1fr auto;gap:14px;background:var(--paper);padding:12px 16px;align-items:baseline}
+  @media(max-width:600px){.ros .r{grid-template-columns:78px 1fr;gap:6px 10px}.ros .r .who{grid-column:2;margin-top:-4px}}
+  .ros .t{font-family:var(--mono);font-size:12px;font-weight:700;color:var(--accent-ink)}
+  .ros .w{font-size:14px;color:var(--body)} .ros .w b{color:var(--ink)}
+  .ros .who{font-family:var(--mono);font-size:10px;text-transform:uppercase;letter-spacing:.05em;color:var(--muted);font-weight:700}
+  .plan-fb{border-color:var(--accent)!important}
+  .plan-fb .eyebrow{color:var(--accent-ink)}
+  .beats{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin:4px 0}
+  @media(max-width:640px){.beats{grid-template-columns:1fr}}
+  .beats .b{border:1px solid var(--line);border-radius:11px;padding:14px 15px;background:var(--paper)}
+  .beats .bn{font-family:var(--mono);font-size:11px;font-weight:700;color:var(--accent-ink)}
+  .beats h4{font-size:.98rem;margin:5px 0 5px}
+  .beats p{font-size:13px;color:var(--muted);margin:0}
+  .plan-grid{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+  @media(max-width:680px){.plan-grid{grid-template-columns:1fr}}
+  .pcard{border:1px solid var(--line);border-left:4px solid var(--pc);border-radius:12px;background:var(--paper);padding:15px 17px;display:flex;flex-direction:column;gap:8px}
+  .pcard .pn{font-family:var(--mono);font-size:10px;font-weight:700;letter-spacing:.06em;text-transform:uppercase;color:var(--pc)}
+  .pcard h4{font-size:1.05rem;margin:0}
+  .pcard .idea{font-size:13px;color:var(--body)} .pcard .idea b{color:var(--ink)}
+  .pcard .teaser{font-size:12.5px;color:var(--muted);font-style:italic;border-top:1px dashed var(--line);padding-top:8px}
+  .pcard .pacts{display:flex;gap:8px;margin-top:auto;padding-top:4px}
+  .pcard .pbtn{appearance:none;font-family:var(--sans);font-size:12.5px;font-weight:600;border:1px solid var(--pc);border-radius:8px;padding:6px 12px;cursor:pointer;background:none;color:var(--pc)}
+  .pcard .pbtn.solid{background:var(--pc);color:#fff}
+  .qr-teasers{display:grid;gap:7px;margin:6px 0 4px}
+  .qt-row{display:grid;grid-template-columns:104px 1fr;gap:11px;align-items:baseline;font-size:13px}
+  @media(max-width:520px){.qt-row{grid-template-columns:1fr;gap:1px}}
+  .qt-k{font-family:var(--mono);font-size:10.5px;font-weight:700;text-transform:uppercase;letter-spacing:.04em;color:var(--pc)}
+  .qt-v{color:var(--body)} .qt-v b{color:var(--ink)}
+  .qr-opts{margin:6px 0 0;padding-left:18px} .qr-opts li{font-size:14px;color:var(--body);margin:0 0 7px} .qr-opts b{color:var(--ink)}
+  /* printable one-page pack */
+  #print-pack{display:none;padding:26px;color:#111;background:#fff;font-family:var(--sans);max-width:760px;margin:0 auto}
+  #print-pack h1{font-size:23px;margin:0 0 4px;color:#111} #print-pack .pk-meta{font-family:var(--mono);font-size:11px;text-transform:uppercase;letter-spacing:.06em;color:#666;margin:0 0 8px}
+  #print-pack .big-idea{font-size:15px;font-weight:600;margin:0 0 14px;color:#111}
+  #print-pack .pk-chart{border:1px solid #ddd;border-radius:8px;padding:8px;margin:0 0 6px} #print-pack .pk-chart svg{width:100%;height:auto;max-height:240px}
+  #print-pack h3{font-size:12px;text-transform:uppercase;letter-spacing:.05em;color:#333;margin:16px 0 6px;border-bottom:1px solid #ccc;padding-bottom:3px}
+  #print-pack ul,#print-pack ol{margin:0;padding-left:20px} #print-pack li{font-size:13.5px;margin:0 0 5px;color:#111}
+  #print-pack .pk-fb{border:1.5px solid #111;border-radius:8px;padding:10px 13px;font-size:13.5px;margin:14px 0 0;color:#111}
+  #print-pack .pk-notes{border:1px solid #bbb;border-radius:8px;height:120px;margin-top:6px}
+  @media print{
+    body.printing>header,body.printing>main,body.printing>footer{display:none!important}
+    body.printing #print-pack{display:block!important}
+    @page{margin:14mm}
+  }
+
   footer{border-top:1px solid var(--line);margin-top:36px;padding:22px 0 60px;font-family:var(--mono);font-size:11.5px;color:var(--dim);line-height:1.7}
   ::selection{background:rgba(13,125,116,.22)}
 </style>
@@ -226,7 +272,8 @@
     <h1>Reading the NEM</h1>
     <div class="sub">Session kit — background, five topics, two live calculators. Draft one, made to evolve.</div>
     <div class="tabs" role="tablist" id="tabs">
-      <button class="tab" role="tab" aria-selected="true"  data-tab="bg"  style="--tc:var(--accent)"><span class="n">00</span>Background</button>
+      <button class="tab" role="tab" aria-selected="true"  data-tab="plan" style="--tc:var(--accent)"><span class="n">▶</span>Session plan</button>
+      <button class="tab" role="tab" aria-selected="false" data-tab="bg"  style="--tc:var(--accent)"><span class="n">00</span>Background</button>
       <button class="tab" role="tab" aria-selected="false" data-tab="t1"  style="--tc:var(--t1)"><span class="dot"></span>Market cycles</button>
       <button class="tab" role="tab" aria-selected="false" data-tab="t2"  style="--tc:var(--t2)"><span class="dot"></span>Renewables</button>
       <button class="tab" role="tab" aria-selected="false" data-tab="t3"  style="--tc:var(--t3)"><span class="dot"></span>Demand</button>
@@ -237,8 +284,38 @@
 </header>
 
 <main>
+  <!-- ============ SESSION PLAN ============ -->
+  <div class="panel wrap" id="p-plan">
+    <p class="lede">A fast, interactive <b>40-minute</b> session. Each table takes one topic, gets a big idea and a piece of long-run data, digs into a few related data points, then reports back <b>what they learned</b> — not a recap.</p>
+
+    <div class="block-h">Run of show — 40 minutes</div>
+    <div class="ros">
+      <div class="r"><span class="t">0:00–0:05</span><span class="w"><b>Set the scene.</b> The premise + how it runs; tables take their topic.</span><span class="who">Presenter</span></div>
+      <div class="r"><span class="t">0:05–0:11</span><span class="w"><b>The idea + the long view.</b> Each table reads its topic's opening chart and the one big idea.</span><span class="who">Tables</span></div>
+      <div class="r"><span class="t">0:11–0:27</span><span class="w"><b>Dig in.</b> Work the data points and the live calculator; form a <i>position</i> on the questions.</span><span class="who">Tables</span></div>
+      <div class="r"><span class="t">0:27–0:40</span><span class="w"><b>Report back.</b> ~2 min a table: the key learning, the number, the surprise.</span><span class="who">All</span></div>
+    </div>
+
+    <div class="note plan-fb">
+      <span class="eyebrow">The one rule for report-back</span>
+      <h3>Key learnings, not a summary</h3>
+      <p>We don't want “here's what we looked at.” We want the <b>one or two things you now believe that you didn't before</b> — the key learning, the number that changed your mind, and the surprise. The discussion prompts in each topic are built to push you to a position, so use them.</p>
+    </div>
+
+    <div class="block-h">How each table runs its ~20 minutes</div>
+    <div class="beats">
+      <div class="b"><div class="bn">Beat 1</div><h4>The idea + the long view</h4><p>Start with the big idea and the longitudinal chart — where we've come from, and why it matters.</p></div>
+      <div class="b"><div class="bn">Beat 2</div><h4>Related data points</h4><p>Two or three data packs that pressure-test the idea from different angles (some agree, some complicate it).</p></div>
+      <div class="b"><div class="bn">Beat 3</div><h4>Discuss &amp; take a position</h4><p>Work the questions to a view. Land on your key learnings — not a recap of the charts.</p></div>
+    </div>
+
+    <div class="block-h">The five topics — pick up your pack</div>
+    <p class="ds-lead">Each table gets a topic. Open it live, or print the one-page pack to run it on paper. (Printing works from the shared web link or the local file.)</p>
+    <div class="plan-grid" id="plan-grid"></div>
+  </div>
+
   <!-- ============ BACKGROUND ============ -->
-  <div class="panel wrap" id="p-bg">
+  <div class="panel wrap" id="p-bg" hidden>
     <p class="lede">This is the running kit for a table-based team day on <b>how the NEM actually evolves</b>. The design principle is simple: put <b>real data</b> in front of four to eight people, give them a genuine question to argue about, and have them report a position back to the room. Everything to run it is in these tabs — one per topic, each with presenter notes.</p>
 
     <div class="flow">
@@ -273,7 +350,27 @@
     <div class="note">
       <span class="eyebrow">A note on the numbers</span>
       <h3>What's solid, what to check</h3>
-      <p>Dispatch, generation-mix, curtailment, DER and value figures are measured and reliable. The <b>demand-outlook absolute totals</b> are ISP 2026 scenario figures — quote the <i>trajectory</i> (roughly doubling to 2050) rather than the exact TWh, and verify absolutes against the Lens's demand-outlook view before printing. The two calculators are <b>transparent teaching models</b>, not planning tools — assumptions are on screen and the point is the <i>shape</i> of the answer.</p>
+      <p>Dispatch, generation-mix, curtailment, DER and value figures are measured and reliable. The <b>demand-outlook absolute totals</b> are ISP 2026 scenario figures — quote the <i>trajectory</i> (~60% growth, up to a rough doubling, by 2050) rather than the exact TWh, and verify absolutes against the Lens's demand-outlook view before printing. The two calculators are <b>transparent teaching models</b>, not planning tools — assumptions are on screen and the point is the <i>shape</i> of the answer.</p>
+    </div>
+
+    <div class="note" style="border-color:var(--t3)">
+      <span class="eyebrow" style="color:var(--t3)">An idea to explore — self-selecting groups by QR vote</span>
+      <h3>Let the teams pick their topic from a teaser</h3>
+      <p>Before the session (the day before, or as they walk in), show each person a short <b>teaser</b> for the five topics and let them vote by phone for the one they want — via a QR code — with a <b>live tally</b> so we can steer the balance: nudge people off a crowded topic, rescue an ignored one. The teaser doubles as the hook that makes the topic irresistible.</p>
+      <div class="qr-teasers">
+        <div class="qt-row" style="--pc:var(--t1)"><span class="qt-k">Market cycles</span><span class="qt-v">In 2022 wholesale hit <b>$205/MWh — 5× 2020</b>. Where are we in the cycle, and what does a $10/MWh swing do to a project's returns?</span></div>
+        <div class="qt-row" style="--pc:var(--t2)"><span class="qt-k">Renewables</span><span class="qt-v">To firm 90% wind+solar you need <b>~800 big batteries</b>; 100% is a wall. How much gas keeps it sane?</span></div>
+        <div class="qt-row" style="--pc:var(--t3)"><span class="qt-k">Demand</span><span class="qt-v">Rooftop quietly hid <b>~16 TWh</b> of demand growth. Can it keep pace with EVs and data centres — or must the grid finally grow?</span></div>
+        <div class="qt-row" style="--pc:var(--t4)"><span class="qt-k">Economics</span><span class="qt-v">Solar's captured value fell <b>1.06× → 0.37×</b> the pool — it did this to itself. Is the trough permanent, or does coal-exit bring it back?</span></div>
+        <div class="qt-row" style="--pc:var(--t5)"><span class="qt-k">Pipeline</span><span class="qt-v">Of <b>105 GW “proposed” in 2022, only ~9 GW</b> got built. Which signals separate the real projects from the mirage?</span></div>
+      </div>
+      <p style="margin-top:14px"><b>Effort &amp; options</b></p>
+      <ul class="qr-opts">
+        <li><b>Zero-build (best for a first run):</b> a live poll in Slido / Mentimeter / a Google Form — QR to the poll, live bar chart of picks. ~15 min to set up, no code; the only downside is a second tool on screen.</li>
+        <li><b>Custom &amp; on-brand (~half a day):</b> a small Cloudflare Worker + KV — one page with the five teasers, a vote button, and a live distribution that greys out a topic once it's “full” and flags any with no takers. You already run Cloudflare, so it's free to host and sits right next to this kit.</li>
+        <li><b>In-kit note:</b> this page is static (GitHub Pages), so a cross-phone live tally needs a tiny backend either way — the Worker is the clean version if this becomes a recurring format.</li>
+      </ul>
+      <p><b>The balance mechanic:</b> show the running count under each topic; when one hits, say, 8 people, mark it “full — pick another”, and highlight any topic still on zero. The vote becomes self-organising, evenly-sized tables — and the teasers seed the curiosity before anyone's even sat down.</p>
     </div>
   </div>
 
@@ -646,9 +743,77 @@
   Reading the NEM · session kit v1 · figures from the AusEnergy Lens (AEMO MMSDM + ISP 2026 + Open Electricity + CER), current to Aug 2026. Calculators are transparent teaching models, not planning tools.
 </div></footer>
 
+<div id="print-pack"></div>
+
+<script>
+/* Session-plan grid + printable one-page group packs */
+(function(){
+  const PACKS={
+    t1:{n:1,tab:'t1',title:'Market cycles & shocks',pc:'--t1',chart:'cycle-chart',
+      idea:'Prices move in shock-driven cycles — and because capex is fixed, a small $/MWh move is a big move in returns.',
+      teaser:'2022 hit $205/MWh in QLD — 5× 2020. Where are we in the cycle now?',
+      stats:['NSW wholesale: $60 (2020) → $183 (2022) → $74 (2026 YTD).','June 2022: the NEM was suspended for the first time ever.','21 GW of coal still operating; ~6 GW exits 2028–29.','Rule of thumb: +1 GW of average demand ≈ +$20/MWh (convex into scarcity).'],
+      qs:['Is today a calm, well-supplied moment — or one heatwave and one broken boiler from the next spike?','What would a repeat of 2022 do to the revenue our pipeline is underwritten on?','Given the cycle, when in it would you want a project to reach FID?'],
+      fb:'Where do you think we sit in the cycle right now — and the one number that convinced you?'},
+    t2:{n:2,tab:'t2',title:'Increasing renewable penetration',pc:'--t2',chart:'t2-chart',
+      idea:'Storage is critical, and the volume you need climbs non-linearly toward 100% — a little firm gas tames it.',
+      teaser:'Firming 90% wind+solar takes ~800 big batteries; 100% is a wall.',
+      stats:['NEM is ~44% renewable today (grid wind+solar ~29%).','Curtailment roughly doubled to 7.4 TWh in two years.','Firming 90% ≈ 800 four-hour “big batteries”; 100% can’t be done with 4-hr BESS alone.','Least storage lands around a balanced ~40–55% wind mix.'],
+      qs:['Where does the storage-curve “knee” bite — and how much gas keeps the number sane?','Which wind/solar mix needs the least storage, and why?','Is 100% even the right target, or is the last slice a different technology problem?'],
+      fb:'What about the cost of the “last 20%” most surprised the table?'},
+    t3:{n:3,tab:'t3',title:'Through the lens of demand',pc:'--t3',chart:'t3-chart',
+      idea:'Demand’s been flat for a decade — but that flatline hid real growth, and shape matters as much as size.',
+      teaser:'Rooftop quietly hid ~16 TWh of demand growth. Can it keep pace?',
+      stats:['Operational demand flat ~177 TWh (2020–25); rooftop hid +16 TWh behind the meter.','ISP range to 2050: 1.6–2.4× — it could roughly double.','EV load 0.9 → 61 TWh (2026→2050); rooftop installs ~2.7 GW/yr.','Slide rooftop to ~70 GW and midday operational demand goes negative.'],
+      qs:['Can rooftop keep pace with EV + electrification + data-centre load, or does the grid finally grow?','Managed vs unmanaged EV charging — how big is the swing in the evening peak?','Is the build problem now the evening ramp and midday trough, not annual TWh?'],
+      fb:'What did you learn about the difference between demand’s size and its shape?'},
+    t4:{n:4,tab:'t4',title:'The economics of building',pc:'--t4',chart:'t4-vf-chart',
+      idea:'The more you build, the less it’s worth — until coal leaves. Value cannibalises, then cycles back.',
+      teaser:'Solar’s captured value fell 1.06× → 0.37× the pool. Permanent?',
+      stats:['VIC solar value factor: 1.06× (2019) → 0.37× (2023–24 trough) → 0.67× (2026 YTD).','It cycles: the 2022 gas shock lifted it; well-supplied years crush it.','FCAS revenue fell ~90–95% in five years as batteries flooded in.','The best batteries still capture $160–234/MWh spreads today.'],
+      qs:['Is the value-factor trough permanent, or does coal-exit evening scarcity bring it back?','Does that change whether — or when — you build, and whether to firm it?','Has value moved from energy to flexibility for good?'],
+      fb:'Your position: would you build another unfirmed solar farm in this market — and why?'},
+    t5:{n:5,tab:'t5',title:'Award vs concrete vs electrons',pc:'--t5',chart:'t5-chart',
+      idea:'Most of the pipeline is a mirage — the gap between proposed, committed and built is enormous.',
+      teaser:'Of 105 GW “proposed” in 2022, only ~9 GW got built.',
+      stats:['Proposed 346 GW vs committed ~13 GW vs built ~70 GW (2026).','Back-test: of 105.7 GW proposed in 2022, ~9.6 GW built, 52.6 GW dropped by 2026.','CIS: ~32 GW contracted, just 0.29 GW operating.','Only 3 major transmission lines are in construction.'],
+      qs:['Which gate kills the most megawatts — connection, transmission, offtake or planning?','What early signal best separates the real projects from the mirage?','Does our screening assume anything remotely as brutal as ~9% proposed-to-built?'],
+      fb:'What signal will you now look for before believing a “pipeline” number?'},
+  };
+
+  const grid=document.getElementById('plan-grid');
+  if(grid){
+    grid.innerHTML=Object.entries(PACKS).map(([k,p])=>
+      `<div class="pcard" style="--pc:var(${p.pc})"><div class="pn">Topic ${p.n}</div><h4>${p.title}</h4>`+
+      `<div class="idea">${p.idea}</div><div class="teaser">Teaser: ${p.teaser}</div>`+
+      `<div class="pacts"><button class="pbtn solid" data-open="${p.tab}">Open topic →</button><button class="pbtn" data-print="${k}">⎙ Print pack</button></div></div>`).join('');
+    grid.querySelectorAll('[data-open]').forEach(b=>b.addEventListener('click',()=>{
+      const t=[...document.querySelectorAll('.tab')].find(x=>x.dataset.tab===b.dataset.open); if(t) t.click();
+    }));
+    grid.querySelectorAll('[data-print]').forEach(b=>b.addEventListener('click',()=>printPack(b.dataset.print)));
+  }
+
+  function printPack(k){
+    const p=PACKS[k]; if(!p) return;
+    const chart=document.getElementById(p.chart);
+    const svg=(chart&&chart.querySelector('path,line'))?('<div class="pk-chart">'+chart.outerHTML+'</div>'):'';
+    document.getElementById('print-pack').innerHTML=
+      `<h1>${p.title}</h1><div class="pk-meta">Reading the NEM · team-day pack · Topic ${p.n}</div>`+
+      `<p class="big-idea">${p.idea}</p>`+svg+
+      `<h3>The data on the table</h3><ul>${p.stats.map(s=>'<li>'+s+'</li>').join('')}</ul>`+
+      `<h3>Discuss &amp; take a position</h3><ol>${p.qs.map(q=>'<li>'+q+'</li>').join('')}</ol>`+
+      `<div class="pk-fb"><b>Report back — key learnings, not a summary.</b> ${p.fb}</div>`+
+      `<h3>Notes</h3><div class="pk-notes"></div>`;
+    document.body.classList.add('printing');
+    window.print();
+    setTimeout(()=>document.body.classList.remove('printing'),600);
+  }
+})();
+</script>
+
 <script>
 (function(){
-  const map={bg:'p-bg',t1:'p-t1',t2:'p-t2',t3:'p-t3',t4:'p-t4',t5:'p-t5'};
+  const map={plan:'p-plan',bg:'p-bg',t1:'p-t1',t2:'p-t2',t3:'p-t3',t4:'p-t4',t5:'p-t5'};
   const tabs=[...document.querySelectorAll('.tab')];
   function show(key){
     tabs.forEach(x=>x.setAttribute('aria-selected', x.dataset.tab===key));
