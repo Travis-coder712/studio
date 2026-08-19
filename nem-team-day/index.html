@@ -244,6 +244,17 @@
   .dl-btn{display:inline-flex;align-items:center;gap:8px;font-family:var(--sans);font-size:14px;font-weight:650;color:#fff;background:var(--accent);border:1px solid var(--accent);border-radius:9px;padding:9px 16px;text-decoration:none}
   .dl-btn:hover{background:var(--accent-ink)}
   .dl-note{font-size:12px;color:var(--dim);margin-left:10px}
+  .st-wrap{overflow-x:auto;margin:2px 0}
+  .st{width:100%;border-collapse:collapse;font-size:13.5px;min-width:560px}
+  .st th,.st td{text-align:right;padding:9px 13px;border-bottom:1px solid var(--line);white-space:nowrap}
+  .st th:first-child,.st td:first-child{text-align:left}
+  .st thead th{font-family:var(--mono);font-size:10.5px;text-transform:uppercase;letter-spacing:.03em;color:var(--muted);font-weight:700;border-bottom:1.5px solid var(--line2);vertical-align:bottom}
+  .st thead th small{display:block;font-weight:500;color:var(--dim);text-transform:none;letter-spacing:0;font-size:9.5px}
+  .st td{font-variant-numeric:tabular-nums;color:var(--body)}
+  .st td:first-child{font-weight:650;color:var(--ink)}
+  .st tbody tr:hover{background:var(--panel)}
+  .st tr.tot td{border-top:2px solid var(--line2);border-bottom:none;font-weight:700;color:var(--ink)}
+  .st .hi{color:var(--tc);font-weight:700}
   .qr-teasers{display:grid;gap:7px;margin:6px 0 4px}
   .qt-row{display:grid;grid-template-columns:104px 1fr;gap:11px;align-items:baseline;font-size:13px}
   @media(max-width:520px){.qt-row{grid-template-columns:1fr;gap:1px}}
@@ -659,8 +670,22 @@
     <div class="cyc-read"><div class="rh">Reading the trend — the scissors, and the cycle</div><ul>
       <li>The <b>top-2-hour arbitrage spread</b> fell from ~$500–880/MWh (mid-2024, a handful of batteries) to <b>~$100–200</b> by 2026 as the fleet grew to ~<b>60 batteries</b>. More storage competing to buy the trough and sell the peak flattens the very spread it lives on — the mirror image of solar cannibalising its own midday.</li>
       <li>But it's <b>not all batteries</b>. Spreads also compress when <b>coal baseload is still on the system</b>, in <b>benign weather</b>, and when <b>unit availability is high</b> — and they blow wide in scarcity (note the Jun-2025 spike to ~$1,100 and Jan-2026 to ~$480). So, like value factor, the spread <b>cycles</b> with the market, it doesn't just decay.</li>
-      <li><b>The fleet, in and coming:</b> ~<b>65 batteries / 12.7 GW</b> operating today, with <b>~19 GW / 65 GWh committed</b> and building — <i>more battery power than wind and solar combined</i> in the committed pipeline. Every one that arrives competes for the same spread, so the business case is a moving target — best while you're early, and best where the cycle still throws volatility.</li>
+      <li><b>The fleet, in and coming:</b> ~<b>65 batteries / 12.3 GW / 24 GWh</b> operating today, with <b>~8 GW / 21 GWh committed</b> and building. Every one that arrives competes for the same spread, so the business case is a moving target — best while you're early, and best where the cycle still throws volatility.</li>
     </ul></div>
+
+    <div class="block-h"><span class="tc">◆</span> Battery build by state — spread, size &amp; duration</div>
+    <p class="ds-lead">Where the batteries are, how big and how long they last — against the spread they're chasing. The tell: <b>SA has the widest spread ($384) but the smallest, shortest batteries</b> (power/FCAS-focused), while <b>NSW &amp; QLD hold the biggest fleets</b> on thinner spreads. The “building” column is deeper (2.5–3 hr) — the fleet is lengthening as the easy spread compresses.</p>
+    <div class="st-wrap"><table class="st">
+      <thead><tr><th>State</th><th>Arb. spread<small>top-2hr $/MWh</small></th><th>Batteries<small>operating</small></th><th>Power<small>GW</small></th><th>Energy<small>GWh</small></th><th>Duration<small>hrs</small></th><th>Building<small>GW committed</small></th></tr></thead>
+      <tbody>
+        <tr><td>NSW</td><td>$276</td><td>17</td><td>4.1</td><td>8.7</td><td>2.1</td><td>3.5</td></tr>
+        <tr><td>QLD</td><td>$188</td><td>16</td><td>3.8</td><td>7.5</td><td>2.0</td><td>1.1</td></tr>
+        <tr><td>VIC</td><td>$201</td><td>15</td><td>2.8</td><td>4.7</td><td>1.7</td><td>2.5</td></tr>
+        <tr><td>SA</td><td class="hi">$384</td><td>17</td><td>1.7</td><td>2.9</td><td>1.7</td><td>1.0</td></tr>
+        <tr class="tot"><td>NEM</td><td>—</td><td>65</td><td>12.3</td><td>23.8</td><td>1.9</td><td>8.0</td></tr>
+      </tbody>
+    </table></div>
+    <p class="dl-note" style="margin:8px 0 0 0">Operating fleet from the AEMO facility registry (discharge side, as-at Aug 2026); arbitrage spread from battery_capture (2025–26 avg); “building” = committed + in-commissioning. TAS: no grid-scale battery yet.</p>
 
     <div class="block-h"><span class="tc">◆</span> The data on the table</div>
     <div class="stats">
