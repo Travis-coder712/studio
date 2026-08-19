@@ -1,0 +1,1200 @@
+<title>Reading the NEM</title>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<style>
+  :root{
+    --bg:#f6f8fa; --paper:#ffffff; --panel:#eef1f5; --line:#dde3ea; --line2:#c9d2dc;
+    --ink:#111820; --body:#37424f; --muted:#66717f; --dim:#8a94a1;
+    --accent:#0d7d74; --accent-ink:#0a5f58;
+    --t1:#b4571f; --t1b:#f4ebe3; --t2:#0d7d74; --t2b:#e2f0ee; --t3:#4a4bd6; --t3b:#e9e9fb;
+    --t4:#b21e46; --t4b:#f8e6ec; --t5:#2f7d3a; --t5b:#e6f1e7;
+    --grid:#e6eaef;
+    --mono:ui-monospace,"SF Mono",SFMono-Regular,Menlo,Consolas,monospace;
+    --sans:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;
+    --wrap:960px;
+  }
+  @media (prefers-color-scheme:dark){ :root:not([data-theme="light"]){
+    --bg:#0f1319; --paper:#161b23; --panel:#1c222c; --line:#28303b; --line2:#37414e;
+    --ink:#eaeef3; --body:#c2cad4; --muted:#8b96a3; --dim:#68727f;
+    --accent:#48c9bd; --accent-ink:#5fd3c8; --grid:#232b35;
+    --t1:#e0824a; --t1b:#2a2019; --t2:#48c9bd; --t2b:#16241f; --t3:#8a8bf0; --t3b:#1a1a2c;
+    --t4:#ec6f92; --t4b:#2a1820; --t5:#67c072; --t5b:#152417;
+  }}
+  :root[data-theme="dark"]{
+    --bg:#0f1319; --paper:#161b23; --panel:#1c222c; --line:#28303b; --line2:#37414e;
+    --ink:#eaeef3; --body:#c2cad4; --muted:#8b96a3; --dim:#68727f;
+    --accent:#48c9bd; --accent-ink:#5fd3c8; --grid:#232b35;
+    --t1:#e0824a; --t1b:#2a2019; --t2:#48c9bd; --t2b:#16241f; --t3:#8a8bf0; --t3b:#1a1a2c;
+    --t4:#ec6f92; --t4b:#2a1820; --t5:#67c072; --t5b:#152417;
+  }
+  *{box-sizing:border-box}
+  html{-webkit-text-size-adjust:100%}
+  body{margin:0;background:var(--bg);color:var(--body);font-family:var(--sans);font-size:16px;line-height:1.6;-webkit-font-smoothing:antialiased}
+  .wrap{max-width:var(--wrap);margin:0 auto;padding:0 22px}
+  h1,h2,h3,h4{color:var(--ink);text-wrap:balance;line-height:1.14;margin:0}
+  a{color:var(--accent-ink)}
+  strong{color:var(--ink);font-weight:650}
+  .mono{font-family:var(--mono)} .tnum{font-variant-numeric:tabular-nums}
+  .eyebrow{font-family:var(--mono);font-size:11px;letter-spacing:.16em;text-transform:uppercase;font-weight:600}
+
+  header{padding:30px 0 0;border-bottom:1px solid var(--line);position:sticky;top:0;background:var(--bg);z-index:20}
+  header .eyebrow{color:var(--accent-ink)}
+  h1{font-size:clamp(1.6rem,3.6vw,2.2rem);font-weight:750;letter-spacing:-.025em;margin:7px 0 3px}
+  header .sub{color:var(--muted);font-size:13.5px;margin-bottom:14px}
+  .tabs{display:flex;gap:1px;overflow-x:auto;scrollbar-width:none}
+  .tabs::-webkit-scrollbar{display:none}
+  .tab{appearance:none;background:none;border:0;border-bottom:2.5px solid transparent;
+    font-family:var(--sans);font-size:14px;font-weight:600;color:var(--muted);
+    padding:10px 14px;cursor:pointer;white-space:nowrap;letter-spacing:-.01em;display:flex;align-items:center;gap:7px}
+  .tab:hover{color:var(--ink)}
+  .tab[aria-selected="true"]{color:var(--tc,var(--accent-ink));border-color:var(--tc,var(--accent))}
+  .tab .dot{width:7px;height:7px;border-radius:2px;background:var(--tc);flex:none;opacity:.85}
+  .tab .n{font-family:var(--mono);font-size:11px;color:var(--dim)}
+  .tab[aria-selected="true"] .n{color:var(--tc)}
+
+  main{padding:28px 0 70px}
+  .panel[hidden]{display:none}
+  .lede{font-size:1.12rem;color:var(--body);max-width:64ch;margin:0 0 18px}
+  .lede b{color:var(--ink)}
+  p{max-width:70ch}
+
+  .thead{position:relative;padding:2px 0 18px 20px;margin-bottom:20px;border-bottom:1px solid var(--line)}
+  .thead::before{content:"";position:absolute;left:0;top:2px;bottom:18px;width:5px;border-radius:3px;background:var(--tc)}
+  .t-tag{font-family:var(--mono);font-size:10.5px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:var(--tc);display:flex;align-items:center;gap:8px}
+  .t-tag .core{background:var(--tc);color:var(--paper);border-radius:4px;padding:1px 6px;font-size:9px}
+  .thead h2{font-size:clamp(1.4rem,3vw,1.8rem);font-weight:730;letter-spacing:-.02em;margin:8px 0 7px}
+  .thesis{color:var(--body);font-size:1.02rem;max-width:74ch} .thesis b{color:var(--ink)}
+
+  .block-h{font-family:var(--mono);font-size:10.5px;letter-spacing:.09em;text-transform:uppercase;color:var(--muted);font-weight:700;margin:26px 0 12px;display:flex;align-items:center;gap:9px}
+  .block-h::after{content:"";flex:1;height:1px;background:var(--line)}
+  .block-h .tc{color:var(--tc)}
+
+  .stats{display:grid;grid-template-columns:repeat(auto-fit,minmax(140px,1fr));gap:10px}
+  .stat{border:1px solid var(--line);border-radius:10px;padding:12px 14px;background:var(--paper)}
+  .stat .v{font-family:var(--mono);font-size:1.35rem;font-weight:650;color:var(--ink);letter-spacing:-.01em}
+  .stat .v small{font-size:.72rem;color:var(--muted);font-weight:500}
+  .stat .l{font-size:11.5px;color:var(--muted);margin-top:4px;line-height:1.4}
+  .sources{display:flex;flex-wrap:wrap;gap:6px;margin-top:14px}
+  .src{font-family:var(--mono);font-size:11px;color:var(--body);background:var(--panel);border:1px solid var(--line);border-radius:6px;padding:3px 8px;white-space:nowrap}
+  .src b{color:var(--tc);font-weight:600}
+
+  /* dataset accordions */
+  .ds-lead{font-size:13.5px;color:var(--muted);margin:0 0 12px}
+  .ds-list{display:flex;flex-direction:column;gap:8px}
+  .ds{border:1px solid var(--line);border-radius:10px;background:var(--paper);overflow:hidden}
+  .ds[open]{border-color:var(--tc)}
+  .ds summary{list-style:none;cursor:pointer;display:grid;grid-template-columns:auto 1fr auto;gap:11px;align-items:center;padding:11px 14px}
+  .ds summary::-webkit-details-marker{display:none}
+  .ds summary:hover{background:var(--panel)}
+  .ds .ds-n{font-family:var(--mono);font-size:11px;font-weight:700;color:var(--paper);background:var(--tc);border-radius:5px;padding:2px 7px;min-width:26px;text-align:center}
+  .ds .ds-t{font-weight:650;color:var(--ink);font-size:14px;line-height:1.3}
+  .ds .ds-src{font-family:var(--mono);font-size:10px;color:var(--tc);background:var(--tb);border:1px solid var(--tc);border-radius:5px;padding:2px 7px;white-space:nowrap}
+  @media(max-width:600px){.ds .ds-src{display:none}}
+  .ds .ds-body{padding:2px 14px 15px 51px}
+  @media(max-width:600px){.ds .ds-body{padding-left:14px}}
+  .ds .ds-what{font-size:12.5px;color:var(--muted);margin:8px 0 11px;max-width:76ch}
+  .ds .ds-fig{margin:0 0 12px;padding:0;list-style:none;display:grid;gap:6px}
+  .ds .ds-fig li{position:relative;padding-left:16px;font-size:13.5px;color:var(--body);line-height:1.5}
+  .ds .ds-fig li::before{content:"▸";position:absolute;left:0;color:var(--tc);font-size:9px;top:4px}
+  .ds .ds-fig li b{color:var(--ink);font-variant-numeric:tabular-nums;font-weight:650}
+  .ds .ds-cav{font-size:11.5px;color:var(--dim);font-style:italic;margin:-4px 0 12px;padding-left:16px}
+  .ds .ds-prompts{display:grid;gap:7px;border-top:1px dashed var(--line);padding-top:11px}
+  .ds .ds-prompts .pl{font-family:var(--mono);font-size:9.5px;letter-spacing:.07em;text-transform:uppercase;color:var(--tc);font-weight:700}
+  .ds .ds-prompts p{font-size:13px;color:var(--body);margin:0;max-width:78ch}
+  .ds .ds-prompts p b{color:var(--ink)}
+
+  .qs{display:grid;gap:10px}
+  .q{display:grid;grid-template-columns:auto 1fr;gap:12px;align-items:start;background:var(--paper);border:1px solid var(--line);border-radius:10px;padding:12px 14px}
+  .q .qn{font-family:var(--mono);font-size:11px;font-weight:700;color:var(--paper);background:var(--tc);border-radius:5px;padding:2px 7px;margin-top:1px}
+  .q .qt{font-size:14px;color:var(--body)} .q .qt b{color:var(--ink)}
+  .q .team{font-family:var(--mono);font-size:10px;color:var(--tc);letter-spacing:.03em;text-transform:uppercase;font-weight:700;display:block;margin-bottom:2px}
+
+  .pnotes{border:1px solid var(--line);border-left:3px solid var(--tc);background:var(--panel);border-radius:0 12px 12px 0;padding:16px 20px;margin-top:14px}
+  .pnotes .ph{font-family:var(--mono);font-size:10.5px;letter-spacing:.08em;text-transform:uppercase;color:var(--tc);font-weight:700;margin-bottom:10px}
+  .pnotes dl{margin:0;display:grid;gap:10px}
+  .pnotes dt{font-size:12.5px;font-weight:700;color:var(--ink);font-family:var(--sans)}
+  .pnotes dd{margin:2px 0 0;font-size:13.5px;color:var(--body)}
+  .pnotes dd b{color:var(--ink)}
+
+  .flow{display:grid;grid-template-columns:repeat(3,1fr);gap:1px;background:var(--line);border:1px solid var(--line);border-radius:14px;overflow:hidden;margin:22px 0}
+  .flow .step{background:var(--paper);padding:16px 18px}
+  .flow .n{font-family:var(--mono);font-size:12px;color:var(--accent-ink);font-weight:700}
+  .flow h4{font-size:1rem;font-weight:650;margin:5px 0 5px}
+  .flow p{margin:0;font-size:13.5px;color:var(--muted)}
+  @media(max-width:640px){.flow{grid-template-columns:1fr}}
+  .note{border:1px solid var(--line);background:var(--panel);border-radius:12px;padding:16px 20px;margin:18px 0}
+  .note h3{font-size:1.05rem;margin-bottom:6px}
+  .note p{font-size:14px;color:var(--body);margin:6px 0 0}
+  .note .eyebrow{color:var(--accent-ink);display:block;margin-bottom:2px}
+  .why{display:grid;gap:12px;margin:18px 0}
+  .why .row{display:grid;grid-template-columns:auto 1fr;gap:14px;align-items:start}
+  .why .k{font-family:var(--mono);font-size:11px;font-weight:700;letter-spacing:.04em;text-transform:uppercase;color:var(--accent-ink);background:var(--t2b);border:1px solid var(--accent);border-radius:6px;padding:4px 9px;white-space:nowrap;margin-top:2px}
+  .why .v{font-size:14.5px;color:var(--body)} .why .v b{color:var(--ink)}
+  .toc{display:grid;gap:8px;margin:18px 0 4px}
+  .toc a{display:grid;grid-template-columns:auto 1fr auto;gap:12px;align-items:center;text-decoration:none;background:var(--paper);border:1px solid var(--line);border-radius:10px;padding:11px 15px}
+  .toc a:hover{border-color:var(--tc)}
+  .toc .dot{width:9px;height:9px;border-radius:3px;background:var(--tc)}
+  .toc .tt{color:var(--ink);font-weight:650;font-size:14.5px}
+  .toc .tt small{display:block;color:var(--muted);font-weight:500;font-size:12px;margin-top:1px}
+  .toc .go{font-family:var(--mono);font-size:16px;color:var(--tc)}
+
+  .calc{background:var(--paper);border:1px solid var(--tc);border-radius:16px;overflow:hidden;margin-top:10px}
+  .calc-h{padding:16px 22px;border-bottom:1px solid var(--line);background:var(--tb)}
+  .calc-h h3{font-size:1.15rem;font-weight:720;letter-spacing:-.015em;color:var(--tc)}
+  .calc-h p{font-size:13.5px;color:var(--body);margin:5px 0 0;max-width:76ch}
+  .calc-grid{display:grid;grid-template-columns:1fr 1.15fr;gap:0}
+  @media(max-width:760px){.calc-grid{grid-template-columns:1fr}}
+  .controls{padding:20px 22px;border-right:1px solid var(--line);display:flex;flex-direction:column;gap:17px}
+  @media(max-width:760px){.controls{border-right:0;border-bottom:1px solid var(--line)}}
+  .ctl label{display:flex;justify-content:space-between;align-items:baseline;font-size:13px;color:var(--body);font-weight:600;margin-bottom:6px;gap:10px}
+  .ctl label .val{font-family:var(--mono);font-weight:700;color:var(--tc);font-size:14px;white-space:nowrap}
+  .ctl label .val small{color:var(--muted);font-weight:500}
+  input[type=range]{width:100%;accent-color:var(--tc);height:22px;margin:0}
+  .ctl .hint{font-size:11px;color:var(--dim);margin-top:3px;line-height:1.4}
+  .readout{padding:20px 22px;display:flex;flex-direction:column;gap:14px}
+  .big{display:grid;grid-template-columns:1fr 1fr;gap:9px}
+  .big .cell{border:1px solid var(--line);border-radius:11px;padding:12px 14px;background:var(--bg)}
+  .big .cell.hero{grid-column:1/-1;background:var(--tb);border-color:var(--tc)}
+  .big .cell.sub{grid-column:1/-1;background:var(--panel)}
+  .big .cell.sub .v{font-size:1.2rem;color:var(--tc)}
+  .big .cell .v{font-family:var(--mono);font-size:1.6rem;font-weight:700;color:var(--ink);letter-spacing:-.02em;line-height:1.1}
+  .big .cell.hero .v{font-size:2rem;color:var(--tc)}
+  .big .cell .v small{font-size:.8rem;color:var(--muted);font-weight:500}
+  .big .cell .l{font-size:11.5px;color:var(--muted);margin-top:3px;line-height:1.35}
+  .chartbox{border:1px solid var(--line);border-radius:11px;background:var(--bg);padding:12px 12px 6px}
+  .chartbox .ct{font-size:11.5px;color:var(--muted);margin:0 2px 4px;font-weight:600}
+  .cyc-legend{display:flex;flex-wrap:wrap;gap:8px 16px;margin:12px 2px 2px;font-size:12px}
+  .cyc-legend .lg{display:flex;align-items:center;gap:7px;color:var(--body);font-weight:600}
+  .cyc-legend .sw{width:16px;height:3px;border-radius:2px;flex:none}
+  .cyc-key{margin:10px 2px 0;font-size:12px;color:var(--muted);line-height:1.8}
+  .cyc-key b{color:var(--ink);font-weight:600;font-family:var(--mono);font-size:11px}
+  .cyc-read{border:1px solid var(--line);border-left:3px solid var(--tc);background:var(--panel);border-radius:0 12px 12px 0;padding:15px 20px;margin-top:16px}
+  .cyc-read .rh{font-family:var(--mono);font-size:10.5px;letter-spacing:.08em;text-transform:uppercase;color:var(--tc);font-weight:700;margin-bottom:10px}
+  .cyc-read ul{margin:0;padding:0;list-style:none;display:grid;gap:9px}
+  .cyc-read li{font-size:13.5px;color:var(--body)}
+  .cyc-read li b{color:var(--ink)}
+  .cyc-read .tag{font-family:var(--mono);font-size:10px;color:var(--tc);font-weight:700;text-transform:uppercase;letter-spacing:.03em}
+  .cyc-controls{display:flex;flex-wrap:wrap;gap:6px;margin:2px 0 12px;align-items:center}
+  .cyc-controls .cl{font-family:var(--mono);font-size:10.5px;letter-spacing:.06em;text-transform:uppercase;color:var(--muted);font-weight:700;margin-right:2px}
+  .cyc-btn{appearance:none;font-family:var(--mono);font-size:11.5px;font-weight:600;border:1px solid var(--line);background:var(--paper);color:var(--muted);border-radius:7px;padding:5px 11px;cursor:pointer}
+  .cyc-btn:hover{border-color:var(--tc);color:var(--ink)}
+  .cyc-btn[aria-pressed="true"]{background:var(--tc);border-color:var(--tc);color:#fff}
+  .cyc-main{display:grid;grid-template-columns:1.5fr 1fr;gap:14px;align-items:start}
+  @media(max-width:780px){.cyc-main{grid-template-columns:1fr}}
+  .cyc-lev{border:1px solid var(--tc);border-radius:12px;background:var(--tb);padding:15px 16px;display:flex;flex-direction:column;gap:11px}
+  .cyc-lev .lh{font-family:var(--mono);font-size:10px;letter-spacing:.07em;text-transform:uppercase;color:var(--tc);font-weight:700}
+  .cyc-lev .lh b{color:var(--ink)}
+  .cyc-bars{display:grid;gap:7px}
+  .cyc-bar{display:grid;grid-template-columns:74px 1fr auto;gap:8px;align-items:center;font-size:11px}
+  .cyc-bar .bl{color:var(--body);font-weight:600;line-height:1.2}
+  .cyc-bar .bl small{display:block;color:var(--muted);font-family:var(--mono);font-size:9.5px;font-weight:500}
+  .cyc-bar .btrack{background:var(--line);border-radius:4px;height:15px;overflow:hidden}
+  .cyc-bar .bt{height:15px;border-radius:4px;min-width:2px}
+  .cyc-bar .bv{font-family:var(--mono);font-weight:700;color:var(--ink);font-size:12px;white-space:nowrap}
+  .cyc-lev .lev-note{font-size:12px;color:var(--body);border-top:1px dashed var(--tc);padding-top:10px}
+  .cyc-lev .lev-note .big{font-family:var(--mono);font-size:1.15rem;font-weight:700;color:var(--tc);display:block;margin-bottom:2px}
+  .cyc-lev .lev-note b{color:var(--ink)}
+  .cyc-assume{font-size:10px;color:var(--dim);font-style:italic;line-height:1.4}
+  .lev-inputs-wrap{border-top:1px dashed var(--tc);padding-top:9px}
+  .lev-inputs-wrap summary{font-family:var(--mono);font-size:10px;color:var(--tc);cursor:pointer;font-weight:700;letter-spacing:.05em;text-transform:uppercase;list-style:none}
+  .lev-inputs-wrap summary::-webkit-details-marker{display:none}
+  .lev-inputs{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-top:9px}
+  .lev-inputs label{display:flex;flex-direction:column;font-size:10.5px;color:var(--body);font-weight:600;gap:2px}
+  .lev-inputs label span{font-family:var(--mono);font-size:9px;color:var(--muted);font-weight:500}
+  .lev-inputs input{width:100%;font-family:var(--mono);font-size:12.5px;font-weight:600;padding:5px 7px;border:1px solid var(--line);border-radius:6px;background:var(--paper);color:var(--ink)}
+  .lev-inputs input:focus{outline:none;border-color:var(--tc)}
+  svg{display:block;width:100%;height:auto}
+  .verdict{font-size:13px;color:var(--body);padding:11px 14px;border-radius:9px;border:1px solid var(--line);background:var(--panel)}
+  .verdict b{color:var(--ink)} .verdict.warn{border-color:var(--t1);background:var(--t1b)} .verdict.warn b{color:var(--t1)}
+  .verdict.ok{border-color:var(--t5);background:var(--t5b)}
+  .rassume{border:1px solid var(--line);border-radius:9px;background:var(--bg);padding:11px 13px;display:grid;gap:8px}
+  .rassume .ra-row{display:grid;grid-template-columns:118px 1fr;gap:10px;align-items:baseline;font-size:12px}
+  @media(max-width:520px){.rassume .ra-row{grid-template-columns:1fr;gap:2px}}
+  .rassume .ra-k{font-family:var(--mono);font-size:9.5px;letter-spacing:.05em;text-transform:uppercase;color:var(--tc);font-weight:700}
+  .rassume .ra-v{color:var(--body);line-height:1.45} .rassume .ra-v b{color:var(--ink)}
+  .assume{border-top:1px solid var(--line);padding:13px 22px;background:var(--panel)}
+  .assume summary{cursor:pointer;font-size:12px;color:var(--tc);font-weight:600;font-family:var(--mono)}
+  .assume .body{font-size:12.5px;color:var(--muted);margin-top:8px;line-height:1.55}
+
+  footer{border-top:1px solid var(--line);margin-top:36px;padding:22px 0 60px;font-family:var(--mono);font-size:11.5px;color:var(--dim);line-height:1.7}
+  ::selection{background:rgba(13,125,116,.22)}
+</style>
+
+<header>
+  <div class="wrap">
+    <div class="eyebrow">Power Development · Team Day</div>
+    <h1>Reading the NEM</h1>
+    <div class="sub">Session kit — background, five topics, two live calculators. Draft one, made to evolve.</div>
+    <div class="tabs" role="tablist" id="tabs">
+      <button class="tab" role="tab" aria-selected="true"  data-tab="bg"  style="--tc:var(--accent)"><span class="n">00</span>Background</button>
+      <button class="tab" role="tab" aria-selected="false" data-tab="t1"  style="--tc:var(--t1)"><span class="dot"></span>Market cycles</button>
+      <button class="tab" role="tab" aria-selected="false" data-tab="t2"  style="--tc:var(--t2)"><span class="dot"></span>Renewables</button>
+      <button class="tab" role="tab" aria-selected="false" data-tab="t3"  style="--tc:var(--t3)"><span class="dot"></span>Demand</button>
+      <button class="tab" role="tab" aria-selected="false" data-tab="t4"  style="--tc:var(--t4)"><span class="dot"></span>Economics</button>
+      <button class="tab" role="tab" aria-selected="false" data-tab="t5"  style="--tc:var(--t5)"><span class="dot"></span>Pipeline</button>
+    </div>
+  </div>
+</header>
+
+<main>
+  <!-- ============ BACKGROUND ============ -->
+  <div class="panel wrap" id="p-bg">
+    <p class="lede">This is the running kit for a table-based team day on <b>how the NEM actually evolves</b>. The design principle is simple: put <b>real data</b> in front of four to eight people, give them a genuine question to argue about, and have them report a position back to the room. Everything to run it is in these tabs — one per topic, each with presenter notes.</p>
+
+    <div class="flow">
+      <div class="step"><div class="n">01 · ~30 min</div><h4>Get across it</h4><p>Each table takes its topic tab — data pack, and for two topics a live calculator. Read it, poke it, find the surprise.</p></div>
+      <div class="step"><div class="n">02 · ~40 min</div><h4>Explore a question</h4><p>Each table works a specific question. Where two tables share a topic, give them different questions.</p></div>
+      <div class="step"><div class="n">03 · ~20 min</div><h4>Report back</h4><p>Three minutes to the room: the call, the number that convinced you, the one thing that surprised the table.</p></div>
+    </div>
+
+    <div class="block-h">The five topics</div>
+    <div class="toc">
+      <a href="#" data-goto="t1" style="--tc:var(--t1)"><span class="dot"></span><span class="tt">1 · Market cycles &amp; shocks<small>Prices move in cycles, driven by the shocks the market didn't see coming</small></span><span class="go">→</span></a>
+      <a href="#" data-goto="t2" style="--tc:var(--t2)"><span class="dot"></span><span class="tt">2 · Increasing renewable penetration in the NEM<small>Storage is critical, and its volume climbs steeply toward 100% — with a live calculator</small></span><span class="go">→</span></a>
+      <a href="#" data-goto="t3" style="--tc:var(--t3)"><span class="dot"></span><span class="tt">3 · Through the lens of demand<small>Flat for a decade, about to double — with a live calculator</small></span><span class="go">→</span></a>
+      <a href="#" data-goto="t4" style="--tc:var(--t4)"><span class="dot"></span><span class="tt">4 · The economics of building<small>The more you build, the less it's worth</small></span><span class="go">→</span></a>
+      <a href="#" data-goto="t5" style="--tc:var(--t5)"><span class="dot"></span><span class="tt">5 · Award vs concrete vs electrons<small>Most of the pipeline is a mirage</small></span><span class="go">→</span></a>
+    </div>
+
+    <div class="block-h">Why it's built this way</div>
+    <div class="why">
+      <div class="row"><span class="k">Real data</span><div class="v">Every figure comes from the <b>AusEnergy “Lens”</b> — a live database over the AEMO dispatch decade (2015→2026) plus ISP 2026, Open Electricity and CER. People argue harder about a real number than a slide. The point is discovery, not delivery.</div></div>
+      <div class="row"><span class="k">Feel, not facts</span><div class="v">Each topic is built around one <b>counter-intuitive thesis</b> a table should <i>feel</i> — “the last 20% costs more than the first 80%”, “demand's been flat for a decade and is about to double”. The data is there to make them believe it, or fight it.</div></div>
+      <div class="row"><span class="k">Different lenses</span><div class="v">Where tables share a topic, give them <b>different questions</b> — the weather lens vs the machines lens, find-the-knee vs wind-vs-solar. The report-back becomes a debate, not a repeat.</div></div>
+      <div class="row"><span class="k">Built for developers</span><div class="v">Topics 1–3 are strong market-education. Topics 4–5 <b>speak to the job</b> — the economics of building (value erodes as you succeed) and why so little of the pipeline gets built. Run any three to five.</div></div>
+    </div>
+
+    <div class="note">
+      <span class="eyebrow">The report-back — keep it sharp</span>
+      <h3>Ask every table for the same three things</h3>
+      <p><b>The call</b> — your answer, a position not a summary. &nbsp;<b>The number</b> — the single figure that convinced you. &nbsp;<b>The surprise</b> — the one “I didn't realise that” moment. Optional closer: a room-wide vote on the big provocations — “Is 100% the right target?”, “Would you build another unfirmed solar farm?”, “Heatwave, broken boiler, or data-centre boom — what's the biggest risk to the grid?”</p>
+    </div>
+
+    <div class="note">
+      <span class="eyebrow">A note on the numbers</span>
+      <h3>What's solid, what to check</h3>
+      <p>Dispatch, generation-mix, curtailment, DER and value figures are measured and reliable. The <b>demand-outlook absolute totals</b> are ISP 2026 scenario figures — quote the <i>trajectory</i> (roughly doubling to 2050) rather than the exact TWh, and verify absolutes against the Lens's demand-outlook view before printing. The two calculators are <b>transparent teaching models</b>, not planning tools — assumptions are on screen and the point is the <i>shape</i> of the answer.</p>
+    </div>
+  </div>
+
+  <!-- ============ TOPIC 1 · SHOCKS ============ -->
+  <div class="panel wrap" id="p-t1" hidden style="--tc:var(--t1);--tb:var(--t1b)">
+    <div class="thead">
+      <div class="t-tag"><span class="core">Topic 1</span> Market cycles &amp; shocks</div>
+      <h2>The NEM is shaped by the shocks it didn't see coming</h2>
+      <p class="thesis">Weather and broken machines swing this market harder than any plan. Hazelwood, Callide, the 2022 suspension, Liddell — each redrew the map. <b>You'd never have closed Liddell if you'd known what was coming.</b> Where does today sit against the norm — a calm, well-supplied moment, or one heatwave and one broken boiler from the next one?</p>
+    </div>
+
+    <div class="block-h"><span class="tc">◆</span> The headline — a decade of prices, and what it does to returns</div>
+    <p class="ds-lead">Wholesale prices move in shock-driven cycles. On the chart the swings can look gentle — but a generator's revenue is price × volume off a <b>fixed</b> capex base, so a small $/MWh move is a large move in returns. Pick a state to trace its cycle; the side panel shows what that range does to a representative project.</p>
+    <div class="cyc-controls" id="cycle-controls"><span class="cl">Trace state</span></div>
+    <div class="cyc-main">
+      <div>
+        <div class="chartbox" style="padding:14px 14px 10px"><div class="ct">Average annual wholesale price — $/MWh (2015 → 2026 YTD · today marked)</div>
+          <svg id="cycle-chart" viewBox="0 0 720 360" preserveAspectRatio="xMinYMin meet"></svg></div>
+        <div class="cyc-legend" id="cycle-legend"></div>
+      </div>
+      <div class="cyc-lev" id="cycle-lev">
+        <div class="lh">Returns leverage — <b id="lev-state">NEM average</b></div>
+        <div class="cyc-bars" id="lev-bars"></div>
+        <div class="lev-note" id="lev-note"></div>
+        <details class="lev-inputs-wrap" open><summary>Project assumptions — edit to your numbers ▾</summary>
+          <div class="lev-inputs">
+            <label>Capex<span>$m/MW</span><input id="in-capex" type="number" value="3.0" step="0.1" min="0.5"></label>
+            <label>Capacity factor<span>%</span><input id="in-cf" type="number" value="35" step="1" min="5" max="60"></label>
+            <label>Fixed O&amp;M<span>$k/MW/yr</span><input id="in-om" type="number" value="40" step="5" min="0"></label>
+            <label>Gearing<span>%</span><input id="in-gear" type="number" value="60" step="5" min="0" max="89"></label>
+          </div>
+        </details>
+        <div class="cyc-assume">Illustrative merchant wind project · bars show ungeared cash-on-cash yield, with a geared-equity sensitivity in the note. Edit to your house numbers — typical ranges: capex $2.5–3.5m/MW, CF 30–40%, O&amp;M $30–50k/MW/yr, gearing 50–70%. A teaching figure, not project-finance advice.</div>
+      </div>
+    </div>
+    <div class="cyc-key" id="cycle-key"></div>
+    <div class="cyc-read">
+      <div class="rh">Reading the cycle — and what it means for each table</div>
+      <ul>
+        <li><span class="tag">Table A · Weather</span> — The sharpest peaks (2022, and every summer cap event) are <b>weather-and-fuel shocks</b>: heat, low wind and a global gas/coal spike coinciding. The top of the cycle is a weather story.</li>
+        <li><span class="tag">Table B · Machines</span> — The <b>2017 step-up follows Hazelwood</b>; the 2024 second peak coincides with an ageing, less-available coal fleet. Closures and outages reset the floor the market bids off.</li>
+        <li><span class="tag">Table C · Counterfactual</span> — 2022 and 2024 are the revenue environments <b>Liddell's 2023 exit landed beside</b>. “What if it had stayed?” is really “what would those two peaks have looked like?”</li>
+        <li><span class="tag">The leverage point</span> — The line's gentle-looking swings hide the returns story: because capex is fixed, moving from a cyclical low to a mid-cycle price can take a project from <b>below its hurdle to comfortably above it</b> — and the fall does the reverse just as fast. That's the panel on the right (edit it to your own numbers), and a fair fifth question for the room.</li>
+        <li><span class="tag">Outturns → the market that funds you</span> — This chart is <b>market outturns</b> — what actually cleared. But outturns re-rate the <b>liquid forward curve</b> (ASX futures ~3–4 years out, where projects hedge and lenders price risk) and they anchor the <b>long-term price forecasts</b> that underwrite FID. A cyclical low doesn't just dent this year's revenue — it lowers the whole curve the next project is built on.</li>
+      </ul>
+    </div>
+
+    <div class="block-h"><span class="tc">◆</span> The data on the table</div>
+    <div class="stats">
+      <div class="stat"><div class="v">Jun 2022</div><div class="l">the NEM was <b>suspended</b> — a first — coal outages + flooded mines + gas + cold</div></div>
+      <div class="stat"><div class="v tnum">1.6 → 2<small>GW</small></div><div class="l">Hazelwood (2017) then Liddell (2023) — coal that left</div></div>
+      <div class="stat"><div class="v tnum">21.9<small>%</small></div><div class="l">record-low coal share of a VIC interval (Oct 2025)</div></div>
+      <div class="stat"><div class="v tnum">6</div><div class="l">major shocks since 2015, all mappable in dispatch</div></div>
+    </div>
+    <div class="sources"><span class="src"><b>gen_monthly</b></span><span class="src"><b>compounding-loop dossier</b></span><span class="src"><b>records</b></span><span class="src"><b>weather_demand</b></span><span class="src"><b>signals</b></span><span class="src"><b>unit_avail</b></span><span class="src"><b>st/mt-pasa</b></span></div>
+
+    <div class="block-h"><span class="tc">◆</span> Datasets on the table</div>
+    <p class="ds-lead">Real datasets from the Lens — open any to see its figures and discussion prompts. Hand each table two or three to work.</p>
+    <div class="ds-list" id="ds-t1"></div>
+
+    <div class="block-h"><span class="tc">◆</span> What each table explores</div>
+    <div class="qs">
+      <div class="q"><span class="qn">A</span><div class="qt"><span class="team">Weather lens</span>How much of the NEM's volatility is just weather? Is this summer more or less extreme than the historical spread — and what would a repeat of 2019's heat do to today's grid?</div></div>
+      <div class="q"><span class="qn">B</span><div class="qt"><span class="team">Machines lens</span>Where is coal-fleet availability heading as units age, and how many simultaneous failures is today's grid one bad week away from?</div></div>
+      <div class="q"><span class="qn">C</span><div class="qt"><span class="team">Counterfactual</span>Given what the data now shows, was Liddell mistimed? What would you have needed to know in 2015 — and what does that say about the closure decisions on the table now?</div></div>
+    </div>
+
+    <div class="pnotes">
+      <div class="ph">Presenter notes</div>
+      <dl>
+        <dt>Open with</dt><dd>“Name a moment the NEM changed forever.” Let the table list them, then show they're nearly all <b>shocks, not plans</b> — that's the hook.</dd>
+        <dt>What a good answer looks like</dt><dd>Not “renewables went up”. A good table names a <b>specific mechanism</b> — e.g. coal availability degrades non-linearly as units pass 40 years, so risk clusters. Push them from narrative to number.</dd>
+        <dt>Watch-out</dt><dd>Hindsight bias on Liddell — steer them to “what was knowable in 2015?” The lesson is <b>decision-making under deep uncertainty</b>, not scoring the past.</dd>
+        <dt>The cross-table debate</dt><dd>Weather-lens and machines-lens tables will disagree on the biggest risk. Put both numbers on the board and let the room weigh them.</dd>
+      </dl>
+    </div>
+  </div>
+
+  <!-- ============ TOPIC 2 · 100% MATHS + CALCULATOR ============ -->
+  <div class="panel wrap" id="p-t2" hidden style="--tc:var(--t2);--tb:var(--t2b)">
+    <div class="thead">
+      <div class="t-tag"><span class="core">Topic 2</span> Increasing renewable penetration in the NEM</div>
+      <h2>Increasing renewable penetration in the NEM</h2>
+      <p class="thesis"><b>Storage is critical — and the volume you need climbs steeply, not linearly, as wind and solar head toward 100%.</b> The NEM is already ~44% renewable (grid wind+solar ~29%, plus hydro and rooftop) and spilling 7+ TWh/yr. Play the calculator first: set a wind + solar target, find the mix and the gas balance that keep storage sane.</p>
+    </div>
+
+    <div class="calc">
+      <div class="calc-h"><h3>Calculator · How much storage as wind + solar rise?</h3>
+        <p>Set a wind + solar target, pick the split and the overbuild; the model firms it against a simulated NEM year and reports the <b>4-hour “big batteries”</b> needed. The point: storage climbs <b>far faster than linearly</b> near 100% — and a little firm gas tames it.</p></div>
+      <div class="calc-grid">
+        <div class="controls">
+          <div class="ctl"><label>Wind + solar target <span class="val" id="rt-v">70<small>% energy</small></span></label>
+            <input type="range" id="rt" min="30" max="100" step="1" value="70"><div class="hint">Share of annual energy from wind + solar. Grid wind+solar is <b>~29% today</b> (~44% renewable incl. rooftop &amp; hydro). Try <b>50 / 70 / 90</b> to trace the path. The rest is firm gas.</div></div>
+          <div class="ctl"><label>Wind share of the build <span class="val" id="ws-v">55<small>% wind</small></span></label>
+            <input type="range" id="ws" min="0" max="100" step="5" value="55"><div class="hint">The rest is solar. Today's grid fleet is roughly <b>50/50</b> by capacity. Wind runs day and night but has multi-day lulls; solar's daily rhythm suits a 4-hour battery. There's a mix that needs the <i>least</i> storage — the panel below finds it.</div></div>
+          <div class="ctl"><label>Overbuild <span class="val" id="ob-v">1.0<small>× target</small></span></label>
+            <input type="range" id="ob" min="100" max="200" step="5" value="100"><div class="hint">Build extra wind/solar beyond the target — real plans overbuild ~<b>1.1–1.5×</b>. More overbuild → less storage, but more spilled (curtailed) energy. The classic trade-off.</div></div>
+        </div>
+        <div class="readout">
+          <div class="big">
+            <div class="cell hero"><div class="v" id="o-bess">—</div><div class="l">four-hour “big batteries” needed (500 MW / 2 GWh each)</div></div>
+            <div class="cell sub"><div class="v" id="o-gas">—</div><div class="l">gas fills the balance — the firm backstop for the deep lulls storage can't reach</div></div>
+            <div class="cell"><div class="v" id="o-store">—</div><div class="l">total storage energy</div></div>
+            <div class="cell"><div class="v" id="o-curt">—</div><div class="l">renewables spilled (curtailed)</div></div>
+            <div class="cell"><div class="v" id="o-wind">—</div><div class="l">wind capacity</div></div>
+            <div class="cell"><div class="v" id="o-solar">—</div><div class="l">solar capacity</div></div>
+          </div>
+          <div class="verdict" id="r-verdict">—</div>
+          <div class="rassume" id="r-assume"></div>
+          <div class="chartbox"><div class="ct">Storage needed as the target rises — the “knee” is where it bends sharply up (● = your setting)</div>
+            <svg id="r-chart" viewBox="0 0 480 190" preserveAspectRatio="xMinYMin meet"></svg></div>
+        </div>
+      </div>
+      <details class="assume"><summary>Model &amp; assumptions</summary><div class="body">
+        A deterministic simulated NEM year at hourly resolution (~184 TWh demand, ~21 GW average / ~28 GW peak, dual summer/winter peaks; solar as a daily bell with seasonal swing, ~32% capacity factor; wind auto-correlated at ~34% CF with four multi-day lulls seeded in). <b>These are potential (unconstrained) CFs</b> — realised NEM CFs today are lower (wind 28%, solar 15%) because of curtailment and older plant. Wind+solar is built to <i>overbuild × target</i> of annual demand; the remaining <i>(1 − target)</i> is firm gas (standing in for today's coal + gas + hydro). A 4-hour battery fleet (power = energy ÷ 4) charges on surplus and discharges on deficit to time-shift renewable energy into the gaps; surplus beyond storage is spilled. The tool finds the <b>minimum storage that lets delivered renewables reach the target</b> — i.e. holds gas to its (1 − target) energy budget. As the target nears 100% that budget → 0, so storage must bridge multi-day lulls a 4-hour battery can't hold, and the model flags it. “Big battery” = 500 MW / 2 GWh. CFs are consistent with the AEMO-derived Lens figures; a stylised teaching model for the <i>shape</i> of the answer, not a capacity-expansion study.
+      </div></details>
+    </div>
+
+    <div class="block-h"><span class="tc">◆</span> The data on the table</div>
+    <div class="stats">
+      <div class="stat"><div class="v tnum">~44<small>%</small></div><div class="l">renewable today (incl. rooftop + hydro); grid wind+solar ~29%</div></div>
+      <div class="stat"><div class="v tnum">7.4<small>TWh</small></div><div class="l">renewable energy spilled in 2025</div></div>
+      <div class="stat"><div class="v tnum">~58<small>GW</small></div><div class="l">storage a deep build implies vs ~20 GW planned</div></div>
+      <div class="stat"><div class="v tnum">×3+</div><div class="l">the non-linearity of storage above ~80%</div></div>
+    </div>
+    <div class="sources"><span class="src"><b>scenario tool</b></span><span class="src"><b>curtailment</b></span><span class="src"><b>capacity-factor-by-fuel</b></span><span class="src"><b>battery_soc_daily</b></span><span class="src"><b>der_postcode</b></span></div>
+
+    <div class="block-h"><span class="tc">◆</span> Datasets on the table</div>
+    <p class="ds-lead">Real datasets from the Lens — open any to see its figures and discussion prompts. Hand each table two or three to work.</p>
+    <div class="ds-list" id="ds-t2"></div>
+
+    <div class="block-h"><span class="tc">◆</span> What each table explores</div>
+    <div class="qs">
+      <div class="q"><span class="qn">A</span><div class="qt"><span class="team">The knee</span>The “knee” is where the storage curve bends sharply upward — where each extra % of renewables suddenly needs far more battery. Push 50→100% in 10-point steps and find it: how much more BESS does 90→100% need than 80→90%?</div></div>
+      <div class="q"><span class="qn">B</span><div class="qt"><span class="team">Wind vs solar</span>Hold 90% and trade solar for wind. Which mix needs the least storage, and why?</div></div>
+      <div class="q"><span class="qn">C</span><div class="qt"><span class="team">Overbuild call</span>Firm the last mile with storage <i>or</i> with overbuild. Push overbuild from 1.0 to 2.0 at a fixed target — how far does the battery count fall, and what does it cost you in curtailment?</div></div>
+      <div class="q"><span class="qn">D</span><div class="qt"><span class="team">Dunkelflaute</span>Push toward 100% at overbuild 1.0. Where does the model say “4-hour batteries can't get there”? That's the multi-day lull a battery can't hold — so is 100% even the right target, or does the last slice need something else?</div></div>
+    </div>
+
+    <div class="pnotes">
+      <div class="ph">Presenter notes</div>
+      <dl>
+        <dt>Run the demo first</dt><dd>Drag the target from 50 to 100 slowly with the room watching the battery count and the curve. The <b>knee is the lesson</b> — let them gasp at it before you explain it.</dd>
+        <dt>What a good answer looks like</dt><dd>A table that can say <b>why</b> it's non-linear: at 80% you're time-shifting daily solar (a 4-hour battery's sweet spot); at 100% you're covering multi-day wind lulls, which needs energy volume a 4-hour battery fundamentally can't hold.</dd>
+        <dt>The payoff move</dt><dd>Push the target to 100% at overbuild 1.0 — the model says “4-hour batteries can't get there”. Then read the <b>sweet-spots panel</b> under the verdict: it names the wind/solar mix that needs the least storage <i>and</i> the ~10% firm gas that collapses the battery count. The gas fleet runs at a low capacity factor (a peaker for the rare deep lulls) — which is why the last few % is a <b>different technology problem</b>, not more BESS.</dd>
+        <dt>Watch-out</dt><dd>It's a teaching model, not AEMO's ISP — say so. The <i>shape</i> is real; the exact battery count isn't a build estimate.</dd>
+      </dl>
+    </div>
+
+    <div class="block-h"><span class="tc">◆</span> Context — who sets the price (secondary)</div>
+    <p class="ds-lead">A decade of NEMDE price-setting attribution — how often each fuel set the 5-minute price. It's a secondary story here, but it's the flip side of the calculator: as storage does more of the firming, it also increasingly sets the price.</p>
+    <div class="chartbox" style="padding:14px 14px 10px"><div class="ct">Share of 5-min energy price-setting intervals by fuel — % (2015 → 2026 YTD)</div>
+      <svg id="t2-chart" viewBox="0 0 720 320" preserveAspectRatio="xMinYMin meet"></svg></div>
+    <div class="cyc-legend" id="t2-legend"></div>
+    <div class="cyc-read"><div class="rh">Reading the trend</div><ul>
+      <li>Storage set the price <b>0.1% of intervals in 2015; in 2026 it's 31.5%</b> — as often as all fossil generation combined, which fell from 78% to 31%.</li>
+      <li>As coal exits, the marginal price is increasingly <b>whatever a battery will charge or discharge at</b> — so the arbitrage spread becomes the price signal that funds (or starves) the last mile of storage.</li>
+    </ul></div>
+  </div>
+
+  <!-- ============ TOPIC 3 · DEMAND + CALCULATOR ============ -->
+  <div class="panel wrap" id="p-t3" hidden style="--tc:var(--t3);--tb:var(--t3b)">
+    <div class="thead">
+      <div class="t-tag"><span class="core">Topic 3</span> Through the lens of demand</div>
+      <h2>Demand has been flat for a decade — could it double?</h2>
+      <p class="thesis"><b>Operational demand</b> — the electricity the grid must serve, <i>after</i> rooftop solar is netted off behind the meter — has barely moved from ~177 TWh since 2020. But that flatline hides real growth: <b>rooftop quietly added ~16 TWh</b> of behind-the-meter supply (2020→2025), soaking up underlying growth of ~7% so the grid never saw it. That truce is ending — EVs, electrification and data centres pull up. Whether demand grows ~60% or <b>roughly doubles</b> by 2050 is a range of outcomes, not a certainty. Shape matters as much as size; the calculator below builds the duck curve live.</p>
+    </div>
+
+    <div class="block-h"><span class="tc">◆</span> The trend — flat for a decade, then the climb</div>
+    <p class="ds-lead">NEM operational demand sat flat near 177 TWh for years; the ISP 2026 central case now bends up ~60% by 2050. Solid line = actual, dashed = Step Change forecast.</p>
+    <div class="chartbox" style="padding:14px 14px 10px"><div class="ct">NEM operational demand — TWh/yr (actual 2020–25 · Step Change forecast to 2050)</div>
+      <svg id="t3-chart" viewBox="0 0 720 320" preserveAspectRatio="xMinYMin meet"></svg></div>
+    <div class="cyc-legend" id="t3-legend"></div>
+    <div class="cyc-read"><div class="rh">Reading the trend</div><ul>
+      <li>Operational demand was <b>flat (~177–181 TWh) from 2020 to 2025</b> — but behind-the-meter rooftop grew from <b>13 → 29 TWh (+16 TWh)</b> and efficiency did the rest, so underlying use actually rose ~7% while the grid saw none of it.</li>
+      <li>Step Change lifts it to <b>~290 TWh by 2050 (+62%)</b>; the scenario fan runs <b>244–433 TWh</b> — i.e. anywhere from +38% to <b>~2.4×</b>. The flat line is ending; the whole game is the slope.</li>
+      <li><b>The open question:</b> can rooftop keep adding ~2.7 GW/yr fast enough to keep <i>masking</i> the new load? Rooftop has added ~3 TWh/yr; EVs + electrification alone add ~4–5 TWh/yr through the 2030s — so the masking effect starts to lose the race.</li>
+    </ul></div>
+
+    <div class="block-h"><span class="tc">◆</span> The data on the table</div>
+    <div class="stats">
+      <div class="stat"><div class="v tnum">~16<small>TWh</small></div><div class="l">behind-the-meter rooftop added 2020→2025 — the growth that never hit the grid</div></div>
+      <div class="stat"><div class="v tnum">1.6–2.4×</div><div class="l">demand by 2050 across ISP scenarios (central Step Change ~1.6×)</div></div>
+      <div class="stat"><div class="v tnum">0.9 → 61<small>TWh</small></div><div class="l">EV charging load, 2026→2050</div></div>
+      <div class="stat"><div class="v tnum">26.5<small>GW</small></div><div class="l">rooftop solar today, installing ~2.7 GW/yr</div></div>
+    </div>
+    <div class="sources"><span class="src"><b>esoo_demand</b></span><span class="src"><b>der_postcode</b></span><span class="src"><b>rooftop_pv_actual</b></span><span class="src"><b>weather_demand</b></span><span class="src"><b>records</b> (min-demand)</span></div>
+
+    <div class="calc">
+      <div class="calc-h"><h3>Calculator · Demand shape: build the duck</h3>
+        <p>Start from a representative NEM day and add the forces reshaping it. Watch <b>operational demand</b> — total electricity use <i>minus</i> what rooftop serves behind the meter, i.e. what the grid actually has to supply: the midday belly hollows, the evening peak shifts. Size and shape both move.</p></div>
+      <div class="calc-grid">
+        <div class="controls">
+          <div class="ctl"><label>Rooftop solar installed <span class="val" id="rf-v">26<small>GW</small></span></label>
+            <input type="range" id="rf" min="15" max="90" step="1" value="26"><div class="hint"><b>~26 GW today</b>, installing ~2.7 GW/yr — a 5-year path is ~40 GW. Output ≈ installed × 0.6 as a midday bell; the grid only sees demand vanish.</div></div>
+          <div class="ctl"><label>EV charging load <span class="val" id="ev-v">3<small>TWh/yr</small></span></label>
+            <input type="range" id="ev" min="0" max="80" step="1" value="3"><div class="hint"><b>~1 TWh today</b> → ~5 by 2030 → ~61 by 2050 (ISP). Try <b>5</b> for a “2030” view, <b>30</b> for “2040”. Shape depends on <i>when</i> they charge ↓</div></div>
+          <div class="ctl"><label>EV charging that's managed <span class="val" id="mg-v">40<small>%</small></span></label>
+            <input type="range" id="mg" min="0" max="100" step="5" value="40"><div class="hint">Managed → midday/overnight (soaks solar); unmanaged → the 6pm peak. <b>Uptake is genuinely uncertain</b> — test both 0% and 100%.</div></div>
+          <div class="ctl"><label>Data-centre load <span class="val" id="dc-v">1<small>GW flat</small></span></label>
+            <input type="range" id="dc" min="0" max="12" step="0.5" value="1"><div class="hint"><b>~0.5–1 GW-equivalent today</b>; announced pipelines run to several GW by 2030. Try <b>3–5</b> for a data-centre wave. Runs 24/7 — a flat block.</div></div>
+          <div class="ctl"><label>Electrification uplift <span class="val" id="el-v">0<small>%</small></span></label>
+            <input type="range" id="el" min="0" max="60" step="1" value="0"><div class="hint"><b>~0 today</b>; the ISP adds ~40 TWh by 2040 (heating, industry). Try <b>10–20%</b> for a mid-2030s view. Grows the base, weighted to morning/evening.</div></div>
+        </div>
+        <div class="readout">
+          <div class="big">
+            <div class="cell hero"><div class="v" id="d-min">—</div><div class="l">minimum operational demand — the belly of the duck (negative = rooftop oversupplies the grid)</div></div>
+            <div class="cell"><div class="v" id="d-peak">—</div><div class="l">evening peak demand</div></div>
+            <div class="cell"><div class="v" id="d-twh">—</div><div class="l">annual energy served by the grid</div></div>
+          </div>
+          <div class="verdict" id="d-verdict">—</div>
+          <div class="chartbox"><div class="ct">Operational demand across the day (GW) — <span style="color:var(--dim)">dashed = today</span>, <span style="color:var(--t3)">solid = your scenario</span></div>
+            <svg id="d-chart" viewBox="0 0 480 200" preserveAspectRatio="xMinYMin meet"></svg></div>
+        </div>
+      </div>
+      <details class="assume"><summary>Model &amp; assumptions</summary><div class="body">
+        A representative NEM day at hourly resolution. Underlying (native) demand has a morning bump and an evening peak (~34 GW) before rooftop. Rooftop output ≈ installed GW × 0.6 as a midday bell, subtracted from the grid's view. EV energy spreads across the day by the managed/unmanaged split (managed → midday + overnight fill; unmanaged → a 6–9pm spike). Data-centre load is a flat 24-hour block. Electrification lifts the base, weighted to morning and evening. Annual energy scales the average day × 365. A shape model to build intuition — the real ISP demand traces live in the Lens's demand-outlook view.
+      </div></details>
+    </div>
+
+    <div class="block-h"><span class="tc">◆</span> Datasets on the table</div>
+    <p class="ds-lead">Real datasets from the Lens — open any to see its figures and discussion prompts. Hand each table two or three to work.</p>
+    <div class="ds-list" id="ds-t3"></div>
+
+    <div class="block-h"><span class="tc">◆</span> What each table explores</div>
+    <div class="qs">
+      <div class="q"><span class="qn">A</span><div class="qt"><span class="team">Data-centre wave</span>Add a realistic AI/data-centre block by 2035. Can the pipeline serve it — or does it re-open the coal-extension question?</div></div>
+      <div class="q"><span class="qn">B</span><div class="qt"><span class="team">EV ramp</span>Managed vs unmanaged charging is the whole story. Flip the managed slider 0↔100 at a big EV load — quantify the swing in the evening peak.</div></div>
+      <div class="q"><span class="qn">C</span><div class="qt"><span class="team">DER counter-force</span>Push rooftop up. At what point does the midday belly flip negative, and what does that do to anything trying to sell energy in daylight?</div></div>
+      <div class="q"><span class="qn">D</span><div class="qt"><span class="team">Shape not size</span>Find a scenario where annual energy barely moves but the <i>shape</i> is transformed. Where does the “duck” become a “canyon”?</div></div>
+    </div>
+
+    <div class="pnotes">
+      <div class="ph">Presenter notes</div>
+      <dl>
+        <dt>Open with</dt><dd>“Demand's been flat for years — so why is everyone worried about supply?” The reveal: the flatline <b>hid</b> real growth (rooftop masked ~16 TWh), and that masking is about to lose the race to EVs and data centres. The calculator shows <b>shape</b> is the other half of the story.</dd>
+        <dt>The showpiece move</dt><dd>Slide rooftop from 26 to ~70 GW and watch the belly go <b>negative</b>. That single moment — the grid needing <i>less than zero</i> at noon — reframes the whole “more renewables” conversation.</dd>
+        <dt>What a good answer looks like</dt><dd>A table that separates <b>energy (size)</b> from <b>peak/belly (shape)</b> and sees the build problem is increasingly the evening ramp and the midday trough, not annual TWh.</dd>
+        <dt>Watch-out</dt><dd>Managed-charging optimism — real-world managed uptake is uncertain. Have them test the pessimistic (unmanaged) case too; that's where the peak problem bites.</dd>
+      </dl>
+    </div>
+
+    <div class="block-h"><span class="tc">◆</span> What demand does to price — a hand-off to the Market-cycles team</div>
+    <p class="ds-lead">Demand growth isn't just a volume story — it moves the whole price curve, which is exactly what Topic 1 (Market cycles) trades on. Here's the rule of thumb, straight from the data.</p>
+    <div class="cyc-read">
+      <div class="rh">Rule of thumb · demand → price (all else equal)</div>
+      <p style="font-size:13.5px;color:var(--body);margin:0 0 11px;max-width:74ch">In the normal range, <b>each +1 GW of average demand ≈ +$20/MWh</b>. But the relationship is <b>convex</b> — into scarcity, every extra GW costs far more. NSW daily average, 2025–26:</p>
+      <div class="cyc-bars" style="max-width:540px">
+        <div class="cyc-bar"><span class="bl">~6 GW</span><span class="btrack"><span class="bt" style="width:26%;background:var(--t5)"></span></span><span class="bv">$64/MWh</span></div>
+        <div class="cyc-bar"><span class="bl">~7 GW</span><span class="btrack"><span class="bt" style="width:34%;background:var(--t5)"></span></span><span class="bv">$83/MWh</span></div>
+        <div class="cyc-bar"><span class="bl">~8 GW</span><span class="btrack"><span class="bt" style="width:43%;background:var(--t1)"></span></span><span class="bv">$105/MWh</span></div>
+        <div class="cyc-bar"><span class="bl">~9 GW</span><span class="btrack"><span class="bt" style="width:100%;background:var(--t4)"></span></span><span class="bv">$246/MWh</span></div>
+      </div>
+      <p style="font-size:13px;color:var(--body);margin:12px 0 0;max-width:74ch">So EV, electrification and data-centre load that lift average demand a few GW push the pool price up <b>~$20–40/MWh</b> — and via the <b>returns-leverage panel</b> in Topic 1, that's several points of project IRR. Put simply: <b>demand growth is a tailwind to the price cycle; rooftop growth is the headwind.</b> Which one wins, and when, is the question to hand back to the room.</p>
+    </div>
+  </div>
+
+  <!-- ============ TOPIC 4 · ECONOMICS ============ -->
+  <div class="panel wrap" id="p-t4" hidden style="--tc:var(--t4);--tb:var(--t4b)">
+    <div class="thead">
+      <div class="t-tag"><span class="core">Topic 4</span> The economics of building</div>
+      <h2>The more you build, the less it's worth — until coal leaves</h2>
+      <p class="thesis">Every megawatt of solar pushes its own midday price toward zero — <b>solar's captured value fell from a 2019 premium (1.06× the pool) to ~0.4×</b>, and it did this to itself. But value <b>cycles</b> with the market: scarcity lifts it, oversupply crushes it — and it comes back as coal exits and evenings tighten. Storage is the mirror image: it monetises the spread solar destroys. Start with the trend below.</p>
+    </div>
+
+    <div class="block-h"><span class="tc">◆</span> The trend — cannibalisation, and how it cycles</div>
+    <p class="ds-lead">The heart of this module: <b>value factor</b> = the price a generator actually captures ÷ the pool average. As solar built out it drove down its own midday price — but the value <i>cycles</i>, and as coal exits, the evening scarcity that pays renewables returns. VIC, generation-weighted (2026 is YTD and winter-weighted, so its uptick overstates the annual).</p>
+    <div class="chartbox" style="padding:14px 14px 10px"><div class="ct">Solar &amp; wind value factor — capture price ÷ pool (VIC, 2019 → 2026 YTD · 1.0× = captures the pool average)</div>
+      <svg id="t4-vf-chart" viewBox="0 0 720 320" preserveAspectRatio="xMinYMin meet"></svg></div>
+    <div class="cyc-legend" id="t4-vf-legend"></div>
+    <div class="cyc-read"><div class="rh">Reading the trend — the night is darkest before the dawn</div><ul>
+      <li>In <b>2019 solar captured 1.06×</b> the pool — a <i>premium</i>, because it was scarce. As the fleet built out it cannibalised its own midday price: value factor <b>collapsed to ~0.4×</b> by 2021.</li>
+      <li>But it <b>cycles</b>. The 2022 gas shock lifted <i>all</i> hours, so cannibalisation eased (solar back to 0.57×); as the system returned to well-supplied it bit again (0.37× in 2023–24).</li>
+      <li><b>The dawn:</b> cannibalisation is worst while coal still floods the midday and leaves evenings cheap. As coal <b>exits</b> (Yallourn 2028, Eraring 2029…) evening scarcity returns — and renewables that can <b>time-shift into it</b> (storage, or being firmed) recapture the value. The trough is a phase, not the destination — which is exactly the build-timing question.</li>
+    </ul></div>
+
+    <div class="block-h"><span class="tc">◆</span> The data on the table</div>
+    <div class="stats">
+      <div class="stat"><div class="v tnum">1.06→0.37×</div><div class="l">VIC solar value factor, 2019→2024 trough — it cannibalised itself</div></div>
+      <div class="stat"><div class="v tnum">$2.4<small>bn/yr</small></div><div class="l">value erosion across the solar+wind fleet</div></div>
+      <div class="stat"><div class="v tnum">$163<small>k/MW</small></div><div class="l">the best battery's earnings — the spread, banked</div></div>
+      <div class="stat"><div class="v tnum">+$158<small>/MWh</small></div><div class="l">the price Bayswater alone holds down overnight</div></div>
+    </div>
+    <div class="sources"><span class="src"><b>cannibalisation views</b></span><span class="src"><b>value-erosion</b></span><span class="src"><b>battery-scorecard</b></span><span class="src"><b>project_perf</b></span><span class="src"><b>market-power-counterfactual</b></span></div>
+
+    <div class="block-h"><span class="tc">◆</span> Datasets on the table</div>
+    <p class="ds-lead">Real datasets from the Lens — open any to see its figures and discussion prompts. Hand each table two or three to work.</p>
+    <div class="ds-list" id="ds-t4"></div>
+
+    <div class="block-h"><span class="tc">◆</span> What each table explores</div>
+    <div class="qs">
+      <div class="q"><span class="qn">A</span><div class="qt"><span class="team">Cannibalisation &amp; the cycle</span>Solar's value factor fell 1.06→0.37×, then part-recovered. Is the trough permanent, or does coal-exit evening scarcity bring the value back? What does that say about <i>when</i> — not whether — to build, and whether to firm it?</div></div>
+      <div class="q"><span class="qn">B</span><div class="qt"><span class="team">Where the money moved</span>Is the future case in generation at all, or in the spread? How much of a battery's revenue is arbitrage vs FCAS, and which is shrinking as more batteries arrive?</div></div>
+      <div class="q"><span class="qn">C</span><div class="qt"><span class="team">Location &amp; timing</span>Two identical batteries earn very different money. What drives the gap — region, congestion, MLF, dispatch skill? Where would you build the next one?</div></div>
+    </div>
+
+    <div class="pnotes">
+      <div class="ph">Presenter notes</div>
+      <dl>
+        <dt>The uncomfortable truth</dt><dd>This is the topic closest to home for a development team: <b>the projects we build make the next project worse.</b> Don't soften it — sit in it.</dd>
+        <dt>What a good answer looks like</dt><dd>A table that connects the physics (solar all generates at once) to the market (self-cannibalising price) to the strategy (firming, storage, or being early). The winning insight is usually “<b>value has moved from energy to flexibility</b>”.</dd>
+        <dt>The provocation</dt><dd>“Would you build another unfirmed solar farm in this market?” Force a yes/no from each person, then unpack the disagreement.</dd>
+        <dt>The dawn nuance</dt><dd>Don't let the room conclude “renewables can't make money”. The value-factor <b>cycle</b> is the sophisticated read: the trough is a well-supplied-with-coal phase; coal exit + storage that shifts solar into the evening is what recaptures value. Timing and firming, not just penetration.</dd>
+        <dt>Watch-out</dt><dd>Battery earnings are the historical spread — as more batteries arrive, that spread compresses too. Nothing is a free lunch forever; make them say what erodes the battery case.</dd>
+      </dl>
+    </div>
+
+    <div class="block-h"><span class="tc">◆</span> Context — a revenue stream already competed to zero (secondary)</div>
+    <p class="ds-lead">FCAS is the cautionary companion to cannibalisation: the frequency-control revenue that used to underwrite storage fell ~90–95% in five years as batteries flooded in. Energy-arbitrage value can go the same way.</p>
+    <div class="chartbox" style="padding:14px 14px 10px"><div class="ct">Total FCAS price by state — $/MW/hr (2020 → 2026 YTD)</div>
+      <svg id="t4-chart" viewBox="0 0 720 320" preserveAspectRatio="xMinYMin meet"></svg></div>
+    <div class="cyc-legend" id="t4-legend"></div>
+    <div class="cyc-read"><div class="rh">Reading the trend</div><ul>
+      <li>SA FCAS fell <b>$160 → $6/MW/hr (2020→2026)</b>; NSW $69 → $6 — a ~90–95% collapse as storage entered. Only TAS — thin and battery-light — still holds a premium.</li>
+      <li>The lesson for the battery case: a revenue stream can be <b>competed to near-zero</b> faster than a 15-year model assumes. Which layer of the stack survives to year 10?</li>
+    </ul></div>
+  </div>
+
+  <!-- ============ TOPIC 5 · PIPELINE ============ -->
+  <div class="panel wrap" id="p-t5" hidden style="--tc:var(--t5);--tb:var(--t5b)">
+    <div class="thead">
+      <div class="t-tag"><span class="core">Topic 5</span> Award vs concrete vs electrons</div>
+      <h2>Most of the pipeline is a mirage</h2>
+      <p class="thesis">A vast gap sits between what's proposed, committed, and actually in dispatch. <b>~177 GW proposed vs ~12 GW committed</b> — a 14× funnel — and transmission, connection and system-strength gate every step. Knowing which signals predict delivery is the whole game.</p>
+    </div>
+
+    <div class="block-h"><span class="tc">◆</span> The trend — the mirage growing</div>
+    <p class="ds-lead">Every monthly AEMO snapshot since 2020: proposed capacity has multiplied ~7× to 346 GW, while committed capacity barely moved and what's actually built crawls. The gap is the mirage.</p>
+    <div class="chartbox" style="padding:14px 14px 10px"><div class="ct">NEM pipeline by tier — GW (AEMO GI snapshots, 2020 → 2026)</div>
+      <svg id="t5-chart" viewBox="0 0 720 320" preserveAspectRatio="xMinYMin meet"></svg></div>
+    <div class="cyc-legend" id="t5-legend"></div>
+    <div class="cyc-read"><div class="rh">Reading the trend</div><ul>
+      <li>Proposed GW: <b>53 (2020) → 346 (2026)</b>. Committed: <b>5.8 → 12.8</b>. Built (existing): 52 → 70.</li>
+      <li>The top line's slope is developer optimism; the bottom two are physics, capital and connection. The <b>widening gap is what the back-test cashes out</b> — only ~9% of 2022's proposals are built today.</li>
+    </ul></div>
+
+    <div class="block-h"><span class="tc">◆</span> The data on the table</div>
+    <div class="stats">
+      <div class="stat"><div class="v tnum">~14×</div><div class="l">proposed (~177 GW) vs committed (~12 GW)</div></div>
+      <div class="stat"><div class="v tnum">~45<small>GW</small></div><div class="l">CIS/LTESA-contracted but not yet built</div></div>
+      <div class="stat"><div class="v tnum">1,304</div><div class="l">projects on a 7-tier delivery ladder</div></div>
+      <div class="stat"><div class="v tnum">39</div><div class="l">monthly GI snapshots — the funnel is back-testable</div></div>
+    </div>
+    <div class="sources"><span class="src"><b>project pipeline</b></span><span class="src"><b>gi_history</b></span><span class="src"><b>schemes</b> (CIS)</span><span class="src"><b>rez + transmission</b></span><span class="src"><b>nemde-spike-anatomy</b></span></div>
+
+    <div class="block-h"><span class="tc">◆</span> Datasets on the table</div>
+    <p class="ds-lead">Real datasets from the Lens — open any to see its figures and discussion prompts. Hand each table two or three to work.</p>
+    <div class="ds-list" id="ds-t5"></div>
+
+    <div class="block-h"><span class="tc">◆</span> What each table explores</div>
+    <div class="qs">
+      <div class="q"><span class="qn">A</span><div class="qt"><span class="team">Delivery back-test</span>Take “Committed” projects from a 2022 snapshot. How many generate now? What early signals separated the winners from the slippers?</div></div>
+      <div class="q"><span class="qn">B</span><div class="qt"><span class="team">Transmission gate</span>Which projects are stranded behind wires that don't exist? If you could unlock one transmission project, which frees the most generation?</div></div>
+      <div class="q"><span class="qn">C</span><div class="qt"><span class="team">CIS reality</span>~45 GW contracted but unbuilt. Is CIS delivering, or re-papering the queue? Compare contracted-to-operating by technology.</div></div>
+    </div>
+
+    <div class="pnotes">
+      <div class="ph">Presenter notes</div>
+      <dl>
+        <dt>Open with</dt><dd>Put the funnel on the board: 177 → 45 → 12 GW. Ask the table to <b>guess the attrition</b> before you reveal it — the gap between their guess and reality is the lesson.</dd>
+        <dt>What a good answer looks like</dt><dd>A table that names the <b>real gates</b> — connection/system strength, transmission, offtake, planning — and can rank which one kills the most megawatts. Bonus: an early signal that actually predicts delivery.</dd>
+        <dt>Why it matters to us</dt><dd>This is pipeline hygiene: the difference between a portfolio of announcements and a portfolio of assets. Tie it to how the team screens opportunities.</dd>
+        <dt>Watch-out</dt><dd>“Committed” is not a promise — the back-test proves it. Keep them empirical: what did the data say <i>before</i> each project delivered or slipped?</dd>
+      </dl>
+    </div>
+  </div>
+</main>
+
+<footer><div class="wrap">
+  Reading the NEM · session kit v1 · figures from the AusEnergy Lens (AEMO MMSDM + ISP 2026 + Open Electricity + CER), current to Aug 2026. Calculators are transparent teaching models, not planning tools.
+</div></footer>
+
+<script>
+(function(){
+  const map={bg:'p-bg',t1:'p-t1',t2:'p-t2',t3:'p-t3',t4:'p-t4',t5:'p-t5'};
+  const tabs=[...document.querySelectorAll('.tab')];
+  function show(key){
+    tabs.forEach(x=>x.setAttribute('aria-selected', x.dataset.tab===key));
+    Object.entries(map).forEach(([k,id])=>document.getElementById(id).hidden=(k!==key));
+    window.scrollTo({top:0});
+  }
+  tabs.forEach(t=>t.addEventListener('click',()=>show(t.dataset.tab)));
+  document.querySelectorAll('[data-goto]').forEach(a=>a.addEventListener('click',e=>{e.preventDefault();show(a.dataset.goto);}));
+
+  const css=k=>getComputedStyle(document.documentElement).getPropertyValue(k).trim();
+  const fmt=n=>{n=Math.round(n);return n.toLocaleString('en-US');};
+
+  // ===== RENEWABLES MODEL =====
+  const H=8760;
+  function lcg(seed){let s=seed>>>0;return()=>{s=(s*1664525+1013904223)>>>0;return s/4294967296;};}
+  const R=(function build(){
+    const rnd=lcg(7),demand=new Float64Array(H),solar=new Float64Array(H),wind=new Float64Array(H);
+    const wD=new Float64Array(366);let w=0.35;
+    for(let d=0;d<366;d++){w=0.82*w+0.18*0.35+(rnd()-0.5)*0.32;w=Math.max(0.03,Math.min(0.95,w));wD[d]=w;}
+    [35,110,205,300].forEach(d0=>{for(let d=d0;d<d0+4&&d<366;d++)wD[d]*=0.12;});
+    for(let h=0;h<H;h++){
+      const doy=(h/24)|0,hod=h%24;
+      const seas=1+0.16*Math.cos((doy-15)/365*2*Math.PI)+0.10*Math.cos((doy-195)/365*2*Math.PI);
+      demand[h]=(19+7*Math.exp(-((hod-18)**2)/8)+3*Math.exp(-((hod-8)**2)/6))*seas;
+      const sun=Math.max(0,Math.sin((hod-6)/12*Math.PI)),sS=1+0.32*Math.cos((doy-1)/365*2*Math.PI);
+      solar[h]=sun*sS; wind[h]=wD[doy]*(0.75+0.5*rnd());
+    }
+    let sd=0,ss=0,sw=0;for(let h=0;h<H;h++){sd+=demand[h];ss+=solar[h];sw+=wind[h];}
+    return {demand,solar,wind,sumD:sd,sumS:ss,sumW:sw};
+  })();
+  function simMinStorage(target,windShare,overbuild){
+    const potential=overbuild*target*R.sumD,wE=windShare*potential,sE=(1-windShare)*potential;
+    const capW=wE/R.sumW,capS=sE/R.sumS;
+    const vre=new Float64Array(H);
+    for(let h=0;h<H;h++){vre[h]=capW*R.wind[h]+capS*R.solar[h];}
+    const firmBudget=(1-target)*R.sumD; // energy the firm gas fleet may supply = the (1-target) balance
+    function run(E){
+      const P=E/4;let soc=E*0.5,firm=0,cur=0,peakF=0;
+      for(let h=0;h<H;h++){
+        let net=R.demand[h]-vre[h];
+        if(net>0){const dis=Math.min(net,P,soc);soc-=dis;net-=dis;if(net>peakF)peakF=net;firm+=net;} // gas peakers cover the rest
+        else{const sur=-net,chg=Math.min(sur,P,E-soc);soc+=chg;cur+=(sur-chg);}
+      }
+      return {firm,cur,peakF};
+    }
+    const tol=firmBudget+0.001*R.sumD;
+    const pack=(E,r,inf)=>({E,cur:r.cur,capW,capS,infeasible:inf,potential,gasE:r.firm,gasPeak:r.peakF});
+    const r0=run(0);      if(r0.firm<=tol) return pack(0,r0,false);    // balance met by gas alone, no new storage
+    const rHi=run(8000);  if(rHi.firm>tol) return pack(8000,rHi,true); // even max BESS can't hold gas to its budget
+    let lo=0,hi=8000;
+    for(let i=0;i<26;i++){const mid=(lo+hi)/2;if(run(mid).firm>tol)lo=mid;else hi=mid;}
+    return pack(hi,run(hi),false);
+  }
+  const rt=document.getElementById('rt'),ws=document.getElementById('ws'),ob=document.getElementById('ob');
+  function renderRenew(){
+    const target=+rt.value/100,windShare=+ws.value/100,overbuild=+ob.value/100;
+    document.getElementById('rt-v').innerHTML=rt.value+'<small>% energy</small>';
+    document.getElementById('ws-v').innerHTML=ws.value+'<small>% wind</small>';
+    document.getElementById('ob-v').innerHTML=overbuild.toFixed(2)+'<small>× target</small>';
+    const r=simMinStorage(target,windShare,overbuild),bess=r.E/2;
+    const gasPct=Math.round((1-target)*100),gasCF=r.gasPeak>0?Math.round(100*r.gasE/(r.gasPeak*H)):0;
+    document.getElementById('o-bess').innerHTML=r.infeasible?'5,000+':fmt(bess);
+    document.getElementById('o-store').innerHTML=r.infeasible?'&gt;8<small> TWh</small>':(r.E>=1000?(r.E/1000).toFixed(1)+'<small> TWh</small>':fmt(r.E)+'<small> GWh</small>');
+    document.getElementById('o-curt').innerHTML=Math.round(100*r.cur/r.potential)+'<small>%</small>';
+    document.getElementById('o-gas').innerHTML=gasPct+'<small>% of energy · gas fleet at ~'+gasCF+'% capacity factor</small>';
+    document.getElementById('o-wind').innerHTML=Math.round(r.capW)+'<small> GW</small>';
+    document.getElementById('o-solar').innerHTML=Math.round(r.capS)+'<small> GW</small>';
+    // storage-vs-target curve, built once and reused to locate the sweet spot
+    const curve=[];
+    for(let t=40;t<=100;t+=2){const rr=simMinStorage(t/100,windShare,overbuild);curve.push({t,bess:rr.infeasible?1e9:rr.E/2});}
+    let sweetT=null,sweetB=null;
+    for(let i=curve.length-1;i>=0;i--){if(curve[i].bess<=800){sweetT=curve[i].t;sweetB=curve[i].bess;break;}}
+    const v=document.getElementById('r-verdict');
+    if(r.infeasible){v.className='verdict warn';v.innerHTML=sweetT?`<b>4-hour batteries can’t get you there.</b> Keep ~<b>${100-sweetT}% firm gas</b> (a ${sweetT}% renewable system) and it collapses to about <b>${fmt(sweetB)}</b> batteries. Chasing the last few % to zero-gas is what makes the number silly — the balance is exactly what a small, rarely-run gas fleet is for.`:'<b>4-hour batteries can’t get you there.</b> The last slice needs long-duration storage or firm gas, not more BESS.';}
+    else if(sweetT!==null&&+rt.value>sweetT+0.5){v.className='verdict warn';v.innerHTML=`<b>Past the knee.</b> Backing off to ~<b>${sweetT}% renewable / ~${100-sweetT}% gas</b> cuts this from ${fmt(bess)} to about <b>${fmt(sweetB)}</b> batteries. Keeping some gas for the deep lulls is the optimum — the last few % via storage alone is what runs the number away.`;}
+    else if(r.E===0){v.className='verdict ok';v.innerHTML=`At this level the existing fleet covers the gaps with <b>little or no new storage</b>; gas would supply ~${gasPct}% of energy. Push the target up and watch where storage starts to bite.`;}
+    else{v.className='verdict ok';v.innerHTML=`A sensible balance: gas fills ~${gasPct}% of energy at just ~<b>${gasCF}% capacity factor</b> (a peaker, not a workhorse). Push the target higher to watch storage run away.`;}
+    // wind/solar sweet spot: minimum storage across the mix, at this target + overbuild
+    let optWind=55,optBess=Infinity;
+    for(let wv=0;wv<=100;wv+=5){const rr=simMinStorage(target,wv/100,overbuild);const bb=rr.infeasible?1e12:rr.E/2;if(bb<optBess){optBess=bb;optWind=wv;}}
+    const optBessTxt=optBess>=1e12?'5,000+':fmt(optBess);
+    const gasRec=sweetT!==null?(100-sweetT):null;
+    const capexBn=fmt(Math.round(r.E*0.4));
+    document.getElementById('r-assume').innerHTML=
+      `<div class="ra-row"><span class="ra-k">Wind/solar sweet spot</span><span class="ra-v">least storage at ~<b>${optWind}% wind</b> / ${100-optWind}% solar (${optBessTxt} batteries) — a balanced mix beats either all-wind or all-solar</span></div>`+
+      (gasRec!==null?`<div class="ra-row"><span class="ra-k">Firming sweet spot</span><span class="ra-v">keep ~<b>${gasRec}% gas</b> (≈${sweetT}% wind+solar) — beyond that, storage runs away (the dashed line on the curve)</span></div>`:'')+
+      `<div class="ra-row"><span class="ra-k">Indicative cost</span><span class="ra-v">storage alone ≈ <b>$${capexBn} bn</b> at ~$0.4bn/GWh installed — before any wind, solar, gas or network spend</span></div>`+
+      `<div class="ra-row"><span class="ra-k">Assumptions</span><span class="ra-v">wind CF ~34%, solar CF ~32% (potential — realised today 28% / 15%) · 4-hr BESS = 500 MW / 2 GWh · demand ~184 TWh</span></div>`;
+    drawRenewCurve(curve,+rt.value,sweetT);
+  }
+  function drawRenewCurve(curve,curT,sweetT){
+    const svg=document.getElementById('r-chart'),W=480,Ht=190,pad=44,pb=24;
+    const pts=curve.map(p=>({t:p.t,bess:Math.min(p.bess,2600)}));
+    let ymax=50;pts.forEach(p=>ymax=Math.max(ymax,p.bess));
+    const px=t=>pad+(t-40)/60*(W-pad-12),py=v=>12+(Ht-12-pb)-(v/ymax)*(Ht-12-pb);
+    const line=css('--t2'),grid=css('--grid'),mut=css('--muted'),mono=css('--mono'),warn=css('--t1');
+    let g='';
+    for(let i=0;i<=3;i++){const yv=ymax*i/3,y=py(yv);g+=`<line x1="${pad}" y1="${y}" x2="${W-12}" y2="${y}" stroke="${grid}" stroke-width="1"/><text x="${pad-5}" y="${y+3}" text-anchor="end" font-size="9" font-family="${mono}" fill="${mut}">${yv>=1000?(yv/1000).toFixed(1)+'k':Math.round(yv)}</text>`;}
+    [40,60,80,100].forEach(t=>g+=`<text x="${px(t)}" y="${Ht-8}" text-anchor="middle" font-size="9" font-family="${mono}" fill="${mut}">${t}%</text>`);
+    const d=pts.map((p,i)=>`${i?'L':'M'}${px(p.t).toFixed(1)},${py(p.bess).toFixed(1)}`).join(' ');
+    const area=`M${px(40)},${py(0)} `+pts.map(p=>`L${px(p.t).toFixed(1)},${py(p.bess).toFixed(1)}`).join(' ')+` L${px(100)},${py(0)} Z`;
+    let sweet='';
+    if(sweetT){const x=px(sweetT);sweet=`<line x1="${x}" y1="12" x2="${x}" y2="${Ht-pb}" stroke="${warn}" stroke-width="1.2" stroke-dasharray="3 3"/><text x="${x-4}" y="24" text-anchor="end" font-size="8.5" font-family="${mono}" fill="${warn}">keep gas</text><text x="${x-4}" y="34" text-anchor="end" font-size="8.5" font-family="${mono}" fill="${warn}">past ~${sweetT}%</text>`;}
+    const cur=pts.reduce((a,b)=>Math.abs(b.t-curT)<Math.abs(a.t-curT)?b:a);
+    svg.innerHTML=g+`<path d="${area}" fill="${line}" fill-opacity="0.12"/>`+sweet+`<path d="${d}" fill="none" stroke="${line}" stroke-width="2.2"/><circle cx="${px(cur.t)}" cy="${py(Math.min(cur.bess,2600))}" r="4.5" fill="${line}"/><text x="${W-12}" y="15" text-anchor="end" font-size="9" font-family="${mono}" fill="${mut}">big batteries</text>`;
+  }
+  [rt,ws,ob].forEach(el=>el.addEventListener('input',renderRenew));
+
+  // ===== DEMAND MODEL =====
+  const base=[20,19,18,18,19,21,24,27,28,28,27,26,26,26,26,27,29,32,34,33,30,27,24,22];
+  const solarBell=h=>Math.max(0,Math.sin((h-6)/12*Math.PI));
+  const rf=document.getElementById('rf'),ev=document.getElementById('ev'),mg=document.getElementById('mg'),
+        dc=document.getElementById('dc'),el=document.getElementById('el');
+  function demandCurve(rfGW,evTWh,managed,dcGW,elPct){
+    const rooftopPeak=rfGW*0.6,evDaily=evTWh*1e3/365;
+    const mgShape=h=>Math.max(0,Math.sin((h-9)/9*Math.PI))*0.7+(h<6||h>=22?0.6:0);
+    const unShape=h=>Math.exp(-((h-19)**2)/3);
+    let mgSum=0,unSum=0;for(let h=0;h<24;h++){mgSum+=mgShape(h);unSum+=unShape(h);}
+    const out=[];
+    for(let h=0;h<24;h++){
+      let d=base[h]*(1+elPct/100*(0.5+0.5*Math.max(Math.exp(-((h-8)**2)/6),Math.exp(-((h-18)**2)/6))));
+      d-=rooftopPeak*solarBell(h);
+      d+=evDaily*(managed/100*mgShape(h)/mgSum+(1-managed/100)*unShape(h)/unSum)+dcGW;
+      out.push(d);
+    }
+    return out;
+  }
+  function renderDemand(){
+    document.getElementById('rf-v').innerHTML=rf.value+'<small>GW</small>';
+    document.getElementById('ev-v').innerHTML=ev.value+'<small>TWh/yr</small>';
+    document.getElementById('mg-v').innerHTML=mg.value+'<small>%</small>';
+    document.getElementById('dc-v').innerHTML=(+dc.value)+'<small>GW flat</small>';
+    document.getElementById('el-v').innerHTML=el.value+'<small>%</small>';
+    const today=demandCurve(26,3,40,1,0),scen=demandCurve(+rf.value,+ev.value,+mg.value,+dc.value,+el.value);
+    const mn=Math.min(...scen),pk=Math.max(...scen),avg=scen.reduce((a,b)=>a+b,0)/24;
+    document.getElementById('d-min').innerHTML=mn.toFixed(1)+'<small> GW</small>';
+    document.getElementById('d-peak').innerHTML=pk.toFixed(1)+'<small> GW</small>';
+    document.getElementById('d-twh').innerHTML=(avg*8760/1000).toFixed(0)+'<small> TWh</small>';
+    const v=document.getElementById('d-verdict');
+    if(mn<0){v.className='verdict warn';v.innerHTML='<b>The belly went negative.</b> Rooftop now generates more than the grid needs at midday — operational demand flips below zero. This is the “canyon”: everything running in daylight fights for a shrinking, sometimes-negative market.';}
+    else if(mn<8){v.className='verdict warn';v.innerHTML='<b>A deep midday trough.</b> The grid barely needs anything at noon — brutal for daytime generators, and the reason storage and flexible load matter more than raw capacity.';}
+    else{v.className='verdict ok';v.innerHTML='Push rooftop up, or set managed charging to 0% — watch the belly drop and the evening peak spike. The <i>shape</i> moves faster than the total.';}
+    drawDemand(today,scen);
+  }
+  function drawDemand(today,scen){
+    const svg=document.getElementById('d-chart'),W=480,Ht=200,pad=40,pb=22;
+    const all=[...today,...scen];let ymax=Math.max(...all,5),ymin=Math.min(...all,0);
+    ymin=Math.min(ymin,0);ymax=Math.ceil(ymax/5)*5;
+    const px=h=>pad+h/23*(W-pad-12),py=v=>12+(Ht-12-pb)-((v-ymin)/(ymax-ymin))*(Ht-12-pb);
+    const grid=css('--grid'),mut=css('--muted'),c=css('--t3'),dim=css('--dim'),mono=css('--mono');
+    let g='';
+    for(let i=0;i<=4;i++){const yv=ymin+(ymax-ymin)*i/4,y=py(yv);g+=`<line x1="${pad}" y1="${y}" x2="${W-12}" y2="${y}" stroke="${grid}" stroke-width="1"/><text x="${pad-5}" y="${y+3}" text-anchor="end" font-size="9" font-family="${mono}" fill="${mut}">${Math.round(yv)}</text>`;}
+    if(ymin<0){const y0=py(0);g+=`<line x1="${pad}" y1="${y0}" x2="${W-12}" y2="${y0}" stroke="${mut}" stroke-width="1.3"/>`;}
+    [0,6,12,18].forEach(h=>g+=`<text x="${px(h)}" y="${Ht-7}" text-anchor="middle" font-size="9" font-family="${mono}" fill="${mut}">${String(h).padStart(2,'0')}:00</text>`);
+    const path=arr=>arr.map((v,h)=>`${h?'L':'M'}${px(h).toFixed(1)},${py(v).toFixed(1)}`).join(' ');
+    const y0=py(ymin<0?0:ymin);
+    const area=`M${px(0)},${y0} `+scen.map((v,h)=>`L${px(h).toFixed(1)},${py(v).toFixed(1)}`).join(' ')+` L${px(23)},${y0} Z`;
+    svg.innerHTML=g+`<path d="${area}" fill="${c}" fill-opacity="0.10"/><path d="${path(today)}" fill="none" stroke="${dim}" stroke-width="1.6" stroke-dasharray="4 3"/><path d="${path(scen)}" fill="none" stroke="${c}" stroke-width="2.4"/>`;
+  }
+  [rf,ev,mg,dc,el].forEach(e=>e.addEventListener('input',renderDemand));
+
+  renderRenew();renderDemand();
+})();
+</script>
+
+<script>
+/* Data packs — every figure queried live from the AusEnergy Lens (AEMO NEM data), as-at Aug 2026.
+   2026 figures are year-to-date. Prices $/MWh energy, $/MW/hr FCAS. */
+(function(){
+  const DATASETS = {
+  t1: [
+    {t:"The long-run price record & the 2022 gas shock", src:"price_trend", what:"A decade of annual average and peak wholesale prices — 2022 stands out as a spike within a spike.",
+     fig:["NSW energy avg: <b>$60</b>/MWh (2020) → <b>$183</b> (2022) → <b>$103</b> (2025) → <b>$74</b> (2026 YTD).","QLD ran hottest in 2022: <b>$205</b>/MWh avg, up 5× from $41 in 2020.","2022 spike-hours (RRP ≥ $300): NSW <b>1,393 h</b>, QLD 1,440, SA 1,313 — vs NSW just <b>15 h</b> in 2020 and 9 in 2026 YTD."],
+     prompts:["How would our revenue model have performed if we'd underwritten to 2020-style prices going into 2022?","Spike-hours collapsed 1,393 → 9 in NSW — is the scarcity-revenue thesis weakening, or just <b>between shocks</b>?"]},
+    {t:"The June 2022 market suspension, day by day", src:"dispatchprice", what:"The mechanical footprint of AEMO suspending the spot market and imposing the Administered Price Cap.",
+     fig:["13 Jun 2022: NSW daily max RRP hit <b>$15,100</b>/MWh (the cap of the day).","14–22 Jun: the daily max is pinned at exactly <b>$300</b> every day — the visible signature of the APC.","23 Jun: max jumps back to $610 as normal dispatch resumes. NSW logged <b>1,720</b> five-minute intervals ≥ $300 across 12–24 Jun."],
+     prompts:["Under the APC generators were paid ~$300 while fuel cost far more — how do we contract to survive a market capped <b>below our short-run cost</b>?","What early-warning signals in our own portfolio would tell us a suspension is coming?"]},
+    {t:"The FCAS price collapse — a whole revenue stream, gone", src:"price_trend", what:"Batteries competed away the frequency-control revenue that used to underwrite storage business cases.",
+     fig:["NSW FCAS total avg: <b>$68.6</b>/MW/hr (2020) → <b>$5.9</b> (2026) — a ~91% fall.","NSW raise-contingency fell from $31 to <b>$0.2</b>/MW/hr.","SA FCAS total: <b>$159.7</b> (2020) → <b>$6.2</b> (2026)."],
+     prompts:["Any storage case leaning on FCAS “stacking” now works off ~$6/MW vs ~$60–160 five years ago — does our model assume yesterday's FCAS pool?","This collapse was self-inflicted by battery entry — what revenue stream gets competed away <b>next</b>?"]},
+    {t:"The negative-price / duck-curve shock", src:"price_trend · signals", what:"Solar has flipped the middle of the day into a surplus glut — the opposite shock to 2022.",
+     fig:["SA negative-price hours: 643 (2020) → <b>2,662 (2025)</b> — roughly 30% of the year.","NSW went from <b>16 (2020) to 1,263 (2025)</b> — an 80× rise.","Detected negative-price events since Jan-2025: SA <b>385</b>, VIC 331, QLD 324."],
+     prompts:["A solar farm generates hardest exactly when SA is negative for 2,600+ hours — what <b>capture-price haircut</b> are we applying?","At what negative-hour count does storage stop being optional for a new SA renewable project?"]},
+    {t:"Heat as the demand-and-price driver", src:"weather_demand", what:"Price spikes cluster tightly on the hottest days — the weather the market “didn't see coming.”",
+     fig:["Hottest day: VIC <b>43.4°C</b> on 2026-01-27 → peak demand 10,780 MW, max $3,026, 40 spike intervals.","SA <b>42.6°C</b> on 2026-01-26 → max price <b>$20,300</b>/MWh (the cap), 77 spike intervals.","NSW 42°C on 2026-01-10 → max ~$11,940/MWh."],
+     prompts:["Merchant revenue looks concentrated in ~5–10 heat days a year — how robust is that to a <b>mild summer</b>?","Demand is U-shaped in temperature — are we modelling winter-evening scarcity as well as summer?"]},
+    {t:"The coal retirement wave — what's gone, what's left", src:"oe_facility", what:"The structural shock in slow motion: 7.6 GW already retired, 21 GW on a known exit schedule.",
+     fig:["Retired: <b>7.6 GW</b> — incl. Hazelwood (~1.6 GW, 2017) and Liddell (~2 GW, 2023).","Still operating: <b>21.1 GW</b> of coal.","Near-term closures: Yallourn 1.48 GW (2028), then Eraring + Gladstone ≈ <b>4.56 GW (2029)</b>, Bayswater + Vales Point ≈ 3.96 GW (2032)."],
+     prompts:["~6 GW of coal exits 2028–29 — is our project's COD early enough to capture the tightness, or do we arrive after the replacement build?","Hazelwood and Liddell both closed faster than announced once economics turned — should we plan for 2032–34 closures landing <b>2–3 years early</b>?"]},
+    {t:"Coal machine-failures, right now", src:"unit_avail · oe_facility", what:"On any given day a big slab of “firm” coal is simply not there — the daily unplanned-outage shock.",
+     fig:["18 Aug 2026: four coal units fully offline — Kogan Creek (744 MW), Eraring ER01 (720), Stanwell (365), Gladstone (280) — <b>~2.1 GW at zero</b>.","More derated: Eraring ER02 at 65%, Tarong #3 at 40%.","Two of Eraring's four units impaired, ~3 years before it's due to close."],
+     prompts:["~2 GW of coal was unexpectedly out on an ordinary winter day — how much of the “reliable capacity” in our model is actually available at any moment?","Ageing units fail more as they near closure — does our spike-revenue thesis quietly rely on that continuing?"]},
+    {t:"The two-year reliability outlook (USE risk)", src:"mtpasa_outlook", what:"Where AEMO's forward outlook flags a risk of not meeting the reliability standard.",
+     fig:["Highest flagged unserved-energy: <b>SA 2027-02-14, 34.4 MWh</b> (reserve just +260 MW vs a 1,887 MW peak).","SA 2028-02-14 standalone reserve goes <b>negative (−31 MW)</b>.","NSW logs several Jun–Jul 2026 days with negative standalone reserve (import-dependent)."],
+     cav:"Per-region reserve ignores interconnector imports, so negative ≠ blackout — a flag, not a forecast.",
+     prompts:["The tightest points are SA/VIC summer 2027–28 evenings — is that the window our project should be built to serve?","How do we tell a genuine adequacy gap from an import-dependency artefact when siting?"]},
+    {t:"Records — instantaneous renewables & minimum demand", src:"records", what:"The grid now routinely runs on near-100%+ renewables and near-zero operational demand.",
+     fig:["SA hit <b>488.8%</b> renewable share of local demand (2025-12-01) — ~5× SA demand, exporting the rest.","SA minimum operational demand: <b>50 MW</b> (recurring) — rooftop swallowing almost the whole region's daytime load.","NEM all-time low operational demand ~<b>9,155 MW</b> (2025-10-04)."],
+     prompts:["SA daytime demand touches 50 MW — is a project's revenue now <b>purely evening/overnight</b>?","System-security services (inertia, system strength) get scarce here — is there a syncon/services opportunity in the shock our own project creates?"]},
+    {t:"Batteries — the new shock-absorber", src:"records · market_daily", what:"A fleet that barely existed in 2020 now supplies multi-GW evening peaks.",
+     fig:["NEM battery discharge record ~<b>4,637 MW</b> (2026-08-17, 18:25).","Waratah Super Battery single-site record <b>856 MW</b>.","Avg battery discharge: 84 MW (2025) → <b>121 MW (2026)</b>, ≈ +44% YoY; records cluster at 18:00–18:45."],
+     prompts:["Evening discharge is growing ~44%/yr and concentrated in one window — how fast does that window's arbitrage spread <b>compress</b>?","Batteries were built for the 2022 scarcity and FCAS pools that have since collapsed — what's the durable revenue for the next wave?"]},
+    {t:"Recent extreme spikes and the rising price cap", src:"signals · dispatchprice", what:"Spikes still hit the cap regularly — and the cap itself has climbed, raising the stakes of each event.",
+     fig:["The market price cap rose from ~<b>$15,100</b> (2022) to <b>$20,300</b>/MWh (2026).","Biggest recent spike: TAS 2026-07-13, <b>$23,200</b>/MWh over 3 intervals.","SA 2026-06-22 held <b>$20,300</b> across 384 five-minute intervals — ~32 hours at the cap."],
+     prompts:["One 384-interval SA event can equal months of average revenue — is our case honestly a bet on a handful of these, and can we <b>finance that volatility</b>?","The cap escalates ~$15k→$20k in 4 years — does higher upside attract merchant exposure, or just widen the range lenders won't underwrite?"]}
+  ],
+  t2: [
+    {t:"VRE curtailment is accelerating", src:"curtailment", what:"How much wind/solar energy is spilled (available but not dispatched), NEM-wide, by year.",
+     fig:["Solar spilled <b>2.1 → 3.9 TWh</b> (2023→2025); wind <b>1.7 → 3.6 TWh</b>. Combined spill roughly <b>doubled to 7.4 TWh</b> in two years.","Share of solar's own available energy spilled: 12.5% → <b>17.6%</b>; wind 6.2% → 9.9%.","<b>The objective isn't 0% spill.</b> Some curtailment is economically optimal, and while baseload coal is still on the system a share of today's spill is transient — it eases as coal exits. The aim is to spill as little as possible by <b>time-shifting with BESS</b>: beyond a threshold, surplus should be stored and released into the evening, not thrown away. That trade-off (overbuild-and-spill vs store) is exactly what the calculator lets you dial."],
+     cav:"Lens flags this as network/constraint curtailment; economic curtailment (bidding below the LGC floor) is a planned refinement, so true spill is likely higher.",
+     prompts:["If ~18% of a new solar farm's output is lost before it earns a cent, what does that do to bid LCOE vs the PPA price?","Do we underwrite on P50 generation, or <b>P50-minus-curtailment</b>?"]},
+    {t:"Where the spill happens — SA solar loses a third", src:"curtailment", what:"2025 curtailment by region × fuel — the local nature of the constraint.",
+     fig:["VIC wind <b>2,029 GWh</b> spilled, NSW solar 1,614, QLD solar 1,241, SA wind 1,141.","Worst rate: <b>SA solar spilling 33.7%</b> of available output — one MWh in three thrown away."],
+     prompts:["SA already spills a third of its solar — is the last MW of SA solar worth building <b>without co-located storage</b>?","Does regional curtailment risk now move our siting more than resource quality does?"]},
+    {t:"Renewable share vs the price floor", src:"price_trend", what:"Negative-price hours are exploding while the average price falls — cannibalisation in the data.",
+     fig:["SA negative-price hours: 643 (2020) → <b>2,662 (2025)</b> — ~30% of all hours; NSW 16 → 1,263.","Average energy price came off the 2022 peak even as VRE grew: NSW $183 (2022) → <b>$103 (2025)</b>.","Spike hours also fell: NSW 1,393 (2022) → 95 (2025)."],
+     prompts:["Solar generates hardest when SA is negative 2,600+ hours a year — realistic capture vs the flat average?","If wholesale falls as we add renewables, where does the revenue to fund the <b>last 20%</b> come from — CIS/LTESA floors?"]},
+    {t:"Storage has overtaken coal as the price-setter", src:"ps_fuelmix", what:"Which fuel sets the 5-minute energy price (from NEMDE attribution), share by year.",
+     fig:["Storage set the price <b>0.1% (2015) → 2.2% (2020) → 16.9% (2025) → 31.5% (2026 YTD)</b>.","Fossil fell from 78% (2015) to <b>31.4% (2026)</b>.","In 2026 storage (31.5%) just edged past fossil (31.4%) as the NEM's marginal price-setter for the first time."],
+     prompts:["If batteries increasingly set the price, does the marginal price converge on their <b>arbitrage spread</b> rather than fuel cost — and what does that do to merchant VRE revenue?","Are we a price-taker in a market whose price is now set by the storage we may need to co-build?"]},
+    {t:"Firming is the pipeline — batteries lead committed GW", src:"gi_projects", what:"Committed/anticipated/commissioning pipeline capacity by technology.",
+     fig:["Battery storage <b>19.3 GW / 65.3 GWh</b> committed-ish, vs solar 10.6 GW, wind 6.4 GW, gas 1.5 GW.","The market is committing <b>more battery power than wind and solar combined</b>.","Broader pipeline: 345.7 GW announced but only <b>10.9 GW firmly Committed</b>."],
+     prompts:["65 GWh of committed battery is mostly 2–4 hr — who builds the <b>deep/long-duration</b> firming for the last 20%, and does the market pay for it?","With 346 GW announced but 11 GW committed, how do we ensure our project is in the ~3% that reaches FID?"]},
+    {t:"The overbuild arithmetic — capacity factors by fuel", src:"oe_facility · market_daily", what:"Realised capacity factor by fuel (avg output ÷ registered capacity), Aug-2025→Aug-2026.",
+     fig:["Wind <b>~28%</b>, utility solar <b>~15%</b>, coal ~61%, gas ~9%.","Replacing 1 GW of ~61% coal needs <b>~2.2 GW of wind or ~4 GW of solar</b> on energy alone — before storage and curtailment losses."],
+     cav:"CFs derived from regional daily-mean MW ÷ registered nameplate — indicative, not AEMO-published.",
+     prompts:["At 15% solar / 28% wind CF the overbuild multiple to firm demand is 4–7× — is our transmission/connection queue priced for that much nameplate?","Gas runs at 9% CF but is the firming backstop — how does a 9%-CF peaker earn its capital without a capacity payment?"]},
+    {t:"Minimum demand is collapsing", src:"market_daily", what:"Lowest daily-average operational demand vs peak, by region — the rooftop squeeze.",
+     fig:["SA daily-avg demand troughs at <b>776 MW against a 3,140 MW peak — 24.7%</b>.","VIC troughs at 28.8% of peak; NSW 39.8%; QLD 47.1%.","SA operational demand routinely falls toward zero midday as rooftop swamps the grid."],
+     prompts:["If midday operational demand is near zero in SA, every new utility-solar MW competes for a <b>shrinking daytime market</b> — is storage-firmed dispatch the only viable solar model now?","Minimum demand, not peak, is becoming the binding security constraint — does that change what “the grid needs” from our next project?"]},
+    {t:"How renewable is the grid already? SA at 72%", src:"market_daily", what:"Grid-scale wind+solar as a share of grid generation by region (rooftop excluded).",
+     fig:["<b>SA 72% VRE</b> (and zero coal), VIC 31.7%, NSW 26.3%, QLD 21.9%, TAS 20.5% (TAS is 76% hydro).","SA is the live case study of a near-fully-renewable grid — and has the worst curtailment and most negative-price hours."],
+     prompts:["SA is at 72% grid VRE and it's where curtailment and negative prices bite hardest — is SA showing us the <b>cost curve of the last 20%</b> in real time?","What did it take (interconnection, gas, batteries, syncons) to get SA there, and who paid?"]},
+    {t:"The rooftop + home-battery wave", src:"der_postcode", what:"Cumulative small-scale rooftop solar and the new home-battery boom (rebate-eligible from Jul 2025).",
+     fig:["<b>26.5 GW</b> cumulative rooftop solar — larger than the entire utility-solar OR wind fleet (~14.6–14.8 GW each).","Home batteries added ~<b>11.3 GWh</b> in the first 12 months, peaking at 2,648 MWh in April 2026 alone."],
+     prompts:["26.5 GW of rooftop is bigger than our whole utility-solar fleet and AEMO can't curtail it — is behind-the-meter the real <b>daytime competitor</b>?","If households install 2+ GWh of battery a month, does distributed storage erode the arbitrage spread our grid-scale case depends on?"]},
+    {t:"Grid-scale batteries are still capturing fat spreads", src:"battery_capture", what:"Realised arbitrage spread and capture efficiency per battery unit-month.",
+     fig:["Average realised spread <b>$217/MWh</b>, capture efficiency <b>82%</b>.","Top-2hr price band $301, top-4hr $226 (across 908 unit-month records)."],
+     prompts:["Battery spreads are healthy because VRE creates the volatility — but as more batteries arbitrage it away, how durable is a <b>$217 spread over 15 years</b>?","Is there a self-limiting point where enough storage flattens the very curve that funds storage?"]},
+    {t:"The FCAS warning — a market competed to near-zero", src:"price_trend", what:"Total FCAS price ($/MW/hr) — a preview of what “over-firming” does to a revenue stream.",
+     fig:["NSW total FCAS collapsed <b>$68.6 (2020) → $5.9 (2026)</b>; SA <b>$159.7 → $6.2</b> — roughly a 95% collapse.","FCAS was the early-mover super-profit; it's now largely competed away."],
+     prompts:["FCAS shows exactly how fast a storage revenue stream can go to near-zero — is <b>energy arbitrage next</b>?","If we stack revenue (energy + FCAS + capacity), which layer are we assuming survives to year 10?"]}
+  ],
+  t3: [
+    {t:"The decade of flat demand — then the climb", src:"esoo_demand", what:"NEM operational consumption was flat for years; the ISP 2026 central case now bends steeply upward.",
+     fig:["Actual: <b>180.7 (2020), 177.0 (2024), 177.3 (2025)</b> TWh — a flat decade.","Step Change forecast: <b>179.3 (2026) → 192.3 (2030) → 260.6 (2040) → 289.6 (2050)</b> — +62% on 2026."],
+     cav:"Operational (sent-out) — the single clean total row, not a sum across overlapping categories.",
+     prompts:["Our pipeline was sized in the flat-demand era — which assets are being planned against the <b>wrong baseline</b>?","The steepest gradient is 2030→2040 (+68 TWh) — does our timeline front-load or back-load capacity relative to that inflection?"]},
+    {t:"The scenario fan — how wide is 2050?", src:"esoo_demand", what:"2050 NEM operational demand across ISP scenarios — the planning envelope.",
+     fig:["Accelerated Transition <b>433.2</b>, Higher Demand 331.9, Step Change 289.6, Slower Growth 244.6 TWh.","Spread ≈ <b>189 TWh</b> — more than today's entire NEM; Accelerated is 1.5× central."],
+     prompts:["A 189 TWh spread is bigger than today's NEM — which scenario does our investment committee actually underwrite to, <b>explicitly</b>?","What optionality (staged sites, grid headroom) captures the Accelerated upside without stranding under Slower Growth?"]},
+    {t:"The three new demand engines", src:"esoo_demand", what:"Where the new load comes from under Step Change — near-zero today, very large by 2050.",
+     fig:["Electric Vehicles: <b>0.9 (2026) → 30.1 (2040) → 60.9 (2050)</b> TWh — ~67×.","Electrification (gas→electric): 0.2 → 40.0 → <b>56.5</b> TWh.","Data Centres: <b>4.7 (2026) → 11.8 (2030) → 33.8 (2050)</b> TWh."],
+     prompts:["Data centres are the <b>nearest-term</b> engine (already 4.7 TWh, tripling by 2030) while EVs dominate later — does our origination match that timing?","EV load is shiftable; electrification is weather-peaky — which of the three helps our revenue shape and which hurts it?"]},
+    {t:"Rooftop PV — the load-eraser that keeps growing", src:"esoo_demand", what:"Rooftop generation (which subtracts from grid demand) grows almost as fast as the new loads.",
+     fig:["Rooftop PV: <b>29.8 (2026) → 39.4 (2030) → 60.8 (2040) → 89.1 (2050)</b> TWh — 3×."],
+     prompts:["Rooftop rising 30→89 TWh deepens the midday trough every year — how does that reshape the merchant value of <b>our</b> utility-scale solar?","If behind-the-meter PV erases daytime grid demand, is the scarce product increasingly the <b>evening ramp</b>, not daytime energy?"]},
+    {t:"The home-battery boom", src:"der_postcode", what:"Monthly home-battery installs since the federal rebate — a step-change in behind-the-meter storage.",
+     fig:["Monthly installs: <b>478 MWh (Jul-2025) → 1,254 (Dec-2025) → 2,648 (Apr-2026 peak)</b>.","Cumulative fleet ≈ <b>11.3 GWh</b> in a year."],
+     cav:"May–Jun 2026 figures dip — almost certainly CER reporting lag on recent months, not a real fall.",
+     prompts:["~11 GWh of household storage soaks midday solar and discharges into the evening peak — does that erode the spread our grid-scale BESS relies on?","If home batteries + VPPs shave the evening peak, does that weaken the firming case, or just move value to <b>deeper, rarer scarcity</b>?"]},
+    {t:"Rooftop fleet — 26.5 GW, and where it's concentrated", src:"der_postcode", what:"Cumulative small-scale solar by region — reshaping each region's load differently.",
+     fig:["NSW <b>9.0 GW</b>, QLD 8.1, VIC 5.9, SA 3.0, TAS 0.4 GW; NEM ≈ <b>26.5 GW</b>.","Annual additions peaked ~2.5–2.9 GW/yr (2020–2024)."],
+     prompts:["SA runs on 3 GW of rooftop against a ~1.6 GW system floor — what does SA's duck curve today tell us about <b>NSW/QLD in five years</b>?","Where is behind-the-meter PV most likely to constrain our daytime export first?"]},
+    {t:"The duck curve — the midday rooftop bulge (live)", src:"rooftop_pv_actual", what:"NEM-total rooftop output by hour, Jan 2026 — the daytime wall of PV vs near-zero at the evening peak.",
+     fig:["9am avg <b>9,586 MW</b>; noon avg <b>13,600</b> (max interval 16,210); 6pm avg <b>2,084</b>.","Midday-to-evening swing ≈ <b>11.5 GW</b> of disappearing supply within ~6 hours."],
+     prompts:["The system loses ~11.5 GW of rooftop between noon and 6pm every summer day — is that ramp the <b>single biggest commercial opportunity</b> in our pipeline?","Are we still developing daytime-only solar into a market with 16 GW of free midday supply?"]},
+    {t:"Minimum & maximum demand — the widening band", src:"market_daily · records", what:"How far apart the NEM's lightest and heaviest moments now sit.",
+     fig:["NEM daily-avg minimum ≈ <b>16.0 GW</b> (2025-12-27) vs peak day ≈ <b>34.1 GW</b> (2026-01-07).","Instantaneous NEM min-demand record <b>9,155 MW</b>; SA hits a <b>50 MW</b> floor repeatedly."],
+     prompts:["The instantaneous minimum keeps falling — at what point does <b>minimum</b> demand, not maximum, become the constraint we develop around?","A system that swings 9→34 GW pays for flexibility, not energy — does our asset mix earn from that spread?"]},
+    {t:"Demand's temperature U-curve", src:"weather_demand", what:"NSW peak demand vs temperature — U-shaped (cooling and heating), with spikes at both extremes.",
+     fig:["NSW avg daily peak: <b>&lt;15°C 11,890 MW</b>; 20–25°C 8,744 (the trough); 35°C+ <b>11,600 MW</b>.","Demand is ~35% higher at the extremes than at the mild midpoint; spike-intervals/day jump from ~1 to ~12–18."],
+     prompts:["Electrification of heating fattens the <b>cold</b> (winter-evening) tail — is our capacity aimed at the summer peak we know, or the winter peak that's coming?","How many hours a year does our firming thesis actually depend on?"]},
+    {t:"Negative prices — the midday glut in the market", src:"price_trend", what:"Hours of negative wholesale price vs high-price spike hours, by region and year.",
+     fig:["SA negative-price hours: 643 (2020) → 2,165 (2023) → <b>1,102 (2026 YTD)</b>; NSW 16 → 557 → 186.","SA average price still <b>rose $43 → $87</b>/MWh even as negative hours exploded — value moved to the evening."],
+     prompts:["SA spends 1,000+ hours a year at negative prices — is our merchant-solar assumption <b>conservative enough</b>?","Average price rose even as negative hours grew — does our mix capture that time-shift, or fight it?"]},
+    {t:"Gas in retreat — the electrification counter-story", src:"gsoo", what:"As electrification pulls load onto the grid, domestic gas demand falls — but gas-for-power stays lumpy.",
+     fig:["Domestic gas demand (excl. power): <b>386 (2026) → 248 (2040) → 203 (2045)</b> PJ/yr — −47%.","Gas-for-power (NEM) stays volatile: 71 → 89 (2035) → 71 (2045) PJ — <b>no clean decline</b>."],
+     prompts:["Household gas nearly halves by 2045 — that's the electrification load landing on <b>our</b> grid; are we developing generation to serve it?","Gas-for-power stays choppy (the firming swing fuel) — does that validate or threaten our peaker economics?"]}
+  ],
+  t4: [
+    {t:"Value factors — the cannibalisation core", src:"scada × price", what:"Generation-weighted capture price ÷ time-weighted pool price, by fuel (computed from raw 5-min data).",
+     fig:["SA pool $95.87 → <b>solar captures $71.30 (VF 0.74)</b>, wind $43.85 (<b>VF 0.46</b>).","VIC pool $70.34 → solar $57.49 (0.82), wind $31.90 (<b>0.45</b>).","Wind self-cannibalises hardest — the whole region is windy at once."],
+     cav:"Computed for July 2026 (one winter month) to stay inside query limits; annual solar VF runs lower (~0.5) as the summer midday glut bites.",
+     prompts:["If our next wind project captures only ~0.45× pool, is our model built on <b>pool-flat or value-factor-adjusted</b> revenue?","What VF do we underwrite at, and how much headroom before a new build turns cash-negative?"]},
+    {t:"Negative-price hours by region", src:"price_trend", what:"Hours/year RRP < $0, 2025 — the direct measure of oversupplied daytime intervals.",
+     fig:["<b>SA 2,662 h</b>, VIC 2,106, QLD 1,792, NSW 1,263, TAS 284.","NSW negative hours rose <b>16 → 1,263</b> from 2020 to 2025."],
+     prompts:["SA is negative ~30% of hours — is a merchant solar build there viable <b>without storage co-location</b>?","Which region's negative-hour trajectory is our pipeline most exposed to?"]},
+    {t:"The pool-price trend & volatility", src:"price_trend", what:"NSW energy RRP average, spike hours and realised cap value over seven years.",
+     fig:["NSW energy avg $59.9 (2020) → $182.7 (2022) → <b>$74.3 (2026 YTD)</b>.","Spike hours 15 → 1,393 → <b>9</b>; realised $300-cap value $11.8 → $24.6 → <b>$4.4</b>/MWh."],
+     prompts:["2026 cap value is a quarter of 2024's — does our peaker/battery case still stack if volatility stays this <b>compressed</b>?","Are we underwriting to 2022-style spikes that may not recur?"]},
+    {t:"FCAS revenue collapse", src:"price_trend", what:"Sum of the classic FCAS market prices, 2020 vs 2026, as batteries competed it away.",
+     fig:["NSW FCAS total <b>$68.6 → $5.9</b> (−91%); SA <b>$159.7 → $6.2</b> (−96%).","RaiseReg NSW $24.4 → $4.2. Only TAS still elevated (~$31)."],
+     prompts:["If a battery's FCAS stack has fallen ~90%, is our storage IRR now <b>almost entirely energy arbitrage</b>?","TAS is the outlier — is there a first-mover FCAS window in thinner regions or WA?"]},
+    {t:"Battery capture rates & arbitrage spread", src:"battery_capture", what:"Realised spread, best-2h spread and capture % (realised ÷ theoretical), 2025+ regional averages.",
+     fig:["<b>SA realised spread $234/MWh</b> (TB2 $384, capture 64%); NSW $224 (capture <b>99%</b>); VIC $181 (90%); QLD $161 (96%).","Best single month: SA Jul-2024 realised spread <b>$3,374/MWh</b>."],
+     prompts:["NSW batteries capture ~99% of theoretical spread but SA only ~64% — is SA's <b>wider raw spread</b> or its capture efficiency the better siting signal?","Spreads of $160–230 against a 2–4h build — what $/kWh capex makes this pencil?"]},
+    {t:"Storage now sets the price a third of the time", src:"ps_fuelmix", what:"Share of 5-min energy price-setting intervals by fuel — storage's rise.",
+     fig:["Storage <b>0.07% (2015) → 2.2% (2020) → 31.5% (2026)</b> of energy price-setters.","2026 mix: storage 31.5%, fossil 31.4%, hydro 22.2%, renewable 8.1%."],
+     prompts:["Storage now sets price as often as all fossil combined — does that make our forward curve a bet on <b>battery bidding behaviour</b>?","Renewables set price only 8% of the time despite huge volume — why, and what does that say about who captures value?"]},
+    {t:"Physical withholding screen — market power", src:"market_power", what:"Capacity available-but-not-offered (AER method), per unit and per fuel, June 2026.",
+     fig:["Top single unit: EnergyAustralia VIC fossil <b>416 MW withheld (91%)</b>; Snowy NSW fossil 375 MW (100%).","By fuel: fossil <b>5,245 MW</b> withheld (avg 20%), storage 1,548 MW (avg 27%), hydro 724 MW."],
+     cav:"Withholding is a signal, not proof of gaming — storage withholding is partly legitimate SOC management.",
+     prompts:["Storage withholds the highest <b>%</b> — SOC management or capture optimisation, and how would we defend our own battery's bidding?","5.2 GW of fossil sat un-offered in June — scarcity we can build into, or a market being managed?"]},
+    {t:"Offer-stack shape — aggression by fuel", src:"offer_bands", what:"GW offered by price bucket, per fuel — cheap must-run vs parked-near-cap, June 2026.",
+     fig:["Fossil is a barbell: <b>13.7 GW below $0</b> AND <b>13.5 GW above $5,000</b>.","Renewables dump <b>24.6 GW below $0</b> (price-takers); storage spreads the mid-buckets + 3.5 GW above $5,000."],
+     prompts:["24.6 GW of renewables bidding below $0 to stay dispatched is the cannibalisation engine — how does our asset avoid being the <b>marginal curtailed unit</b>?","Where in the stack does our battery/peaker actually clear?"]},
+    {t:"Market-power impact in dollars — counterfactuals", src:"counterfactual_library", what:"Modelled $/MWh price change if a big unit is withheld or capacity added (NSW baseline).",
+     fig:["NSW baseline RRP $75.8: remove Bayswater or Eraring (~2 GW coal) → <b>RRP jumps to $234 (+$159)</b>.","Add a 1,000 MW battery at $0 → RRP falls to <b>$55 (−$20)</b>; add 500 MW → −$13."],
+     cav:"Indicative NEMDE replays (nempy), not trading claims.",
+     prompts:["One 2 GW coal unit swings NSW price 3× — how does coal-exit <b>timing</b> reshape the revenue our pipeline underwrites?","A 1 GW battery cuts price $20 — that's the self-cannibalisation our own build imposes; is our fleet competing with itself?"]},
+    {t:"Marginal Loss Factors & curtailment — location value", src:"mlf · curtailment", what:"How much of pool revenue survives the trip to the reference node, plus physical spill.",
+     fig:["Solar avg MLF <b>0.928</b> (range 0.84–0.995), wind avg 0.950; worst: White Rock Wind <b>0.815</b> — an 18.5% haircut on every MWh.","VIC wind spilled <b>235 GWh in Jan-2026 alone</b>."],
+     prompts:["A 0.82 MLF stacks on top of a 0.45 wind value factor — our worst site keeps <b>~37% of headline pool</b>; do our screens multiply both?","VIC lost 235 GWh of wind in one month — is our target REZ already congested before we energise?"]},
+    {t:"The ASX forward curve", src:"asx_futures", what:"Forward base-load settlement $/MWh by region, calendar-year strips (latest capture).",
+     fig:["NSW <b>CY27 $84.7 → CY28 $86.4</b>; QLD $74.8 → $74.2 (flat); SA $80.7 → <b>$91.8</b> (steep contango); VIC $62.4 → $71.3.","VIC is the cheapest forward; SA CY28 the most expensive."],
+     prompts:["VIC forwards sit ~$62–71 yet that's where wind self-cannibalises hardest — is the <b>merchant tail real</b>?","SA's CY28 contango to $92 — does that reward a storage build there, and is it liquid enough to hedge?"]}
+  ],
+  t5: [
+    {t:"The pipeline funnel today — 346 GW announced, ~18 GW real", src:"gi_projects", what:"The whole NEM development pipeline collapsed by AEMO commitment tier (apr-2026 snapshot).",
+     fig:["Publicly Announced <b>345.7 GW</b> (901 units) · Anticipated 24.1 GW · Committed <b>10.9 GW</b> (+1.8 Committed*) · In Commissioning 5.4 GW · In Service 64.3 GW.","Firm end of the funnel (Committed + Commissioning) ≈ <b>18 GW</b> vs 346 GW announced — a ~19:1 ratio."],
+     prompts:["When we size a market or a connection queue, which tier do we actually believe — and does anyone <b>defend the 346 GW</b>?","Only ~18 GW is committed-or-building against 64 GW already in service — supply-constrained, or announcement-inflated?"]},
+    {t:"Back-test A — where did 2022's “Proposed” GW go?", src:"gi_history", what:"The 4-year fate of every unit that was “Proposed” in May 2022 (crown jewel).",
+     fig:["Starting set: 432 units / <b>105.7 GW</b>. Four years later:","<b>Dropped entirely: 52.6 GW</b> · still merely Proposed 31.7 GW · reached Committed 6.0 GW · Anticipated 7.6 GW.","<b>Built (In Service): only ~9.6 GW</b> (64 units) — roughly 9% of the proposed GW."],
+     prompts:["A ~9% proposed-to-built conversion over 4 years — does our internal pipeline-weighting assume anything remotely this <b>brutal</b>?","~50 GW of proposed capacity simply vanished — what killed it, and can we detect those signals earlier in <b>our</b> pipeline?"]},
+    {t:"Back-test B — even “Committed” isn't concrete", src:"gi_history", what:"The fate of the supposedly firm “Committed” set — the tier the market treats as bankable.",
+     fig:["86 committed units in May 2022. By apr-2026: built 58, in commissioning 9, <b>still merely Committed after 4 years: 8</b>, dropped 10.","The largest stuck block is <b>Snowy 2.0</b> (committed 4+ years, still zero electrons) plus Kidston pumped storage."],
+     cav:"Snowy 2.0 appears as 6 unit-rows × 2,040 MW, so read the stuck block by name, not GW.",
+     prompts:["“Committed” has cost Snowy 2.0 four-plus years and counting — how much <b>slippage risk</b> do we price into a counterparty's “committed” status?","10 of 86 committed units dropped out entirely — what's our trigger to <b>walk away</b> from a committed project?"]},
+    {t:"The pipeline is inflating faster than it delivers", src:"gi_history", what:"Proposed GW is ballooning while Committed GW barely moves — the mirage is growing.",
+     fig:["Proposed GW: <b>92.2 (May-22) → 249.8 (Jan-24) → 345.7 (Apr-26)</b> — ~3.75× in 4 years.","Committed GW over the same period: <b>8.4 → 10.4 → 12.8</b> — up just ~4.4 GW. The gap widened from 11:1 to 27:1."],
+     prompts:["If announcements quadruple but commitments crawl, is the “record pipeline” narrative actively <b>misleading</b> investors and policymakers?","What real-world bottleneck caps committed GW at ~+1 GW/yr regardless of announcements?"]},
+    {t:"CIS vs LTESA — awarded on paper, little operating", src:"schemes", what:"Government-underwritten (CIS/LTESA) capacity by lifecycle stage — contracted vs concrete.",
+     fig:["CIS <b>32.2 GW / 105 projects</b>, but operating just <b>0.29 GW</b>; 24.3 GW still awarded-only.","LTESA 6.3 GW / 25, operating 1.68 GW (older scheme). Combined ~38.5 GW contracted, <b>~2.0 GW operating (~5%)</b>."],
+     prompts:["A CIS award is a revenue floor, not a built asset (0.29 of 32 GW operating) — how much <b>delivery risk</b> does the underwrite actually remove?","LTESA (older) is ~27% operating vs CIS ~1% — just vintage, or a structural difference we should learn from?"]},
+    {t:"The CIS/LTESA delivery funnel by stage", src:"schemes", what:"All contracted projects stacked by the five lifecycle stages.",
+     fig:["Awarded <b>87 projects / 26.8 GW</b> · CISA-signed 3 / 0.7 GW · FID 8 / 2.2 GW · Construction 25 / 6.9 GW · Operating <b>7 / 2.0 GW</b>.","~70% of contracted GW hasn't reached financial close; storage GWh drops from 18.9 (construction) to <b>0.6 (operating)</b>."],
+     prompts:["Only 8 projects at FID and 3 signed — is the bottleneck the offtake, the grid connection, or capital?","The storage GWh cliff from construction to operating — is battery <b>duration being value-engineered down</b> late?"]},
+    {t:"Commissioning takes real time", src:"gi_history", what:"Observed months from entering commissioning to reaching service, by technology.",
+     fig:["Wind onshore <b>9.7 months</b> avg (up to 24); solar single-axis 7.6 (max 18); battery <b>6.7</b> (max 17); solar fixed 4.0.","Wind is the slowest to walk the last mile; even batteries average ~7 months before full output."],
+     prompts:["We often model COD as a step change — should our revenue models bake in <b>7–10 months</b> of hold-point commissioning ramp?","Wind's 24-month worst case is likely grid/system-strength hold-points — does site selection change it?"]},
+    {t:"Where the paper capacity wants to go — by region", src:"gi_projects", what:"Proposed vs Committed vs In-Service GW by NEM region — the mirage is worst where the queue is longest.",
+     fig:["NSW proposed <b>119.5 GW</b> / committed 6.1 / in-service 20.0; QLD <b>119.4</b> / 2.5 / 18.0; VIC 74.2 / 3.1 / 16.7; SA 21.8 / 1.0 / 6.3.","QLD has ~<b>48× more proposed than committed</b> GW; NSW ~20×."],
+     prompts:["NSW and QLD each carry ~120 GW of proposals — a real signal of where to build, or where developers <b>park optionality</b>?","Which region's committed:proposed ratio suggests the least-congested path to connection?"]},
+    {t:"REZ targets — the destination is still on paper", src:"rez", what:"Renewable Energy Zone target capacity by state and declaration status.",
+     fig:["NSW <b>17.0 GW across 5 declared REZ</b> (furthest along); VIC 5.6 GW (draft); QLD 2.3 GW planning + 2.0 in-flight; TAS 1.0 GW; SA 3 candidate zones (no target yet).","Only NSW's zones are “declared”; ~28 GW of REZ target vs ~82 GW of existing plant."],
+     prompts:["REZ status (declared vs draft vs candidate) gates access rights — do we treat a <b>draft</b> VIC zone as investable?","NSW leads on declaration but its zones depend on transmission — is “declared” meaningful <b>without wires</b>?"]},
+    {t:"The transmission gate — REZ hang off a few wires", src:"transmission", what:"ISP major transmission projects (the gate every REZ depends on) by delivery status.",
+     fig:["Construction <b>3 projects / 7.5 GW / $12.1 bn</b> · Planning 2 / 3.2 GW / $5.2 bn · Approved 1 / 0.8 GW / $3.9 bn.","Only half the projects are being built; ~<b>$9 bn</b> of the wires the REZ need are still pre-construction."],
+     prompts:["If only 3 lines are in construction, which declared REZ are effectively <b>stranded</b> until their wire moves off “planning”?","$3.9 bn for 0.8 GW approved — do transmission economics themselves become a delivery risk?"]},
+    {t:"The approvals gate — EPBC referrals", src:"epbc", what:"Federal environmental referral outcomes and pipeline stage for energy projects.",
+     fig:["Cleared without full assessment: <b>346 Not Controlled</b> + 77 Particular Manner (~423) vs <b>182 Controlled Action</b> (full assessment) + 3 Clearly Unacceptable.","~1 in 3 decided referrals triggered a full assessment; <b>134</b> are still mid-assessment."],
+     prompts:["~30% of projects draw a full assessment — do we budget schedule and cost for that <b>coin-flip</b> up front?","“Clearly Unacceptable” is rare (3) but fatal — are we screening for the site attributes that trigger it before we spend?"]},
+    {t:"The electrons end — what actually reached the fleet", src:"registration", what:"The current operating NEM fleet by fuel — the reality against which all the pipeline is measured.",
+     fig:["Fossil <b>32.9 GW</b> (129 DUIDs) · Solar 14.7 GW · Wind 13.8 GW · Battery <b>12.7 GW</b> (65) · Hydro 7.8 GW.","Total ≈ <b>81.9 GW operating</b> — set against 346 GW announced, i.e. the announced pipeline is ~4× the entire existing fleet."],
+     prompts:["Battery is already 12.7 GW registered and rising fast — is our read that “the battery market is early” <b>out of date</b>?","82 GW took decades to build; the pipeline implies 4× more in ~15 years — which dataset tonight makes you believe or disbelieve that?"]}
+  ]
+  };
+
+  Object.entries(DATASETS).forEach(([tid,arr])=>{
+    const el=document.getElementById('ds-'+tid); if(!el) return;
+    el.innerHTML=arr.map((d,i)=>{
+      const figs=d.fig.map(f=>'<li>'+f+'</li>').join('');
+      const cav=d.cav?'<div class="ds-cav">'+d.cav+'</div>':'';
+      const prompts=d.prompts.map(p=>'<p>'+p+'</p>').join('');
+      return '<details class="ds"'+(i===0?' open':'')+'><summary><span class="ds-n">'+(i+1)+
+        '</span><span class="ds-t">'+d.t+'</span><span class="ds-src">'+d.src+
+        '</span></summary><div class="ds-body"><p class="ds-what">'+d.what+'</p><ul class="ds-fig">'+figs+
+        '</ul>'+cav+'<div class="ds-prompts"><span class="pl">Discussion prompts</span>'+prompts+'</div></div></details>';
+    }).join('');
+  });
+})();
+</script>
+
+<script>
+/* Trend charts across all five tabs — every series queried from the Lens (as-at Aug 2026). */
+(function(){
+  const css=k=>getComputedStyle(document.documentElement).getPropertyValue(k).trim();
+  const lp=pts=>pts.map((p,i)=>`${i?'L':'M'}${p[0].toFixed(1)},${p[1].toFixed(1)}`).join(' ');
+  const RC={NSW:"#3b82c4",QLD:"#c1494a",SA:"#d98a2b",VIC:"#7a5bd0",TAS:"#2ea3a3"};
+
+  function axes(svg,o){
+    const x0=o.padL,x1=o.W-o.padR,y0=o.H-o.padB,y1=o.padT;
+    const px=v=>x0+(v-o.xmin)/(o.xmax-o.xmin)*(x1-x0);
+    const py=v=>y0-(v-0)/(o.ymax-0)*(y0-y1);
+    const grid=css('--grid'),mut=css('--muted'),mono=css('--mono');
+    let g='';
+    o.yticks.forEach(t=>{const y=py(t);g+=`<line x1="${x0}" y1="${y.toFixed(1)}" x2="${x1}" y2="${y.toFixed(1)}" stroke="${grid}" stroke-width="1"/><text x="${x0-6}" y="${(y+3).toFixed(1)}" text-anchor="end" font-size="10" font-family="${mono}" fill="${mut}">${o.yfmt(t)}</text>`;});
+    o.xticks.forEach(t=>{g+=`<text x="${px(t.v).toFixed(1)}" y="${(y0+16).toFixed(1)}" text-anchor="middle" font-size="9.5" font-family="${mono}" fill="${mut}">${t.l}</text>`;});
+    return {px,py,g,x0,x1,y0,y1,mono,mut};
+  }
+
+  /* generic multi-line chart (per-series x arrays) */
+  function simpleChart(id,o){
+    const svg=document.getElementById(id); if(!svg) return;
+    const A=axes(svg,{W:720,H:320,padL:46,padR:o.padR||56,padT:24,padB:34,xmin:o.xmin,xmax:o.xmax,ymax:o.ymax,yticks:o.yticks,yfmt:o.yfmt,xticks:o.xticks});
+    const {px,py}=A; let g=A.g;
+    (o.annos||[]).forEach(a=>{g+=`<text x="${px(a.x).toFixed(1)}" y="${py(a.y).toFixed(1)}" text-anchor="${a.anchor||'middle'}" font-size="9.5" font-family="${A.mono}" fill="${a.c||A.mut}" font-style="${a.it?'italic':'normal'}" font-weight="${a.b?'700':'400'}">${a.t}</text>`;});
+    o.seriesList.forEach(s=>{
+      const pts=s.v.map((v,i)=>[px(s.x[i]),py(v)]);
+      g+=`<path d="${lp(pts)}" fill="none" stroke="${s.c}" stroke-width="${s.w||2.2}"${s.dash?' stroke-dasharray="5 4"':''}/>`;
+      const last=pts[pts.length-1];
+      g+=`<circle cx="${last[0].toFixed(1)}" cy="${last[1].toFixed(1)}" r="3" fill="${s.c}"/>`;
+      if(s.end) g+=`<text x="${(last[0]+5).toFixed(1)}" y="${(last[1]+3).toFixed(1)}" font-size="9.5" font-family="${A.mono}" fill="${s.c}" font-weight="700">${s.end}</text>`;
+    });
+    svg.innerHTML=g;
+    if(o.legendId) document.getElementById(o.legendId).innerHTML=o.seriesList.map(s=>`<span class="lg"><span class="sw" style="background:${s.c}"></span>${s.leg||s.id}${s.dash?' (forecast)':''}</span>`).join('');
+  }
+
+  /* ===================== TOPIC 1 — interactive price cycle + returns leverage ===================== */
+  const YRS=[2015,2016,2017,2018,2019,2020,2021,2022,2023,2024,2025,2026];
+  const PRICE={
+    NSW:[39.2,59,95.5,82.3,84.8,59.9,67.3,182.7,95.9,131,103.3,74.3],
+    QLD:[52,67.4,102.3,74.8,71.8,41.2,92.8,205.1,90.7,111.5,84.9,66.3],
+    SA:[49.6,80.6,105.3,99.9,98.9,43.5,45.2,155.9,80.1,100.1,86.7,87.2],
+    VIC:[33.9,47.4,92.2,90.5,109.4,51.9,35.8,134.1,54.8,82.1,77.9,49.3],
+    TAS:[47.5,95.9,98.1,73.7,94,43,31.8,147,55.7,95.8,96,90.2]
+  };
+  const STATES=['NSW','QLD','SA','VIC','TAS'];
+  const NEM=YRS.map((_,i)=>+((PRICE.NSW[i]+PRICE.QLD[i]+PRICE.SA[i]+PRICE.VIC[i]+PRICE.TAS[i])/5).toFixed(1));
+  const EV1=[{l:"SA blackout"},{l:"Hazelwood"},{l:"COVID"},{l:"Suspension +gas"},{l:"Liddell"}];
+  const EVI=[1,2,5,7,8];
+  const KEY=[[1,"SA statewide blackout (2016)"],[2,"Hazelwood closes, −1.6 GW (2017)"],[3,"COVID demand crash (2020)"],[4,"Market suspension + gas shock (2022)"],[5,"Liddell closes, −2 GW (2023)"]];
+  // representative merchant project (illustrative, editable)
+  let sel='All';
+  function levParams(){
+    const gv=id=>{const e=document.getElementById(id);return e?parseFloat(e.value):NaN;};
+    let capex=gv('in-capex'), cf=gv('in-cf'), om=gv('in-om'), gear=gv('in-gear');
+    if(!(capex>0))capex=3.0; if(!(cf>0))cf=35; if(!(om>=0))om=40; if(!(gear>=0))gear=60;
+    gear=Math.min(gear,89);
+    return {CAPEX:capex*1e6, MWH:Math.round(cf/100*8760), OM:om*1000, GEAR:gear/100, gear:Math.round(gear)};
+  }
+
+  function drawShocks(){
+    const svg=document.getElementById('cycle-chart'); if(!svg) return;
+    const A=axes(svg,{W:720,H:360,padL:46,padR:18,padT:56,padB:38,xmin:0,xmax:11,ymax:220,
+      yticks:[0,55,110,165,220],yfmt:t=>'$'+t,
+      xticks:YRS.map((y,i)=>({v:i,l:(y%2===1||y===2026)?(y===2026?"'26*":"'"+String(y).slice(2)):''})).filter(t=>t.l)});
+    const {px,py}=A; let g=A.g; const warn=css('--t1'),mut=A.mut,mono=A.mono;
+    // event guides + numbered flags with staggered labels
+    EVI.forEach((idx,k)=>{const x=px(idx);const yl=(k%2===0)?18:33;
+      g+=`<line x1="${x.toFixed(1)}" y1="44" x2="${x.toFixed(1)}" y2="${py(0).toFixed(1)}" stroke="${warn}" stroke-width="1" stroke-dasharray="2 3" opacity="0.5"/>`;
+      g+=`<text x="${x.toFixed(1)}" y="${yl}" text-anchor="middle" font-size="8.6" font-family="${mono}" fill="${warn}">${EV1[k].l}</text>`;
+      g+=`<circle cx="${x.toFixed(1)}" cy="47" r="7.5" fill="${warn}"/><text x="${x.toFixed(1)}" y="50.5" text-anchor="middle" font-size="10" font-weight="700" font-family="${mono}" fill="#fff">${k+1}</text>`;});
+    if(sel==='All'){
+      STATES.forEach(s=>{g+=`<path d="${lp(PRICE[s].map((v,i)=>[px(i),py(v)]))}" fill="none" stroke="${RC[s]}" stroke-width="2"/><circle cx="${px(11).toFixed(1)}" cy="${py(PRICE[s][11]).toFixed(1)}" r="3" fill="${RC[s]}"/>`;});
+    } else {
+      STATES.filter(s=>s!==sel).forEach(s=>{g+=`<path d="${lp(PRICE[s].map((v,i)=>[px(i),py(v)]))}" fill="none" stroke="${mut}" stroke-width="1.1" opacity="0.25"/>`;});
+      const V=PRICE[sel];
+      g+=`<path d="${lp(V.map((v,i)=>[px(i),py(v)]))}" fill="none" stroke="${RC[sel]}" stroke-width="2.9"/>`;
+      V.forEach((v,i)=>{g+=`<circle cx="${px(i).toFixed(1)}" cy="${py(v).toFixed(1)}" r="2.5" fill="${RC[sel]}"/>`;});
+      const lowI=V.indexOf(Math.min(...V)), pkI=V.indexOf(Math.max(...V));
+      [[lowI,12],[pkI,-8],[11,-8]].forEach(([i,dy])=>{g+=`<text x="${px(i).toFixed(1)}" y="${(py(V[i])+dy).toFixed(1)}" text-anchor="middle" font-size="9" font-weight="700" font-family="${mono}" fill="${RC[sel]}">$${Math.round(V[i])}</text>`;});
+    }
+    g+=`<text x="${(px(11)-4).toFixed(1)}" y="${(A.y1+2).toFixed(1)}" text-anchor="end" font-size="9.5" font-style="italic" font-family="${mono}" fill="${mut}">today →</text>`;
+    svg.innerHTML=g;
+    document.getElementById('cycle-legend').innerHTML=STATES.map(s=>`<span class="lg"><span class="sw" style="background:${RC[s]}"></span>${s}</span>`).join('');
+    document.getElementById('cycle-key').innerHTML=KEY.map(e=>`<span><b>${e[0]}</b> ${e[1]}</span>`).join(' &nbsp;·&nbsp; ');
+  }
+  function levPanel(){
+    if(!document.getElementById('cycle-lev')) return;
+    const P=levParams(), yl=p=>(p*P.MWH-P.OM)/P.CAPEX;
+    const series=sel==='All'?NEM:PRICE[sel], label=sel==='All'?'NEM average':sel;
+    const low=Math.min(...series), today=series[11], peak=Math.max(...series);
+    const rows=[['Cyclical low',low,css('--t4')],['Today',today,css('--accent')],['2022 peak',peak,css('--t5')]];
+    const maxY=Math.max(yl(peak),0.001);
+    const bars=rows.map(r=>{const y=yl(r[1]),w=Math.max(2,Math.round(Math.max(y,0)/maxY*100));
+      return `<div class="cyc-bar"><span class="bl">${r[0]}<small>$${Math.round(r[1])}/MWh</small></span><span class="btrack"><span class="bt" style="width:${w}%;background:${r[2]}"></span></span><span class="bv">${(y*100).toFixed(1)}%</span></div>`;}).join('');
+    const per10=10*P.MWH/P.CAPEX*100, per10g=10*P.MWH/((1-P.GEAR)*P.CAPEX)*100;
+    const fall=(yl(today)-yl(low))*100;
+    document.getElementById('lev-state').textContent=label;
+    document.getElementById('lev-bars').innerHTML=bars;
+    document.getElementById('lev-note').innerHTML=
+      `<span class="big">±${per10.toFixed(1)} pts per $10/MWh</span>`+
+      `Each <b>$10/MWh</b> moves margin ~<b>$${Math.round(10*P.MWH/1000)}k/MW-yr</b> — about <b>±${per10.toFixed(1)} pts</b> ungeared, or ~<b>±${per10g.toFixed(1)} pts</b> on ${P.gear}%-geared equity. It cuts <b>both ways</b>: low→today here is ${fall>=0?'+':''}${fall.toFixed(1)} pts, so sliding back down the cycle hurts as fast as the climb helps.`;
+  }
+  (function controls(){
+    const c=document.getElementById('cycle-controls'); if(!c) return;
+    ['All',...STATES].forEach(s=>{const b=document.createElement('button');b.className='cyc-btn';b.textContent=s;b.setAttribute('aria-pressed',s===sel);
+      b.onclick=()=>{sel=s;c.querySelectorAll('.cyc-btn').forEach(x=>x.setAttribute('aria-pressed',x.textContent===sel));drawShocks();levPanel();};c.appendChild(b);});
+  })();
+  ['in-capex','in-cf','in-om','in-gear'].forEach(id=>{const e=document.getElementById(id); if(e) e.addEventListener('input',levPanel);});
+  drawShocks(); levPanel();
+
+  /* ===================== TOPIC 2 — who sets the price ===================== */
+  simpleChart('t2-chart',{xmin:2015,xmax:2026,ymax:90,yticks:[0,30,60,90],yfmt:t=>t+'%',
+    xticks:[2015,2017,2019,2021,2023,2025,2026].map(y=>({v:y,l:y===2026?"'26*":"'"+String(y).slice(2)})),
+    annos:[{x:2025.9,y:44,t:'storage ≈ fossil',c:css('--t2'),anchor:'end',it:true}],
+    seriesList:[
+      {id:'Fossil',c:'#8a94a1',x:YRS,v:[78.3,76.7,73.3,73,68.8,72,61.5,49.8,47.7,42.5,37.5,31.4],leg:'Fossil',end:'31%'},
+      {id:'Storage',c:css('--t2'),w:2.7,x:YRS,v:[0.1,0.2,0,0.7,1.1,2.2,3.8,7.6,9.9,12.8,16.9,31.5],leg:'Storage',end:'31%'},
+      {id:'Renewable',c:css('--t5'),x:YRS,v:[0.1,0.7,0.1,0.4,1,1.6,5.5,8.4,8,7.8,11.4,8.1],leg:'Wind/solar',end:'8%'}
+    ],legendId:'t2-legend'});
+
+  /* ===================== TOPIC 3 — demand: flat then climb ===================== */
+  simpleChart('t3-chart',{xmin:2020,xmax:2050,ymax:320,yticks:[0,80,160,240,320],yfmt:t=>t,padR:60,
+    xticks:[2020,2025,2030,2035,2040,2045,2050].map(y=>({v:y,l:"'"+String(y).slice(2)})),
+    annos:[{x:2022.5,y:205,t:'flat ~177 TWh',c:css('--muted'),it:true},{x:2044,y:308,t:'~290 TWh by 2050',c:css('--t3'),anchor:'end',b:true}],
+    seriesList:[
+      {id:'Actual',c:css('--t3'),w:2.7,x:[2020,2021,2022,2023,2024,2025],v:[180.7,177.6,177.8,177.2,177,177.3],leg:'Actual'},
+      {id:'Forecast',c:css('--t3'),dash:true,x:[2025,2026,2027,2028,2029,2030,2031,2032,2033,2034,2035,2036,2037,2038,2039,2040,2041,2042,2043,2044,2045,2046,2047,2048,2049,2050],
+        v:[177.3,179.3,180.7,182.3,184.5,192.3,199,207.4,215.4,222.7,230.3,237.2,244.3,250.8,256.3,260.6,264.3,267.9,272.2,275.4,278,281.2,283.9,286.4,288.3,289.6],leg:'Step Change'}
+    ],legendId:'t3-legend'});
+
+  /* ===================== TOPIC 4 — FCAS competed to zero ===================== */
+  const FY=[2020,2021,2022,2023,2024,2025,2026];
+  simpleChart('t4-chart',{xmin:2020,xmax:2026,ymax:180,yticks:[0,45,90,135,180],yfmt:t=>'$'+t,
+    xticks:FY.map(y=>({v:y,l:y===2026?"'26*":"'"+String(y).slice(2)})),
+    annos:[{x:2022.6,y:135,t:'batteries flood in →',c:css('--muted'),it:true,anchor:'end'}],
+    seriesList:[
+      {id:'NSW',c:RC.NSW,x:FY,v:[68.6,56.3,56.4,42.3,13.9,13.8,5.9]},
+      {id:'QLD',c:RC.QLD,x:FY,v:[72.1,170.2,80.5,43.7,44.7,20.3,7.1]},
+      {id:'SA',c:RC.SA,x:FY,v:[159.7,63.8,108.6,42.9,21,16.5,6.2]},
+      {id:'VIC',c:RC.VIC,x:FY,v:[59.9,56.3,57.5,42.3,13.9,13.8,5.9]},
+      {id:'TAS',c:RC.TAS,x:FY,v:[57.6,62.6,78.5,41.7,33.1,36.2,31.2],end:'TAS'}
+    ],legendId:'t4-legend'});
+
+  /* ===================== TOPIC 5 — the mirage growing ===================== */
+  const PX=[2020.08,2020.83,2021.33,2021.5,2022,2022.5,2023,2023.5,2024,2024.5,2025,2025.5,2026,2026.25];
+  simpleChart('t5-chart',{xmin:2020,xmax:2026.5,ymax:360,yticks:[0,90,180,270,360],yfmt:t=>t,padR:60,
+    xticks:[2020,2021,2022,2023,2024,2025,2026].map(y=>({v:y,l:"'"+String(y).slice(2)})),
+    seriesList:[
+      {id:'Proposed',c:css('--t1'),w:2.7,x:PX,v:[52.8,49,53.1,76,82.6,104,178.4,229.4,249.8,273.3,298.3,309.8,346.8,345.7],leg:'Proposed',end:'346'},
+      {id:'Existing',c:'#8a94a1',x:PX,v:[51.8,53.9,55.2,55.5,56.7,54.4,55,58.1,59.2,60.1,60.6,62.8,65.9,69.6],leg:'Built',end:'70'},
+      {id:'Committed',c:css('--t5'),x:PX,v:[5.8,6.2,5.8,7.9,7.8,9.2,9.7,9.9,10.4,12.1,13,14,15.1,12.8],leg:'Committed',end:'13'}
+    ],legendId:'t5-legend'});
+
+  /* ===================== TOPIC 4 opener — cannibalisation (value factor over time) ===================== */
+  (function drawVF(){
+    const svg=document.getElementById('t4-vf-chart'); if(!svg) return;
+    const A=axes(svg,{W:720,H:320,padL:46,padR:60,padT:26,padB:34,xmin:2019,xmax:2026.4,ymax:1.2,
+      yticks:[0,0.3,0.6,0.9,1.2],yfmt:t=>t.toFixed(1)+'×',
+      xticks:[2019,2020,2021,2022,2023,2024,2025,2026].map(y=>({v:y,l:y===2026?"'26*":"'"+String(y).slice(2)}))});
+    const px=A.px,py=A.py,mono=A.mono,mut=A.mut,t4=css('--t4'),t2=css('--t2');
+    let g=A.g;
+    const yp=py(1.0); g+=`<line x1="${A.x0}" y1="${yp.toFixed(1)}" x2="${A.x1}" y2="${yp.toFixed(1)}" stroke="${mut}" stroke-width="1" stroke-dasharray="5 3" opacity="0.7"/><text x="${A.x1}" y="${(yp-4).toFixed(1)}" text-anchor="end" font-size="9" font-style="italic" font-family="${mono}" fill="${mut}">pool parity (1.0×)</text>`;
+    const S=[{X:[2019,2021,2022,2023,2024,2026],V:[1.06,0.43,0.57,0.37,0.37,0.67],c:t4,lab:'Solar'},
+             {X:[2019,2021,2022,2024,2026],V:[0.83,0.70,0.82,0.67,0.67],c:t2,lab:'Wind'}];
+    S.forEach(s=>{const pts=s.V.map((v,i)=>[px(s.X[i]),py(v)]);
+      g+=`<path d="${lp(pts)}" fill="none" stroke="${s.c}" stroke-width="2.4"/>`;
+      pts.forEach(p=>g+=`<circle cx="${p[0].toFixed(1)}" cy="${p[1].toFixed(1)}" r="2.6" fill="${s.c}"/>`);});
+    g+=`<text x="${px(2019).toFixed(1)}" y="${(py(1.06)-8).toFixed(1)}" text-anchor="middle" font-size="8.5" font-family="${mono}" fill="${mut}">premium</text>`;
+    g+=`<text x="${px(2022).toFixed(1)}" y="${(py(0.57)-8).toFixed(1)}" text-anchor="middle" font-size="8.5" font-family="${mono}" fill="${mut}">gas shock</text>`;
+    g+=`<text x="${px(2023.5).toFixed(1)}" y="${(py(0.37)+15).toFixed(1)}" text-anchor="middle" font-size="8.5" font-family="${mono}" fill="${mut}">well-supplied trough</text>`;
+    svg.innerHTML=g;
+    document.getElementById('t4-vf-legend').innerHTML=`<span class="lg"><span class="sw" style="background:${t4}"></span>Solar value factor</span><span class="lg"><span class="sw" style="background:${t2}"></span>Wind value factor</span>`;
+  })();
+})();
+</script>
