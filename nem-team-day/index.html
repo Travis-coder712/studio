@@ -1366,7 +1366,7 @@
     let g=A.g;
     const yp=py(1.0); g+=`<line x1="${A.x0}" y1="${yp.toFixed(1)}" x2="${A.x1}" y2="${yp.toFixed(1)}" stroke="${mut}" stroke-width="1" stroke-dasharray="5 3" opacity="0.7"/><text x="${A.x1}" y="${(yp-4).toFixed(1)}" text-anchor="end" font-size="9" font-style="italic" font-family="${mono}" fill="${mut}">pool parity (1.0×)</text>`;
     const S=[{X:[2019,2021,2022,2023,2024,2026],V:[1.06,0.43,0.57,0.37,0.37,0.67],c:t4,lab:'Solar'},
-             {X:[2019,2021,2022,2024,2026],V:[0.83,0.70,0.82,0.67,0.67],c:t2,lab:'Wind'}];
+             {X:[2019,2021,2022,2023,2024,2026],V:[0.83,0.70,0.82,0.64,0.67,0.67],c:t2,lab:'Wind'}];
     S.forEach(s=>{const pts=s.V.map((v,i)=>[px(s.X[i]),py(v)]);
       g+=`<path d="${lp(pts)}" fill="none" stroke="${s.c}" stroke-width="2.4"/>`;
       pts.forEach(p=>g+=`<circle cx="${p[0].toFixed(1)}" cy="${p[1].toFixed(1)}" r="2.6" fill="${s.c}"/>`);});
