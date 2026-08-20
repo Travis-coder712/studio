@@ -687,6 +687,11 @@
     </table></div>
     <p class="dl-note" style="margin:8px 0 0 0">Operating fleet from the AEMO facility registry (discharge side, as-at Aug 2026); arbitrage spread from battery_capture (2025–26 avg); “building” = committed + in-commissioning. TAS: no grid-scale battery yet.</p>
 
+    <p class="ds-lead" style="margin-top:18px">And the compression, split out over time: <b>SA stays the widest and most volatile</b>, while <b>NSW, QLD and VIC have converged toward ~$100</b> as their fleets filled in — the by-state version of the scissors.</p>
+    <div class="chartbox" style="padding:14px 14px 10px"><div class="ct">Battery arbitrage spread by state — top-2hr $/MWh, quarterly (2024 → 2026)</div>
+      <svg id="t4-bstate-chart" viewBox="0 0 720 300" preserveAspectRatio="xMinYMin meet"></svg></div>
+    <div class="cyc-legend" id="t4-bstate-legend"></div>
+
     <div class="block-h"><span class="tc">◆</span> The data on the table</div>
     <div class="stats">
       <div class="stat"><div class="v tnum">1.06→0.37×</div><div class="l">VIC solar value factor, 2019→2024 trough — it cannibalised itself</div></div>
@@ -1422,6 +1427,23 @@
     g+=`<text x="${(x1-2).toFixed(1)}" y="${(y1+8).toFixed(1)}" text-anchor="end" font-size="9" font-style="italic" font-family="${mono}" fill="${acc}">batteries (right axis) →</text>`;
     svg.innerHTML=g;
     document.getElementById('t4-bess-legend').innerHTML=`<span class="lg"><span class="sw" style="background:${t4}"></span>Top-2hr arbitrage spread ($/MWh)</span><span class="lg"><span class="sw" style="background:${acc}"></span>Batteries in the fleet (count)</span>`;
+  })();
+
+  /* ===================== TOPIC 4 — battery spread by state, over time ===================== */
+  (function drawBessState(){
+    const svg=document.getElementById('t4-bstate-chart'); if(!svg) return;
+    const A=axes(svg,{W:720,H:300,padL:46,padR:16,padT:24,padB:34,xmin:0,xmax:7,ymax:900,
+      yticks:[0,300,600,900],yfmt:t=>'$'+t,
+      xticks:[[0,"Jul '24"],[2,"Jan '25"],[4,"Jul '25"],[6,"Jan '26"],[7,"Apr '26"]].map(a=>({v:a[0],l:a[1]}))});
+    const px=A.px,py=A.py; let g=A.g;
+    const S=[['SA',RC.SA,[890,345,382,517,376,234,526,278]],['NSW',RC.NSW,[439,761,318,685,210,321,203,90]],
+             ['QLD',RC.QLD,[409,603,321,460,200,165,130,99]],['VIC',RC.VIC,[422,234,219,516,203,157,126,99]]];
+    S.forEach(function(row){var id=row[0],c=row[1],v=row[2];
+      var pts=v.map(function(val,i){return [px(i),py(val)];});
+      g+='<path d="'+lp(pts)+'" fill="none" stroke="'+c+'" stroke-width="'+(id==='SA'?2.7:1.9)+'"/>';
+      g+='<circle cx="'+px(v.length-1).toFixed(1)+'" cy="'+py(v[v.length-1]).toFixed(1)+'" r="2.6" fill="'+c+'"/>';});
+    svg.innerHTML=g;
+    document.getElementById('t4-bstate-legend').innerHTML=S.map(function(row){return '<span class="lg"><span class="sw" style="background:'+row[1]+'"></span>'+row[0]+'</span>';}).join('');
   })();
 })();
 </script>

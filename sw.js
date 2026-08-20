@@ -1,6 +1,6 @@
 // Studio — network-first service worker so the site always shows the latest
 // when online, and still opens offline. Bump CACHE to force a clean refresh.
-const CACHE = 'studio-v1';
+const CACHE = 'studio-v2';
 const ASSETS = ['./', './index.html', './manifest.webmanifest', './icon-192.png', './icon-512.png', './icon.svg'];
 
 self.addEventListener('install', e => {
