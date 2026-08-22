@@ -1,0 +1,370 @@
+<title>So What</title>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<style>
+  :root{
+    --bg:#f6f8fa; --paper:#ffffff; --panel:#eef1f5; --line:#dde3ea; --line2:#c9d2dc;
+    --ink:#111820; --body:#37424f; --muted:#66717f; --dim:#8a94a1;
+    --accent:#4a4bd6; --accent-ink:#3a3bb8;
+    --asset:#4a4bd6; --assetb:#e9e9fb; --policy:#2f7d3a; --policyb:#e6f1e7;
+    --market:#0d7d74; --marketb:#e2f0ee; --capital:#b4571f; --capitalb:#f4ebe3;
+    --warn:#b21e46; --warnb:#f8e6ec; --grid:#e6eaef;
+    --mono:ui-monospace,"SF Mono",SFMono-Regular,Menlo,Consolas,monospace;
+    --sans:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;
+    --wrap:960px;
+  }
+  @media (prefers-color-scheme:dark){ :root:not([data-theme="light"]){
+    --bg:#0f1319; --paper:#161b23; --panel:#1c222c; --line:#28303b; --line2:#37414e;
+    --ink:#eaeef3; --body:#c2cad4; --muted:#8b96a3; --dim:#68727f;
+    --accent:#8a8bf0; --accent-ink:#a0a1f4; --grid:#232b35;
+    --asset:#8a8bf0; --assetb:#1a1a2c; --policy:#67c072; --policyb:#152417;
+    --market:#48c9bd; --marketb:#16241f; --capital:#e0824a; --capitalb:#2a2019;
+    --warn:#ec6f92; --warnb:#2a1820;
+  }}
+  :root[data-theme="dark"]{
+    --bg:#0f1319; --paper:#161b23; --panel:#1c222c; --line:#28303b; --line2:#37414e;
+    --ink:#eaeef3; --body:#c2cad4; --muted:#8b96a3; --dim:#68727f;
+    --accent:#8a8bf0; --accent-ink:#a0a1f4; --grid:#232b35;
+    --asset:#8a8bf0; --assetb:#1a1a2c; --policy:#67c072; --policyb:#152417;
+    --market:#48c9bd; --marketb:#16241f; --capital:#e0824a; --capitalb:#2a2019;
+    --warn:#ec6f92; --warnb:#2a1820;
+  }
+  *{box-sizing:border-box} html{-webkit-text-size-adjust:100%}
+  body{margin:0;background:var(--bg);color:var(--body);font-family:var(--sans);font-size:16px;line-height:1.6;-webkit-font-smoothing:antialiased}
+  .wrap{max-width:var(--wrap);margin:0 auto;padding:0 22px}
+  h1,h2,h3,h4{color:var(--ink);text-wrap:balance;line-height:1.14;margin:0}
+  strong{color:var(--ink);font-weight:650}
+  .mono{font-family:var(--mono)} .tnum{font-variant-numeric:tabular-nums}
+  .eyebrow{font-family:var(--mono);font-size:11px;letter-spacing:.16em;text-transform:uppercase;font-weight:600}
+
+  header{padding:30px 0 0;border-bottom:1px solid var(--line);position:sticky;top:0;background:var(--bg);z-index:20}
+  header .eyebrow{color:var(--accent-ink)}
+  h1{font-size:clamp(1.6rem,3.6vw,2.2rem);font-weight:750;letter-spacing:-.025em;margin:7px 0 3px}
+  header .sub{color:var(--muted);font-size:13.5px;margin-bottom:14px}
+  .tabs{display:flex;gap:1px;overflow-x:auto;scrollbar-width:none}
+  .tabs::-webkit-scrollbar{display:none}
+  .tab{appearance:none;background:none;border:0;border-bottom:2.5px solid transparent;font-family:var(--sans);font-size:14px;font-weight:600;color:var(--muted);padding:10px 14px;cursor:pointer;white-space:nowrap;letter-spacing:-.01em;display:flex;align-items:center;gap:7px}
+  .tab:hover{color:var(--ink)}
+  .tab[aria-selected="true"]{color:var(--tc,var(--accent-ink));border-color:var(--tc,var(--accent))}
+  .tab .n{font-family:var(--mono);font-size:11px;color:var(--dim)}
+  .tab[aria-selected="true"] .n{color:var(--tc,var(--accent))}
+
+  main{padding:28px 0 70px}
+  .panel[hidden]{display:none}
+  .lede{font-size:1.12rem;color:var(--body);max-width:64ch;margin:0 0 18px} .lede b{color:var(--ink)}
+  p{max-width:70ch}
+  .block-h{font-family:var(--mono);font-size:10.5px;letter-spacing:.09em;text-transform:uppercase;color:var(--muted);font-weight:700;margin:26px 0 12px;display:flex;align-items:center;gap:9px}
+  .block-h::after{content:"";flex:1;height:1px;background:var(--line)}
+
+  .flow{display:grid;grid-template-columns:1fr;gap:1px;background:var(--line);border:1px solid var(--line);border-radius:12px;overflow:hidden;margin:8px 0}
+  .flow .r{display:grid;grid-template-columns:104px 1fr auto;gap:14px;background:var(--paper);padding:12px 16px;align-items:baseline}
+  @media(max-width:600px){.flow .r{grid-template-columns:88px 1fr}.flow .r .who{grid-column:2;margin-top:-4px}}
+  .flow .t{font-family:var(--mono);font-size:12px;font-weight:700;color:var(--accent-ink)}
+  .flow .w{font-size:14px;color:var(--body)} .flow .w b{color:var(--ink)}
+  .flow .who{font-family:var(--mono);font-size:10px;text-transform:uppercase;letter-spacing:.05em;color:var(--muted);font-weight:700}
+
+  .note{border:1px solid var(--line);background:var(--panel);border-radius:12px;padding:16px 20px;margin:18px 0}
+  .note .eyebrow{color:var(--accent-ink);display:block;margin-bottom:2px}
+  .note h3{font-size:1.05rem;margin-bottom:6px}
+  .note p{font-size:14px;color:var(--body);margin:6px 0 0}
+  .note.hi{border-color:var(--accent);background:var(--assetb)}
+  .note.hi .eyebrow{color:var(--accent-ink)}
+
+  .why{display:grid;gap:12px;margin:18px 0}
+  .why .row{display:grid;grid-template-columns:auto 1fr;gap:14px;align-items:start}
+  .why .k{font-family:var(--mono);font-size:11px;font-weight:700;letter-spacing:.04em;text-transform:uppercase;color:var(--accent-ink);background:var(--assetb);border:1px solid var(--accent);border-radius:6px;padding:4px 9px;white-space:nowrap;margin-top:2px}
+  .why .v{font-size:14.5px;color:var(--body)} .why .v b{color:var(--ink)}
+
+  /* force cards */
+  .forces{display:grid;grid-template-columns:repeat(2,1fr);gap:12px;margin:6px 0}
+  @media(max-width:640px){.forces{grid-template-columns:1fr}}
+  .fc{border:1px solid var(--line);border-left:4px solid var(--pc);border-radius:12px;background:var(--paper);padding:15px 17px}
+  .fc .ft{font-family:var(--mono);font-size:10.5px;font-weight:700;letter-spacing:.06em;text-transform:uppercase;color:var(--pc)}
+  .fc h4{font-size:1.08rem;margin:5px 0 6px}
+  .fc p{font-size:13.5px;color:var(--body);margin:0 0 8px}
+  .fc .q{font-size:13px;color:var(--muted);border-top:1px dashed var(--line);padding-top:8px}
+  .fc .ctrl{font-family:var(--mono);font-size:10px;text-transform:uppercase;letter-spacing:.04em;font-weight:700;margin-top:8px;color:var(--pc)}
+
+  /* function cards */
+  .fn{margin:12px 0;background:var(--paper);border:1px solid var(--line);border-radius:12px;overflow:hidden}
+  .fn-h{padding:13px 18px;border-bottom:1px solid var(--line);background:linear-gradient(180deg,var(--fb),transparent);position:relative}
+  .fn-h::before{content:"";position:absolute;left:0;top:0;bottom:0;width:4px;background:var(--fc)}
+  .fn-h .tag{font-family:var(--mono);font-size:10px;font-weight:700;letter-spacing:.06em;text-transform:uppercase;color:var(--fc)}
+  .fn-h h3{font-size:1.12rem;margin:4px 0 0}
+  .fn-b{padding:14px 18px;display:grid;gap:11px}
+  .fn-insight{font-size:13px;color:var(--muted)} .fn-insight b{color:var(--ink)}
+  .fn-chal{font-size:14.5px;color:var(--body)} .fn-chal b{color:var(--ink)}
+  .seed{display:grid;gap:6px;border-top:1px dashed var(--line);padding-top:10px}
+  .seed .sr{display:grid;grid-template-columns:auto 1fr;gap:9px;align-items:baseline;font-size:13px;color:var(--body)}
+  .seed .pill{font-family:var(--mono);font-size:9.5px;font-weight:700;text-transform:uppercase;letter-spacing:.04em;border-radius:5px;padding:2px 7px;white-space:nowrap}
+  .seed .stop{color:#fff;background:var(--warn)} .seed .start{color:#fff;background:var(--policy)}
+  .seed .qlabel{font-family:var(--mono);font-size:9.5px;font-weight:700;text-transform:uppercase;letter-spacing:.05em;color:var(--fc);margin-bottom:2px}
+  .seed .qr{display:grid;grid-template-columns:auto 1fr;gap:9px;font-size:14px;color:var(--body);line-height:1.45}
+  .seed .qr::before{content:"›";color:var(--fc);font-weight:700}
+
+  /* tool cards */
+  .tools{display:grid;grid-template-columns:repeat(2,1fr);gap:12px}
+  @media(max-width:680px){.tools{grid-template-columns:1fr}}
+  .tool{border:1px solid var(--line);border-radius:12px;background:var(--paper);padding:15px 17px}
+  .tool h4{font-size:1.02rem;margin:0 0 5px;color:var(--ink)}
+  .tool .lbl{font-family:var(--mono);font-size:10px;font-weight:700;letter-spacing:.05em;text-transform:uppercase;color:var(--accent-ink);margin-bottom:4px}
+  .tool p{font-size:13.5px;color:var(--body);margin:0} .tool p b{color:var(--ink)}
+  .tool .use{font-size:12.5px;color:var(--muted);border-top:1px dashed var(--line);margin-top:9px;padding-top:8px}
+
+  /* capture table */
+  .cap-wrap{overflow-x:auto}
+  .cap{width:100%;border-collapse:collapse;font-size:13px;min-width:640px;margin:6px 0}
+  .cap th,.cap td{text-align:left;padding:9px 12px;border-bottom:1px solid var(--line);vertical-align:top}
+  .cap thead th{font-family:var(--mono);font-size:10px;text-transform:uppercase;letter-spacing:.03em;color:var(--muted);font-weight:700;border-bottom:1.5px solid var(--line2)}
+  .cap td{color:var(--body)} .cap .eg{color:var(--dim);font-style:italic}
+
+  /* interactive — capital ceiling */
+  .calc{background:var(--paper);border:1px solid var(--accent);border-radius:16px;overflow:hidden;margin-top:10px}
+  .calc-h{padding:16px 22px;border-bottom:1px solid var(--line);background:var(--assetb)}
+  .calc-h h3{font-size:1.15rem;font-weight:720;letter-spacing:-.015em;color:var(--accent-ink)}
+  .calc-h p{font-size:13.5px;color:var(--body);margin:5px 0 0;max-width:76ch}
+  .calc-body{padding:18px 22px;display:flex;flex-direction:column;gap:16px}
+  .modes{display:flex;flex-wrap:wrap;gap:8px;align-items:center}
+  .modes .cl{font-family:var(--mono);font-size:10.5px;letter-spacing:.05em;text-transform:uppercase;color:var(--muted);font-weight:700}
+  .mbtn{appearance:none;font-family:var(--sans);font-size:13px;font-weight:600;border:1px solid var(--line);background:var(--paper);color:var(--muted);border-radius:8px;padding:7px 13px;cursor:pointer}
+  .mbtn:hover{border-color:var(--accent);color:var(--ink)}
+  .mbtn[aria-pressed="true"]{background:var(--accent);border-color:var(--accent);color:#fff}
+  .bslider label{display:flex;justify-content:space-between;align-items:baseline;font-size:13.5px;color:var(--body);font-weight:600;margin-bottom:6px}
+  .bslider label .val{font-family:var(--mono);font-weight:700;color:var(--accent-ink)}
+  input[type=range]{width:100%;accent-color:var(--accent);height:22px}
+  .projs{display:grid;grid-template-columns:1fr 1fr;gap:9px}
+  @media(max-width:640px){.projs{grid-template-columns:1fr}}
+  .proj{border:1px solid var(--line);border-radius:10px;padding:11px 13px;background:var(--bg);opacity:.5;transition:opacity .15s}
+  .proj.on{opacity:1;border-color:var(--policy);background:var(--policyb)}
+  .proj .pn{font-weight:650;color:var(--ink);font-size:14px;display:flex;justify-content:space-between;gap:8px}
+  .proj .pn .cx{font-family:var(--mono);font-weight:700;color:var(--body)}
+  .proj .pt{font-size:11.5px;color:var(--muted);margin:1px 0 8px}
+  .proj .bars{display:grid;gap:3px}
+  .proj .bar{display:grid;grid-template-columns:58px 1fr;gap:7px;align-items:center;font-size:10px;color:var(--muted);font-family:var(--mono)}
+  .proj .track{height:7px;background:var(--line);border-radius:3px;overflow:hidden}
+  .proj .fill{height:7px;border-radius:3px}
+  .proj .status{font-family:var(--mono);font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:.04em;margin-top:7px}
+  .proj.on .status{color:var(--policy)} .proj:not(.on) .status{color:var(--dim)}
+  .summ{display:grid;grid-template-columns:1fr 1fr;gap:9px}
+  .summ .cell{border:1px solid var(--line);border-radius:11px;padding:12px 14px;background:var(--bg)}
+  .summ .cell .v{font-family:var(--mono);font-size:1.5rem;font-weight:700;color:var(--ink);letter-spacing:-.02em}
+  .summ .cell .v small{font-size:.8rem;color:var(--muted);font-weight:500}
+  .summ .cell .l{font-size:11.5px;color:var(--muted);margin-top:3px}
+  .verdict{font-size:13.5px;color:var(--body);padding:12px 15px;border-radius:10px;border:1px solid var(--accent);background:var(--assetb)} .verdict b{color:var(--ink)}
+
+  .dl-btn{display:inline-flex;align-items:center;gap:8px;font-family:var(--sans);font-size:14px;font-weight:650;color:#fff;background:var(--accent);border:1px solid var(--accent);border-radius:9px;padding:9px 16px;text-decoration:none}
+  .dl-btn:hover{background:var(--accent-ink)}
+  .dl-note{font-size:12px;color:var(--dim);margin-left:10px}
+  footer{border-top:1px solid var(--line);margin-top:36px;padding:22px 0 60px;font-family:var(--mono);font-size:11.5px;color:var(--dim);line-height:1.7}
+  ::selection{background:rgba(74,75,214,.18)}
+</style>
+
+<header>
+  <div class="wrap">
+    <div class="eyebrow">Power Development · Team Day 2</div>
+    <h1>So What?</h1>
+    <div class="sub">Now that we know how the market works — what do we do differently? A facilitator's guide.</div>
+    <div class="tabs" role="tablist" id="tabs">
+      <button class="tab" role="tab" aria-selected="true"  data-tab="run"><span class="n">▶</span>The session</button>
+      <button class="tab" role="tab" aria-selected="false" data-tab="bal"><span class="n">01</span>The Balance</button>
+      <button class="tab" role="tab" aria-selected="false" data-tab="fn"><span class="n">02</span>By function</button>
+      <button class="tab" role="tab" aria-selected="false" data-tab="tools"><span class="n">03</span>Breakthrough tools</button>
+      <button class="tab" role="tab" aria-selected="false" data-tab="wow"><span class="n">04</span>Ways of working</button>
+      <button class="tab" role="tab" aria-selected="false" data-tab="cap"><span class="n">05</span>Capture &amp; commit</button>
+    </div>
+  </div>
+</header>
+
+<main>
+  <!-- ============ RUN SHEET ============ -->
+  <div class="panel wrap" id="p-run">
+    <p class="lede">Yesterday we <b>read the NEM</b>. Today is the <b>“so what”</b> — turning an appreciation of how the market is structured into <b>things we start and stop doing</b>. You'll sit in your <b>function</b>, not a project team, and leave with owned changes — not a wall of sticky notes.</p>
+    <p style="margin:2px 0 18px"><a class="dl-btn" href="So-What-Team-Day-2.pptx" download>⬇ Download the slide pack (.pptx)</a><span class="dl-note">18 themed slides to run the tables through. (Downloads from the shared link or local file.)</span></p>
+
+    <div class="note hi">
+      <span class="eyebrow">The challenge that runs underneath the whole session</span>
+      <h3>If we're to be the best development team in the country — what should we start and stop?</h3>
+      <p>Hold that standard against everything. And its sharper, inverted twin: <b>what would guarantee we're <i>not</i> the best — and are we doing any of it?</b></p>
+    </div>
+
+    <div class="block-h">Run of show — 90 minutes (a 60-minute version is noted below)</div>
+    <div class="flow">
+      <div class="r"><span class="t">0:00–0:10</span><span class="w"><b>Frame.</b> One-slide Day-1 recap → the Balance → the rule → the challenge.</span><span class="who">Presenter</span></div>
+      <div class="r"><span class="t">0:10–0:30</span><span class="w"><b>Diverge, in your function.</b> What do we do today that we should <b>Stop</b> or change — and what should we <b>Start</b>? Use your function's prompt card.</span><span class="who">Functions</span></div>
+      <div class="r"><span class="t">0:30–0:45</span><span class="w"><b>Converge.</b> Post everything on the wall, cluster, dot-vote the high-impact / in-our-control changes.</span><span class="who">Room</span></div>
+      <div class="r"><span class="t">0:45–1:10</span><span class="w"><b>Deep-dive ×1–2.</b> Pre-mortem the change, then a “how we'd actually do it” canvas (what changes / owner / first step / signal / the trade).</span><span class="who">Room</span></div>
+      <div class="r"><span class="t">1:10–1:25</span><span class="w"><b>Commit.</b> Each function owns <b>one</b> change + a 30-day first step, into a live written log.</span><span class="who">All</span></div>
+    </div>
+    <p class="lede" style="font-size:13.5px;margin-top:10px;color:var(--muted)"><b>60-minute version:</b> Frame (8) → Diverge (15) → Converge &amp; vote (12) → one deep-dive (15) → Commit (10). Same rule, fewer clusters, one deep-dive.</p>
+
+    <div class="note">
+      <span class="eyebrow">The rule for every idea</span>
+      <h3>Make it a concrete Start or a Stop — and lead with stops</h3>
+      <p>Two things only: it's a <b>specific Start or Stop</b> (not “think about”), and, where you can, name <b>what a new start displaces</b> (attention is scarce). It can spring from the day's learning <i>or</i> from your own read of what matters — you don't have to tie it back to a particular insight. <b>Lead with the stops</b>; that's where the capacity comes from.</p>
+    </div>
+
+    <div class="why">
+      <div class="row"><span class="k">Seating</span><div class="v"><b>Functional teams</b> — Development, Analysis, Land &amp; Planning, Structured Bids, Commercial, and Technical (Engineering). The changes are functional; the function owns them. (Cross-cutting themes — like ways of working — can be raised by any table.)</div></div>
+      <div class="row"><span class="k">Materials</span><div class="v">A wall or whiteboard per function, cards + markers, dot stickers for voting, and <b>one shared written doc</b> for the commitments (open it on screen — we capture live, we don't photograph a wall).</div></div>
+      <div class="row"><span class="k">Output</span><div class="v">A short <b>written decision log</b>: for each committed change — the start/stop, the function, what it links to, the trade, an owner, a 30-day first step, and how we'll know it worked. Reviewed at 90 days.</div></div>
+    </div>
+  </div>
+
+  <!-- ============ THE BALANCE ============ -->
+  <div class="panel wrap" id="p-bal" hidden>
+    <p class="lede">The frame for the whole day:</p>
+    <div class="note hi" style="border-width:1.5px">
+      <h3 style="font-size:1.25rem">For every project we're balancing the asset's fundamentals against a few forces — and the one we spent yesterday reading is the market.</h3>
+      <p>Day 1 was our deep look at that force — <b>what the market rewards, and when</b>. Today's job is to let that read <b>re-rank, re-time and re-screen</b> what we develop and how. Policy is a real force too; capital is a background factor — yes, we can't do everything at once, but that's not what today is about. The question: <b>what changes in how we work</b> now that we've read the market?</p>
+    </div>
+
+    <div class="block-h">The asset · and the forces that shape how we progress it</div>
+    <p class="lede" style="font-size:14.5px">The <b style="color:var(--asset)">asset</b> is the object of the decision. A few forces shape how hard and fast we push it — and the <b style="color:var(--market)">market</b> is the one we spent yesterday reading.</p>
+    <div class="forces">
+      <div class="fc" style="--pc:var(--asset)"><div class="ft">The asset</div><h4>Fundamentals &amp; relative quality</h4><p>Maturity, critical path, risk, pace, knowns/unknowns — and how it <i>ranks</i> against our other projects and anything we might buy.</p><div class="q">“Is this genuinely good — and better than our next option?”</div><div class="ctrl">Mostly in our control</div></div>
+      <div class="fc" style="--pc:var(--market)"><div class="ft">Force · Market  ★ yesterday's focus</div><h4>When &amp; what the market rewards</h4><p>The cycle, cannibalisation, firming, demand, the forward curve. It shapes <i>which</i> projects, <i>which</i> technologies, in <i>which</i> locations, at <i>what</i> point in the cycle — and it's the force we spent Day 1 learning to read.</p><div class="q">“Does the market reward <i>this</i> project — and <i>when</i>?”</div><div class="ctrl">Not in our control — but now knowable</div></div>
+      <div class="fc" style="--pc:var(--policy)"><div class="ft">Force · Policy</div><h4>Support mechanisms &amp; windows</h4><p>CIS/LTESA and government support — a floor and a gate. But a contract is not a built asset, and the windows open and shut.</p><div class="q">“Is there a mechanism that de-risks it — and is the window open?”</div><div class="ctrl">Partly in our control (we bid, we time)</div></div>
+      <div class="fc" style="--pc:var(--capital)"><div class="ft">Factor · Capital &amp; the firm</div><h4>A real constraint — but a background one today</h4><p>Capital and attention are finite, so you can't do everything at once. Worth naming when two changes compete — but it's not the focus of this session.</p><div class="q">“When something has to give, what gives?”</div><div class="ctrl">Noted, held lightly</div></div>
+    </div>
+
+    <div class="note" style="border-color:var(--market)">
+      <span class="eyebrow" style="color:var(--market)">The horizon caveat — read this before you “react” to the market</span>
+      <h3>Development cycles are longer than market and policy cycles</h3>
+      <p>A project takes years; the market and the support settings will turn <b>several times</b> before it reaches COD. So read today's market — but <b>develop to a longer-term view</b> of where market and company need are heading. Informed by the current setting, influenced by it, but <b>not captive to it</b>. The “so what” is a sharper read, not a lurch to chase this year's price.</p>
+    </div>
+
+    <div class="note">
+      <span class="eyebrow">A light discipline, not a capital exercise</span>
+      <h3>Every “start” still needs a “stop”</h3>
+      <p>Not because of a budget model — because <b>attention is the real scarce resource</b>. If a table can't name what a new “start” displaces, it's a wish, not a priority. Lead with the stops.</p>
+    </div>
+  </div>
+
+  <!-- ============ BY FUNCTION ============ -->
+  <div class="panel wrap" id="p-fn" hidden>
+    <p class="lede">Each functional table gets a card with the questions that matter most for your function. Wrestle with them, add your own, and land on concrete <b>starts and stops</b>. You'll notice <b>communication and clarity of decisions</b> recur across several functions — that's the <b>Ways of working</b> strand; flag those for the room.</p>
+    <div id="fn-list"></div>
+  </div>
+
+  <!-- ============ BREAKTHROUGH TOOLS ============ -->
+  <div class="panel wrap" id="p-tools" hidden>
+    <p class="lede">Thinking tools to break the room out of “add more, defend everything.” Use them to pressure-test candidates and to run the deep-dive.</p>
+    <div class="tools">
+      <div class="tool"><div class="lbl">Default-buster</div><h4>Stop-first / subtraction</h4><p>People reflexively <b>add</b>; we systematically miss subtractive fixes. Run the room <b>stop-heavy</b> — the capital and attention for any “start” has to come from a “stop.”</p><div class="use">Prompt: “What are we doing out of habit that no longer earns its place?”</div></div>
+      <div class="tool"><div class="lbl">For “best in the country”</div><h4>Inversion</h4><p>Don't ask how to be the best. Ask: <b>“what would guarantee we're <i>not</i> the best?”</b> List it — then stop doing it. It's faster and more honest.</p><div class="use">Munger: “Invert, always invert.”</div></div>
+      <div class="tool"><div class="lbl">Deep-dive lens</div><h4>Pre-mortem</h4><p>“It's 2028 and this decision <b>failed</b>. Write the story of why.” Surfaces risks that optimism hides, before you commit.</p><div class="use">Klein. Ten minutes, silent writing first, then share.</div></div>
+      <div class="tool"><div class="lbl">Outside view</div><h4>The competitor / the acquirer</h4><p>“If a sharp competitor — or a PE buyer — looked at our portfolio, <b>which project would they cut, and which would they buy?</b>” Kills internal sentiment fast.</p><div class="use">Great for portfolio and M&amp;A honesty.</div></div>
+      <div class="tool"><div class="lbl">The discipline</div><h4>The trade (opportunity cost)</h4><p>For every “start,” force the sentence: <b>“to do this, we stop ___.”</b> If nothing can be named, it's not really a priority — it's a wish.</p><div class="use">Ties straight to the capital ceiling.</div></div>
+      <div class="tool"><div class="lbl">Triage</div><h4>Type 1 vs Type 2 decisions</h4><p><b>Reversible</b> (Type 2): just try it, don't spend workshop air. <b>Irreversible</b> (Type 1): that's what the room is for. Sort candidates before you deep-dive.</p><div class="use">Bezos. Most “changes” are cheap and reversible — just start.</div></div>
+      <div class="tool"><div class="lbl">Risk map</div><h4>Knowns &amp; unknowns</h4><p>For a project: known-knowns (manage), known-unknowns (investigate <i>now</i>), unknown-unknowns (build slack for). Most critical-path pain lives in the second box, ignored.</p><div class="use">Use on the deep-dive project's fundamentals.</div></div>
+      <div class="tool"><div class="lbl">Reframe</div><h4>Work backwards from the market</h4><p>Not “here's our project, let's justify it.” Start from <b>what the market and policy reward</b> — then ask whether the project fits, and if not, what would.</p><div class="use">The Day-1 insights are the starting point, not an afterthought.</div></div>
+    </div>
+  </div>
+
+  <!-- ============ WAYS OF WORKING ============ -->
+  <div class="panel wrap" id="p-wow" hidden>
+    <p class="lede">A candidate change that deserves its own strand — and a live example of the whole “so what.” It isn't about the market; it's about <b>us</b>, and it's squarely in our control.</p>
+    <div class="note" style="border-color:var(--warn);background:var(--warnb)">
+      <span class="eyebrow" style="color:var(--warn)">The uncomfortable truth</span>
+      <h3>We share knowledge by talking <i>at</i> people — and the durable record is thin</h3>
+      <p>Big meetings with “a million people online”, one person presenting, are <b>low-bandwidth and leave almost no trace</b>. When someone picks up a project later, the critical context lives in a few people's heads and a scatter of emails. If the best team in the country runs on that — they don't.</p>
+    </div>
+
+    <div class="block-h">The standard I'd put on the table</div>
+    <div class="why">
+      <div class="row"><span class="k">Written-first</span><div class="v"><b>Decisions and context get written down, crisply, before the meeting — not after, if ever.</b> A one-page project brief and a running decision log beat a 40-person call. (Amazon's six-pager; GitLab's “handbook-first”.)</div></div>
+      <div class="row"><span class="k">The passport</span><div class="v">Every project carries a <b>living “project passport”</b> — a structured, current record of fundamentals, critical path, risks, decisions and their <i>why</i>. The test: <b>“if the lead left tomorrow, could someone pick this up from the written record alone?”</b></div></div>
+      <div class="row"><span class="k">AI removes the excuse</span><div class="v"><b>The cost of good documentation just collapsed.</b> Capturing a meeting, structuring notes, and writing them with clarity a stranger can use is now near-free. Thin records are no longer a constraint — they're a choice.</div></div>
+      <div class="row"><span class="k">Async by default</span><div class="v">Reserve live time for genuine debate and decision. Everything one-directional (updates, FYIs, status) goes to writing people read on their own clock — higher bandwidth, and it's <b>durable</b>.</div></div>
+    </div>
+
+    <div class="note">
+      <span class="eyebrow">What “effective communication” looks like</span>
+      <h3>Clear · captured · findable · reusable</h3>
+      <p>A decision that a newcomer can understand in five minutes; captured the moment it's made; findable without asking a person; and reusable by whoever inherits the project. If a piece of communication isn't all four, it's theatre.</p>
+    </div>
+    <p class="lede" style="font-size:13.5px;color:var(--muted)"><b>Meta:</b> this workshop practises what it preaches — the output is a clean written decision log, built live and AI-assisted, not a photo of a whiteboard.</p>
+  </div>
+
+  <!-- ============ CAPTURE & COMMIT ============ -->
+  <div class="panel wrap" id="p-cap" hidden>
+    <p class="lede">The workshop is only real if it ends in <b>owned commitments</b>. Capture live, in writing, on screen. One row per committed change — and each function owns at least one.</p>
+    <div class="block-h">The decision log — one row per change</div>
+    <div class="cap-wrap"><table class="cap">
+      <thead><tr><th>Change (Start / Stop)</th><th>Function</th><th>Why<br><small>(optional)</small></th><th>What it displaces<br><small>(if any)</small></th><th>Owner</th><th>First step (30 days)</th><th>Signal it worked</th></tr></thead>
+      <tbody>
+        <tr>
+          <td><b>Start</b> a written “project passport” per active project</td>
+          <td>Development</td>
+          <td class="eg">Knowledge is thin; best-in-country</td>
+          <td class="eg">Cut one recurring all-hands to make the time</td>
+          <td class="eg">[name]</td>
+          <td class="eg">Passport template + 2 pilot projects documented</td>
+          <td class="eg">A stranger can brief the project from it</td>
+        </tr>
+        <tr><td class="eg">…</td><td class="eg">…</td><td class="eg">…</td><td class="eg">…</td><td class="eg">…</td><td class="eg">…</td><td class="eg">…</td></tr>
+      </tbody>
+    </table></div>
+    <div class="note">
+      <span class="eyebrow">Close the loop</span>
+      <h3>The 90-day scoreboard</h3>
+      <p>Put a review date on it now. In 90 days: which commitments actually happened, what changed as a result, and — against the standard — <b>are we closer to the best development team in the country?</b> A workshop with no review is a workshop that didn't happen.</p>
+    </div>
+  </div>
+</main>
+
+<footer><div class="wrap">
+  So What? · Power Development Team Day 2 · the companion to “Reading the NEM” · facilitator's guide, draft one.
+</div></footer>
+
+<script>
+(function(){
+  const map={run:'p-run',bal:'p-bal',fn:'p-fn',tools:'p-tools',wow:'p-wow',cap:'p-cap'};
+  const tabs=[...document.querySelectorAll('.tab')];
+  function show(key){tabs.forEach(x=>x.setAttribute('aria-selected',x.dataset.tab===key));Object.entries(map).forEach(([k,id])=>document.getElementById(id).hidden=(k!==key));window.scrollTo({top:0});}
+  tabs.forEach(t=>t.addEventListener('click',()=>show(t.dataset.tab)));
+
+  const css=k=>getComputedStyle(document.documentElement).getPropertyValue(k).trim();
+
+  /* ---------- function prompt cards ---------- */
+  const FN=[
+    {tag:"Development",c:"--asset",b:"--assetb",
+     ask:"Is our portfolio prioritisation actually working — and are we clear, by category, on what to start, stop and hold?",
+     qs:["Is our portfolio prioritisation working — do we back the right projects, in the right order?",
+         "For each category of project, are we clear on what should be started, stopped and held?",
+         "How could we improve the way we budget across the portfolio?"]},
+    {tag:"Analysis",c:"--market",b:"--marketb",
+     ask:"Can we cleanly separate a project's own fundamentals from its market circumstances — and say so clearly?",
+     qs:["How can we better communicate a project's fundamentals versus its market circumstances?",
+         "Should we tier projects by their fundamentals — and benchmark them against our existing operating projects?",
+         "Where a project is good but the market isn't (or vice versa), do we make that explicit?"]},
+    {tag:"Land & Planning",c:"--policy",b:"--policyb",
+     ask:"Are our targets clear, and are we protecting optionality as the market moves?",
+     qs:["Are our prospecting targets clear — do we know what a good site looks like now?",
+         "Are we doing the right things to keep project options viable through market changes?"]},
+    {tag:"Structured Bids",c:"--capital",b:"--capitalb",
+     ask:"Can we do the routine parts faster, so we spend our effort on what wins?",
+     qs:["Can we boilerplate parts of our bids so we focus effort on the key, differentiating elements?",
+         "Is there a better way to communicate bids — and their status — across the organisation?"]},
+    {tag:"Commercial",c:"--warn",b:"--warnb",
+     ask:"Are we clear on each project's commercial pathway, the basis of our decisions, and how we respond when the facts change?",
+     qs:["How do we think about the commercial pathway for each project?",
+         "How do we communicate it — and be clear on the basis of a decision?",
+         "When the information changes, do we respond? Are we clear on both the live options and the decisions taken?"]},
+    {tag:"Technical (Engineering)",c:"--asset",b:"--assetb",
+     ask:"Is the real constraint our time — and are we spending it on the right projects at the right moment?",
+     qs:["Is our core challenge resourcing?",
+         "Which projects need our input, and at what point in their life?",
+         "How can we be most efficient about where technical effort goes?"]},
+  ];
+  document.getElementById('fn-list').innerHTML=FN.map(f=>`
+    <div class="fn" style="--fc:var(${f.c});--fb:var(${f.b})">
+      <div class="fn-h"><div class="tag">${f.tag}</div></div>
+      <div class="fn-b">
+        <div class="fn-chal">${f.ask}</div>
+        <div class="seed"><div class="qlabel">Questions for your table</div>${f.qs.map(q=>`<div class="qr">${q}</div>`).join('')}</div>
+      </div>
+    </div>`).join('');
+
+})();
+</script>
