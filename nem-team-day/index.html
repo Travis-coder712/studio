@@ -325,7 +325,11 @@
 
     <div class="block-h">The five topics — pick up your pack</div>
     <p class="ds-lead">Everyone gets their own <b>PowerPoint pack</b> — the session plan plus all the data and provocations — to browse and form their own hypothesis. Or open a topic live, or print its one-page card.</p>
-    <p style="margin:2px 0 16px"><a class="dl-btn" href="Reading-the-NEM-Team-Day.pptx" download>⬇ Download the PowerPoint pack (.pptx)</a><span class="dl-note">26 themed slides · hand one to each person · distribute digitally or print. (Downloads from the shared link or local file.)</span></p>
+    <p style="margin:2px 0 10px"><a class="dl-btn" href="Reading-the-NEM-Team-Day.pptx" download>⬇ Download the PowerPoint pack (.pptx)</a><span class="dl-note">32 themed slides · hand one to each person · distribute digitally or print. (Downloads from the shared link or local file.)</span></p>
+    <div class="note" style="border-color:#4a4bd6;margin:2px 0 16px">
+      <span class="eyebrow" style="color:#4a4bd6">There's more here than the printed slides</span>
+      <p>We're sharing the <b>paper pack</b> on the day — but the interactive version holds more: the <b>two live calculators</b> (100%-firming and demand) and the full <b>“datasets on the table”</b> for every topic, straight from the Lens. Not for today — but we'll find a clean way to surface these to the wider team afterwards, without the presenter notes.</p>
+    </div>
     <div class="plan-grid" id="plan-grid"></div>
   </div>
 
@@ -366,6 +370,12 @@
       <span class="eyebrow">A note on the numbers</span>
       <h3>What's solid, what to check</h3>
       <p>Dispatch, generation-mix, curtailment, DER and value figures are measured and reliable. The <b>demand-outlook absolute totals</b> are ISP 2026 scenario figures — quote the <i>trajectory</i> (~60% growth, up to a rough doubling, by 2050) rather than the exact TWh, and verify absolutes against the Lens's demand-outlook view before printing. The two calculators are <b>transparent teaching models</b>, not planning tools — assumptions are on screen and the point is the <i>shape</i> of the answer.</p>
+    </div>
+
+    <div class="note" style="border-color:#4a4bd6">
+      <span class="eyebrow" style="color:#4a4bd6">One frame to carry in — and a thread to Day 2</span>
+      <h3>We go deep on the market because it's the force that moves</h3>
+      <p>A development cycle runs for <b>years</b>; the market cycle turns in <b>months</b>. So today we read the <b>market</b> closely — it's the force that swings the most, and the one worth re-reading with fresh data. A project sits inside other forces too — policy and support, capital, the asset's own fundamentals — but we already know those reasonably well, so we hold them lightly today and keep the lens on the market. <b>Day 2 picks up right here:</b> having read the market, what do we actually change in how we develop? No need to resolve that now — just hold the thought; it'll land tomorrow.</p>
     </div>
 
     <div class="note" style="border-color:var(--t3)">
@@ -661,6 +671,23 @@
       <li>But it <b>cycles</b>. The 2022 gas shock lifted <i>all</i> hours, so cannibalisation eased (solar back to 0.57×); as the system returned to well-supplied it bit again (0.37× in 2023–24).</li>
       <li><b>The dawn:</b> cannibalisation is worst while coal still floods the midday and leaves evenings cheap. As coal <b>exits</b> (Yallourn 2028, Eraring 2029…) evening scarcity returns — and renewables that can <b>time-shift into it</b> (storage, or being firmed) recapture the value. The trough is a phase, not the destination — which is exactly the build-timing question.</li>
     </ul></div>
+
+    <div class="block-h"><span class="tc">◆</span> Cannibalisation by state — and the 2026 bounce</div>
+    <p class="ds-lead">Split by region, the trough is a <b>2023–25 story in every mainland state</b> — and <b>2026 YTD charges back across the board</b> as coal availability tightens and evenings firm. Trace a state; the side panel shows its trough and rebound, and <b>recolours to the state</b>. (2026 is YTD and winter-weighted, so it overstates the annual — but the direction is unmistakable, and consistent everywhere.)</p>
+    <div class="cyc-controls" id="vfs-controls"><span class="cl">Trace state</span></div>
+    <div class="cyc-main">
+      <div>
+        <div class="chartbox" style="padding:14px 14px 10px"><div class="ct">Solar value factor by state — capture price ÷ pool (2021 → 2026 YTD · higher = captures more of the pool)</div>
+          <svg id="vfs-chart" viewBox="0 0 720 320" preserveAspectRatio="xMinYMin meet"></svg></div>
+        <div class="cyc-legend" id="vfs-legend"></div>
+      </div>
+      <div class="cyc-lev" id="vfs-lev">
+        <div class="lh">The 2026 bounce — <b id="vfs-state">NEM average</b></div>
+        <div class="cyc-bars" id="vfs-bars"></div>
+        <div class="lev-note" id="vfs-note"></div>
+        <div class="cyc-assume">Generation-weighted capture price ÷ time-weighted pool, per region per year, from dispatch SCADA × RRP. 2026 is YTD (winter-weighted → flattering). A teaching figure, not a revenue model.</div>
+      </div>
+    </div>
 
     <div class="block-h"><span class="tc">◆</span> The battery mirror — spread, not value factor</div>
     <p class="ds-lead">Value factor is a <i>generation</i> idea; it doesn't fit a battery. A battery's economics run on the <b>price spread</b> it arbitrages — buy the cheap trough, sell the expensive peak. And that spread behaves like the mirror image of solar's: as the fleet grows it compresses, but it still <b>cycles</b>.</p>
@@ -1239,6 +1266,11 @@
   const css=k=>getComputedStyle(document.documentElement).getPropertyValue(k).trim();
   const lp=pts=>pts.map((p,i)=>`${i?'L':'M'}${p[0].toFixed(1)},${p[1].toFixed(1)}`).join(' ');
   const RC={NSW:"#3b82c4",QLD:"#c1494a",SA:"#d98a2b",VIC:"#7a5bd0",TAS:"#2ea3a3"};
+  const hexA=(h,a)=>{const n=parseInt(h.slice(1),16);return `rgba(${n>>16&255},${n>>8&255},${n&255},${a})`;};
+  /* recolour a .cyc-lev callout box to a state colour (or revert to panel default when All) */
+  function tintBox(id,state){const b=document.getElementById(id); if(!b) return;
+    if(state && RC[state]){b.style.setProperty('--tc',RC[state]);b.style.setProperty('--tb',hexA(RC[state],0.10));}
+    else {b.style.removeProperty('--tc');b.style.removeProperty('--tb');}}
 
   function axes(svg,o){
     const x0=o.padL,x1=o.W-o.padR,y0=o.H-o.padB,y1=o.padT;
@@ -1339,6 +1371,7 @@
     const per10=10*P.MWH/P.CAPEX*100, per10g=10*P.MWH/((1-P.GEAR)*P.CAPEX)*100;
     const fall=(yl(today)-yl(low))*100;
     document.getElementById('lev-state').textContent=label;
+    tintBox('cycle-lev', sel==='All'?null:sel);
     document.getElementById('lev-bars').innerHTML=bars;
     document.getElementById('lev-note').innerHTML=
       `<span class="big">±${per10.toFixed(1)} pts per $10/MWh</span>`+
@@ -1415,6 +1448,57 @@
     svg.innerHTML=g;
     document.getElementById('t4-vf-legend').innerHTML=`<span class="lg"><span class="sw" style="background:${t4}"></span>Solar value factor</span><span class="lg"><span class="sw" style="background:${t2}"></span>Wind value factor</span>`;
   })();
+
+  /* ===================== TOPIC 4 — solar value factor BY STATE (interactive) ===================== */
+  const VX=[2021,2022,2023,2024,2025,2026];
+  const VFS={NSW:[0.61,0.61,0.57,0.55,0.43,0.63],QLD:[0.57,0.52,0.36,0.36,0.28,0.50],
+             SA:[0.43,0.50,0.37,0.44,0.53,0.67],VIC:[0.43,0.57,0.37,0.37,0.34,0.57]};
+  const VST=['NSW','QLD','SA','VIC'];
+  const VAVG=VX.map((_,i)=>+((VFS.NSW[i]+VFS.QLD[i]+VFS.SA[i]+VFS.VIC[i])/4).toFixed(2));
+  let selVF='All';
+  function drawVFState(){
+    const svg=document.getElementById('vfs-chart'); if(!svg) return;
+    const A=axes(svg,{W:720,H:320,padL:46,padR:56,padT:24,padB:34,xmin:2021,xmax:2026.4,ymax:0.8,
+      yticks:[0,0.2,0.4,0.6,0.8],yfmt:t=>t.toFixed(1)+'×',
+      xticks:VX.map(y=>({v:y,l:y===2026?"'26*":"'"+String(y).slice(2)}))});
+    const px=A.px,py=A.py,mono=A.mono,mut=A.mut; let g=A.g;
+    const drawLine=(s,color,w,op,dots)=>{const pts=VFS[s].map((v,i)=>[px(VX[i]),py(v)]);
+      g+=`<path d="${lp(pts)}" fill="none" stroke="${color}" stroke-width="${w}" opacity="${op}"/>`;
+      if(dots) pts.forEach(p=>g+=`<circle cx="${p[0].toFixed(1)}" cy="${p[1].toFixed(1)}" r="2.5" fill="${color}"/>`);
+      return pts;};
+    if(selVF==='All'){
+      VST.forEach(s=>{drawLine(s,RC[s],2,1,false);const last=[px(2026),py(VFS[s][5])];
+        g+=`<circle cx="${last[0].toFixed(1)}" cy="${last[1].toFixed(1)}" r="3" fill="${RC[s]}"/><text x="${(last[0]+5).toFixed(1)}" y="${(last[1]+3).toFixed(1)}" font-size="9.5" font-family="${mono}" fill="${RC[s]}" font-weight="700">${s}</text>`;});
+    } else {
+      VST.filter(s=>s!==selVF).forEach(s=>drawLine(s,mut,1.1,0.22,false));
+      const arr=VFS[selVF], pts=drawLine(selVF,RC[selVF],2.9,1,true);
+      const minI=arr.indexOf(Math.min(...arr));
+      [[minI,16],[5,-9]].forEach(([i,dy])=>{g+=`<text x="${px(VX[i]).toFixed(1)}" y="${(py(arr[i])+dy).toFixed(1)}" text-anchor="middle" font-size="9.5" font-weight="700" font-family="${mono}" fill="${RC[selVF]}">${arr[i].toFixed(2)}×</text>`;});
+    }
+    svg.innerHTML=g;
+    document.getElementById('vfs-legend').innerHTML=VST.map(s=>`<span class="lg"><span class="sw" style="background:${RC[s]}"></span>${s}</span>`).join('')+`<span class="lg" style="color:${mut}">* 2026 = YTD, winter-weighted</span>`;
+  }
+  function vfsPanel(){
+    const box=document.getElementById('vfs-lev'); if(!box) return;
+    const arr= selVF==='All'?VAVG:VFS[selVF], label= selVF==='All'?'NEM average':selVF;
+    const minV=Math.min(...arr), minI=arr.indexOf(minV), minYr=VX[minI], v26=arr[5], v0=arr[0], d=+(v26-minV).toFixed(2);
+    const rows=[['2021 start',v0,'#8a94a1'],['Trough ’'+String(minYr).slice(2),minV,css('--t1')],['2026 YTD',v26,css('--t5')]];
+    const bars=rows.map(r=>{const w=Math.max(2,Math.round(r[1]/0.8*100));
+      return `<div class="cyc-bar"><span class="bl">${r[0]}<small>${r[1].toFixed(2)}× pool</small></span><span class="btrack"><span class="bt" style="width:${w}%;background:${r[2]}"></span></span><span class="bv">${r[1].toFixed(2)}×</span></div>`;}).join('');
+    document.getElementById('vfs-state').textContent=label;
+    tintBox('vfs-lev', selVF==='All'?null:selVF);
+    document.getElementById('vfs-bars').innerHTML=bars;
+    const pct=Math.round(d/minV*100);
+    document.getElementById('vfs-note').innerHTML= selVF==='All'
+      ? `<span class="big">+${d.toFixed(2)}× vs the trough</span>Every mainland state bottomed in <b>2023–25</b> and bounces in <b>2026 YTD</b> — the cannibalisation trough is a <b>phase, not the destination</b>. Coal tightening and firmer evenings pay renewables back.`
+      : `<span class="big">+${d.toFixed(2)}× &nbsp;(+${pct}%) vs trough</span>Bottomed at <b>${minV.toFixed(2)}×</b> in ’${String(minYr).slice(2)}; 2026 YTD is back to <b>${v26.toFixed(2)}×</b> as coal availability tightens and evenings firm. Winter-weighted YTD — read the <b>direction</b>, not the decimal.`;
+  }
+  (function vfsControls(){
+    const c=document.getElementById('vfs-controls'); if(!c) return;
+    ['All',...VST].forEach(s=>{const b=document.createElement('button');b.className='cyc-btn';b.textContent=s;b.setAttribute('aria-pressed',s===selVF);
+      b.onclick=()=>{selVF=s;c.querySelectorAll('.cyc-btn').forEach(x=>x.setAttribute('aria-pressed',x.textContent===selVF));drawVFState();vfsPanel();};c.appendChild(b);});
+  })();
+  drawVFState(); vfsPanel();
 
   /* ===================== TOPIC 4 — BESS arbitrage spread vs fleet size ===================== */
   (function drawBESS(){
