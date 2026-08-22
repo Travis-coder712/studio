@@ -325,7 +325,7 @@
 
     <div class="block-h">The five topics — pick up your pack</div>
     <p class="ds-lead">Everyone gets their own <b>PowerPoint pack</b> — the session plan plus all the data and provocations — to browse and form their own hypothesis. Or open a topic live, or print its one-page card.</p>
-    <p style="margin:2px 0 10px"><a class="dl-btn" href="Reading-the-NEM-Team-Day.pptx" download>⬇ Download the PowerPoint pack (.pptx)</a><span class="dl-note">32 themed slides · hand one to each person · distribute digitally or print. (Downloads from the shared link or local file.)</span></p>
+    <p style="margin:2px 0 10px"><a class="dl-btn" href="Reading-the-NEM-Team-Day.pptx" download>⬇ Download the PowerPoint pack (.pptx)</a><span class="dl-note">33 themed slides · hand one to each person · distribute digitally or print. (Downloads from the shared link or local file.)</span></p>
     <div class="note" style="border-color:#4a4bd6;margin:2px 0 16px">
       <span class="eyebrow" style="color:#4a4bd6">There's more here than the printed slides</span>
       <p>We're sharing the <b>paper pack</b> on the day — but the interactive version holds more: the <b>two live calculators</b> (100%-firming and demand) and the full <b>“datasets on the table”</b> for every topic, straight from the Lens. Not for today — but we'll find a clean way to surface these to the wider team afterwards, without the presenter notes.</p>
@@ -692,6 +692,26 @@
       <li><b>2025 was the biggest year of utility solar ever</b> — <b>+2.8 GW</b> commissioned (vs ~1–2 GW in prior years), into a grid whose storage hadn't yet caught up. The tell is in the middle of the day: <b>midday negative-price frequency roughly doubled</b> — in NSW, <b>13% → 30%</b> of 10am–2pm intervals priced <i>below zero</i>; QLD <b>39% → 53%</b>. Solar generates precisely then, so its captured price collapsed (NSW midday average $55 → $33). That's the trough — self-inflicted, by the last tranche of unfirmed solar.</li>
       <li><b>2026 flips it two ways.</b> First, new solar <b>paused to +0.3 GW</b> — a commissioning lull, so no fresh midday flooding. Second, the <b>~8 GW of batteries built across 2025–26</b> came on and began <b>soaking the midday trough</b> (charging when solar floods), so midday negatives roughly <b>halved</b> (NSW back to 11%). Solar's capture recovered — NSW 0.43× → 0.63×.</li>
       <li><b>So the trough was oversupply, and the bounce is storage doing its job</b> — the exact cycle this module is about, caught mid-turn. Honest caveat: 2026 is Jan–Aug and the whole pool softened (NSW $120 → $75), which flatters the <i>ratio</i> too — but the fall in midday flooding is a real, like-for-like structural signal, not a seasonal trick.</li>
+    </ul></div>
+
+    <div class="block-h"><span class="tc">◆</span> The proof — more batteries, fewer negative middays</div>
+    <p class="ds-lead">If storage is really what lifted solar's capture, the states that <b>added the most midday battery charging in 2026</b> should be the ones where <b>midday negative prices fell the most</b>. They are — almost exactly in rank order. Each dot is a state: charging added across, negative-midday collapse up.</p>
+    <div class="chartbox" style="padding:14px 14px 10px"><div class="ct">More midday battery charging → fewer negative-price middays · Jan–Aug, 2026 vs 2025, by state</div>
+      <svg id="t4-battproof" viewBox="0 0 720 300" preserveAspectRatio="xMinYMin meet"></svg></div>
+    <div class="st-wrap" style="margin-top:12px"><table class="st">
+      <thead><tr><th>State</th><th>Batteries added<small>’25–26, GW</small></th><th>Midday charging added<small>2026 vs ’25, GWh</small></th><th>Negative middays<small>2025 → 2026</small></th><th>Midday capture<small>2025 → 2026</small></th></tr></thead>
+      <tbody>
+        <tr><td>QLD</td><td>+3.2</td><td class="hi">+647</td><td>53% → 30% <b>(−23)</b></td><td>$14 → $26</td></tr>
+        <tr><td>NSW</td><td>+2.6</td><td class="hi">+568</td><td>30% → 11% <b>(−19)</b></td><td>$33 → $43</td></tr>
+        <tr><td>VIC</td><td>+1.9</td><td>+287</td><td>40% → 38% (−2)</td><td>$24 → $25</td></tr>
+        <tr><td>SA</td><td>+0.9</td><td>+92</td><td>52% → 48% (−4)</td><td>$17 → $27</td></tr>
+      </tbody>
+    </table></div>
+    <p class="dl-note" style="margin:8px 0 0 0">Midday = 9am–3pm. Charging from dispatch SCADA (battery legs only, pumped hydro excluded); negative-midday % and capture from dispatchprice. Matched Jan–Aug window each year.</p>
+    <div class="cyc-read"><div class="rh">Reading it — the causal chain, state by state</div><ul>
+      <li><b>The two biggest battery builds did the most soaking.</b> QLD (+3.2 GW) and NSW (+2.6 GW) added <b>~4–6× more midday charging</b> (+647 and +568 GWh) — batteries buying the cheap midday trough — and their <b>negative-price middays collapsed the most</b> (QLD 53%→30%, NSW 30%→11%). More storage in the trough = fewer hours at or below zero = higher solar capture. That <i>is</i> the 2026 bounce, mechanically.</li>
+      <li><b>Less charging, less lift.</b> VIC and SA added far less midday charging and their negative-middays barely moved (−2 and −4 points). VIC also started from the highest 2025 charging base, so the marginal add shifted little.</li>
+      <li><b>The honest caveat.</b> Absolute prices also fell with the softer 2026 pool, so read the <b>negative-midday frequency</b> — the direct “soaking” signal — as the clean battery effect; there the rank is exact. SA's headline midday-price jump is off a tiny base and <i>isn't</i> battery-driven — its negative-middays hardly moved. Correlation, not a law: it holds hardest where the battery build was biggest.</li>
     </ul></div>
 
     <div class="block-h"><span class="tc">◆</span> The battery mirror — spread, not value factor</div>
@@ -1504,6 +1524,23 @@
       b.onclick=()=>{selVF=s;c.querySelectorAll('.cyc-btn').forEach(x=>x.setAttribute('aria-pressed',x.textContent===selVF));drawVFState();vfsPanel();};c.appendChild(b);});
   })();
   drawVFState(); vfsPanel();
+
+  /* ===================== TOPIC 4 — battery charging vs negative-midday collapse (scatter proof) ===================== */
+  (function drawBattProof(){
+    const svg=document.getElementById('t4-battproof'); if(!svg) return;
+    const A=axes(svg,{W:720,H:300,padL:52,padR:64,padT:24,padB:50,xmin:0,xmax:720,ymax:25,
+      yticks:[0,5,10,15,20,25],yfmt:t=>t+'',
+      xticks:[0,200,400,600].map(v=>({v:v,l:String(v)}))});
+    const px=A.px,py=A.py,mono=A.mono,mut=A.mut; let g=A.g;
+    g+=`<text x="${((A.x0+A.x1)/2).toFixed(1)}" y="290" text-anchor="middle" font-size="10" font-family="${mono}" fill="${mut}">midday battery charging added, 2026 vs 2025 (GWh) →</text>`;
+    g+=`<text transform="translate(15 ${((A.y0+A.y1)/2).toFixed(1)}) rotate(-90)" text-anchor="middle" font-size="10" font-family="${mono}" fill="${mut}">↑ drop in negative middays (pts)</text>`;
+    const P=[{s:'QLD',x:647,y:22.7},{s:'NSW',x:568,y:18.8},{s:'VIC',x:287,y:1.9},{s:'SA',x:92,y:3.9}];
+    P.forEach(p=>{const cx=px(p.x),cy=py(p.y);
+      g+=`<circle cx="${cx.toFixed(1)}" cy="${cy.toFixed(1)}" r="7.5" fill="${RC[p.s]}" opacity="0.9"/>`;
+      const ld=(p.s==='SA')? -14 : 12;
+      g+=`<text x="${(cx+ld).toFixed(1)}" y="${(cy+4).toFixed(1)}" text-anchor="${p.s==='SA'?'end':'start'}" font-size="11.5" font-weight="700" font-family="${mono}" fill="${RC[p.s]}">${p.s}</text>`;});
+    svg.innerHTML=g;
+  })();
 
   /* ===================== TOPIC 4 — BESS arbitrage spread vs fleet size ===================== */
   (function drawBESS(){
