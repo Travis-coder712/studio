@@ -1,0 +1,552 @@
+<title>Market cycles & shocks · Reading the NEM</title>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<style>
+  :root{
+    --bg:#f6f8fa; --paper:#ffffff; --panel:#eef1f5; --line:#dde3ea; --line2:#c9d2dc;
+    --ink:#111820; --body:#37424f; --muted:#66717f; --dim:#8a94a1;
+    --accent:#0d7d74; --accent-ink:#0a5f58;
+    --t1:#b4571f; --t1b:#f4ebe3; --t2:#0d7d74; --t2b:#e2f0ee; --t3:#4a4bd6; --t3b:#e9e9fb;
+    --t4:#b21e46; --t4b:#f8e6ec; --t5:#2f7d3a; --t5b:#e6f1e7;
+    --grid:#e6eaef;
+    --mono:ui-monospace,"SF Mono",SFMono-Regular,Menlo,Consolas,monospace;
+    --sans:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;
+    --wrap:960px;
+  }
+  @media (prefers-color-scheme:dark){ :root:not([data-theme="light"]){
+    --bg:#0f1319; --paper:#161b23; --panel:#1c222c; --line:#28303b; --line2:#37414e;
+    --ink:#eaeef3; --body:#c2cad4; --muted:#8b96a3; --dim:#68727f;
+    --accent:#48c9bd; --accent-ink:#5fd3c8; --grid:#232b35;
+    --t1:#e0824a; --t1b:#2a2019; --t2:#48c9bd; --t2b:#16241f; --t3:#8a8bf0; --t3b:#1a1a2c;
+    --t4:#ec6f92; --t4b:#2a1820; --t5:#67c072; --t5b:#152417;
+  }}
+  :root[data-theme="dark"]{
+    --bg:#0f1319; --paper:#161b23; --panel:#1c222c; --line:#28303b; --line2:#37414e;
+    --ink:#eaeef3; --body:#c2cad4; --muted:#8b96a3; --dim:#68727f;
+    --accent:#48c9bd; --accent-ink:#5fd3c8; --grid:#232b35;
+    --t1:#e0824a; --t1b:#2a2019; --t2:#48c9bd; --t2b:#16241f; --t3:#8a8bf0; --t3b:#1a1a2c;
+    --t4:#ec6f92; --t4b:#2a1820; --t5:#67c072; --t5b:#152417;
+  }
+  *{box-sizing:border-box}
+  html{-webkit-text-size-adjust:100%}
+  body{margin:0;background:var(--bg);color:var(--body);font-family:var(--sans);font-size:16px;line-height:1.6;-webkit-font-smoothing:antialiased}
+  .wrap{max-width:var(--wrap);margin:0 auto;padding:0 22px}
+  h1,h2,h3,h4{color:var(--ink);text-wrap:balance;line-height:1.14;margin:0}
+  a{color:var(--accent-ink)}
+  strong{color:var(--ink);font-weight:650}
+  .mono{font-family:var(--mono)} .tnum{font-variant-numeric:tabular-nums}
+  .eyebrow{font-family:var(--mono);font-size:11px;letter-spacing:.16em;text-transform:uppercase;font-weight:600}
+
+  header{padding:30px 0 0;border-bottom:1px solid var(--line);position:sticky;top:0;background:var(--bg);z-index:20}
+  header .eyebrow{color:var(--accent-ink)}
+  h1{font-size:clamp(1.6rem,3.6vw,2.2rem);font-weight:750;letter-spacing:-.025em;margin:7px 0 3px}
+  header .sub{color:var(--muted);font-size:13.5px;margin-bottom:14px}
+  .tabs{display:flex;gap:1px;overflow-x:auto;scrollbar-width:none}
+  .tabs::-webkit-scrollbar{display:none}
+  .tab{appearance:none;background:none;border:0;border-bottom:2.5px solid transparent;
+    font-family:var(--sans);font-size:14px;font-weight:600;color:var(--muted);
+    padding:10px 14px;cursor:pointer;white-space:nowrap;letter-spacing:-.01em;display:flex;align-items:center;gap:7px}
+  .tab:hover{color:var(--ink)}
+  .tab[aria-selected="true"]{color:var(--tc,var(--accent-ink));border-color:var(--tc,var(--accent))}
+  .tab .dot{width:7px;height:7px;border-radius:2px;background:var(--tc);flex:none;opacity:.85}
+  .tab .n{font-family:var(--mono);font-size:11px;color:var(--dim)}
+  .tab[aria-selected="true"] .n{color:var(--tc)}
+
+  main{padding:28px 0 70px}
+  .panel[hidden]{display:none}
+  .lede{font-size:1.12rem;color:var(--body);max-width:64ch;margin:0 0 18px}
+  .lede b{color:var(--ink)}
+  p{max-width:70ch}
+
+  .thead{position:relative;padding:2px 0 18px 20px;margin-bottom:20px;border-bottom:1px solid var(--line)}
+  .thead::before{content:"";position:absolute;left:0;top:2px;bottom:18px;width:5px;border-radius:3px;background:var(--tc)}
+  .t-tag{font-family:var(--mono);font-size:10.5px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:var(--tc);display:flex;align-items:center;gap:8px}
+  .t-tag .core{background:var(--tc);color:var(--paper);border-radius:4px;padding:1px 6px;font-size:9px}
+  .thead h2{font-size:clamp(1.4rem,3vw,1.8rem);font-weight:730;letter-spacing:-.02em;margin:8px 0 7px}
+  .thesis{color:var(--body);font-size:1.02rem;max-width:74ch} .thesis b{color:var(--ink)}
+
+  .block-h{font-family:var(--mono);font-size:10.5px;letter-spacing:.09em;text-transform:uppercase;color:var(--muted);font-weight:700;margin:26px 0 12px;display:flex;align-items:center;gap:9px}
+  .block-h::after{content:"";flex:1;height:1px;background:var(--line)}
+  .block-h .tc{color:var(--tc)}
+
+  .stats{display:grid;grid-template-columns:repeat(auto-fit,minmax(140px,1fr));gap:10px}
+  .stat{border:1px solid var(--line);border-radius:10px;padding:12px 14px;background:var(--paper)}
+  .stat .v{font-family:var(--mono);font-size:1.35rem;font-weight:650;color:var(--ink);letter-spacing:-.01em}
+  .stat .v small{font-size:.72rem;color:var(--muted);font-weight:500}
+  .stat .l{font-size:11.5px;color:var(--muted);margin-top:4px;line-height:1.4}
+  .sources{display:flex;flex-wrap:wrap;gap:6px;margin-top:14px}
+  .src{font-family:var(--mono);font-size:11px;color:var(--body);background:var(--panel);border:1px solid var(--line);border-radius:6px;padding:3px 8px;white-space:nowrap}
+  .src b{color:var(--tc);font-weight:600}
+
+  /* dataset accordions */
+  .ds-lead{font-size:13.5px;color:var(--muted);margin:0 0 12px}
+  .ds-list{display:flex;flex-direction:column;gap:8px}
+  .ds{border:1px solid var(--line);border-radius:10px;background:var(--paper);overflow:hidden}
+  .ds[open]{border-color:var(--tc)}
+  .ds summary{list-style:none;cursor:pointer;display:grid;grid-template-columns:auto 1fr auto;gap:11px;align-items:center;padding:11px 14px}
+  .ds summary::-webkit-details-marker{display:none}
+  .ds summary:hover{background:var(--panel)}
+  .ds .ds-n{font-family:var(--mono);font-size:11px;font-weight:700;color:var(--paper);background:var(--tc);border-radius:5px;padding:2px 7px;min-width:26px;text-align:center}
+  .ds .ds-t{font-weight:650;color:var(--ink);font-size:14px;line-height:1.3}
+  .ds .ds-src{font-family:var(--mono);font-size:10px;color:var(--tc);background:var(--tb);border:1px solid var(--tc);border-radius:5px;padding:2px 7px;white-space:nowrap}
+  @media(max-width:600px){.ds .ds-src{display:none}}
+  .ds .ds-body{padding:2px 14px 15px 51px}
+  @media(max-width:600px){.ds .ds-body{padding-left:14px}}
+  .ds .ds-what{font-size:12.5px;color:var(--muted);margin:8px 0 11px;max-width:76ch}
+  .ds .ds-fig{margin:0 0 12px;padding:0;list-style:none;display:grid;gap:6px}
+  .ds .ds-fig li{position:relative;padding-left:16px;font-size:13.5px;color:var(--body);line-height:1.5}
+  .ds .ds-fig li::before{content:"▸";position:absolute;left:0;color:var(--tc);font-size:9px;top:4px}
+  .ds .ds-fig li b{color:var(--ink);font-variant-numeric:tabular-nums;font-weight:650}
+  .ds .ds-cav{font-size:11.5px;color:var(--dim);font-style:italic;margin:-4px 0 12px;padding-left:16px}
+  .ds .ds-prompts{display:grid;gap:7px;border-top:1px dashed var(--line);padding-top:11px}
+  .ds .ds-prompts .pl{font-family:var(--mono);font-size:9.5px;letter-spacing:.07em;text-transform:uppercase;color:var(--tc);font-weight:700}
+  .ds .ds-prompts p{font-size:13px;color:var(--body);margin:0;max-width:78ch}
+  .ds .ds-prompts p b{color:var(--ink)}
+
+  .qs{display:grid;gap:10px}
+  .q{display:grid;grid-template-columns:auto 1fr;gap:12px;align-items:start;background:var(--paper);border:1px solid var(--line);border-radius:10px;padding:12px 14px}
+  .q .qn{font-family:var(--mono);font-size:11px;font-weight:700;color:var(--paper);background:var(--tc);border-radius:5px;padding:2px 7px;margin-top:1px}
+  .q .qt{font-size:14px;color:var(--body)} .q .qt b{color:var(--ink)}
+  .q .team{font-family:var(--mono);font-size:10px;color:var(--tc);letter-spacing:.03em;text-transform:uppercase;font-weight:700;display:block;margin-bottom:2px}
+
+  .pnotes{border:1px solid var(--line);border-left:3px solid var(--tc);background:var(--panel);border-radius:0 12px 12px 0;padding:16px 20px;margin-top:14px}
+  .pnotes .ph{font-family:var(--mono);font-size:10.5px;letter-spacing:.08em;text-transform:uppercase;color:var(--tc);font-weight:700;margin-bottom:10px}
+  .pnotes dl{margin:0;display:grid;gap:10px}
+  .pnotes dt{font-size:12.5px;font-weight:700;color:var(--ink);font-family:var(--sans)}
+  .pnotes dd{margin:2px 0 0;font-size:13.5px;color:var(--body)}
+  .pnotes dd b{color:var(--ink)}
+
+  .flow{display:grid;grid-template-columns:repeat(3,1fr);gap:1px;background:var(--line);border:1px solid var(--line);border-radius:14px;overflow:hidden;margin:22px 0}
+  .flow .step{background:var(--paper);padding:16px 18px}
+  .flow .n{font-family:var(--mono);font-size:12px;color:var(--accent-ink);font-weight:700}
+  .flow h4{font-size:1rem;font-weight:650;margin:5px 0 5px}
+  .flow p{margin:0;font-size:13.5px;color:var(--muted)}
+  @media(max-width:640px){.flow{grid-template-columns:1fr}}
+  .note{border:1px solid var(--line);background:var(--panel);border-radius:12px;padding:16px 20px;margin:18px 0}
+  .note h3{font-size:1.05rem;margin-bottom:6px}
+  .note p{font-size:14px;color:var(--body);margin:6px 0 0}
+  .note .eyebrow{color:var(--accent-ink);display:block;margin-bottom:2px}
+  .why{display:grid;gap:12px;margin:18px 0}
+  .why .row{display:grid;grid-template-columns:auto 1fr;gap:14px;align-items:start}
+  .why .k{font-family:var(--mono);font-size:11px;font-weight:700;letter-spacing:.04em;text-transform:uppercase;color:var(--accent-ink);background:var(--t2b);border:1px solid var(--accent);border-radius:6px;padding:4px 9px;white-space:nowrap;margin-top:2px}
+  .why .v{font-size:14.5px;color:var(--body)} .why .v b{color:var(--ink)}
+  .toc{display:grid;gap:8px;margin:18px 0 4px}
+  .toc a{display:grid;grid-template-columns:auto 1fr auto;gap:12px;align-items:center;text-decoration:none;background:var(--paper);border:1px solid var(--line);border-radius:10px;padding:11px 15px}
+  .toc a:hover{border-color:var(--tc)}
+  .toc .dot{width:9px;height:9px;border-radius:3px;background:var(--tc)}
+  .toc .tt{color:var(--ink);font-weight:650;font-size:14.5px}
+  .toc .tt small{display:block;color:var(--muted);font-weight:500;font-size:12px;margin-top:1px}
+  .toc .go{font-family:var(--mono);font-size:16px;color:var(--tc)}
+
+  .calc{background:var(--paper);border:1px solid var(--tc);border-radius:16px;overflow:hidden;margin-top:10px}
+  .calc-h{padding:16px 22px;border-bottom:1px solid var(--line);background:var(--tb)}
+  .calc-h h3{font-size:1.15rem;font-weight:720;letter-spacing:-.015em;color:var(--tc)}
+  .calc-h p{font-size:13.5px;color:var(--body);margin:5px 0 0;max-width:76ch}
+  .calc-grid{display:grid;grid-template-columns:1fr 1.15fr;gap:0}
+  @media(max-width:760px){.calc-grid{grid-template-columns:1fr}}
+  .controls{padding:20px 22px;border-right:1px solid var(--line);display:flex;flex-direction:column;gap:17px}
+  @media(max-width:760px){.controls{border-right:0;border-bottom:1px solid var(--line)}}
+  .ctl label{display:flex;justify-content:space-between;align-items:baseline;font-size:13px;color:var(--body);font-weight:600;margin-bottom:6px;gap:10px}
+  .ctl label .val{font-family:var(--mono);font-weight:700;color:var(--tc);font-size:14px;white-space:nowrap}
+  .ctl label .val small{color:var(--muted);font-weight:500}
+  input[type=range]{width:100%;accent-color:var(--tc);height:22px;margin:0}
+  .ctl .hint{font-size:11px;color:var(--dim);margin-top:3px;line-height:1.4}
+  .readout{padding:20px 22px;display:flex;flex-direction:column;gap:14px}
+  .big{display:grid;grid-template-columns:1fr 1fr;gap:9px}
+  .big .cell{border:1px solid var(--line);border-radius:11px;padding:12px 14px;background:var(--bg)}
+  .big .cell.hero{grid-column:1/-1;background:var(--tb);border-color:var(--tc)}
+  .big .cell.sub{grid-column:1/-1;background:var(--panel)}
+  .big .cell.sub .v{font-size:1.2rem;color:var(--tc)}
+  .big .cell .v{font-family:var(--mono);font-size:1.6rem;font-weight:700;color:var(--ink);letter-spacing:-.02em;line-height:1.1}
+  .big .cell.hero .v{font-size:2rem;color:var(--tc)}
+  .big .cell .v small{font-size:.8rem;color:var(--muted);font-weight:500}
+  .big .cell .l{font-size:11.5px;color:var(--muted);margin-top:3px;line-height:1.35}
+  .chartbox{border:1px solid var(--line);border-radius:11px;background:var(--bg);padding:12px 12px 6px}
+  .chartbox .ct{font-size:11.5px;color:var(--muted);margin:0 2px 4px;font-weight:600}
+  .cyc-legend{display:flex;flex-wrap:wrap;gap:8px 16px;margin:12px 2px 2px;font-size:12px}
+  .cyc-legend .lg{display:flex;align-items:center;gap:7px;color:var(--body);font-weight:600}
+  .cyc-legend .sw{width:16px;height:3px;border-radius:2px;flex:none}
+  .cyc-key{margin:10px 2px 0;font-size:12px;color:var(--muted);line-height:1.8}
+  .cyc-key b{color:var(--ink);font-weight:600;font-family:var(--mono);font-size:11px}
+  .cyc-read{border:1px solid var(--line);border-left:3px solid var(--tc);background:var(--panel);border-radius:0 12px 12px 0;padding:15px 20px;margin-top:16px}
+  .cyc-read .rh{font-family:var(--mono);font-size:10.5px;letter-spacing:.08em;text-transform:uppercase;color:var(--tc);font-weight:700;margin-bottom:10px}
+  .cyc-read ul{margin:0;padding:0;list-style:none;display:grid;gap:9px}
+  .cyc-read li{font-size:13.5px;color:var(--body)}
+  .cyc-read li b{color:var(--ink)}
+  .cyc-read .tag{font-family:var(--mono);font-size:10px;color:var(--tc);font-weight:700;text-transform:uppercase;letter-spacing:.03em}
+  .cyc-controls{display:flex;flex-wrap:wrap;gap:6px;margin:2px 0 12px;align-items:center}
+  .cyc-controls .cl{font-family:var(--mono);font-size:10.5px;letter-spacing:.06em;text-transform:uppercase;color:var(--muted);font-weight:700;margin-right:2px}
+  .cyc-btn{appearance:none;font-family:var(--mono);font-size:11.5px;font-weight:600;border:1px solid var(--line);background:var(--paper);color:var(--muted);border-radius:7px;padding:5px 11px;cursor:pointer}
+  .cyc-btn:hover{border-color:var(--tc);color:var(--ink)}
+  .cyc-btn[aria-pressed="true"]{background:var(--tc);border-color:var(--tc);color:#fff}
+  .cyc-main{display:grid;grid-template-columns:1.5fr 1fr;gap:14px;align-items:start}
+  @media(max-width:780px){.cyc-main{grid-template-columns:1fr}}
+  .cyc-lev{border:1px solid var(--tc);border-radius:12px;background:var(--tb);padding:15px 16px;display:flex;flex-direction:column;gap:11px}
+  .cyc-lev .lh{font-family:var(--mono);font-size:10px;letter-spacing:.07em;text-transform:uppercase;color:var(--tc);font-weight:700}
+  .cyc-lev .lh b{color:var(--ink)}
+  .cyc-bars{display:grid;gap:7px}
+  .cyc-bar{display:grid;grid-template-columns:74px 1fr auto;gap:8px;align-items:center;font-size:11px}
+  .cyc-bar .bl{color:var(--body);font-weight:600;line-height:1.2}
+  .cyc-bar .bl small{display:block;color:var(--muted);font-family:var(--mono);font-size:9.5px;font-weight:500}
+  .cyc-bar .btrack{background:var(--line);border-radius:4px;height:15px;overflow:hidden}
+  .cyc-bar .bt{height:15px;border-radius:4px;min-width:2px}
+  .cyc-bar .bv{font-family:var(--mono);font-weight:700;color:var(--ink);font-size:12px;white-space:nowrap}
+  .cyc-lev .lev-note{font-size:12px;color:var(--body);border-top:1px dashed var(--tc);padding-top:10px}
+  .cyc-lev .lev-note .big{font-family:var(--mono);font-size:1.15rem;font-weight:700;color:var(--tc);display:block;margin-bottom:2px}
+  .cyc-lev .lev-note b{color:var(--ink)}
+  .cyc-assume{font-size:10px;color:var(--dim);font-style:italic;line-height:1.4}
+  .lev-inputs-wrap{border-top:1px dashed var(--tc);padding-top:9px}
+  .lev-inputs-wrap summary{font-family:var(--mono);font-size:10px;color:var(--tc);cursor:pointer;font-weight:700;letter-spacing:.05em;text-transform:uppercase;list-style:none}
+  .lev-inputs-wrap summary::-webkit-details-marker{display:none}
+  .lev-inputs{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-top:9px}
+  .lev-inputs label{display:flex;flex-direction:column;font-size:10.5px;color:var(--body);font-weight:600;gap:2px}
+  .lev-inputs label span{font-family:var(--mono);font-size:9px;color:var(--muted);font-weight:500}
+  .lev-inputs input{width:100%;font-family:var(--mono);font-size:12.5px;font-weight:600;padding:5px 7px;border:1px solid var(--line);border-radius:6px;background:var(--paper);color:var(--ink)}
+  .lev-inputs input:focus{outline:none;border-color:var(--tc)}
+  svg{display:block;width:100%;height:auto}
+  .verdict{font-size:13px;color:var(--body);padding:11px 14px;border-radius:9px;border:1px solid var(--line);background:var(--panel)}
+  .verdict b{color:var(--ink)} .verdict.warn{border-color:var(--t1);background:var(--t1b)} .verdict.warn b{color:var(--t1)}
+  .verdict.ok{border-color:var(--t5);background:var(--t5b)}
+  .rassume{border:1px solid var(--line);border-radius:9px;background:var(--bg);padding:11px 13px;display:grid;gap:8px}
+  .rassume .ra-row{display:grid;grid-template-columns:118px 1fr;gap:10px;align-items:baseline;font-size:12px}
+  @media(max-width:520px){.rassume .ra-row{grid-template-columns:1fr;gap:2px}}
+  .rassume .ra-k{font-family:var(--mono);font-size:9.5px;letter-spacing:.05em;text-transform:uppercase;color:var(--tc);font-weight:700}
+  .rassume .ra-v{color:var(--body);line-height:1.45} .rassume .ra-v b{color:var(--ink)}
+  .assume{border-top:1px solid var(--line);padding:13px 22px;background:var(--panel)}
+  .assume summary{cursor:pointer;font-size:12px;color:var(--tc);font-weight:600;font-family:var(--mono)}
+  .assume .body{font-size:12.5px;color:var(--muted);margin-top:8px;line-height:1.55}
+
+  /* session plan */
+  .ros{display:grid;gap:1px;background:var(--line);border:1px solid var(--line);border-radius:12px;overflow:hidden;margin:4px 0 8px}
+  .ros .r{display:grid;grid-template-columns:96px 1fr auto;gap:14px;background:var(--paper);padding:12px 16px;align-items:baseline}
+  @media(max-width:600px){.ros .r{grid-template-columns:78px 1fr;gap:6px 10px}.ros .r .who{grid-column:2;margin-top:-4px}}
+  .ros .t{font-family:var(--mono);font-size:12px;font-weight:700;color:var(--accent-ink)}
+  .ros .w{font-size:14px;color:var(--body)} .ros .w b{color:var(--ink)}
+  .ros .who{font-family:var(--mono);font-size:10px;text-transform:uppercase;letter-spacing:.05em;color:var(--muted);font-weight:700}
+  .plan-fb{border-color:var(--accent)!important}
+  .plan-fb .eyebrow{color:var(--accent-ink)}
+  .beats{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin:4px 0}
+  @media(max-width:640px){.beats{grid-template-columns:1fr}}
+  .beats .b{border:1px solid var(--line);border-radius:11px;padding:14px 15px;background:var(--paper)}
+  .beats .bn{font-family:var(--mono);font-size:11px;font-weight:700;color:var(--accent-ink)}
+  .beats h4{font-size:.98rem;margin:5px 0 5px}
+  .beats p{font-size:13px;color:var(--muted);margin:0}
+  .plan-grid{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+  @media(max-width:680px){.plan-grid{grid-template-columns:1fr}}
+  .pcard{border:1px solid var(--line);border-left:4px solid var(--pc);border-radius:12px;background:var(--paper);padding:15px 17px;display:flex;flex-direction:column;gap:8px}
+  .pcard .pn{font-family:var(--mono);font-size:10px;font-weight:700;letter-spacing:.06em;text-transform:uppercase;color:var(--pc)}
+  .pcard h4{font-size:1.05rem;margin:0}
+  .pcard .idea{font-size:13px;color:var(--body)} .pcard .idea b{color:var(--ink)}
+  .pcard .teaser{font-size:12.5px;color:var(--muted);font-style:italic;border-top:1px dashed var(--line);padding-top:8px}
+  .pcard .pacts{display:flex;gap:8px;margin-top:auto;padding-top:4px}
+  .pcard .pbtn{appearance:none;font-family:var(--sans);font-size:12.5px;font-weight:600;border:1px solid var(--pc);border-radius:8px;padding:6px 12px;cursor:pointer;background:none;color:var(--pc)}
+  .pcard .pbtn.solid{background:var(--pc);color:#fff}
+  .dl-btn{display:inline-flex;align-items:center;gap:8px;font-family:var(--sans);font-size:14px;font-weight:650;color:#fff;background:var(--accent);border:1px solid var(--accent);border-radius:9px;padding:9px 16px;text-decoration:none}
+  .dl-btn:hover{background:var(--accent-ink)}
+  .dl-note{font-size:12px;color:var(--dim);margin-left:10px}
+  .st-wrap{overflow-x:auto;margin:2px 0}
+  .st{width:100%;border-collapse:collapse;font-size:13.5px;min-width:560px}
+  .st th,.st td{text-align:right;padding:9px 13px;border-bottom:1px solid var(--line);white-space:nowrap}
+  .st th:first-child,.st td:first-child{text-align:left}
+  .st thead th{font-family:var(--mono);font-size:10.5px;text-transform:uppercase;letter-spacing:.03em;color:var(--muted);font-weight:700;border-bottom:1.5px solid var(--line2);vertical-align:bottom}
+  .st thead th small{display:block;font-weight:500;color:var(--dim);text-transform:none;letter-spacing:0;font-size:9.5px}
+  .st td{font-variant-numeric:tabular-nums;color:var(--body)}
+  .st td:first-child{font-weight:650;color:var(--ink)}
+  .st tbody tr:hover{background:var(--panel)}
+  .st tr.tot td{border-top:2px solid var(--line2);border-bottom:none;font-weight:700;color:var(--ink)}
+  .st .hi{color:var(--tc);font-weight:700}
+  .qr-teasers{display:grid;gap:7px;margin:6px 0 4px}
+  .qt-row{display:grid;grid-template-columns:104px 1fr;gap:11px;align-items:baseline;font-size:13px}
+  @media(max-width:520px){.qt-row{grid-template-columns:1fr;gap:1px}}
+  .qt-k{font-family:var(--mono);font-size:10.5px;font-weight:700;text-transform:uppercase;letter-spacing:.04em;color:var(--pc)}
+  .qt-v{color:var(--body)} .qt-v b{color:var(--ink)}
+  .qr-opts{margin:6px 0 0;padding-left:18px} .qr-opts li{font-size:14px;color:var(--body);margin:0 0 7px} .qr-opts b{color:var(--ink)}
+  /* printable one-page pack */
+  #print-pack{display:none;padding:26px;color:#111;background:#fff;font-family:var(--sans);max-width:760px;margin:0 auto}
+  #print-pack h1{font-size:23px;margin:0 0 4px;color:#111} #print-pack .pk-meta{font-family:var(--mono);font-size:11px;text-transform:uppercase;letter-spacing:.06em;color:#666;margin:0 0 8px}
+  #print-pack .big-idea{font-size:15px;font-weight:600;margin:0 0 14px;color:#111}
+  #print-pack .pk-chart{border:1px solid #ddd;border-radius:8px;padding:8px;margin:0 0 6px} #print-pack .pk-chart svg{width:100%;height:auto;max-height:240px}
+  #print-pack h3{font-size:12px;text-transform:uppercase;letter-spacing:.05em;color:#333;margin:16px 0 6px;border-bottom:1px solid #ccc;padding-bottom:3px}
+  #print-pack ul,#print-pack ol{margin:0;padding-left:20px} #print-pack li{font-size:13.5px;margin:0 0 5px;color:#111}
+  #print-pack .pk-fb{border:1.5px solid #111;border-radius:8px;padding:10px 13px;font-size:13.5px;margin:14px 0 0;color:#111}
+  #print-pack .pk-notes{border:1px solid #bbb;border-radius:8px;height:120px;margin-top:6px}
+  @media print{
+    body.printing>header,body.printing>main,body.printing>footer{display:none!important}
+    body.printing #print-pack{display:block!important}
+    @page{margin:14mm}
+  }
+
+  footer{border-top:1px solid var(--line);margin-top:36px;padding:22px 0 60px;font-family:var(--mono);font-size:11.5px;color:var(--dim);line-height:1.7}
+  ::selection{background:rgba(13,125,116,.22)}
+</style>
+
+<header><div class="wrap" style="--tc:var(--t1)">
+  <div class="eyebrow" style="color:var(--tc)">Power Development · Team Day · Breakout</div>
+  <h1>Market cycles & shocks</h1>
+  <div class="sub">Your table's brief, the data, and the live tools for this topic — everything you need to form a hypothesis.</div>
+</div></header>
+<main>
+<div class="wrap" style="--tc:var(--t1)">
+  <div class="note" style="border-color:var(--tc);border-left:4px solid var(--tc)">
+    <span class="eyebrow" style="color:var(--tc)">Your task</span>
+    <h3>Form a hypothesis from the data</h3>
+    <p>Having heard from three areas on the market we're facing into — <b>IPP</b>, <b>Merchant &amp; Markets</b> and <b>Origination</b> — your group of 4–5 now dives into <b>market cycles & shocks</b>. Work the data and the live tool below, and <b>form a hypothesis</b>.</p>
+    <p>The goal is to <b>draw links between our projects and the larger market context we're facing into</b> — and test whether it changes how we think about our projects or our overarching objectives.</p>
+    <p>By the end of the session, your table develops three things to share:</p>
+    <div class="beats" style="margin-top:10px">
+      <div class="b" style="border-left:3px solid var(--tc)"><div class="bn" style="color:var(--tc)">1 · Hypothesis</div><p>A clear position the data led you to.</p></div>
+      <div class="b" style="border-left:3px solid var(--tc)"><div class="bn" style="color:var(--tc)">2 · A data point</div><p>The single number that backs it up.</p></div>
+      <div class="b" style="border-left:3px solid var(--tc)"><div class="bn" style="color:var(--tc)">3 · A surprise</div><p>Something unexpected, surprising or interesting.</p></div>
+    </div>
+  </div>
+</div>
+
+<div class="panel wrap" id="p-t1" style="--tc:var(--t1);--tb:var(--t1b)">
+    <div class="thead">
+      <div class="t-tag"><span class="core">Topic 1</span> Market cycles &amp; shocks</div>
+      <h2>The NEM is shaped by the shocks it didn't see coming</h2>
+      <p class="thesis">Weather and broken machines swing this market harder than any plan. Hazelwood, Callide, the 2022 suspension, Liddell — each redrew the map. <b>You'd never have closed Liddell if you'd known what was coming.</b> Where does today sit against the norm — a calm, well-supplied moment, or one heatwave and one broken boiler from the next one?</p>
+    </div>
+
+    <div class="block-h"><span class="tc">◆</span> The headline — a decade of prices, and what it does to returns</div>
+    <p class="ds-lead">Wholesale prices move in shock-driven cycles. On the chart the swings can look gentle — but a generator's revenue is price × volume off a <b>fixed</b> capex base, so a small $/MWh move is a large move in returns. Pick a state to trace its cycle; the side panel shows what that range does to a representative project.</p>
+    <div class="cyc-controls" id="cycle-controls"><span class="cl">Trace state</span></div>
+    <div class="cyc-main">
+      <div>
+        <div class="chartbox" style="padding:14px 14px 10px"><div class="ct">Average annual wholesale price — $/MWh (2015 → 2026 YTD · today marked)</div>
+          <svg id="cycle-chart" viewBox="0 0 720 360" preserveAspectRatio="xMinYMin meet"></svg></div>
+        <div class="cyc-legend" id="cycle-legend"></div>
+      </div>
+      <div class="cyc-lev" id="cycle-lev">
+        <div class="lh">Returns leverage — <b id="lev-state">NEM average</b></div>
+        <div class="cyc-bars" id="lev-bars"></div>
+        <div class="lev-note" id="lev-note"></div>
+        <details class="lev-inputs-wrap" open><summary>Project assumptions — edit to your numbers ▾</summary>
+          <div class="lev-inputs">
+            <label>Capex<span>$m/MW</span><input id="in-capex" type="number" value="3.0" step="0.1" min="0.5"></label>
+            <label>Capacity factor<span>%</span><input id="in-cf" type="number" value="35" step="1" min="5" max="60"></label>
+            <label>Fixed O&amp;M<span>$k/MW/yr</span><input id="in-om" type="number" value="40" step="5" min="0"></label>
+            <label>Gearing<span>%</span><input id="in-gear" type="number" value="60" step="5" min="0" max="89"></label>
+          </div>
+        </details>
+        <div class="cyc-assume">Illustrative merchant wind project · bars show ungeared cash-on-cash yield, with a geared-equity sensitivity in the note. Edit to your house numbers — typical ranges: capex $2.5–3.5m/MW, CF 30–40%, O&amp;M $30–50k/MW/yr, gearing 50–70%. A teaching figure, not project-finance advice.</div>
+      </div>
+    </div>
+    <div class="cyc-key" id="cycle-key"></div>
+    <div class="cyc-read">
+      <div class="rh">Reading the cycle — and what it means for each table</div>
+      <ul>
+        <li><span class="tag">Table A · Weather</span> — The sharpest peaks (2022, and every summer cap event) are <b>weather-and-fuel shocks</b>: heat, low wind and a global gas/coal spike coinciding. The top of the cycle is a weather story.</li>
+        <li><span class="tag">Table B · Machines</span> — The <b>2017 step-up follows Hazelwood</b>; the 2024 second peak coincides with an ageing, less-available coal fleet. Closures and outages reset the floor the market bids off.</li>
+        <li><span class="tag">Table C · Counterfactual</span> — 2022 and 2024 are the revenue environments <b>Liddell's 2023 exit landed beside</b>. “What if it had stayed?” is really “what would those two peaks have looked like?”</li>
+        <li><span class="tag">The leverage point</span> — The line's gentle-looking swings hide the returns story: because capex is fixed, moving from a cyclical low to a mid-cycle price can take a project from <b>below its hurdle to comfortably above it</b> — and the fall does the reverse just as fast. That's the panel on the right (edit it to your own numbers), and a fair fifth question for the room.</li>
+        <li><span class="tag">Outturns → the market that funds you</span> — The solid lines are <b>market outturns</b>; the <b>dashed extension is the ASX forward curve</b> (CY27–28 base) — where projects hedge and lenders price risk. It sits low and flat: <b>VIC ~$62–71, NSW ~$85, SA in contango to ~$92</b>. Today's outturns re-rate that curve and the long-term forecasts that underwrite FID — so a cyclical low doesn't just dent this year, it lowers the whole curve the next project is built on. Trace a state to see its history <i>and</i> its forward.</li>
+      </ul>
+    </div>
+
+    <div class="block-h"><span class="tc">◆</span> The data on the table</div>
+    <div class="stats">
+      <div class="stat"><div class="v">Jun 2022</div><div class="l">the NEM was <b>suspended</b> — a first — coal outages + flooded mines + gas + cold</div></div>
+      <div class="stat"><div class="v tnum">1.6 → 2<small>GW</small></div><div class="l">Hazelwood (2017) then Liddell (2023) — coal that left</div></div>
+      <div class="stat"><div class="v tnum">21.9<small>%</small></div><div class="l">record-low coal share of a VIC interval (Oct 2025)</div></div>
+      <div class="stat"><div class="v tnum">6</div><div class="l">major shocks since 2015, all mappable in dispatch</div></div>
+    </div>
+    <div class="sources"><span class="src"><b>gen_monthly</b></span><span class="src"><b>compounding-loop dossier</b></span><span class="src"><b>records</b></span><span class="src"><b>weather_demand</b></span><span class="src"><b>signals</b></span><span class="src"><b>unit_avail</b></span><span class="src"><b>st/mt-pasa</b></span></div>
+
+    <div class="block-h"><span class="tc">◆</span> Datasets on the table</div>
+    <p class="ds-lead">Real datasets from the Lens — open any to see its figures and discussion prompts. Hand each table two or three to work.</p>
+    <div class="ds-list" id="ds-t1"></div>
+
+    <div class="block-h"><span class="tc">◆</span> What each table explores</div>
+    <div class="qs">
+      <div class="q"><span class="qn">A</span><div class="qt"><span class="team">Weather lens</span>How much of the NEM's volatility is just weather? Is this summer more or less extreme than the historical spread — and what would a repeat of 2019's heat do to today's grid?</div></div>
+      <div class="q"><span class="qn">B</span><div class="qt"><span class="team">Machines lens</span>Where is coal-fleet availability heading as units age, and how many simultaneous failures is today's grid one bad week away from?</div></div>
+      <div class="q"><span class="qn">C</span><div class="qt"><span class="team">Counterfactual</span>Given what the data now shows, was Liddell mistimed? What would you have needed to know in 2015 — and what does that say about the closure decisions on the table now?</div></div>
+    </div>
+  </div>
+</main>
+<footer><div class="wrap">
+  Reading the NEM · session kit v1 · figures from the AusEnergy Lens (AEMO MMSDM + ISP 2026 + Open Electricity + CER), current to Aug 2026. Calculators are transparent teaching models, not planning tools.
+</div></footer>
+<script>
+(function(){
+  const DATASETS = {
+  t1: [
+    {t:"The long-run price record & the 2022 gas shock", src:"price_trend", what:"A decade of annual average and peak wholesale prices — 2022 stands out as a spike within a spike.",
+     fig:["NSW energy avg: <b>$60</b>/MWh (2020) → <b>$183</b> (2022) → <b>$103</b> (2025) → <b>$74</b> (2026 YTD).","QLD ran hottest in 2022: <b>$205</b>/MWh avg, up 5× from $41 in 2020.","2022 spike-hours (RRP ≥ $300): NSW <b>1,393 h</b>, QLD 1,440, SA 1,313 — vs NSW just <b>15 h</b> in 2020 and 9 in 2026 YTD."],
+     prompts:["How would our revenue model have performed if we'd underwritten to 2020-style prices going into 2022?","Spike-hours collapsed 1,393 → 9 in NSW — is the scarcity-revenue thesis weakening, or just <b>between shocks</b>?"]},
+    {t:"The June 2022 market suspension, day by day", src:"dispatchprice", what:"The mechanical footprint of AEMO suspending the spot market and imposing the Administered Price Cap.",
+     fig:["13 Jun 2022: NSW daily max RRP hit <b>$15,100</b>/MWh (the cap of the day).","14–22 Jun: the daily max is pinned at exactly <b>$300</b> every day — the visible signature of the APC.","23 Jun: max jumps back to $610 as normal dispatch resumes. NSW logged <b>1,720</b> five-minute intervals ≥ $300 across 12–24 Jun."],
+     prompts:["Under the APC generators were paid ~$300 while fuel cost far more — how do we contract to survive a market capped <b>below our short-run cost</b>?","What early-warning signals in our own portfolio would tell us a suspension is coming?"]},
+    {t:"The FCAS price collapse — a whole revenue stream, gone", src:"price_trend", what:"Batteries competed away the frequency-control revenue that used to underwrite storage business cases.",
+     fig:["NSW FCAS total avg: <b>$68.6</b>/MW/hr (2020) → <b>$5.9</b> (2026) — a ~91% fall.","NSW raise-contingency fell from $31 to <b>$0.2</b>/MW/hr.","SA FCAS total: <b>$159.7</b> (2020) → <b>$6.2</b> (2026)."],
+     prompts:["Any storage case leaning on FCAS “stacking” now works off ~$6/MW vs ~$60–160 five years ago — does our model assume yesterday's FCAS pool?","This collapse was self-inflicted by battery entry — what revenue stream gets competed away <b>next</b>?"]},
+    {t:"The negative-price / duck-curve shock", src:"price_trend · signals", what:"Solar has flipped the middle of the day into a surplus glut — the opposite shock to 2022.",
+     fig:["SA negative-price hours: 643 (2020) → <b>2,662 (2025)</b> — roughly 30% of the year.","NSW went from <b>16 (2020) to 1,263 (2025)</b> — an 80× rise.","Detected negative-price events since Jan-2025: SA <b>385</b>, VIC 331, QLD 324."],
+     prompts:["A solar farm generates hardest exactly when SA is negative for 2,600+ hours — what <b>capture-price haircut</b> are we applying?","At what negative-hour count does storage stop being optional for a new SA renewable project?"]},
+    {t:"Heat as the demand-and-price driver", src:"weather_demand", what:"Price spikes cluster tightly on the hottest days — the weather the market “didn't see coming.”",
+     fig:["Hottest day: VIC <b>43.4°C</b> on 2026-01-27 → peak demand 10,780 MW, max $3,026, 40 spike intervals.","SA <b>42.6°C</b> on 2026-01-26 → max price <b>$20,300</b>/MWh (the cap), 77 spike intervals.","NSW 42°C on 2026-01-10 → max ~$11,940/MWh."],
+     prompts:["Merchant revenue looks concentrated in ~5–10 heat days a year — how robust is that to a <b>mild summer</b>?","Demand is U-shaped in temperature — are we modelling winter-evening scarcity as well as summer?"]},
+    {t:"The coal retirement wave — what's gone, what's left", src:"oe_facility", what:"The structural shock in slow motion: 7.6 GW already retired, 21 GW on a known exit schedule.",
+     fig:["Retired: <b>7.6 GW</b> — incl. Hazelwood (~1.6 GW, 2017) and Liddell (~2 GW, 2023).","Still operating: <b>21.1 GW</b> of coal.","Near-term closures: Yallourn 1.48 GW (2028), then Eraring + Gladstone ≈ <b>4.56 GW (2029)</b>, Bayswater + Vales Point ≈ 3.96 GW (2032)."],
+     prompts:["~6 GW of coal exits 2028–29 — is our project's COD early enough to capture the tightness, or do we arrive after the replacement build?","Hazelwood and Liddell both closed faster than announced once economics turned — should we plan for 2032–34 closures landing <b>2–3 years early</b>?"]},
+    {t:"Coal machine-failures, right now", src:"unit_avail · oe_facility", what:"On any given day a big slab of “firm” coal is simply not there — the daily unplanned-outage shock.",
+     fig:["18 Aug 2026: four coal units fully offline — Kogan Creek (744 MW), Eraring ER01 (720), Stanwell (365), Gladstone (280) — <b>~2.1 GW at zero</b>.","More derated: Eraring ER02 at 65%, Tarong #3 at 40%.","Two of Eraring's four units impaired, ~3 years before it's due to close."],
+     prompts:["~2 GW of coal was unexpectedly out on an ordinary winter day — how much of the “reliable capacity” in our model is actually available at any moment?","Ageing units fail more as they near closure — does our spike-revenue thesis quietly rely on that continuing?"]},
+    {t:"The two-year reliability outlook (USE risk)", src:"mtpasa_outlook", what:"Where AEMO's forward outlook flags a risk of not meeting the reliability standard.",
+     fig:["Highest flagged unserved-energy: <b>SA 2027-02-14, 34.4 MWh</b> (reserve just +260 MW vs a 1,887 MW peak).","SA 2028-02-14 standalone reserve goes <b>negative (−31 MW)</b>.","NSW logs several Jun–Jul 2026 days with negative standalone reserve (import-dependent)."],
+     cav:"Per-region reserve ignores interconnector imports, so negative ≠ blackout — a flag, not a forecast.",
+     prompts:["The tightest points are SA/VIC summer 2027–28 evenings — is that the window our project should be built to serve?","How do we tell a genuine adequacy gap from an import-dependency artefact when siting?"]},
+    {t:"Records — instantaneous renewables & minimum demand", src:"records", what:"The grid now routinely runs on near-100%+ renewables and near-zero operational demand.",
+     fig:["SA hit <b>488.8%</b> renewable share of local demand (2025-12-01) — ~5× SA demand, exporting the rest.","SA minimum operational demand: <b>50 MW</b> (recurring) — rooftop swallowing almost the whole region's daytime load.","NEM all-time low operational demand ~<b>9,155 MW</b> (2025-10-04)."],
+     prompts:["SA daytime demand touches 50 MW — is a project's revenue now <b>purely evening/overnight</b>?","System-security services (inertia, system strength) get scarce here — is there a syncon/services opportunity in the shock our own project creates?"]},
+    {t:"Batteries — the new shock-absorber", src:"records · market_daily", what:"A fleet that barely existed in 2020 now supplies multi-GW evening peaks.",
+     fig:["NEM battery discharge record ~<b>4,637 MW</b> (2026-08-17, 18:25).","Waratah Super Battery single-site record <b>856 MW</b>.","Avg battery discharge: 84 MW (2025) → <b>121 MW (2026)</b>, ≈ +44% YoY; records cluster at 18:00–18:45."],
+     prompts:["Evening discharge is growing ~44%/yr and concentrated in one window — how fast does that window's arbitrage spread <b>compress</b>?","Batteries were built for the 2022 scarcity and FCAS pools that have since collapsed — what's the durable revenue for the next wave?"]},
+    {t:"Recent extreme spikes and the rising price cap", src:"signals · dispatchprice", what:"Spikes still hit the cap regularly — and the cap itself has climbed, raising the stakes of each event.",
+     fig:["The market price cap rose from ~<b>$15,100</b> (2022) to <b>$20,300</b>/MWh (2026).","Biggest recent spike: TAS 2026-07-13, <b>$23,200</b>/MWh over 3 intervals.","SA 2026-06-22 held <b>$20,300</b> across 384 five-minute intervals — ~32 hours at the cap."],
+     prompts:["One 384-interval SA event can equal months of average revenue — is our case honestly a bet on a handful of these, and can we <b>finance that volatility</b>?","The cap escalates ~$15k→$20k in 4 years — does higher upside attract merchant exposure, or just widen the range lenders won't underwrite?"]}
+  ]
+  };
+
+  Object.entries(DATASETS).forEach(([tid,arr])=>{
+    const el=document.getElementById('ds-'+tid); if(!el) return;
+    el.innerHTML=arr.map((d,i)=>{
+      const figs=d.fig.map(f=>'<li>'+f+'</li>').join('');
+      const cav=d.cav?'<div class="ds-cav">'+d.cav+'</div>':'';
+      const prompts=d.prompts.map(p=>'<p>'+p+'</p>').join('');
+      return '<details class="ds"'+(i===0?' open':'')+'><summary><span class="ds-n">'+(i+1)+
+        '</span><span class="ds-t">'+d.t+'</span><span class="ds-src">'+d.src+
+        '</span></summary><div class="ds-body"><p class="ds-what">'+d.what+'</p><ul class="ds-fig">'+figs+
+        '</ul>'+cav+'<div class="ds-prompts"><span class="pl">Discussion prompts</span>'+prompts+'</div></div></details>';
+    }).join('');
+  });
+})();
+</script>
+<script>
+(function(){
+
+  const css=k=>getComputedStyle(document.documentElement).getPropertyValue(k).trim();
+  const lp=pts=>pts.map((p,i)=>`${i?'L':'M'}${p[0].toFixed(1)},${p[1].toFixed(1)}`).join(' ');
+  const RC={NSW:"#3b82c4",QLD:"#c1494a",SA:"#d98a2b",VIC:"#7a5bd0",TAS:"#2ea3a3"};
+  const hexA=(h,a)=>{const n=parseInt(h.slice(1),16);return `rgba(${n>>16&255},${n>>8&255},${n&255},${a})`;};
+  /* recolour a .cyc-lev callout box to a state colour (or revert to panel default when All) */
+  function tintBox(id,state){const b=document.getElementById(id); if(!b) return;
+    if(state && RC[state]){b.style.setProperty('--tc',RC[state]);b.style.setProperty('--tb',hexA(RC[state],0.10));}
+    else {b.style.removeProperty('--tc');b.style.removeProperty('--tb');}}
+
+  function axes(svg,o){
+    const x0=o.padL,x1=o.W-o.padR,y0=o.H-o.padB,y1=o.padT;
+    const px=v=>x0+(v-o.xmin)/(o.xmax-o.xmin)*(x1-x0);
+    const py=v=>y0-(v-0)/(o.ymax-0)*(y0-y1);
+    const grid=css('--grid'),mut=css('--muted'),mono=css('--mono');
+    let g='';
+    o.yticks.forEach(t=>{const y=py(t);g+=`<line x1="${x0}" y1="${y.toFixed(1)}" x2="${x1}" y2="${y.toFixed(1)}" stroke="${grid}" stroke-width="1"/><text x="${x0-6}" y="${(y+3).toFixed(1)}" text-anchor="end" font-size="10" font-family="${mono}" fill="${mut}">${o.yfmt(t)}</text>`;});
+    o.xticks.forEach(t=>{g+=`<text x="${px(t.v).toFixed(1)}" y="${(y0+16).toFixed(1)}" text-anchor="middle" font-size="9.5" font-family="${mono}" fill="${mut}">${t.l}</text>`;});
+    return {px,py,g,x0,x1,y0,y1,mono,mut};
+  }
+
+  /* generic multi-line chart (per-series x arrays) */
+  function simpleChart(id,o){
+    const svg=document.getElementById(id); if(!svg) return;
+    const A=axes(svg,{W:720,H:320,padL:46,padR:o.padR||56,padT:24,padB:34,xmin:o.xmin,xmax:o.xmax,ymax:o.ymax,yticks:o.yticks,yfmt:o.yfmt,xticks:o.xticks});
+    const {px,py}=A; let g=A.g;
+    (o.annos||[]).forEach(a=>{g+=`<text x="${px(a.x).toFixed(1)}" y="${py(a.y).toFixed(1)}" text-anchor="${a.anchor||'middle'}" font-size="9.5" font-family="${A.mono}" fill="${a.c||A.mut}" font-style="${a.it?'italic':'normal'}" font-weight="${a.b?'700':'400'}">${a.t}</text>`;});
+    o.seriesList.forEach(s=>{
+      const pts=s.v.map((v,i)=>[px(s.x[i]),py(v)]);
+      g+=`<path d="${lp(pts)}" fill="none" stroke="${s.c}" stroke-width="${s.w||2.2}"${s.dash?' stroke-dasharray="5 4"':''}/>`;
+      const last=pts[pts.length-1];
+      g+=`<circle cx="${last[0].toFixed(1)}" cy="${last[1].toFixed(1)}" r="3" fill="${s.c}"/>`;
+      if(s.end) g+=`<text x="${(last[0]+5).toFixed(1)}" y="${(last[1]+3).toFixed(1)}" font-size="9.5" font-family="${A.mono}" fill="${s.c}" font-weight="700">${s.end}</text>`;
+    });
+    svg.innerHTML=g;
+    if(o.legendId) document.getElementById(o.legendId).innerHTML=o.seriesList.map(s=>`<span class="lg"><span class="sw" style="background:${s.c}"></span>${s.leg||s.id}${s.dash?' (forecast)':''}</span>`).join('');
+  }
+
+  /* ===================== TOPIC 1 — interactive price cycle + returns leverage ===================== */
+  const YRS=[2015,2016,2017,2018,2019,2020,2021,2022,2023,2024,2025,2026];
+  const PRICE={
+    NSW:[39.2,59,95.5,82.3,84.8,59.9,67.3,182.7,95.9,131,103.3,74.3],
+    QLD:[52,67.4,102.3,74.8,71.8,41.2,92.8,205.1,90.7,111.5,84.9,66.3],
+    SA:[49.6,80.6,105.3,99.9,98.9,43.5,45.2,155.9,80.1,100.1,86.7,87.2],
+    VIC:[33.9,47.4,92.2,90.5,109.4,51.9,35.8,134.1,54.8,82.1,77.9,49.3],
+    TAS:[47.5,95.9,98.1,73.7,94,43,31.8,147,55.7,95.8,96,90.2]
+  };
+  const STATES=['NSW','QLD','SA','VIC','TAS'];
+  const NEM=YRS.map((_,i)=>+((PRICE.NSW[i]+PRICE.QLD[i]+PRICE.SA[i]+PRICE.VIC[i]+PRICE.TAS[i])/5).toFixed(1));
+  const EV1=[{l:"SA blackout"},{l:"Hazelwood"},{l:"COVID"},{l:"Suspension +gas"},{l:"Liddell"}];
+  const EVI=[1,2,5,7,8];
+  const KEY=[[1,"SA statewide blackout (2016)"],[2,"Hazelwood closes, −1.6 GW (2017)"],[3,"COVID demand crash (2020)"],[4,"Market suspension + gas shock (2022)"],[5,"Liddell closes, −2 GW (2023)"]];
+  // representative merchant project (illustrative, editable)
+  let sel='All';
+  function levParams(){
+    const gv=id=>{const e=document.getElementById(id);return e?parseFloat(e.value):NaN;};
+    let capex=gv('in-capex'), cf=gv('in-cf'), om=gv('in-om'), gear=gv('in-gear');
+    if(!(capex>0))capex=3.0; if(!(cf>0))cf=35; if(!(om>=0))om=40; if(!(gear>=0))gear=60;
+    gear=Math.min(gear,89);
+    return {CAPEX:capex*1e6, MWH:Math.round(cf/100*8760), OM:om*1000, GEAR:gear/100, gear:Math.round(gear)};
+  }
+
+  const FWD={NSW:[84.6,86.3],QLD:[74.9,74.3],SA:[80.3,91.8],VIC:[62.5,71.4]}; // ASX base strip CY27, CY28
+  function drawShocks(){
+    const svg=document.getElementById('cycle-chart'); if(!svg) return;
+    const A=axes(svg,{W:720,H:360,padL:46,padR:24,padT:56,padB:38,xmin:0,xmax:13,ymax:220,
+      yticks:[0,55,110,165,220],yfmt:t=>'$'+t,
+      xticks:YRS.map((y,i)=>({v:i,l:(y%2===1||y===2026)?"'"+String(y).slice(2):''})).filter(t=>t.l).concat([{v:12,l:"'27f"},{v:13,l:"'28f"}])});
+    const {px,py}=A; let g=A.g; const warn=css('--t1'),mut=A.mut,mono=A.mono;
+    // actual|forward divider
+    g+=`<line x1="${px(11).toFixed(1)}" y1="58" x2="${px(11).toFixed(1)}" y2="${py(0).toFixed(1)}" stroke="${mut}" stroke-width="1" stroke-dasharray="2 4" opacity="0.4"/>`;
+    g+=`<text x="${px(12.5).toFixed(1)}" y="${(A.y1+2).toFixed(1)}" text-anchor="middle" font-size="9" font-style="italic" font-family="${mono}" fill="${mut}">ASX forward</text>`;
+    // event guides + numbered flags with staggered labels
+    EVI.forEach((idx,k)=>{const x=px(idx);const yl=(k%2===0)?18:33;
+      g+=`<line x1="${x.toFixed(1)}" y1="44" x2="${x.toFixed(1)}" y2="${py(0).toFixed(1)}" stroke="${warn}" stroke-width="1" stroke-dasharray="2 3" opacity="0.5"/>`;
+      g+=`<text x="${x.toFixed(1)}" y="${yl}" text-anchor="middle" font-size="8.6" font-family="${mono}" fill="${warn}">${EV1[k].l}</text>`;
+      g+=`<circle cx="${x.toFixed(1)}" cy="47" r="7.5" fill="${warn}"/><text x="${x.toFixed(1)}" y="50.5" text-anchor="middle" font-size="10" font-weight="700" font-family="${mono}" fill="#fff">${k+1}</text>`;});
+    const fwdLine=(s,color,w,op)=>{ if(!FWD[s]) return '';
+      const fp=[[px(11),py(PRICE[s][11])],[px(12),py(FWD[s][0])],[px(13),py(FWD[s][1])]];
+      return `<path d="${lp(fp)}" fill="none" stroke="${color}" stroke-width="${w}" stroke-dasharray="4 3" opacity="${op}"/><circle cx="${px(13).toFixed(1)}" cy="${py(FWD[s][1]).toFixed(1)}" r="2.5" fill="${color}"/>`;};
+    if(sel==='All'){
+      STATES.forEach(s=>{g+=`<path d="${lp(PRICE[s].map((v,i)=>[px(i),py(v)]))}" fill="none" stroke="${RC[s]}" stroke-width="2"/><circle cx="${px(11).toFixed(1)}" cy="${py(PRICE[s][11]).toFixed(1)}" r="3" fill="${RC[s]}"/>`;
+        g+=fwdLine(s,RC[s],1.6,0.9);});
+    } else {
+      STATES.filter(s=>s!==sel).forEach(s=>{g+=`<path d="${lp(PRICE[s].map((v,i)=>[px(i),py(v)]))}" fill="none" stroke="${mut}" stroke-width="1.1" opacity="0.22"/>`;});
+      const V=PRICE[sel];
+      g+=`<path d="${lp(V.map((v,i)=>[px(i),py(v)]))}" fill="none" stroke="${RC[sel]}" stroke-width="2.9"/>`;
+      V.forEach((v,i)=>{g+=`<circle cx="${px(i).toFixed(1)}" cy="${py(v).toFixed(1)}" r="2.5" fill="${RC[sel]}"/>`;});
+      g+=fwdLine(sel,RC[sel],2.6,1);
+      const lowI=V.indexOf(Math.min(...V)), pkI=V.indexOf(Math.max(...V));
+      [[lowI,12],[pkI,-8],[11,-8]].forEach(([i,dy])=>{g+=`<text x="${px(i).toFixed(1)}" y="${(py(V[i])+dy).toFixed(1)}" text-anchor="middle" font-size="9" font-weight="700" font-family="${mono}" fill="${RC[sel]}">$${Math.round(V[i])}</text>`;});
+      if(FWD[sel]) g+=`<text x="${px(13).toFixed(1)}" y="${(py(FWD[sel][1])-8).toFixed(1)}" text-anchor="middle" font-size="9" font-weight="700" font-family="${mono}" fill="${RC[sel]}">$${Math.round(FWD[sel][1])}</text>`;
+    }
+    svg.innerHTML=g;
+    document.getElementById('cycle-legend').innerHTML=STATES.map(s=>`<span class="lg"><span class="sw" style="background:${RC[s]}"></span>${s}</span>`).join('')+`<span class="lg" style="color:${mut}">— — dashed = ASX forward (CY27–28)</span>`;
+    document.getElementById('cycle-key').innerHTML=KEY.map(e=>`<span><b>${e[0]}</b> ${e[1]}</span>`).join(' &nbsp;·&nbsp; ');
+  }
+  function levPanel(){
+    if(!document.getElementById('cycle-lev')) return;
+    const P=levParams(), yl=p=>(p*P.MWH-P.OM)/P.CAPEX;
+    const series=sel==='All'?NEM:PRICE[sel], label=sel==='All'?'NEM average':sel;
+    const low=Math.min(...series), today=series[11], peak=Math.max(...series);
+    const rows=[['Cyclical low',low,css('--t4')],['Today',today,css('--accent')],['2022 peak',peak,css('--t5')]];
+    const maxY=Math.max(yl(peak),0.001);
+    const bars=rows.map(r=>{const y=yl(r[1]),w=Math.max(2,Math.round(Math.max(y,0)/maxY*100));
+      return `<div class="cyc-bar"><span class="bl">${r[0]}<small>$${Math.round(r[1])}/MWh</small></span><span class="btrack"><span class="bt" style="width:${w}%;background:${r[2]}"></span></span><span class="bv">${(y*100).toFixed(1)}%</span></div>`;}).join('');
+    const per10=10*P.MWH/P.CAPEX*100, per10g=10*P.MWH/((1-P.GEAR)*P.CAPEX)*100;
+    const fall=(yl(today)-yl(low))*100;
+    document.getElementById('lev-state').textContent=label;
+    tintBox('cycle-lev', sel==='All'?null:sel);
+    document.getElementById('lev-bars').innerHTML=bars;
+    document.getElementById('lev-note').innerHTML=
+      `<span class="big">±${per10.toFixed(1)} pts per $10/MWh</span>`+
+      `Each <b>$10/MWh</b> moves margin ~<b>$${Math.round(10*P.MWH/1000)}k/MW-yr</b> — about <b>±${per10.toFixed(1)} pts</b> ungeared, or ~<b>±${per10g.toFixed(1)} pts</b> on ${P.gear}%-geared equity. It cuts <b>both ways</b>: low→today here is ${fall>=0?'+':''}${fall.toFixed(1)} pts, so sliding back down the cycle hurts as fast as the climb helps.`;
+  }
+  (function controls(){
+    const c=document.getElementById('cycle-controls'); if(!c) return;
+    ['All',...STATES].forEach(s=>{const b=document.createElement('button');b.className='cyc-btn';b.textContent=s;b.setAttribute('aria-pressed',s===sel);
+      b.onclick=()=>{sel=s;c.querySelectorAll('.cyc-btn').forEach(x=>x.setAttribute('aria-pressed',x.textContent===sel));drawShocks();levPanel();};c.appendChild(b);});
+  })();
+  ['in-capex','in-cf','in-om','in-gear'].forEach(id=>{const e=document.getElementById(id); if(e) e.addEventListener('input',levPanel);});
+  drawShocks(); levPanel();
+
+  })();
+</script>

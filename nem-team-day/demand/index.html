@@ -1,0 +1,562 @@
+<title>Through the lens of demand · Reading the NEM</title>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<style>
+  :root{
+    --bg:#f6f8fa; --paper:#ffffff; --panel:#eef1f5; --line:#dde3ea; --line2:#c9d2dc;
+    --ink:#111820; --body:#37424f; --muted:#66717f; --dim:#8a94a1;
+    --accent:#0d7d74; --accent-ink:#0a5f58;
+    --t1:#b4571f; --t1b:#f4ebe3; --t2:#0d7d74; --t2b:#e2f0ee; --t3:#4a4bd6; --t3b:#e9e9fb;
+    --t4:#b21e46; --t4b:#f8e6ec; --t5:#2f7d3a; --t5b:#e6f1e7;
+    --grid:#e6eaef;
+    --mono:ui-monospace,"SF Mono",SFMono-Regular,Menlo,Consolas,monospace;
+    --sans:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;
+    --wrap:960px;
+  }
+  @media (prefers-color-scheme:dark){ :root:not([data-theme="light"]){
+    --bg:#0f1319; --paper:#161b23; --panel:#1c222c; --line:#28303b; --line2:#37414e;
+    --ink:#eaeef3; --body:#c2cad4; --muted:#8b96a3; --dim:#68727f;
+    --accent:#48c9bd; --accent-ink:#5fd3c8; --grid:#232b35;
+    --t1:#e0824a; --t1b:#2a2019; --t2:#48c9bd; --t2b:#16241f; --t3:#8a8bf0; --t3b:#1a1a2c;
+    --t4:#ec6f92; --t4b:#2a1820; --t5:#67c072; --t5b:#152417;
+  }}
+  :root[data-theme="dark"]{
+    --bg:#0f1319; --paper:#161b23; --panel:#1c222c; --line:#28303b; --line2:#37414e;
+    --ink:#eaeef3; --body:#c2cad4; --muted:#8b96a3; --dim:#68727f;
+    --accent:#48c9bd; --accent-ink:#5fd3c8; --grid:#232b35;
+    --t1:#e0824a; --t1b:#2a2019; --t2:#48c9bd; --t2b:#16241f; --t3:#8a8bf0; --t3b:#1a1a2c;
+    --t4:#ec6f92; --t4b:#2a1820; --t5:#67c072; --t5b:#152417;
+  }
+  *{box-sizing:border-box}
+  html{-webkit-text-size-adjust:100%}
+  body{margin:0;background:var(--bg);color:var(--body);font-family:var(--sans);font-size:16px;line-height:1.6;-webkit-font-smoothing:antialiased}
+  .wrap{max-width:var(--wrap);margin:0 auto;padding:0 22px}
+  h1,h2,h3,h4{color:var(--ink);text-wrap:balance;line-height:1.14;margin:0}
+  a{color:var(--accent-ink)}
+  strong{color:var(--ink);font-weight:650}
+  .mono{font-family:var(--mono)} .tnum{font-variant-numeric:tabular-nums}
+  .eyebrow{font-family:var(--mono);font-size:11px;letter-spacing:.16em;text-transform:uppercase;font-weight:600}
+
+  header{padding:30px 0 0;border-bottom:1px solid var(--line);position:sticky;top:0;background:var(--bg);z-index:20}
+  header .eyebrow{color:var(--accent-ink)}
+  h1{font-size:clamp(1.6rem,3.6vw,2.2rem);font-weight:750;letter-spacing:-.025em;margin:7px 0 3px}
+  header .sub{color:var(--muted);font-size:13.5px;margin-bottom:14px}
+  .tabs{display:flex;gap:1px;overflow-x:auto;scrollbar-width:none}
+  .tabs::-webkit-scrollbar{display:none}
+  .tab{appearance:none;background:none;border:0;border-bottom:2.5px solid transparent;
+    font-family:var(--sans);font-size:14px;font-weight:600;color:var(--muted);
+    padding:10px 14px;cursor:pointer;white-space:nowrap;letter-spacing:-.01em;display:flex;align-items:center;gap:7px}
+  .tab:hover{color:var(--ink)}
+  .tab[aria-selected="true"]{color:var(--tc,var(--accent-ink));border-color:var(--tc,var(--accent))}
+  .tab .dot{width:7px;height:7px;border-radius:2px;background:var(--tc);flex:none;opacity:.85}
+  .tab .n{font-family:var(--mono);font-size:11px;color:var(--dim)}
+  .tab[aria-selected="true"] .n{color:var(--tc)}
+
+  main{padding:28px 0 70px}
+  .panel[hidden]{display:none}
+  .lede{font-size:1.12rem;color:var(--body);max-width:64ch;margin:0 0 18px}
+  .lede b{color:var(--ink)}
+  p{max-width:70ch}
+
+  .thead{position:relative;padding:2px 0 18px 20px;margin-bottom:20px;border-bottom:1px solid var(--line)}
+  .thead::before{content:"";position:absolute;left:0;top:2px;bottom:18px;width:5px;border-radius:3px;background:var(--tc)}
+  .t-tag{font-family:var(--mono);font-size:10.5px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:var(--tc);display:flex;align-items:center;gap:8px}
+  .t-tag .core{background:var(--tc);color:var(--paper);border-radius:4px;padding:1px 6px;font-size:9px}
+  .thead h2{font-size:clamp(1.4rem,3vw,1.8rem);font-weight:730;letter-spacing:-.02em;margin:8px 0 7px}
+  .thesis{color:var(--body);font-size:1.02rem;max-width:74ch} .thesis b{color:var(--ink)}
+
+  .block-h{font-family:var(--mono);font-size:10.5px;letter-spacing:.09em;text-transform:uppercase;color:var(--muted);font-weight:700;margin:26px 0 12px;display:flex;align-items:center;gap:9px}
+  .block-h::after{content:"";flex:1;height:1px;background:var(--line)}
+  .block-h .tc{color:var(--tc)}
+
+  .stats{display:grid;grid-template-columns:repeat(auto-fit,minmax(140px,1fr));gap:10px}
+  .stat{border:1px solid var(--line);border-radius:10px;padding:12px 14px;background:var(--paper)}
+  .stat .v{font-family:var(--mono);font-size:1.35rem;font-weight:650;color:var(--ink);letter-spacing:-.01em}
+  .stat .v small{font-size:.72rem;color:var(--muted);font-weight:500}
+  .stat .l{font-size:11.5px;color:var(--muted);margin-top:4px;line-height:1.4}
+  .sources{display:flex;flex-wrap:wrap;gap:6px;margin-top:14px}
+  .src{font-family:var(--mono);font-size:11px;color:var(--body);background:var(--panel);border:1px solid var(--line);border-radius:6px;padding:3px 8px;white-space:nowrap}
+  .src b{color:var(--tc);font-weight:600}
+
+  /* dataset accordions */
+  .ds-lead{font-size:13.5px;color:var(--muted);margin:0 0 12px}
+  .ds-list{display:flex;flex-direction:column;gap:8px}
+  .ds{border:1px solid var(--line);border-radius:10px;background:var(--paper);overflow:hidden}
+  .ds[open]{border-color:var(--tc)}
+  .ds summary{list-style:none;cursor:pointer;display:grid;grid-template-columns:auto 1fr auto;gap:11px;align-items:center;padding:11px 14px}
+  .ds summary::-webkit-details-marker{display:none}
+  .ds summary:hover{background:var(--panel)}
+  .ds .ds-n{font-family:var(--mono);font-size:11px;font-weight:700;color:var(--paper);background:var(--tc);border-radius:5px;padding:2px 7px;min-width:26px;text-align:center}
+  .ds .ds-t{font-weight:650;color:var(--ink);font-size:14px;line-height:1.3}
+  .ds .ds-src{font-family:var(--mono);font-size:10px;color:var(--tc);background:var(--tb);border:1px solid var(--tc);border-radius:5px;padding:2px 7px;white-space:nowrap}
+  @media(max-width:600px){.ds .ds-src{display:none}}
+  .ds .ds-body{padding:2px 14px 15px 51px}
+  @media(max-width:600px){.ds .ds-body{padding-left:14px}}
+  .ds .ds-what{font-size:12.5px;color:var(--muted);margin:8px 0 11px;max-width:76ch}
+  .ds .ds-fig{margin:0 0 12px;padding:0;list-style:none;display:grid;gap:6px}
+  .ds .ds-fig li{position:relative;padding-left:16px;font-size:13.5px;color:var(--body);line-height:1.5}
+  .ds .ds-fig li::before{content:"▸";position:absolute;left:0;color:var(--tc);font-size:9px;top:4px}
+  .ds .ds-fig li b{color:var(--ink);font-variant-numeric:tabular-nums;font-weight:650}
+  .ds .ds-cav{font-size:11.5px;color:var(--dim);font-style:italic;margin:-4px 0 12px;padding-left:16px}
+  .ds .ds-prompts{display:grid;gap:7px;border-top:1px dashed var(--line);padding-top:11px}
+  .ds .ds-prompts .pl{font-family:var(--mono);font-size:9.5px;letter-spacing:.07em;text-transform:uppercase;color:var(--tc);font-weight:700}
+  .ds .ds-prompts p{font-size:13px;color:var(--body);margin:0;max-width:78ch}
+  .ds .ds-prompts p b{color:var(--ink)}
+
+  .qs{display:grid;gap:10px}
+  .q{display:grid;grid-template-columns:auto 1fr;gap:12px;align-items:start;background:var(--paper);border:1px solid var(--line);border-radius:10px;padding:12px 14px}
+  .q .qn{font-family:var(--mono);font-size:11px;font-weight:700;color:var(--paper);background:var(--tc);border-radius:5px;padding:2px 7px;margin-top:1px}
+  .q .qt{font-size:14px;color:var(--body)} .q .qt b{color:var(--ink)}
+  .q .team{font-family:var(--mono);font-size:10px;color:var(--tc);letter-spacing:.03em;text-transform:uppercase;font-weight:700;display:block;margin-bottom:2px}
+
+  .pnotes{border:1px solid var(--line);border-left:3px solid var(--tc);background:var(--panel);border-radius:0 12px 12px 0;padding:16px 20px;margin-top:14px}
+  .pnotes .ph{font-family:var(--mono);font-size:10.5px;letter-spacing:.08em;text-transform:uppercase;color:var(--tc);font-weight:700;margin-bottom:10px}
+  .pnotes dl{margin:0;display:grid;gap:10px}
+  .pnotes dt{font-size:12.5px;font-weight:700;color:var(--ink);font-family:var(--sans)}
+  .pnotes dd{margin:2px 0 0;font-size:13.5px;color:var(--body)}
+  .pnotes dd b{color:var(--ink)}
+
+  .flow{display:grid;grid-template-columns:repeat(3,1fr);gap:1px;background:var(--line);border:1px solid var(--line);border-radius:14px;overflow:hidden;margin:22px 0}
+  .flow .step{background:var(--paper);padding:16px 18px}
+  .flow .n{font-family:var(--mono);font-size:12px;color:var(--accent-ink);font-weight:700}
+  .flow h4{font-size:1rem;font-weight:650;margin:5px 0 5px}
+  .flow p{margin:0;font-size:13.5px;color:var(--muted)}
+  @media(max-width:640px){.flow{grid-template-columns:1fr}}
+  .note{border:1px solid var(--line);background:var(--panel);border-radius:12px;padding:16px 20px;margin:18px 0}
+  .note h3{font-size:1.05rem;margin-bottom:6px}
+  .note p{font-size:14px;color:var(--body);margin:6px 0 0}
+  .note .eyebrow{color:var(--accent-ink);display:block;margin-bottom:2px}
+  .why{display:grid;gap:12px;margin:18px 0}
+  .why .row{display:grid;grid-template-columns:auto 1fr;gap:14px;align-items:start}
+  .why .k{font-family:var(--mono);font-size:11px;font-weight:700;letter-spacing:.04em;text-transform:uppercase;color:var(--accent-ink);background:var(--t2b);border:1px solid var(--accent);border-radius:6px;padding:4px 9px;white-space:nowrap;margin-top:2px}
+  .why .v{font-size:14.5px;color:var(--body)} .why .v b{color:var(--ink)}
+  .toc{display:grid;gap:8px;margin:18px 0 4px}
+  .toc a{display:grid;grid-template-columns:auto 1fr auto;gap:12px;align-items:center;text-decoration:none;background:var(--paper);border:1px solid var(--line);border-radius:10px;padding:11px 15px}
+  .toc a:hover{border-color:var(--tc)}
+  .toc .dot{width:9px;height:9px;border-radius:3px;background:var(--tc)}
+  .toc .tt{color:var(--ink);font-weight:650;font-size:14.5px}
+  .toc .tt small{display:block;color:var(--muted);font-weight:500;font-size:12px;margin-top:1px}
+  .toc .go{font-family:var(--mono);font-size:16px;color:var(--tc)}
+
+  .calc{background:var(--paper);border:1px solid var(--tc);border-radius:16px;overflow:hidden;margin-top:10px}
+  .calc-h{padding:16px 22px;border-bottom:1px solid var(--line);background:var(--tb)}
+  .calc-h h3{font-size:1.15rem;font-weight:720;letter-spacing:-.015em;color:var(--tc)}
+  .calc-h p{font-size:13.5px;color:var(--body);margin:5px 0 0;max-width:76ch}
+  .calc-grid{display:grid;grid-template-columns:1fr 1.15fr;gap:0}
+  @media(max-width:760px){.calc-grid{grid-template-columns:1fr}}
+  .controls{padding:20px 22px;border-right:1px solid var(--line);display:flex;flex-direction:column;gap:17px}
+  @media(max-width:760px){.controls{border-right:0;border-bottom:1px solid var(--line)}}
+  .ctl label{display:flex;justify-content:space-between;align-items:baseline;font-size:13px;color:var(--body);font-weight:600;margin-bottom:6px;gap:10px}
+  .ctl label .val{font-family:var(--mono);font-weight:700;color:var(--tc);font-size:14px;white-space:nowrap}
+  .ctl label .val small{color:var(--muted);font-weight:500}
+  input[type=range]{width:100%;accent-color:var(--tc);height:22px;margin:0}
+  .ctl .hint{font-size:11px;color:var(--dim);margin-top:3px;line-height:1.4}
+  .readout{padding:20px 22px;display:flex;flex-direction:column;gap:14px}
+  .big{display:grid;grid-template-columns:1fr 1fr;gap:9px}
+  .big .cell{border:1px solid var(--line);border-radius:11px;padding:12px 14px;background:var(--bg)}
+  .big .cell.hero{grid-column:1/-1;background:var(--tb);border-color:var(--tc)}
+  .big .cell.sub{grid-column:1/-1;background:var(--panel)}
+  .big .cell.sub .v{font-size:1.2rem;color:var(--tc)}
+  .big .cell .v{font-family:var(--mono);font-size:1.6rem;font-weight:700;color:var(--ink);letter-spacing:-.02em;line-height:1.1}
+  .big .cell.hero .v{font-size:2rem;color:var(--tc)}
+  .big .cell .v small{font-size:.8rem;color:var(--muted);font-weight:500}
+  .big .cell .l{font-size:11.5px;color:var(--muted);margin-top:3px;line-height:1.35}
+  .chartbox{border:1px solid var(--line);border-radius:11px;background:var(--bg);padding:12px 12px 6px}
+  .chartbox .ct{font-size:11.5px;color:var(--muted);margin:0 2px 4px;font-weight:600}
+  .cyc-legend{display:flex;flex-wrap:wrap;gap:8px 16px;margin:12px 2px 2px;font-size:12px}
+  .cyc-legend .lg{display:flex;align-items:center;gap:7px;color:var(--body);font-weight:600}
+  .cyc-legend .sw{width:16px;height:3px;border-radius:2px;flex:none}
+  .cyc-key{margin:10px 2px 0;font-size:12px;color:var(--muted);line-height:1.8}
+  .cyc-key b{color:var(--ink);font-weight:600;font-family:var(--mono);font-size:11px}
+  .cyc-read{border:1px solid var(--line);border-left:3px solid var(--tc);background:var(--panel);border-radius:0 12px 12px 0;padding:15px 20px;margin-top:16px}
+  .cyc-read .rh{font-family:var(--mono);font-size:10.5px;letter-spacing:.08em;text-transform:uppercase;color:var(--tc);font-weight:700;margin-bottom:10px}
+  .cyc-read ul{margin:0;padding:0;list-style:none;display:grid;gap:9px}
+  .cyc-read li{font-size:13.5px;color:var(--body)}
+  .cyc-read li b{color:var(--ink)}
+  .cyc-read .tag{font-family:var(--mono);font-size:10px;color:var(--tc);font-weight:700;text-transform:uppercase;letter-spacing:.03em}
+  .cyc-controls{display:flex;flex-wrap:wrap;gap:6px;margin:2px 0 12px;align-items:center}
+  .cyc-controls .cl{font-family:var(--mono);font-size:10.5px;letter-spacing:.06em;text-transform:uppercase;color:var(--muted);font-weight:700;margin-right:2px}
+  .cyc-btn{appearance:none;font-family:var(--mono);font-size:11.5px;font-weight:600;border:1px solid var(--line);background:var(--paper);color:var(--muted);border-radius:7px;padding:5px 11px;cursor:pointer}
+  .cyc-btn:hover{border-color:var(--tc);color:var(--ink)}
+  .cyc-btn[aria-pressed="true"]{background:var(--tc);border-color:var(--tc);color:#fff}
+  .cyc-main{display:grid;grid-template-columns:1.5fr 1fr;gap:14px;align-items:start}
+  @media(max-width:780px){.cyc-main{grid-template-columns:1fr}}
+  .cyc-lev{border:1px solid var(--tc);border-radius:12px;background:var(--tb);padding:15px 16px;display:flex;flex-direction:column;gap:11px}
+  .cyc-lev .lh{font-family:var(--mono);font-size:10px;letter-spacing:.07em;text-transform:uppercase;color:var(--tc);font-weight:700}
+  .cyc-lev .lh b{color:var(--ink)}
+  .cyc-bars{display:grid;gap:7px}
+  .cyc-bar{display:grid;grid-template-columns:74px 1fr auto;gap:8px;align-items:center;font-size:11px}
+  .cyc-bar .bl{color:var(--body);font-weight:600;line-height:1.2}
+  .cyc-bar .bl small{display:block;color:var(--muted);font-family:var(--mono);font-size:9.5px;font-weight:500}
+  .cyc-bar .btrack{background:var(--line);border-radius:4px;height:15px;overflow:hidden}
+  .cyc-bar .bt{height:15px;border-radius:4px;min-width:2px}
+  .cyc-bar .bv{font-family:var(--mono);font-weight:700;color:var(--ink);font-size:12px;white-space:nowrap}
+  .cyc-lev .lev-note{font-size:12px;color:var(--body);border-top:1px dashed var(--tc);padding-top:10px}
+  .cyc-lev .lev-note .big{font-family:var(--mono);font-size:1.15rem;font-weight:700;color:var(--tc);display:block;margin-bottom:2px}
+  .cyc-lev .lev-note b{color:var(--ink)}
+  .cyc-assume{font-size:10px;color:var(--dim);font-style:italic;line-height:1.4}
+  .lev-inputs-wrap{border-top:1px dashed var(--tc);padding-top:9px}
+  .lev-inputs-wrap summary{font-family:var(--mono);font-size:10px;color:var(--tc);cursor:pointer;font-weight:700;letter-spacing:.05em;text-transform:uppercase;list-style:none}
+  .lev-inputs-wrap summary::-webkit-details-marker{display:none}
+  .lev-inputs{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-top:9px}
+  .lev-inputs label{display:flex;flex-direction:column;font-size:10.5px;color:var(--body);font-weight:600;gap:2px}
+  .lev-inputs label span{font-family:var(--mono);font-size:9px;color:var(--muted);font-weight:500}
+  .lev-inputs input{width:100%;font-family:var(--mono);font-size:12.5px;font-weight:600;padding:5px 7px;border:1px solid var(--line);border-radius:6px;background:var(--paper);color:var(--ink)}
+  .lev-inputs input:focus{outline:none;border-color:var(--tc)}
+  svg{display:block;width:100%;height:auto}
+  .verdict{font-size:13px;color:var(--body);padding:11px 14px;border-radius:9px;border:1px solid var(--line);background:var(--panel)}
+  .verdict b{color:var(--ink)} .verdict.warn{border-color:var(--t1);background:var(--t1b)} .verdict.warn b{color:var(--t1)}
+  .verdict.ok{border-color:var(--t5);background:var(--t5b)}
+  .rassume{border:1px solid var(--line);border-radius:9px;background:var(--bg);padding:11px 13px;display:grid;gap:8px}
+  .rassume .ra-row{display:grid;grid-template-columns:118px 1fr;gap:10px;align-items:baseline;font-size:12px}
+  @media(max-width:520px){.rassume .ra-row{grid-template-columns:1fr;gap:2px}}
+  .rassume .ra-k{font-family:var(--mono);font-size:9.5px;letter-spacing:.05em;text-transform:uppercase;color:var(--tc);font-weight:700}
+  .rassume .ra-v{color:var(--body);line-height:1.45} .rassume .ra-v b{color:var(--ink)}
+  .assume{border-top:1px solid var(--line);padding:13px 22px;background:var(--panel)}
+  .assume summary{cursor:pointer;font-size:12px;color:var(--tc);font-weight:600;font-family:var(--mono)}
+  .assume .body{font-size:12.5px;color:var(--muted);margin-top:8px;line-height:1.55}
+
+  /* session plan */
+  .ros{display:grid;gap:1px;background:var(--line);border:1px solid var(--line);border-radius:12px;overflow:hidden;margin:4px 0 8px}
+  .ros .r{display:grid;grid-template-columns:96px 1fr auto;gap:14px;background:var(--paper);padding:12px 16px;align-items:baseline}
+  @media(max-width:600px){.ros .r{grid-template-columns:78px 1fr;gap:6px 10px}.ros .r .who{grid-column:2;margin-top:-4px}}
+  .ros .t{font-family:var(--mono);font-size:12px;font-weight:700;color:var(--accent-ink)}
+  .ros .w{font-size:14px;color:var(--body)} .ros .w b{color:var(--ink)}
+  .ros .who{font-family:var(--mono);font-size:10px;text-transform:uppercase;letter-spacing:.05em;color:var(--muted);font-weight:700}
+  .plan-fb{border-color:var(--accent)!important}
+  .plan-fb .eyebrow{color:var(--accent-ink)}
+  .beats{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin:4px 0}
+  @media(max-width:640px){.beats{grid-template-columns:1fr}}
+  .beats .b{border:1px solid var(--line);border-radius:11px;padding:14px 15px;background:var(--paper)}
+  .beats .bn{font-family:var(--mono);font-size:11px;font-weight:700;color:var(--accent-ink)}
+  .beats h4{font-size:.98rem;margin:5px 0 5px}
+  .beats p{font-size:13px;color:var(--muted);margin:0}
+  .plan-grid{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+  @media(max-width:680px){.plan-grid{grid-template-columns:1fr}}
+  .pcard{border:1px solid var(--line);border-left:4px solid var(--pc);border-radius:12px;background:var(--paper);padding:15px 17px;display:flex;flex-direction:column;gap:8px}
+  .pcard .pn{font-family:var(--mono);font-size:10px;font-weight:700;letter-spacing:.06em;text-transform:uppercase;color:var(--pc)}
+  .pcard h4{font-size:1.05rem;margin:0}
+  .pcard .idea{font-size:13px;color:var(--body)} .pcard .idea b{color:var(--ink)}
+  .pcard .teaser{font-size:12.5px;color:var(--muted);font-style:italic;border-top:1px dashed var(--line);padding-top:8px}
+  .pcard .pacts{display:flex;gap:8px;margin-top:auto;padding-top:4px}
+  .pcard .pbtn{appearance:none;font-family:var(--sans);font-size:12.5px;font-weight:600;border:1px solid var(--pc);border-radius:8px;padding:6px 12px;cursor:pointer;background:none;color:var(--pc)}
+  .pcard .pbtn.solid{background:var(--pc);color:#fff}
+  .dl-btn{display:inline-flex;align-items:center;gap:8px;font-family:var(--sans);font-size:14px;font-weight:650;color:#fff;background:var(--accent);border:1px solid var(--accent);border-radius:9px;padding:9px 16px;text-decoration:none}
+  .dl-btn:hover{background:var(--accent-ink)}
+  .dl-note{font-size:12px;color:var(--dim);margin-left:10px}
+  .st-wrap{overflow-x:auto;margin:2px 0}
+  .st{width:100%;border-collapse:collapse;font-size:13.5px;min-width:560px}
+  .st th,.st td{text-align:right;padding:9px 13px;border-bottom:1px solid var(--line);white-space:nowrap}
+  .st th:first-child,.st td:first-child{text-align:left}
+  .st thead th{font-family:var(--mono);font-size:10.5px;text-transform:uppercase;letter-spacing:.03em;color:var(--muted);font-weight:700;border-bottom:1.5px solid var(--line2);vertical-align:bottom}
+  .st thead th small{display:block;font-weight:500;color:var(--dim);text-transform:none;letter-spacing:0;font-size:9.5px}
+  .st td{font-variant-numeric:tabular-nums;color:var(--body)}
+  .st td:first-child{font-weight:650;color:var(--ink)}
+  .st tbody tr:hover{background:var(--panel)}
+  .st tr.tot td{border-top:2px solid var(--line2);border-bottom:none;font-weight:700;color:var(--ink)}
+  .st .hi{color:var(--tc);font-weight:700}
+  .qr-teasers{display:grid;gap:7px;margin:6px 0 4px}
+  .qt-row{display:grid;grid-template-columns:104px 1fr;gap:11px;align-items:baseline;font-size:13px}
+  @media(max-width:520px){.qt-row{grid-template-columns:1fr;gap:1px}}
+  .qt-k{font-family:var(--mono);font-size:10.5px;font-weight:700;text-transform:uppercase;letter-spacing:.04em;color:var(--pc)}
+  .qt-v{color:var(--body)} .qt-v b{color:var(--ink)}
+  .qr-opts{margin:6px 0 0;padding-left:18px} .qr-opts li{font-size:14px;color:var(--body);margin:0 0 7px} .qr-opts b{color:var(--ink)}
+  /* printable one-page pack */
+  #print-pack{display:none;padding:26px;color:#111;background:#fff;font-family:var(--sans);max-width:760px;margin:0 auto}
+  #print-pack h1{font-size:23px;margin:0 0 4px;color:#111} #print-pack .pk-meta{font-family:var(--mono);font-size:11px;text-transform:uppercase;letter-spacing:.06em;color:#666;margin:0 0 8px}
+  #print-pack .big-idea{font-size:15px;font-weight:600;margin:0 0 14px;color:#111}
+  #print-pack .pk-chart{border:1px solid #ddd;border-radius:8px;padding:8px;margin:0 0 6px} #print-pack .pk-chart svg{width:100%;height:auto;max-height:240px}
+  #print-pack h3{font-size:12px;text-transform:uppercase;letter-spacing:.05em;color:#333;margin:16px 0 6px;border-bottom:1px solid #ccc;padding-bottom:3px}
+  #print-pack ul,#print-pack ol{margin:0;padding-left:20px} #print-pack li{font-size:13.5px;margin:0 0 5px;color:#111}
+  #print-pack .pk-fb{border:1.5px solid #111;border-radius:8px;padding:10px 13px;font-size:13.5px;margin:14px 0 0;color:#111}
+  #print-pack .pk-notes{border:1px solid #bbb;border-radius:8px;height:120px;margin-top:6px}
+  @media print{
+    body.printing>header,body.printing>main,body.printing>footer{display:none!important}
+    body.printing #print-pack{display:block!important}
+    @page{margin:14mm}
+  }
+
+  footer{border-top:1px solid var(--line);margin-top:36px;padding:22px 0 60px;font-family:var(--mono);font-size:11.5px;color:var(--dim);line-height:1.7}
+  ::selection{background:rgba(13,125,116,.22)}
+</style>
+
+<header><div class="wrap" style="--tc:var(--t3)">
+  <div class="eyebrow" style="color:var(--tc)">Power Development · Team Day · Breakout</div>
+  <h1>Through the lens of demand</h1>
+  <div class="sub">Your table's brief, the data, and the live tools for this topic — everything you need to form a hypothesis.</div>
+</div></header>
+<main>
+<div class="wrap" style="--tc:var(--t3)">
+  <div class="note" style="border-color:var(--tc);border-left:4px solid var(--tc)">
+    <span class="eyebrow" style="color:var(--tc)">Your task</span>
+    <h3>Form a hypothesis from the data</h3>
+    <p>Having heard from three areas on the market we're facing into — <b>IPP</b>, <b>Merchant &amp; Markets</b> and <b>Origination</b> — your group of 4–5 now dives into <b>demand</b>. Work the data and the live tool below, and <b>form a hypothesis</b>.</p>
+    <p>The goal is to <b>draw links between our projects and the larger market context we're facing into</b> — and test whether it changes how we think about our projects or our overarching objectives.</p>
+    <p>By the end of the session, your table develops three things to share:</p>
+    <div class="beats" style="margin-top:10px">
+      <div class="b" style="border-left:3px solid var(--tc)"><div class="bn" style="color:var(--tc)">1 · Hypothesis</div><p>A clear position the data led you to.</p></div>
+      <div class="b" style="border-left:3px solid var(--tc)"><div class="bn" style="color:var(--tc)">2 · A data point</div><p>The single number that backs it up.</p></div>
+      <div class="b" style="border-left:3px solid var(--tc)"><div class="bn" style="color:var(--tc)">3 · A surprise</div><p>Something unexpected, surprising or interesting.</p></div>
+    </div>
+  </div>
+</div>
+
+<div class="panel wrap" id="p-t3" style="--tc:var(--t3);--tb:var(--t3b)">
+    <div class="thead">
+      <div class="t-tag"><span class="core">Topic 3</span> Through the lens of demand</div>
+      <h2>Demand has been flat for a decade — could it double?</h2>
+      <p class="thesis"><b>Operational demand</b> — the electricity the grid must serve, <i>after</i> rooftop solar is netted off behind the meter — has barely moved from ~177 TWh since 2020. But that flatline hides real growth: <b>rooftop quietly added ~16 TWh</b> of behind-the-meter supply (2020→2025), soaking up underlying growth of ~7% so the grid never saw it. That truce is ending — EVs, electrification and data centres pull up. Whether demand grows ~60% or <b>roughly doubles</b> by 2050 is a range of outcomes, not a certainty. Shape matters as much as size; the calculator below builds the duck curve live.</p>
+    </div>
+
+    <div class="block-h"><span class="tc">◆</span> The trend — flat for a decade, then the climb</div>
+    <p class="ds-lead">NEM operational demand sat flat near 177 TWh for years; the ISP 2026 central case now bends up ~60% by 2050. Solid line = actual, dashed = Step Change forecast.</p>
+    <div class="chartbox" style="padding:14px 14px 10px"><div class="ct">NEM operational demand — TWh/yr (actual 2020–25 · Step Change forecast to 2050)</div>
+      <svg id="t3-chart" viewBox="0 0 720 320" preserveAspectRatio="xMinYMin meet"></svg></div>
+    <div class="cyc-legend" id="t3-legend"></div>
+    <div class="cyc-read"><div class="rh">Reading the trend</div><ul>
+      <li>Operational demand was <b>flat (~177–181 TWh) from 2020 to 2025</b> — but behind-the-meter rooftop grew from <b>13 → 29 TWh (+16 TWh)</b> and efficiency did the rest, so underlying use actually rose ~7% while the grid saw none of it.</li>
+      <li>Step Change lifts it to <b>~290 TWh by 2050 (+62%)</b>; the scenario fan runs <b>244–433 TWh</b> — i.e. anywhere from +38% to <b>~2.4×</b>. The flat line is ending; the whole game is the slope.</li>
+      <li><b>The open question:</b> can rooftop keep adding ~2.7 GW/yr fast enough to keep <i>masking</i> the new load? Rooftop has added ~3 TWh/yr; EVs + electrification alone add ~4–5 TWh/yr through the 2030s — so the masking effect starts to lose the race.</li>
+    </ul></div>
+
+    <div class="block-h"><span class="tc">◆</span> The data on the table</div>
+    <div class="stats">
+      <div class="stat"><div class="v tnum">~16<small>TWh</small></div><div class="l">behind-the-meter rooftop added 2020→2025 — the growth that never hit the grid</div></div>
+      <div class="stat"><div class="v tnum">1.6–2.4×</div><div class="l">demand by 2050 across ISP scenarios (central Step Change ~1.6×)</div></div>
+      <div class="stat"><div class="v tnum">0.9 → 61<small>TWh</small></div><div class="l">EV charging load, 2026→2050</div></div>
+      <div class="stat"><div class="v tnum">26.5<small>GW</small></div><div class="l">rooftop solar today, installing ~2.7 GW/yr</div></div>
+    </div>
+    <div class="sources"><span class="src"><b>esoo_demand</b></span><span class="src"><b>der_postcode</b></span><span class="src"><b>rooftop_pv_actual</b></span><span class="src"><b>weather_demand</b></span><span class="src"><b>records</b> (min-demand)</span></div>
+
+    <div class="calc">
+      <div class="calc-h"><h3>Calculator · Demand shape: build the duck</h3>
+        <p>Start from a representative NEM day and add the forces reshaping it. Watch <b>operational demand</b> — total electricity use <i>minus</i> what rooftop serves behind the meter, i.e. what the grid actually has to supply: the midday belly hollows, the evening peak shifts. Size and shape both move.</p></div>
+      <div class="calc-grid">
+        <div class="controls">
+          <div class="ctl"><label>Rooftop solar installed <span class="val" id="rf-v">26<small>GW</small></span></label>
+            <input type="range" id="rf" min="15" max="90" step="1" value="26"><div class="hint"><b>~26 GW today</b>, installing ~2.7 GW/yr — a 5-year path is ~40 GW. Output ≈ installed × 0.6 as a midday bell; the grid only sees demand vanish.</div></div>
+          <div class="ctl"><label>EV charging load <span class="val" id="ev-v">3<small>TWh/yr</small></span></label>
+            <input type="range" id="ev" min="0" max="80" step="1" value="3"><div class="hint"><b>~1 TWh today</b> → ~5 by 2030 → ~61 by 2050 (ISP). Try <b>5</b> for a “2030” view, <b>30</b> for “2040”. Shape depends on <i>when</i> they charge ↓</div></div>
+          <div class="ctl"><label>EV charging that's managed <span class="val" id="mg-v">40<small>%</small></span></label>
+            <input type="range" id="mg" min="0" max="100" step="5" value="40"><div class="hint">Managed → midday/overnight (soaks solar); unmanaged → the 6pm peak. <b>Uptake is genuinely uncertain</b> — test both 0% and 100%.</div></div>
+          <div class="ctl"><label>Data-centre load <span class="val" id="dc-v">1<small>GW flat</small></span></label>
+            <input type="range" id="dc" min="0" max="12" step="0.5" value="1"><div class="hint"><b>~0.5–1 GW-equivalent today</b>; announced pipelines run to several GW by 2030. Try <b>3–5</b> for a data-centre wave. Runs 24/7 — a flat block.</div></div>
+          <div class="ctl"><label>Electrification uplift <span class="val" id="el-v">0<small>%</small></span></label>
+            <input type="range" id="el" min="0" max="60" step="1" value="0"><div class="hint"><b>~0 today</b>; the ISP adds ~40 TWh by 2040 (heating, industry). Try <b>10–20%</b> for a mid-2030s view. Grows the base, weighted to morning/evening.</div></div>
+        </div>
+        <div class="readout">
+          <div class="big">
+            <div class="cell hero"><div class="v" id="d-min">—</div><div class="l">minimum operational demand — the belly of the duck (negative = rooftop oversupplies the grid)</div></div>
+            <div class="cell"><div class="v" id="d-peak">—</div><div class="l">evening peak demand</div></div>
+            <div class="cell"><div class="v" id="d-twh">—</div><div class="l">annual energy served by the grid</div></div>
+          </div>
+          <div class="verdict" id="d-verdict">—</div>
+          <div class="chartbox"><div class="ct">Operational demand across the day (GW) — <span style="color:var(--dim)">dashed = today</span>, <span style="color:var(--t3)">solid = your scenario</span></div>
+            <svg id="d-chart" viewBox="0 0 480 200" preserveAspectRatio="xMinYMin meet"></svg></div>
+        </div>
+      </div>
+      <details class="assume"><summary>Model &amp; assumptions</summary><div class="body">
+        A representative NEM day at hourly resolution. Underlying (native) demand has a morning bump and an evening peak (~34 GW) before rooftop. Rooftop output ≈ installed GW × 0.6 as a midday bell, subtracted from the grid's view. EV energy spreads across the day by the managed/unmanaged split (managed → midday + overnight fill; unmanaged → a 6–9pm spike). Data-centre load is a flat 24-hour block. Electrification lifts the base, weighted to morning and evening. Annual energy scales the average day × 365. A shape model to build intuition — the real ISP demand traces live in the Lens's demand-outlook view.
+      </div></details>
+    </div>
+
+    <div class="block-h"><span class="tc">◆</span> Datasets on the table</div>
+    <p class="ds-lead">Real datasets from the Lens — open any to see its figures and discussion prompts. Hand each table two or three to work.</p>
+    <div class="ds-list" id="ds-t3"></div>
+
+    <div class="block-h"><span class="tc">◆</span> What each table explores</div>
+    <div class="qs">
+      <div class="q"><span class="qn">A</span><div class="qt"><span class="team">Data-centre wave</span>Add a realistic AI/data-centre block by 2035. Can the pipeline serve it — or does it re-open the coal-extension question?</div></div>
+      <div class="q"><span class="qn">B</span><div class="qt"><span class="team">EV ramp</span>Managed vs unmanaged charging is the whole story. Flip the managed slider 0↔100 at a big EV load — quantify the swing in the evening peak.</div></div>
+      <div class="q"><span class="qn">C</span><div class="qt"><span class="team">DER counter-force</span>Push rooftop up. At what point does the midday belly flip negative, and what does that do to anything trying to sell energy in daylight?</div></div>
+      <div class="q"><span class="qn">D</span><div class="qt"><span class="team">Shape not size</span>Find a scenario where annual energy barely moves but the <i>shape</i> is transformed. Where does the “duck” become a “canyon”?</div></div>
+    </div>
+
+    <div class="block-h"><span class="tc">◆</span> What demand does to price — a hand-off to the Market-cycles team</div>
+    <p class="ds-lead">Demand growth isn't just a volume story — it moves the whole price curve, which is exactly what Topic 1 (Market cycles) trades on. Here's the rule of thumb, straight from the data.</p>
+    <div class="cyc-read">
+      <div class="rh">Rule of thumb · demand → price (all else equal)</div>
+      <p style="font-size:13.5px;color:var(--body);margin:0 0 11px;max-width:74ch">In the normal range, <b>each +1 GW of average demand ≈ +$20/MWh</b>. But the relationship is <b>convex</b> — into scarcity, every extra GW costs far more. NSW daily average, 2025–26:</p>
+      <div class="cyc-bars" style="max-width:540px">
+        <div class="cyc-bar"><span class="bl">~6 GW</span><span class="btrack"><span class="bt" style="width:26%;background:var(--t5)"></span></span><span class="bv">$64/MWh</span></div>
+        <div class="cyc-bar"><span class="bl">~7 GW</span><span class="btrack"><span class="bt" style="width:34%;background:var(--t5)"></span></span><span class="bv">$83/MWh</span></div>
+        <div class="cyc-bar"><span class="bl">~8 GW</span><span class="btrack"><span class="bt" style="width:43%;background:var(--t1)"></span></span><span class="bv">$105/MWh</span></div>
+        <div class="cyc-bar"><span class="bl">~9 GW</span><span class="btrack"><span class="bt" style="width:100%;background:var(--t4)"></span></span><span class="bv">$246/MWh</span></div>
+      </div>
+      <p style="font-size:13px;color:var(--body);margin:12px 0 0;max-width:74ch">So EV, electrification and data-centre load that lift average demand a few GW push the pool price up <b>~$20–40/MWh</b> — and via the <b>returns-leverage panel</b> in Topic 1, that's several points of project IRR. Put simply: <b>demand growth is a tailwind to the price cycle; rooftop growth is the headwind.</b> Which one wins, and when, is the question to hand back to the room.</p>
+    </div>
+  </div>
+</main>
+<footer><div class="wrap">
+  Reading the NEM · session kit v1 · figures from the AusEnergy Lens (AEMO MMSDM + ISP 2026 + Open Electricity + CER), current to Aug 2026. Calculators are transparent teaching models, not planning tools.
+</div></footer>
+<script>
+(function(){
+  const css=k=>getComputedStyle(document.documentElement).getPropertyValue(k).trim();
+  const fmt=n=>{n=Math.round(n);return n.toLocaleString('en-US');};
+// ===== DEMAND MODEL =====
+  const base=[20,19,18,18,19,21,24,27,28,28,27,26,26,26,26,27,29,32,34,33,30,27,24,22];
+  const solarBell=h=>Math.max(0,Math.sin((h-6)/12*Math.PI));
+  const rf=document.getElementById('rf'),ev=document.getElementById('ev'),mg=document.getElementById('mg'),
+        dc=document.getElementById('dc'),el=document.getElementById('el');
+  function demandCurve(rfGW,evTWh,managed,dcGW,elPct){
+    const rooftopPeak=rfGW*0.6,evDaily=evTWh*1e3/365;
+    const mgShape=h=>Math.max(0,Math.sin((h-9)/9*Math.PI))*0.7+(h<6||h>=22?0.6:0);
+    const unShape=h=>Math.exp(-((h-19)**2)/3);
+    let mgSum=0,unSum=0;for(let h=0;h<24;h++){mgSum+=mgShape(h);unSum+=unShape(h);}
+    const out=[];
+    for(let h=0;h<24;h++){
+      let d=base[h]*(1+elPct/100*(0.5+0.5*Math.max(Math.exp(-((h-8)**2)/6),Math.exp(-((h-18)**2)/6))));
+      d-=rooftopPeak*solarBell(h);
+      d+=evDaily*(managed/100*mgShape(h)/mgSum+(1-managed/100)*unShape(h)/unSum)+dcGW;
+      out.push(d);
+    }
+    return out;
+  }
+  function renderDemand(){
+    if(!rf) return;   // topic-scoped page without this calculator — no-op
+    document.getElementById('rf-v').innerHTML=rf.value+'<small>GW</small>';
+    document.getElementById('ev-v').innerHTML=ev.value+'<small>TWh/yr</small>';
+    document.getElementById('mg-v').innerHTML=mg.value+'<small>%</small>';
+    document.getElementById('dc-v').innerHTML=(+dc.value)+'<small>GW flat</small>';
+    document.getElementById('el-v').innerHTML=el.value+'<small>%</small>';
+    const today=demandCurve(26,3,40,1,0),scen=demandCurve(+rf.value,+ev.value,+mg.value,+dc.value,+el.value);
+    const mn=Math.min(...scen),pk=Math.max(...scen),avg=scen.reduce((a,b)=>a+b,0)/24;
+    document.getElementById('d-min').innerHTML=mn.toFixed(1)+'<small> GW</small>';
+    document.getElementById('d-peak').innerHTML=pk.toFixed(1)+'<small> GW</small>';
+    document.getElementById('d-twh').innerHTML=(avg*8760/1000).toFixed(0)+'<small> TWh</small>';
+    const v=document.getElementById('d-verdict');
+    if(mn<0){v.className='verdict warn';v.innerHTML='<b>The belly went negative.</b> Rooftop now generates more than the grid needs at midday — operational demand flips below zero. This is the “canyon”: everything running in daylight fights for a shrinking, sometimes-negative market.';}
+    else if(mn<8){v.className='verdict warn';v.innerHTML='<b>A deep midday trough.</b> The grid barely needs anything at noon — brutal for daytime generators, and the reason storage and flexible load matter more than raw capacity.';}
+    else{v.className='verdict ok';v.innerHTML='Push rooftop up, or set managed charging to 0% — watch the belly drop and the evening peak spike. The <i>shape</i> moves faster than the total.';}
+    drawDemand(today,scen);
+  }
+  function drawDemand(today,scen){
+    const svg=document.getElementById('d-chart'),W=480,Ht=200,pad=40,pb=22;
+    const all=[...today,...scen];let ymax=Math.max(...all,5),ymin=Math.min(...all,0);
+    ymin=Math.min(ymin,0);ymax=Math.ceil(ymax/5)*5;
+    const px=h=>pad+h/23*(W-pad-12),py=v=>12+(Ht-12-pb)-((v-ymin)/(ymax-ymin))*(Ht-12-pb);
+    const grid=css('--grid'),mut=css('--muted'),c=css('--t3'),dim=css('--dim'),mono=css('--mono');
+    let g='';
+    for(let i=0;i<=4;i++){const yv=ymin+(ymax-ymin)*i/4,y=py(yv);g+=`<line x1="${pad}" y1="${y}" x2="${W-12}" y2="${y}" stroke="${grid}" stroke-width="1"/><text x="${pad-5}" y="${y+3}" text-anchor="end" font-size="9" font-family="${mono}" fill="${mut}">${Math.round(yv)}</text>`;}
+    if(ymin<0){const y0=py(0);g+=`<line x1="${pad}" y1="${y0}" x2="${W-12}" y2="${y0}" stroke="${mut}" stroke-width="1.3"/>`;}
+    [0,6,12,18].forEach(h=>g+=`<text x="${px(h)}" y="${Ht-7}" text-anchor="middle" font-size="9" font-family="${mono}" fill="${mut}">${String(h).padStart(2,'0')}:00</text>`);
+    const path=arr=>arr.map((v,h)=>`${h?'L':'M'}${px(h).toFixed(1)},${py(v).toFixed(1)}`).join(' ');
+    const y0=py(ymin<0?0:ymin);
+    const area=`M${px(0)},${y0} `+scen.map((v,h)=>`L${px(h).toFixed(1)},${py(v).toFixed(1)}`).join(' ')+` L${px(23)},${y0} Z`;
+    svg.innerHTML=g+`<path d="${area}" fill="${c}" fill-opacity="0.10"/><path d="${path(today)}" fill="none" stroke="${dim}" stroke-width="1.6" stroke-dasharray="4 3"/><path d="${path(scen)}" fill="none" stroke="${c}" stroke-width="2.4"/>`;
+  }
+  [rf,ev,mg,dc,el].forEach(e=>e&&e.addEventListener('input',renderDemand));
+
+    renderDemand();
+})();
+</script>
+<script>
+(function(){
+  const DATASETS = {
+  t3: [
+    {t:"The decade of flat demand — then the climb", src:"esoo_demand", what:"NEM operational consumption was flat for years; the ISP 2026 central case now bends steeply upward.",
+     fig:["Actual: <b>180.7 (2020), 177.0 (2024), 177.3 (2025)</b> TWh — a flat decade.","Step Change forecast: <b>179.3 (2026) → 192.3 (2030) → 260.6 (2040) → 289.6 (2050)</b> — +62% on 2026."],
+     cav:"Operational (sent-out) — the single clean total row, not a sum across overlapping categories.",
+     prompts:["Our pipeline was sized in the flat-demand era — which assets are being planned against the <b>wrong baseline</b>?","The steepest gradient is 2030→2040 (+68 TWh) — does our timeline front-load or back-load capacity relative to that inflection?"]},
+    {t:"The scenario fan — how wide is 2050?", src:"esoo_demand", what:"2050 NEM operational demand across ISP scenarios — the planning envelope.",
+     fig:["Accelerated Transition <b>433.2</b>, Higher Demand 331.9, Step Change 289.6, Slower Growth 244.6 TWh.","Spread ≈ <b>189 TWh</b> — more than today's entire NEM; Accelerated is 1.5× central."],
+     prompts:["A 189 TWh spread is bigger than today's NEM — which scenario does our investment committee actually underwrite to, <b>explicitly</b>?","What optionality (staged sites, grid headroom) captures the Accelerated upside without stranding under Slower Growth?"]},
+    {t:"The three new demand engines", src:"esoo_demand", what:"Where the new load comes from under Step Change — near-zero today, very large by 2050.",
+     fig:["Electric Vehicles: <b>0.9 (2026) → 30.1 (2040) → 60.9 (2050)</b> TWh — ~67×.","Electrification (gas→electric): 0.2 → 40.0 → <b>56.5</b> TWh.","Data Centres: <b>4.7 (2026) → 11.8 (2030) → 33.8 (2050)</b> TWh."],
+     prompts:["Data centres are the <b>nearest-term</b> engine (already 4.7 TWh, tripling by 2030) while EVs dominate later — does our origination match that timing?","EV load is shiftable; electrification is weather-peaky — which of the three helps our revenue shape and which hurts it?"]},
+    {t:"Rooftop PV — the load-eraser that keeps growing", src:"esoo_demand", what:"Rooftop generation (which subtracts from grid demand) grows almost as fast as the new loads.",
+     fig:["Rooftop PV: <b>29.8 (2026) → 39.4 (2030) → 60.8 (2040) → 89.1 (2050)</b> TWh — 3×."],
+     prompts:["Rooftop rising 30→89 TWh deepens the midday trough every year — how does that reshape the merchant value of <b>our</b> utility-scale solar?","If behind-the-meter PV erases daytime grid demand, is the scarce product increasingly the <b>evening ramp</b>, not daytime energy?"]},
+    {t:"The home-battery boom", src:"der_postcode", what:"Monthly home-battery installs since the federal rebate — a step-change in behind-the-meter storage.",
+     fig:["Monthly installs: <b>478 MWh (Jul-2025) → 1,254 (Dec-2025) → 2,648 (Apr-2026 peak)</b>.","Cumulative fleet ≈ <b>11.3 GWh</b> in a year."],
+     cav:"May–Jun 2026 figures dip — almost certainly CER reporting lag on recent months, not a real fall.",
+     prompts:["~11 GWh of household storage soaks midday solar and discharges into the evening peak — does that erode the spread our grid-scale BESS relies on?","If home batteries + VPPs shave the evening peak, does that weaken the firming case, or just move value to <b>deeper, rarer scarcity</b>?"]},
+    {t:"Rooftop fleet — 26.5 GW, and where it's concentrated", src:"der_postcode", what:"Cumulative small-scale solar by region — reshaping each region's load differently.",
+     fig:["NSW <b>9.0 GW</b>, QLD 8.1, VIC 5.9, SA 3.0, TAS 0.4 GW; NEM ≈ <b>26.5 GW</b>.","Annual additions peaked ~2.5–2.9 GW/yr (2020–2024)."],
+     prompts:["SA runs on 3 GW of rooftop against a ~1.6 GW system floor — what does SA's duck curve today tell us about <b>NSW/QLD in five years</b>?","Where is behind-the-meter PV most likely to constrain our daytime export first?"]},
+    {t:"The duck curve — the midday rooftop bulge (live)", src:"rooftop_pv_actual", what:"NEM-total rooftop output by hour, Jan 2026 — the daytime wall of PV vs near-zero at the evening peak.",
+     fig:["9am avg <b>9,586 MW</b>; noon avg <b>13,600</b> (max interval 16,210); 6pm avg <b>2,084</b>.","Midday-to-evening swing ≈ <b>11.5 GW</b> of disappearing supply within ~6 hours."],
+     prompts:["The system loses ~11.5 GW of rooftop between noon and 6pm every summer day — is that ramp the <b>single biggest commercial opportunity</b> in our pipeline?","Are we still developing daytime-only solar into a market with 16 GW of free midday supply?"]},
+    {t:"Minimum & maximum demand — the widening band", src:"market_daily · records", what:"How far apart the NEM's lightest and heaviest moments now sit.",
+     fig:["NEM daily-avg minimum ≈ <b>16.0 GW</b> (2025-12-27) vs peak day ≈ <b>34.1 GW</b> (2026-01-07).","Instantaneous NEM min-demand record <b>9,155 MW</b>; SA hits a <b>50 MW</b> floor repeatedly."],
+     prompts:["The instantaneous minimum keeps falling — at what point does <b>minimum</b> demand, not maximum, become the constraint we develop around?","A system that swings 9→34 GW pays for flexibility, not energy — does our asset mix earn from that spread?"]},
+    {t:"Demand's temperature U-curve", src:"weather_demand", what:"NSW peak demand vs temperature — U-shaped (cooling and heating), with spikes at both extremes.",
+     fig:["NSW avg daily peak: <b>&lt;15°C 11,890 MW</b>; 20–25°C 8,744 (the trough); 35°C+ <b>11,600 MW</b>.","Demand is ~35% higher at the extremes than at the mild midpoint; spike-intervals/day jump from ~1 to ~12–18."],
+     prompts:["Electrification of heating fattens the <b>cold</b> (winter-evening) tail — is our capacity aimed at the summer peak we know, or the winter peak that's coming?","How many hours a year does our firming thesis actually depend on?"]},
+    {t:"Negative prices — the midday glut in the market", src:"price_trend", what:"Hours of negative wholesale price vs high-price spike hours, by region and year.",
+     fig:["SA negative-price hours: 643 (2020) → 2,165 (2023) → <b>1,102 (2026 YTD)</b>; NSW 16 → 557 → 186.","SA average price still <b>rose $43 → $87</b>/MWh even as negative hours exploded — value moved to the evening."],
+     prompts:["SA spends 1,000+ hours a year at negative prices — is our merchant-solar assumption <b>conservative enough</b>?","Average price rose even as negative hours grew — does our mix capture that time-shift, or fight it?"]},
+    {t:"Gas in retreat — the electrification counter-story", src:"gsoo", what:"As electrification pulls load onto the grid, domestic gas demand falls — but gas-for-power stays lumpy.",
+     fig:["Domestic gas demand (excl. power): <b>386 (2026) → 248 (2040) → 203 (2045)</b> PJ/yr — −47%.","Gas-for-power (NEM) stays volatile: 71 → 89 (2035) → 71 (2045) PJ — <b>no clean decline</b>."],
+     prompts:["Household gas nearly halves by 2045 — that's the electrification load landing on <b>our</b> grid; are we developing generation to serve it?","Gas-for-power stays choppy (the firming swing fuel) — does that validate or threaten our peaker economics?"]}
+  ]
+  };
+
+  Object.entries(DATASETS).forEach(([tid,arr])=>{
+    const el=document.getElementById('ds-'+tid); if(!el) return;
+    el.innerHTML=arr.map((d,i)=>{
+      const figs=d.fig.map(f=>'<li>'+f+'</li>').join('');
+      const cav=d.cav?'<div class="ds-cav">'+d.cav+'</div>':'';
+      const prompts=d.prompts.map(p=>'<p>'+p+'</p>').join('');
+      return '<details class="ds"'+(i===0?' open':'')+'><summary><span class="ds-n">'+(i+1)+
+        '</span><span class="ds-t">'+d.t+'</span><span class="ds-src">'+d.src+
+        '</span></summary><div class="ds-body"><p class="ds-what">'+d.what+'</p><ul class="ds-fig">'+figs+
+        '</ul>'+cav+'<div class="ds-prompts"><span class="pl">Discussion prompts</span>'+prompts+'</div></div></details>';
+    }).join('');
+  });
+})();
+</script>
+<script>
+(function(){
+
+  const css=k=>getComputedStyle(document.documentElement).getPropertyValue(k).trim();
+  const lp=pts=>pts.map((p,i)=>`${i?'L':'M'}${p[0].toFixed(1)},${p[1].toFixed(1)}`).join(' ');
+  const RC={NSW:"#3b82c4",QLD:"#c1494a",SA:"#d98a2b",VIC:"#7a5bd0",TAS:"#2ea3a3"};
+  const hexA=(h,a)=>{const n=parseInt(h.slice(1),16);return `rgba(${n>>16&255},${n>>8&255},${n&255},${a})`;};
+  /* recolour a .cyc-lev callout box to a state colour (or revert to panel default when All) */
+  function tintBox(id,state){const b=document.getElementById(id); if(!b) return;
+    if(state && RC[state]){b.style.setProperty('--tc',RC[state]);b.style.setProperty('--tb',hexA(RC[state],0.10));}
+    else {b.style.removeProperty('--tc');b.style.removeProperty('--tb');}}
+
+  function axes(svg,o){
+    const x0=o.padL,x1=o.W-o.padR,y0=o.H-o.padB,y1=o.padT;
+    const px=v=>x0+(v-o.xmin)/(o.xmax-o.xmin)*(x1-x0);
+    const py=v=>y0-(v-0)/(o.ymax-0)*(y0-y1);
+    const grid=css('--grid'),mut=css('--muted'),mono=css('--mono');
+    let g='';
+    o.yticks.forEach(t=>{const y=py(t);g+=`<line x1="${x0}" y1="${y.toFixed(1)}" x2="${x1}" y2="${y.toFixed(1)}" stroke="${grid}" stroke-width="1"/><text x="${x0-6}" y="${(y+3).toFixed(1)}" text-anchor="end" font-size="10" font-family="${mono}" fill="${mut}">${o.yfmt(t)}</text>`;});
+    o.xticks.forEach(t=>{g+=`<text x="${px(t.v).toFixed(1)}" y="${(y0+16).toFixed(1)}" text-anchor="middle" font-size="9.5" font-family="${mono}" fill="${mut}">${t.l}</text>`;});
+    return {px,py,g,x0,x1,y0,y1,mono,mut};
+  }
+
+  /* generic multi-line chart (per-series x arrays) */
+  function simpleChart(id,o){
+    const svg=document.getElementById(id); if(!svg) return;
+    const A=axes(svg,{W:720,H:320,padL:46,padR:o.padR||56,padT:24,padB:34,xmin:o.xmin,xmax:o.xmax,ymax:o.ymax,yticks:o.yticks,yfmt:o.yfmt,xticks:o.xticks});
+    const {px,py}=A; let g=A.g;
+    (o.annos||[]).forEach(a=>{g+=`<text x="${px(a.x).toFixed(1)}" y="${py(a.y).toFixed(1)}" text-anchor="${a.anchor||'middle'}" font-size="9.5" font-family="${A.mono}" fill="${a.c||A.mut}" font-style="${a.it?'italic':'normal'}" font-weight="${a.b?'700':'400'}">${a.t}</text>`;});
+    o.seriesList.forEach(s=>{
+      const pts=s.v.map((v,i)=>[px(s.x[i]),py(v)]);
+      g+=`<path d="${lp(pts)}" fill="none" stroke="${s.c}" stroke-width="${s.w||2.2}"${s.dash?' stroke-dasharray="5 4"':''}/>`;
+      const last=pts[pts.length-1];
+      g+=`<circle cx="${last[0].toFixed(1)}" cy="${last[1].toFixed(1)}" r="3" fill="${s.c}"/>`;
+      if(s.end) g+=`<text x="${(last[0]+5).toFixed(1)}" y="${(last[1]+3).toFixed(1)}" font-size="9.5" font-family="${A.mono}" fill="${s.c}" font-weight="700">${s.end}</text>`;
+    });
+    svg.innerHTML=g;
+    if(o.legendId) document.getElementById(o.legendId).innerHTML=o.seriesList.map(s=>`<span class="lg"><span class="sw" style="background:${s.c}"></span>${s.leg||s.id}${s.dash?' (forecast)':''}</span>`).join('');
+  }
+
+    const YRS=[2015,2016,2017,2018,2019,2020,2021,2022,2023,2024,2025,2026];
+/* ===================== TOPIC 3 — demand: flat then climb ===================== */
+  simpleChart('t3-chart',{xmin:2020,xmax:2050,ymax:320,yticks:[0,80,160,240,320],yfmt:t=>t,padR:60,
+    xticks:[2020,2025,2030,2035,2040,2045,2050].map(y=>({v:y,l:"'"+String(y).slice(2)})),
+    annos:[{x:2022.5,y:205,t:'flat ~177 TWh',c:css('--muted'),it:true},{x:2044,y:308,t:'~290 TWh by 2050',c:css('--t3'),anchor:'end',b:true}],
+    seriesList:[
+      {id:'Actual',c:css('--t3'),w:2.7,x:[2020,2021,2022,2023,2024,2025],v:[180.7,177.6,177.8,177.2,177,177.3],leg:'Actual'},
+      {id:'Forecast',c:css('--t3'),dash:true,x:[2025,2026,2027,2028,2029,2030,2031,2032,2033,2034,2035,2036,2037,2038,2039,2040,2041,2042,2043,2044,2045,2046,2047,2048,2049,2050],
+        v:[177.3,179.3,180.7,182.3,184.5,192.3,199,207.4,215.4,222.7,230.3,237.2,244.3,250.8,256.3,260.6,264.3,267.9,272.2,275.4,278,281.2,283.9,286.4,288.3,289.6],leg:'Step Change'}
+    ],legendId:'t3-legend'});
+
+  })();
+</script>

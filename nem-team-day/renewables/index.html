@@ -1,0 +1,590 @@
+<title>Renewable penetration · Reading the NEM</title>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<style>
+  :root{
+    --bg:#f6f8fa; --paper:#ffffff; --panel:#eef1f5; --line:#dde3ea; --line2:#c9d2dc;
+    --ink:#111820; --body:#37424f; --muted:#66717f; --dim:#8a94a1;
+    --accent:#0d7d74; --accent-ink:#0a5f58;
+    --t1:#b4571f; --t1b:#f4ebe3; --t2:#0d7d74; --t2b:#e2f0ee; --t3:#4a4bd6; --t3b:#e9e9fb;
+    --t4:#b21e46; --t4b:#f8e6ec; --t5:#2f7d3a; --t5b:#e6f1e7;
+    --grid:#e6eaef;
+    --mono:ui-monospace,"SF Mono",SFMono-Regular,Menlo,Consolas,monospace;
+    --sans:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;
+    --wrap:960px;
+  }
+  @media (prefers-color-scheme:dark){ :root:not([data-theme="light"]){
+    --bg:#0f1319; --paper:#161b23; --panel:#1c222c; --line:#28303b; --line2:#37414e;
+    --ink:#eaeef3; --body:#c2cad4; --muted:#8b96a3; --dim:#68727f;
+    --accent:#48c9bd; --accent-ink:#5fd3c8; --grid:#232b35;
+    --t1:#e0824a; --t1b:#2a2019; --t2:#48c9bd; --t2b:#16241f; --t3:#8a8bf0; --t3b:#1a1a2c;
+    --t4:#ec6f92; --t4b:#2a1820; --t5:#67c072; --t5b:#152417;
+  }}
+  :root[data-theme="dark"]{
+    --bg:#0f1319; --paper:#161b23; --panel:#1c222c; --line:#28303b; --line2:#37414e;
+    --ink:#eaeef3; --body:#c2cad4; --muted:#8b96a3; --dim:#68727f;
+    --accent:#48c9bd; --accent-ink:#5fd3c8; --grid:#232b35;
+    --t1:#e0824a; --t1b:#2a2019; --t2:#48c9bd; --t2b:#16241f; --t3:#8a8bf0; --t3b:#1a1a2c;
+    --t4:#ec6f92; --t4b:#2a1820; --t5:#67c072; --t5b:#152417;
+  }
+  *{box-sizing:border-box}
+  html{-webkit-text-size-adjust:100%}
+  body{margin:0;background:var(--bg);color:var(--body);font-family:var(--sans);font-size:16px;line-height:1.6;-webkit-font-smoothing:antialiased}
+  .wrap{max-width:var(--wrap);margin:0 auto;padding:0 22px}
+  h1,h2,h3,h4{color:var(--ink);text-wrap:balance;line-height:1.14;margin:0}
+  a{color:var(--accent-ink)}
+  strong{color:var(--ink);font-weight:650}
+  .mono{font-family:var(--mono)} .tnum{font-variant-numeric:tabular-nums}
+  .eyebrow{font-family:var(--mono);font-size:11px;letter-spacing:.16em;text-transform:uppercase;font-weight:600}
+
+  header{padding:30px 0 0;border-bottom:1px solid var(--line);position:sticky;top:0;background:var(--bg);z-index:20}
+  header .eyebrow{color:var(--accent-ink)}
+  h1{font-size:clamp(1.6rem,3.6vw,2.2rem);font-weight:750;letter-spacing:-.025em;margin:7px 0 3px}
+  header .sub{color:var(--muted);font-size:13.5px;margin-bottom:14px}
+  .tabs{display:flex;gap:1px;overflow-x:auto;scrollbar-width:none}
+  .tabs::-webkit-scrollbar{display:none}
+  .tab{appearance:none;background:none;border:0;border-bottom:2.5px solid transparent;
+    font-family:var(--sans);font-size:14px;font-weight:600;color:var(--muted);
+    padding:10px 14px;cursor:pointer;white-space:nowrap;letter-spacing:-.01em;display:flex;align-items:center;gap:7px}
+  .tab:hover{color:var(--ink)}
+  .tab[aria-selected="true"]{color:var(--tc,var(--accent-ink));border-color:var(--tc,var(--accent))}
+  .tab .dot{width:7px;height:7px;border-radius:2px;background:var(--tc);flex:none;opacity:.85}
+  .tab .n{font-family:var(--mono);font-size:11px;color:var(--dim)}
+  .tab[aria-selected="true"] .n{color:var(--tc)}
+
+  main{padding:28px 0 70px}
+  .panel[hidden]{display:none}
+  .lede{font-size:1.12rem;color:var(--body);max-width:64ch;margin:0 0 18px}
+  .lede b{color:var(--ink)}
+  p{max-width:70ch}
+
+  .thead{position:relative;padding:2px 0 18px 20px;margin-bottom:20px;border-bottom:1px solid var(--line)}
+  .thead::before{content:"";position:absolute;left:0;top:2px;bottom:18px;width:5px;border-radius:3px;background:var(--tc)}
+  .t-tag{font-family:var(--mono);font-size:10.5px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:var(--tc);display:flex;align-items:center;gap:8px}
+  .t-tag .core{background:var(--tc);color:var(--paper);border-radius:4px;padding:1px 6px;font-size:9px}
+  .thead h2{font-size:clamp(1.4rem,3vw,1.8rem);font-weight:730;letter-spacing:-.02em;margin:8px 0 7px}
+  .thesis{color:var(--body);font-size:1.02rem;max-width:74ch} .thesis b{color:var(--ink)}
+
+  .block-h{font-family:var(--mono);font-size:10.5px;letter-spacing:.09em;text-transform:uppercase;color:var(--muted);font-weight:700;margin:26px 0 12px;display:flex;align-items:center;gap:9px}
+  .block-h::after{content:"";flex:1;height:1px;background:var(--line)}
+  .block-h .tc{color:var(--tc)}
+
+  .stats{display:grid;grid-template-columns:repeat(auto-fit,minmax(140px,1fr));gap:10px}
+  .stat{border:1px solid var(--line);border-radius:10px;padding:12px 14px;background:var(--paper)}
+  .stat .v{font-family:var(--mono);font-size:1.35rem;font-weight:650;color:var(--ink);letter-spacing:-.01em}
+  .stat .v small{font-size:.72rem;color:var(--muted);font-weight:500}
+  .stat .l{font-size:11.5px;color:var(--muted);margin-top:4px;line-height:1.4}
+  .sources{display:flex;flex-wrap:wrap;gap:6px;margin-top:14px}
+  .src{font-family:var(--mono);font-size:11px;color:var(--body);background:var(--panel);border:1px solid var(--line);border-radius:6px;padding:3px 8px;white-space:nowrap}
+  .src b{color:var(--tc);font-weight:600}
+
+  /* dataset accordions */
+  .ds-lead{font-size:13.5px;color:var(--muted);margin:0 0 12px}
+  .ds-list{display:flex;flex-direction:column;gap:8px}
+  .ds{border:1px solid var(--line);border-radius:10px;background:var(--paper);overflow:hidden}
+  .ds[open]{border-color:var(--tc)}
+  .ds summary{list-style:none;cursor:pointer;display:grid;grid-template-columns:auto 1fr auto;gap:11px;align-items:center;padding:11px 14px}
+  .ds summary::-webkit-details-marker{display:none}
+  .ds summary:hover{background:var(--panel)}
+  .ds .ds-n{font-family:var(--mono);font-size:11px;font-weight:700;color:var(--paper);background:var(--tc);border-radius:5px;padding:2px 7px;min-width:26px;text-align:center}
+  .ds .ds-t{font-weight:650;color:var(--ink);font-size:14px;line-height:1.3}
+  .ds .ds-src{font-family:var(--mono);font-size:10px;color:var(--tc);background:var(--tb);border:1px solid var(--tc);border-radius:5px;padding:2px 7px;white-space:nowrap}
+  @media(max-width:600px){.ds .ds-src{display:none}}
+  .ds .ds-body{padding:2px 14px 15px 51px}
+  @media(max-width:600px){.ds .ds-body{padding-left:14px}}
+  .ds .ds-what{font-size:12.5px;color:var(--muted);margin:8px 0 11px;max-width:76ch}
+  .ds .ds-fig{margin:0 0 12px;padding:0;list-style:none;display:grid;gap:6px}
+  .ds .ds-fig li{position:relative;padding-left:16px;font-size:13.5px;color:var(--body);line-height:1.5}
+  .ds .ds-fig li::before{content:"▸";position:absolute;left:0;color:var(--tc);font-size:9px;top:4px}
+  .ds .ds-fig li b{color:var(--ink);font-variant-numeric:tabular-nums;font-weight:650}
+  .ds .ds-cav{font-size:11.5px;color:var(--dim);font-style:italic;margin:-4px 0 12px;padding-left:16px}
+  .ds .ds-prompts{display:grid;gap:7px;border-top:1px dashed var(--line);padding-top:11px}
+  .ds .ds-prompts .pl{font-family:var(--mono);font-size:9.5px;letter-spacing:.07em;text-transform:uppercase;color:var(--tc);font-weight:700}
+  .ds .ds-prompts p{font-size:13px;color:var(--body);margin:0;max-width:78ch}
+  .ds .ds-prompts p b{color:var(--ink)}
+
+  .qs{display:grid;gap:10px}
+  .q{display:grid;grid-template-columns:auto 1fr;gap:12px;align-items:start;background:var(--paper);border:1px solid var(--line);border-radius:10px;padding:12px 14px}
+  .q .qn{font-family:var(--mono);font-size:11px;font-weight:700;color:var(--paper);background:var(--tc);border-radius:5px;padding:2px 7px;margin-top:1px}
+  .q .qt{font-size:14px;color:var(--body)} .q .qt b{color:var(--ink)}
+  .q .team{font-family:var(--mono);font-size:10px;color:var(--tc);letter-spacing:.03em;text-transform:uppercase;font-weight:700;display:block;margin-bottom:2px}
+
+  .pnotes{border:1px solid var(--line);border-left:3px solid var(--tc);background:var(--panel);border-radius:0 12px 12px 0;padding:16px 20px;margin-top:14px}
+  .pnotes .ph{font-family:var(--mono);font-size:10.5px;letter-spacing:.08em;text-transform:uppercase;color:var(--tc);font-weight:700;margin-bottom:10px}
+  .pnotes dl{margin:0;display:grid;gap:10px}
+  .pnotes dt{font-size:12.5px;font-weight:700;color:var(--ink);font-family:var(--sans)}
+  .pnotes dd{margin:2px 0 0;font-size:13.5px;color:var(--body)}
+  .pnotes dd b{color:var(--ink)}
+
+  .flow{display:grid;grid-template-columns:repeat(3,1fr);gap:1px;background:var(--line);border:1px solid var(--line);border-radius:14px;overflow:hidden;margin:22px 0}
+  .flow .step{background:var(--paper);padding:16px 18px}
+  .flow .n{font-family:var(--mono);font-size:12px;color:var(--accent-ink);font-weight:700}
+  .flow h4{font-size:1rem;font-weight:650;margin:5px 0 5px}
+  .flow p{margin:0;font-size:13.5px;color:var(--muted)}
+  @media(max-width:640px){.flow{grid-template-columns:1fr}}
+  .note{border:1px solid var(--line);background:var(--panel);border-radius:12px;padding:16px 20px;margin:18px 0}
+  .note h3{font-size:1.05rem;margin-bottom:6px}
+  .note p{font-size:14px;color:var(--body);margin:6px 0 0}
+  .note .eyebrow{color:var(--accent-ink);display:block;margin-bottom:2px}
+  .why{display:grid;gap:12px;margin:18px 0}
+  .why .row{display:grid;grid-template-columns:auto 1fr;gap:14px;align-items:start}
+  .why .k{font-family:var(--mono);font-size:11px;font-weight:700;letter-spacing:.04em;text-transform:uppercase;color:var(--accent-ink);background:var(--t2b);border:1px solid var(--accent);border-radius:6px;padding:4px 9px;white-space:nowrap;margin-top:2px}
+  .why .v{font-size:14.5px;color:var(--body)} .why .v b{color:var(--ink)}
+  .toc{display:grid;gap:8px;margin:18px 0 4px}
+  .toc a{display:grid;grid-template-columns:auto 1fr auto;gap:12px;align-items:center;text-decoration:none;background:var(--paper);border:1px solid var(--line);border-radius:10px;padding:11px 15px}
+  .toc a:hover{border-color:var(--tc)}
+  .toc .dot{width:9px;height:9px;border-radius:3px;background:var(--tc)}
+  .toc .tt{color:var(--ink);font-weight:650;font-size:14.5px}
+  .toc .tt small{display:block;color:var(--muted);font-weight:500;font-size:12px;margin-top:1px}
+  .toc .go{font-family:var(--mono);font-size:16px;color:var(--tc)}
+
+  .calc{background:var(--paper);border:1px solid var(--tc);border-radius:16px;overflow:hidden;margin-top:10px}
+  .calc-h{padding:16px 22px;border-bottom:1px solid var(--line);background:var(--tb)}
+  .calc-h h3{font-size:1.15rem;font-weight:720;letter-spacing:-.015em;color:var(--tc)}
+  .calc-h p{font-size:13.5px;color:var(--body);margin:5px 0 0;max-width:76ch}
+  .calc-grid{display:grid;grid-template-columns:1fr 1.15fr;gap:0}
+  @media(max-width:760px){.calc-grid{grid-template-columns:1fr}}
+  .controls{padding:20px 22px;border-right:1px solid var(--line);display:flex;flex-direction:column;gap:17px}
+  @media(max-width:760px){.controls{border-right:0;border-bottom:1px solid var(--line)}}
+  .ctl label{display:flex;justify-content:space-between;align-items:baseline;font-size:13px;color:var(--body);font-weight:600;margin-bottom:6px;gap:10px}
+  .ctl label .val{font-family:var(--mono);font-weight:700;color:var(--tc);font-size:14px;white-space:nowrap}
+  .ctl label .val small{color:var(--muted);font-weight:500}
+  input[type=range]{width:100%;accent-color:var(--tc);height:22px;margin:0}
+  .ctl .hint{font-size:11px;color:var(--dim);margin-top:3px;line-height:1.4}
+  .readout{padding:20px 22px;display:flex;flex-direction:column;gap:14px}
+  .big{display:grid;grid-template-columns:1fr 1fr;gap:9px}
+  .big .cell{border:1px solid var(--line);border-radius:11px;padding:12px 14px;background:var(--bg)}
+  .big .cell.hero{grid-column:1/-1;background:var(--tb);border-color:var(--tc)}
+  .big .cell.sub{grid-column:1/-1;background:var(--panel)}
+  .big .cell.sub .v{font-size:1.2rem;color:var(--tc)}
+  .big .cell .v{font-family:var(--mono);font-size:1.6rem;font-weight:700;color:var(--ink);letter-spacing:-.02em;line-height:1.1}
+  .big .cell.hero .v{font-size:2rem;color:var(--tc)}
+  .big .cell .v small{font-size:.8rem;color:var(--muted);font-weight:500}
+  .big .cell .l{font-size:11.5px;color:var(--muted);margin-top:3px;line-height:1.35}
+  .chartbox{border:1px solid var(--line);border-radius:11px;background:var(--bg);padding:12px 12px 6px}
+  .chartbox .ct{font-size:11.5px;color:var(--muted);margin:0 2px 4px;font-weight:600}
+  .cyc-legend{display:flex;flex-wrap:wrap;gap:8px 16px;margin:12px 2px 2px;font-size:12px}
+  .cyc-legend .lg{display:flex;align-items:center;gap:7px;color:var(--body);font-weight:600}
+  .cyc-legend .sw{width:16px;height:3px;border-radius:2px;flex:none}
+  .cyc-key{margin:10px 2px 0;font-size:12px;color:var(--muted);line-height:1.8}
+  .cyc-key b{color:var(--ink);font-weight:600;font-family:var(--mono);font-size:11px}
+  .cyc-read{border:1px solid var(--line);border-left:3px solid var(--tc);background:var(--panel);border-radius:0 12px 12px 0;padding:15px 20px;margin-top:16px}
+  .cyc-read .rh{font-family:var(--mono);font-size:10.5px;letter-spacing:.08em;text-transform:uppercase;color:var(--tc);font-weight:700;margin-bottom:10px}
+  .cyc-read ul{margin:0;padding:0;list-style:none;display:grid;gap:9px}
+  .cyc-read li{font-size:13.5px;color:var(--body)}
+  .cyc-read li b{color:var(--ink)}
+  .cyc-read .tag{font-family:var(--mono);font-size:10px;color:var(--tc);font-weight:700;text-transform:uppercase;letter-spacing:.03em}
+  .cyc-controls{display:flex;flex-wrap:wrap;gap:6px;margin:2px 0 12px;align-items:center}
+  .cyc-controls .cl{font-family:var(--mono);font-size:10.5px;letter-spacing:.06em;text-transform:uppercase;color:var(--muted);font-weight:700;margin-right:2px}
+  .cyc-btn{appearance:none;font-family:var(--mono);font-size:11.5px;font-weight:600;border:1px solid var(--line);background:var(--paper);color:var(--muted);border-radius:7px;padding:5px 11px;cursor:pointer}
+  .cyc-btn:hover{border-color:var(--tc);color:var(--ink)}
+  .cyc-btn[aria-pressed="true"]{background:var(--tc);border-color:var(--tc);color:#fff}
+  .cyc-main{display:grid;grid-template-columns:1.5fr 1fr;gap:14px;align-items:start}
+  @media(max-width:780px){.cyc-main{grid-template-columns:1fr}}
+  .cyc-lev{border:1px solid var(--tc);border-radius:12px;background:var(--tb);padding:15px 16px;display:flex;flex-direction:column;gap:11px}
+  .cyc-lev .lh{font-family:var(--mono);font-size:10px;letter-spacing:.07em;text-transform:uppercase;color:var(--tc);font-weight:700}
+  .cyc-lev .lh b{color:var(--ink)}
+  .cyc-bars{display:grid;gap:7px}
+  .cyc-bar{display:grid;grid-template-columns:74px 1fr auto;gap:8px;align-items:center;font-size:11px}
+  .cyc-bar .bl{color:var(--body);font-weight:600;line-height:1.2}
+  .cyc-bar .bl small{display:block;color:var(--muted);font-family:var(--mono);font-size:9.5px;font-weight:500}
+  .cyc-bar .btrack{background:var(--line);border-radius:4px;height:15px;overflow:hidden}
+  .cyc-bar .bt{height:15px;border-radius:4px;min-width:2px}
+  .cyc-bar .bv{font-family:var(--mono);font-weight:700;color:var(--ink);font-size:12px;white-space:nowrap}
+  .cyc-lev .lev-note{font-size:12px;color:var(--body);border-top:1px dashed var(--tc);padding-top:10px}
+  .cyc-lev .lev-note .big{font-family:var(--mono);font-size:1.15rem;font-weight:700;color:var(--tc);display:block;margin-bottom:2px}
+  .cyc-lev .lev-note b{color:var(--ink)}
+  .cyc-assume{font-size:10px;color:var(--dim);font-style:italic;line-height:1.4}
+  .lev-inputs-wrap{border-top:1px dashed var(--tc);padding-top:9px}
+  .lev-inputs-wrap summary{font-family:var(--mono);font-size:10px;color:var(--tc);cursor:pointer;font-weight:700;letter-spacing:.05em;text-transform:uppercase;list-style:none}
+  .lev-inputs-wrap summary::-webkit-details-marker{display:none}
+  .lev-inputs{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-top:9px}
+  .lev-inputs label{display:flex;flex-direction:column;font-size:10.5px;color:var(--body);font-weight:600;gap:2px}
+  .lev-inputs label span{font-family:var(--mono);font-size:9px;color:var(--muted);font-weight:500}
+  .lev-inputs input{width:100%;font-family:var(--mono);font-size:12.5px;font-weight:600;padding:5px 7px;border:1px solid var(--line);border-radius:6px;background:var(--paper);color:var(--ink)}
+  .lev-inputs input:focus{outline:none;border-color:var(--tc)}
+  svg{display:block;width:100%;height:auto}
+  .verdict{font-size:13px;color:var(--body);padding:11px 14px;border-radius:9px;border:1px solid var(--line);background:var(--panel)}
+  .verdict b{color:var(--ink)} .verdict.warn{border-color:var(--t1);background:var(--t1b)} .verdict.warn b{color:var(--t1)}
+  .verdict.ok{border-color:var(--t5);background:var(--t5b)}
+  .rassume{border:1px solid var(--line);border-radius:9px;background:var(--bg);padding:11px 13px;display:grid;gap:8px}
+  .rassume .ra-row{display:grid;grid-template-columns:118px 1fr;gap:10px;align-items:baseline;font-size:12px}
+  @media(max-width:520px){.rassume .ra-row{grid-template-columns:1fr;gap:2px}}
+  .rassume .ra-k{font-family:var(--mono);font-size:9.5px;letter-spacing:.05em;text-transform:uppercase;color:var(--tc);font-weight:700}
+  .rassume .ra-v{color:var(--body);line-height:1.45} .rassume .ra-v b{color:var(--ink)}
+  .assume{border-top:1px solid var(--line);padding:13px 22px;background:var(--panel)}
+  .assume summary{cursor:pointer;font-size:12px;color:var(--tc);font-weight:600;font-family:var(--mono)}
+  .assume .body{font-size:12.5px;color:var(--muted);margin-top:8px;line-height:1.55}
+
+  /* session plan */
+  .ros{display:grid;gap:1px;background:var(--line);border:1px solid var(--line);border-radius:12px;overflow:hidden;margin:4px 0 8px}
+  .ros .r{display:grid;grid-template-columns:96px 1fr auto;gap:14px;background:var(--paper);padding:12px 16px;align-items:baseline}
+  @media(max-width:600px){.ros .r{grid-template-columns:78px 1fr;gap:6px 10px}.ros .r .who{grid-column:2;margin-top:-4px}}
+  .ros .t{font-family:var(--mono);font-size:12px;font-weight:700;color:var(--accent-ink)}
+  .ros .w{font-size:14px;color:var(--body)} .ros .w b{color:var(--ink)}
+  .ros .who{font-family:var(--mono);font-size:10px;text-transform:uppercase;letter-spacing:.05em;color:var(--muted);font-weight:700}
+  .plan-fb{border-color:var(--accent)!important}
+  .plan-fb .eyebrow{color:var(--accent-ink)}
+  .beats{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin:4px 0}
+  @media(max-width:640px){.beats{grid-template-columns:1fr}}
+  .beats .b{border:1px solid var(--line);border-radius:11px;padding:14px 15px;background:var(--paper)}
+  .beats .bn{font-family:var(--mono);font-size:11px;font-weight:700;color:var(--accent-ink)}
+  .beats h4{font-size:.98rem;margin:5px 0 5px}
+  .beats p{font-size:13px;color:var(--muted);margin:0}
+  .plan-grid{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+  @media(max-width:680px){.plan-grid{grid-template-columns:1fr}}
+  .pcard{border:1px solid var(--line);border-left:4px solid var(--pc);border-radius:12px;background:var(--paper);padding:15px 17px;display:flex;flex-direction:column;gap:8px}
+  .pcard .pn{font-family:var(--mono);font-size:10px;font-weight:700;letter-spacing:.06em;text-transform:uppercase;color:var(--pc)}
+  .pcard h4{font-size:1.05rem;margin:0}
+  .pcard .idea{font-size:13px;color:var(--body)} .pcard .idea b{color:var(--ink)}
+  .pcard .teaser{font-size:12.5px;color:var(--muted);font-style:italic;border-top:1px dashed var(--line);padding-top:8px}
+  .pcard .pacts{display:flex;gap:8px;margin-top:auto;padding-top:4px}
+  .pcard .pbtn{appearance:none;font-family:var(--sans);font-size:12.5px;font-weight:600;border:1px solid var(--pc);border-radius:8px;padding:6px 12px;cursor:pointer;background:none;color:var(--pc)}
+  .pcard .pbtn.solid{background:var(--pc);color:#fff}
+  .dl-btn{display:inline-flex;align-items:center;gap:8px;font-family:var(--sans);font-size:14px;font-weight:650;color:#fff;background:var(--accent);border:1px solid var(--accent);border-radius:9px;padding:9px 16px;text-decoration:none}
+  .dl-btn:hover{background:var(--accent-ink)}
+  .dl-note{font-size:12px;color:var(--dim);margin-left:10px}
+  .st-wrap{overflow-x:auto;margin:2px 0}
+  .st{width:100%;border-collapse:collapse;font-size:13.5px;min-width:560px}
+  .st th,.st td{text-align:right;padding:9px 13px;border-bottom:1px solid var(--line);white-space:nowrap}
+  .st th:first-child,.st td:first-child{text-align:left}
+  .st thead th{font-family:var(--mono);font-size:10.5px;text-transform:uppercase;letter-spacing:.03em;color:var(--muted);font-weight:700;border-bottom:1.5px solid var(--line2);vertical-align:bottom}
+  .st thead th small{display:block;font-weight:500;color:var(--dim);text-transform:none;letter-spacing:0;font-size:9.5px}
+  .st td{font-variant-numeric:tabular-nums;color:var(--body)}
+  .st td:first-child{font-weight:650;color:var(--ink)}
+  .st tbody tr:hover{background:var(--panel)}
+  .st tr.tot td{border-top:2px solid var(--line2);border-bottom:none;font-weight:700;color:var(--ink)}
+  .st .hi{color:var(--tc);font-weight:700}
+  .qr-teasers{display:grid;gap:7px;margin:6px 0 4px}
+  .qt-row{display:grid;grid-template-columns:104px 1fr;gap:11px;align-items:baseline;font-size:13px}
+  @media(max-width:520px){.qt-row{grid-template-columns:1fr;gap:1px}}
+  .qt-k{font-family:var(--mono);font-size:10.5px;font-weight:700;text-transform:uppercase;letter-spacing:.04em;color:var(--pc)}
+  .qt-v{color:var(--body)} .qt-v b{color:var(--ink)}
+  .qr-opts{margin:6px 0 0;padding-left:18px} .qr-opts li{font-size:14px;color:var(--body);margin:0 0 7px} .qr-opts b{color:var(--ink)}
+  /* printable one-page pack */
+  #print-pack{display:none;padding:26px;color:#111;background:#fff;font-family:var(--sans);max-width:760px;margin:0 auto}
+  #print-pack h1{font-size:23px;margin:0 0 4px;color:#111} #print-pack .pk-meta{font-family:var(--mono);font-size:11px;text-transform:uppercase;letter-spacing:.06em;color:#666;margin:0 0 8px}
+  #print-pack .big-idea{font-size:15px;font-weight:600;margin:0 0 14px;color:#111}
+  #print-pack .pk-chart{border:1px solid #ddd;border-radius:8px;padding:8px;margin:0 0 6px} #print-pack .pk-chart svg{width:100%;height:auto;max-height:240px}
+  #print-pack h3{font-size:12px;text-transform:uppercase;letter-spacing:.05em;color:#333;margin:16px 0 6px;border-bottom:1px solid #ccc;padding-bottom:3px}
+  #print-pack ul,#print-pack ol{margin:0;padding-left:20px} #print-pack li{font-size:13.5px;margin:0 0 5px;color:#111}
+  #print-pack .pk-fb{border:1.5px solid #111;border-radius:8px;padding:10px 13px;font-size:13.5px;margin:14px 0 0;color:#111}
+  #print-pack .pk-notes{border:1px solid #bbb;border-radius:8px;height:120px;margin-top:6px}
+  @media print{
+    body.printing>header,body.printing>main,body.printing>footer{display:none!important}
+    body.printing #print-pack{display:block!important}
+    @page{margin:14mm}
+  }
+
+  footer{border-top:1px solid var(--line);margin-top:36px;padding:22px 0 60px;font-family:var(--mono);font-size:11.5px;color:var(--dim);line-height:1.7}
+  ::selection{background:rgba(13,125,116,.22)}
+</style>
+
+<header><div class="wrap" style="--tc:var(--t2)">
+  <div class="eyebrow" style="color:var(--tc)">Power Development · Team Day · Breakout</div>
+  <h1>Renewable penetration</h1>
+  <div class="sub">Your table's brief, the data, and the live tools for this topic — everything you need to form a hypothesis.</div>
+</div></header>
+<main>
+<div class="wrap" style="--tc:var(--t2)">
+  <div class="note" style="border-color:var(--tc);border-left:4px solid var(--tc)">
+    <span class="eyebrow" style="color:var(--tc)">Your task</span>
+    <h3>Form a hypothesis from the data</h3>
+    <p>Having heard from three areas on the market we're facing into — <b>IPP</b>, <b>Merchant &amp; Markets</b> and <b>Origination</b> — your group of 4–5 now dives into <b>increasing renewable penetration</b>. Work the data and the live tool below, and <b>form a hypothesis</b>.</p>
+    <p>The goal is to <b>draw links between our projects and the larger market context we're facing into</b> — and test whether it changes how we think about our projects or our overarching objectives.</p>
+    <p>By the end of the session, your table develops three things to share:</p>
+    <div class="beats" style="margin-top:10px">
+      <div class="b" style="border-left:3px solid var(--tc)"><div class="bn" style="color:var(--tc)">1 · Hypothesis</div><p>A clear position the data led you to.</p></div>
+      <div class="b" style="border-left:3px solid var(--tc)"><div class="bn" style="color:var(--tc)">2 · A data point</div><p>The single number that backs it up.</p></div>
+      <div class="b" style="border-left:3px solid var(--tc)"><div class="bn" style="color:var(--tc)">3 · A surprise</div><p>Something unexpected, surprising or interesting.</p></div>
+    </div>
+  </div>
+</div>
+
+<div class="panel wrap" id="p-t2" style="--tc:var(--t2);--tb:var(--t2b)">
+    <div class="thead">
+      <div class="t-tag"><span class="core">Topic 2</span> Increasing renewable penetration in the NEM</div>
+      <h2>Increasing renewable penetration in the NEM</h2>
+      <p class="thesis"><b>Storage is critical — and the volume you need climbs steeply, not linearly, as wind and solar head toward 100%.</b> The NEM is already ~44% renewable (grid wind+solar ~29%, plus hydro and rooftop) and spilling 7+ TWh/yr. Play the calculator first: set a wind + solar target, find the mix and the gas balance that keep storage sane.</p>
+    </div>
+
+    <div class="calc">
+      <div class="calc-h"><h3>Calculator · How much storage as wind + solar rise?</h3>
+        <p>Set a wind + solar target, pick the split and the overbuild; the model firms it against a simulated NEM year and reports the <b>4-hour “big batteries”</b> needed. The point: storage climbs <b>far faster than linearly</b> near 100% — and a little firm gas tames it.</p></div>
+      <div class="calc-grid">
+        <div class="controls">
+          <div class="ctl"><label>Wind + solar target <span class="val" id="rt-v">70<small>% energy</small></span></label>
+            <input type="range" id="rt" min="30" max="100" step="1" value="70"><div class="hint">Share of annual energy from wind + solar. Grid wind+solar is <b>~29% today</b> (~44% renewable incl. rooftop &amp; hydro). Try <b>50 / 70 / 90</b> to trace the path. The rest is firm gas.</div></div>
+          <div class="ctl"><label>Wind share of the build <span class="val" id="ws-v">55<small>% wind</small></span></label>
+            <input type="range" id="ws" min="0" max="100" step="5" value="55"><div class="hint">The rest is solar. Today's grid fleet is roughly <b>50/50</b> by capacity. Wind runs day and night but has multi-day lulls; solar's daily rhythm suits a 4-hour battery. There's a mix that needs the <i>least</i> storage — the panel below finds it.</div></div>
+          <div class="ctl"><label>Overbuild <span class="val" id="ob-v">1.0<small>× target</small></span></label>
+            <input type="range" id="ob" min="100" max="200" step="5" value="100"><div class="hint">Build extra wind/solar beyond the target — real plans overbuild ~<b>1.1–1.5×</b>. More overbuild → less storage, but more spilled (curtailed) energy. The classic trade-off.</div></div>
+        </div>
+        <div class="readout">
+          <div class="big">
+            <div class="cell hero"><div class="v" id="o-bess">—</div><div class="l">four-hour “big batteries” needed (500 MW / 2 GWh each)</div></div>
+            <div class="cell sub"><div class="v" id="o-gas">—</div><div class="l">gas fills the balance — the firm backstop for the deep lulls storage can't reach</div></div>
+            <div class="cell"><div class="v" id="o-store">—</div><div class="l">total storage energy</div></div>
+            <div class="cell"><div class="v" id="o-curt">—</div><div class="l">renewables spilled (curtailed)</div></div>
+            <div class="cell"><div class="v" id="o-wind">—</div><div class="l">wind capacity</div></div>
+            <div class="cell"><div class="v" id="o-solar">—</div><div class="l">solar capacity</div></div>
+          </div>
+          <div class="verdict" id="r-verdict">—</div>
+          <div class="rassume" id="r-assume"></div>
+          <div class="chartbox"><div class="ct">Storage needed as the target rises — the “knee” is where it bends sharply up (● = your setting)</div>
+            <svg id="r-chart" viewBox="0 0 480 190" preserveAspectRatio="xMinYMin meet"></svg></div>
+        </div>
+      </div>
+      <details class="assume"><summary>Model &amp; assumptions</summary><div class="body">
+        A deterministic simulated NEM year at hourly resolution (~184 TWh demand, ~21 GW average / ~28 GW peak, dual summer/winter peaks; solar as a daily bell with seasonal swing, ~32% capacity factor; wind auto-correlated at ~34% CF with four multi-day lulls seeded in). <b>These are potential (unconstrained) CFs</b> — realised NEM CFs today are lower (wind 28%, solar 15%) because of curtailment and older plant. Wind+solar is built to <i>overbuild × target</i> of annual demand; the remaining <i>(1 − target)</i> is firm gas (standing in for today's coal + gas + hydro). A 4-hour battery fleet (power = energy ÷ 4) charges on surplus and discharges on deficit to time-shift renewable energy into the gaps; surplus beyond storage is spilled. The tool finds the <b>minimum storage that lets delivered renewables reach the target</b> — i.e. holds gas to its (1 − target) energy budget. As the target nears 100% that budget → 0, so storage must bridge multi-day lulls a 4-hour battery can't hold, and the model flags it. “Big battery” = 500 MW / 2 GWh. CFs are consistent with the AEMO-derived Lens figures; a stylised teaching model for the <i>shape</i> of the answer, not a capacity-expansion study.
+      </div></details>
+    </div>
+
+    <div class="block-h"><span class="tc">◆</span> The data on the table</div>
+    <div class="stats">
+      <div class="stat"><div class="v tnum">~44<small>%</small></div><div class="l">renewable today (incl. rooftop + hydro); grid wind+solar ~29%</div></div>
+      <div class="stat"><div class="v tnum">7.4<small>TWh</small></div><div class="l">renewable energy spilled in 2025</div></div>
+      <div class="stat"><div class="v tnum">~58<small>GW</small></div><div class="l">storage a deep build implies vs ~20 GW planned</div></div>
+      <div class="stat"><div class="v tnum">×3+</div><div class="l">the non-linearity of storage above ~80%</div></div>
+    </div>
+    <div class="sources"><span class="src"><b>scenario tool</b></span><span class="src"><b>curtailment</b></span><span class="src"><b>capacity-factor-by-fuel</b></span><span class="src"><b>battery_soc_daily</b></span><span class="src"><b>der_postcode</b></span></div>
+
+    <div class="block-h"><span class="tc">◆</span> Datasets on the table</div>
+    <p class="ds-lead">Real datasets from the Lens — open any to see its figures and discussion prompts. Hand each table two or three to work.</p>
+    <div class="ds-list" id="ds-t2"></div>
+
+    <div class="block-h"><span class="tc">◆</span> What each table explores</div>
+    <div class="qs">
+      <div class="q"><span class="qn">A</span><div class="qt"><span class="team">The knee</span>The “knee” is where the storage curve bends sharply upward — where each extra % of renewables suddenly needs far more battery. Push 50→100% in 10-point steps and find it: how much more BESS does 90→100% need than 80→90%?</div></div>
+      <div class="q"><span class="qn">B</span><div class="qt"><span class="team">Wind vs solar</span>Hold 90% and trade solar for wind. Which mix needs the least storage, and why?</div></div>
+      <div class="q"><span class="qn">C</span><div class="qt"><span class="team">Overbuild call</span>Firm the last mile with storage <i>or</i> with overbuild. Push overbuild from 1.0 to 2.0 at a fixed target — how far does the battery count fall, and what does it cost you in curtailment?</div></div>
+      <div class="q"><span class="qn">D</span><div class="qt"><span class="team">Dunkelflaute</span>Push toward 100% at overbuild 1.0. Where does the model say “4-hour batteries can't get there”? That's the multi-day lull a battery can't hold — so is 100% even the right target, or does the last slice need something else?</div></div>
+    </div>
+
+    <div class="block-h"><span class="tc">◆</span> Context — who sets the price (secondary)</div>
+    <p class="ds-lead">A decade of NEMDE price-setting attribution — how often each fuel set the 5-minute price. It's a secondary story here, but it's the flip side of the calculator: as storage does more of the firming, it also increasingly sets the price.</p>
+    <div class="chartbox" style="padding:14px 14px 10px"><div class="ct">Share of 5-min energy price-setting intervals by fuel — % (2015 → 2026 YTD)</div>
+      <svg id="t2-chart" viewBox="0 0 720 320" preserveAspectRatio="xMinYMin meet"></svg></div>
+    <div class="cyc-legend" id="t2-legend"></div>
+    <div class="cyc-read"><div class="rh">Reading the trend</div><ul>
+      <li>Storage set the price <b>0.1% of intervals in 2015; in 2026 it's 31.5%</b> — as often as all fossil generation combined, which fell from 78% to 31%.</li>
+      <li>As coal exits, the marginal price is increasingly <b>whatever a battery will charge or discharge at</b> — so the arbitrage spread becomes the price signal that funds (or starves) the last mile of storage.</li>
+    </ul></div>
+  </div>
+</main>
+<footer><div class="wrap">
+  Reading the NEM · session kit v1 · figures from the AusEnergy Lens (AEMO MMSDM + ISP 2026 + Open Electricity + CER), current to Aug 2026. Calculators are transparent teaching models, not planning tools.
+</div></footer>
+<script>
+(function(){
+  const css=k=>getComputedStyle(document.documentElement).getPropertyValue(k).trim();
+  const fmt=n=>{n=Math.round(n);return n.toLocaleString('en-US');};
+// ===== RENEWABLES MODEL =====
+  const H=8760;
+  function lcg(seed){let s=seed>>>0;return()=>{s=(s*1664525+1013904223)>>>0;return s/4294967296;};}
+  const R=(function build(){
+    const rnd=lcg(7),demand=new Float64Array(H),solar=new Float64Array(H),wind=new Float64Array(H);
+    const wD=new Float64Array(366);let w=0.35;
+    for(let d=0;d<366;d++){w=0.82*w+0.18*0.35+(rnd()-0.5)*0.32;w=Math.max(0.03,Math.min(0.95,w));wD[d]=w;}
+    [35,110,205,300].forEach(d0=>{for(let d=d0;d<d0+4&&d<366;d++)wD[d]*=0.12;});
+    for(let h=0;h<H;h++){
+      const doy=(h/24)|0,hod=h%24;
+      const seas=1+0.16*Math.cos((doy-15)/365*2*Math.PI)+0.10*Math.cos((doy-195)/365*2*Math.PI);
+      demand[h]=(19+7*Math.exp(-((hod-18)**2)/8)+3*Math.exp(-((hod-8)**2)/6))*seas;
+      const sun=Math.max(0,Math.sin((hod-6)/12*Math.PI)),sS=1+0.32*Math.cos((doy-1)/365*2*Math.PI);
+      solar[h]=sun*sS; wind[h]=wD[doy]*(0.75+0.5*rnd());
+    }
+    let sd=0,ss=0,sw=0;for(let h=0;h<H;h++){sd+=demand[h];ss+=solar[h];sw+=wind[h];}
+    return {demand,solar,wind,sumD:sd,sumS:ss,sumW:sw};
+  })();
+  function simMinStorage(target,windShare,overbuild){
+    const potential=overbuild*target*R.sumD,wE=windShare*potential,sE=(1-windShare)*potential;
+    const capW=wE/R.sumW,capS=sE/R.sumS;
+    const vre=new Float64Array(H);
+    for(let h=0;h<H;h++){vre[h]=capW*R.wind[h]+capS*R.solar[h];}
+    const firmBudget=(1-target)*R.sumD; // energy the firm gas fleet may supply = the (1-target) balance
+    function run(E){
+      const P=E/4;let soc=E*0.5,firm=0,cur=0,peakF=0;
+      for(let h=0;h<H;h++){
+        let net=R.demand[h]-vre[h];
+        if(net>0){const dis=Math.min(net,P,soc);soc-=dis;net-=dis;if(net>peakF)peakF=net;firm+=net;} // gas peakers cover the rest
+        else{const sur=-net,chg=Math.min(sur,P,E-soc);soc+=chg;cur+=(sur-chg);}
+      }
+      return {firm,cur,peakF};
+    }
+    const tol=firmBudget+0.001*R.sumD;
+    const pack=(E,r,inf)=>({E,cur:r.cur,capW,capS,infeasible:inf,potential,gasE:r.firm,gasPeak:r.peakF});
+    const r0=run(0);      if(r0.firm<=tol) return pack(0,r0,false);    // balance met by gas alone, no new storage
+    const rHi=run(8000);  if(rHi.firm>tol) return pack(8000,rHi,true); // even max BESS can't hold gas to its budget
+    let lo=0,hi=8000;
+    for(let i=0;i<26;i++){const mid=(lo+hi)/2;if(run(mid).firm>tol)lo=mid;else hi=mid;}
+    return pack(hi,run(hi),false);
+  }
+  const rt=document.getElementById('rt'),ws=document.getElementById('ws'),ob=document.getElementById('ob');
+  function renderRenew(){
+    if(!rt) return;   // topic-scoped page without this calculator — no-op
+    const target=+rt.value/100,windShare=+ws.value/100,overbuild=+ob.value/100;
+    document.getElementById('rt-v').innerHTML=rt.value+'<small>% energy</small>';
+    document.getElementById('ws-v').innerHTML=ws.value+'<small>% wind</small>';
+    document.getElementById('ob-v').innerHTML=overbuild.toFixed(2)+'<small>× target</small>';
+    const r=simMinStorage(target,windShare,overbuild),bess=r.E/2;
+    const gasPct=Math.round((1-target)*100),gasCF=r.gasPeak>0?Math.round(100*r.gasE/(r.gasPeak*H)):0;
+    document.getElementById('o-bess').innerHTML=r.infeasible?'5,000+':fmt(bess);
+    document.getElementById('o-store').innerHTML=r.infeasible?'&gt;8<small> TWh</small>':(r.E>=1000?(r.E/1000).toFixed(1)+'<small> TWh</small>':fmt(r.E)+'<small> GWh</small>');
+    document.getElementById('o-curt').innerHTML=Math.round(100*r.cur/r.potential)+'<small>%</small>';
+    document.getElementById('o-gas').innerHTML=gasPct+'<small>% of energy · gas fleet at ~'+gasCF+'% capacity factor</small>';
+    document.getElementById('o-wind').innerHTML=Math.round(r.capW)+'<small> GW</small>';
+    document.getElementById('o-solar').innerHTML=Math.round(r.capS)+'<small> GW</small>';
+    // storage-vs-target curve, built once and reused to locate the sweet spot
+    const curve=[];
+    for(let t=40;t<=100;t+=2){const rr=simMinStorage(t/100,windShare,overbuild);curve.push({t,bess:rr.infeasible?1e9:rr.E/2});}
+    let sweetT=null,sweetB=null;
+    for(let i=curve.length-1;i>=0;i--){if(curve[i].bess<=800){sweetT=curve[i].t;sweetB=curve[i].bess;break;}}
+    const v=document.getElementById('r-verdict');
+    if(r.infeasible){v.className='verdict warn';v.innerHTML=sweetT?`<b>4-hour batteries can’t get you there.</b> Keep ~<b>${100-sweetT}% firm gas</b> (a ${sweetT}% renewable system) and it collapses to about <b>${fmt(sweetB)}</b> batteries. Chasing the last few % to zero-gas is what makes the number silly — the balance is exactly what a small, rarely-run gas fleet is for.`:'<b>4-hour batteries can’t get you there.</b> The last slice needs long-duration storage or firm gas, not more BESS.';}
+    else if(sweetT!==null&&+rt.value>sweetT+0.5){v.className='verdict warn';v.innerHTML=`<b>Past the knee.</b> Backing off to ~<b>${sweetT}% renewable / ~${100-sweetT}% gas</b> cuts this from ${fmt(bess)} to about <b>${fmt(sweetB)}</b> batteries. Keeping some gas for the deep lulls is the optimum — the last few % via storage alone is what runs the number away.`;}
+    else if(r.E===0){v.className='verdict ok';v.innerHTML=`At this level the existing fleet covers the gaps with <b>little or no new storage</b>; gas would supply ~${gasPct}% of energy. Push the target up and watch where storage starts to bite.`;}
+    else{v.className='verdict ok';v.innerHTML=`A sensible balance: gas fills ~${gasPct}% of energy at just ~<b>${gasCF}% capacity factor</b> (a peaker, not a workhorse). Push the target higher to watch storage run away.`;}
+    // wind/solar sweet spot: minimum storage across the mix, at this target + overbuild
+    let optWind=55,optBess=Infinity;
+    for(let wv=0;wv<=100;wv+=5){const rr=simMinStorage(target,wv/100,overbuild);const bb=rr.infeasible?1e12:rr.E/2;if(bb<optBess){optBess=bb;optWind=wv;}}
+    const optBessTxt=optBess>=1e12?'5,000+':fmt(optBess);
+    const gasRec=sweetT!==null?(100-sweetT):null;
+    const capexBn=fmt(Math.round(r.E*0.4));
+    document.getElementById('r-assume').innerHTML=
+      `<div class="ra-row"><span class="ra-k">Wind/solar sweet spot</span><span class="ra-v">least storage at ~<b>${optWind}% wind</b> / ${100-optWind}% solar (${optBessTxt} batteries) — a balanced mix beats either all-wind or all-solar</span></div>`+
+      (gasRec!==null?`<div class="ra-row"><span class="ra-k">Firming sweet spot</span><span class="ra-v">keep ~<b>${gasRec}% gas</b> (≈${sweetT}% wind+solar) — beyond that, storage runs away (the dashed line on the curve)</span></div>`:'')+
+      `<div class="ra-row"><span class="ra-k">Indicative cost</span><span class="ra-v">storage alone ≈ <b>$${capexBn} bn</b> at ~$0.4bn/GWh installed — before any wind, solar, gas or network spend</span></div>`+
+      `<div class="ra-row"><span class="ra-k">Assumptions</span><span class="ra-v">wind CF ~34%, solar CF ~32% (potential — realised today 28% / 15%) · 4-hr BESS = 500 MW / 2 GWh · demand ~184 TWh</span></div>`;
+    drawRenewCurve(curve,+rt.value,sweetT);
+  }
+  function drawRenewCurve(curve,curT,sweetT){
+    const svg=document.getElementById('r-chart'),W=480,Ht=190,pad=44,pb=24;
+    const pts=curve.map(p=>({t:p.t,bess:Math.min(p.bess,2600)}));
+    let ymax=50;pts.forEach(p=>ymax=Math.max(ymax,p.bess));
+    const px=t=>pad+(t-40)/60*(W-pad-12),py=v=>12+(Ht-12-pb)-(v/ymax)*(Ht-12-pb);
+    const line=css('--t2'),grid=css('--grid'),mut=css('--muted'),mono=css('--mono'),warn=css('--t1');
+    let g='';
+    for(let i=0;i<=3;i++){const yv=ymax*i/3,y=py(yv);g+=`<line x1="${pad}" y1="${y}" x2="${W-12}" y2="${y}" stroke="${grid}" stroke-width="1"/><text x="${pad-5}" y="${y+3}" text-anchor="end" font-size="9" font-family="${mono}" fill="${mut}">${yv>=1000?(yv/1000).toFixed(1)+'k':Math.round(yv)}</text>`;}
+    [40,60,80,100].forEach(t=>g+=`<text x="${px(t)}" y="${Ht-8}" text-anchor="middle" font-size="9" font-family="${mono}" fill="${mut}">${t}%</text>`);
+    const d=pts.map((p,i)=>`${i?'L':'M'}${px(p.t).toFixed(1)},${py(p.bess).toFixed(1)}`).join(' ');
+    const area=`M${px(40)},${py(0)} `+pts.map(p=>`L${px(p.t).toFixed(1)},${py(p.bess).toFixed(1)}`).join(' ')+` L${px(100)},${py(0)} Z`;
+    let sweet='';
+    if(sweetT){const x=px(sweetT);sweet=`<line x1="${x}" y1="12" x2="${x}" y2="${Ht-pb}" stroke="${warn}" stroke-width="1.2" stroke-dasharray="3 3"/><text x="${x-4}" y="24" text-anchor="end" font-size="8.5" font-family="${mono}" fill="${warn}">keep gas</text><text x="${x-4}" y="34" text-anchor="end" font-size="8.5" font-family="${mono}" fill="${warn}">past ~${sweetT}%</text>`;}
+    const cur=pts.reduce((a,b)=>Math.abs(b.t-curT)<Math.abs(a.t-curT)?b:a);
+    svg.innerHTML=g+`<path d="${area}" fill="${line}" fill-opacity="0.12"/>`+sweet+`<path d="${d}" fill="none" stroke="${line}" stroke-width="2.2"/><circle cx="${px(cur.t)}" cy="${py(Math.min(cur.bess,2600))}" r="4.5" fill="${line}"/><text x="${W-12}" y="15" text-anchor="end" font-size="9" font-family="${mono}" fill="${mut}">big batteries</text>`;
+  }
+  [rt,ws,ob].forEach(el=>el&&el.addEventListener('input',renderRenew));
+
+    renderRenew();
+})();
+</script>
+<script>
+(function(){
+  const DATASETS = {
+  t2: [
+    {t:"VRE curtailment is accelerating", src:"curtailment", what:"How much wind/solar energy is spilled (available but not dispatched), NEM-wide, by year.",
+     fig:["Solar spilled <b>2.1 → 3.9 TWh</b> (2023→2025); wind <b>1.7 → 3.6 TWh</b>. Combined spill roughly <b>doubled to 7.4 TWh</b> in two years.","Share of solar's own available energy spilled: 12.5% → <b>17.6%</b>; wind 6.2% → 9.9%.","<b>The objective isn't 0% spill.</b> Some curtailment is economically optimal, and while baseload coal is still on the system a share of today's spill is transient — it eases as coal exits. The aim is to spill as little as possible by <b>time-shifting with BESS</b>: beyond a threshold, surplus should be stored and released into the evening, not thrown away. That trade-off (overbuild-and-spill vs store) is exactly what the calculator lets you dial."],
+     cav:"Lens flags this as network/constraint curtailment; economic curtailment (bidding below the LGC floor) is a planned refinement, so true spill is likely higher.",
+     prompts:["If ~18% of a new solar farm's output is lost before it earns a cent, what does that do to bid LCOE vs the PPA price?","Do we underwrite on P50 generation, or <b>P50-minus-curtailment</b>?"]},
+    {t:"Where the spill happens — SA solar loses a third", src:"curtailment", what:"2025 curtailment by region × fuel — the local nature of the constraint.",
+     fig:["VIC wind <b>2,029 GWh</b> spilled, NSW solar 1,614, QLD solar 1,241, SA wind 1,141.","Worst rate: <b>SA solar spilling 33.7%</b> of available output — one MWh in three thrown away."],
+     prompts:["SA already spills a third of its solar — is the last MW of SA solar worth building <b>without co-located storage</b>?","Does regional curtailment risk now move our siting more than resource quality does?"]},
+    {t:"Renewable share vs the price floor", src:"price_trend", what:"Negative-price hours are exploding while the average price falls — cannibalisation in the data.",
+     fig:["SA negative-price hours: 643 (2020) → <b>2,662 (2025)</b> — ~30% of all hours; NSW 16 → 1,263.","Average energy price came off the 2022 peak even as VRE grew: NSW $183 (2022) → <b>$103 (2025)</b>.","Spike hours also fell: NSW 1,393 (2022) → 95 (2025)."],
+     prompts:["Solar generates hardest when SA is negative 2,600+ hours a year — realistic capture vs the flat average?","If wholesale falls as we add renewables, where does the revenue to fund the <b>last 20%</b> come from — CIS/LTESA floors?"]},
+    {t:"Storage has overtaken coal as the price-setter", src:"ps_fuelmix", what:"Which fuel sets the 5-minute energy price (from NEMDE attribution), share by year.",
+     fig:["Storage set the price <b>0.1% (2015) → 2.2% (2020) → 16.9% (2025) → 31.5% (2026 YTD)</b>.","Fossil fell from 78% (2015) to <b>31.4% (2026)</b>.","In 2026 storage (31.5%) just edged past fossil (31.4%) as the NEM's marginal price-setter for the first time."],
+     prompts:["If batteries increasingly set the price, does the marginal price converge on their <b>arbitrage spread</b> rather than fuel cost — and what does that do to merchant VRE revenue?","Are we a price-taker in a market whose price is now set by the storage we may need to co-build?"]},
+    {t:"Firming is the pipeline — batteries lead committed GW", src:"gi_projects", what:"Committed/anticipated/commissioning pipeline capacity by technology.",
+     fig:["Battery storage <b>19.3 GW / 65.3 GWh</b> committed-ish, vs solar 10.6 GW, wind 6.4 GW, gas 1.5 GW.","The market is committing <b>more battery power than wind and solar combined</b>.","Broader pipeline: 345.7 GW announced but only <b>10.9 GW firmly Committed</b>."],
+     prompts:["65 GWh of committed battery is mostly 2–4 hr — who builds the <b>deep/long-duration</b> firming for the last 20%, and does the market pay for it?","With 346 GW announced but 11 GW committed, how do we ensure our project is in the ~3% that reaches FID?"]},
+    {t:"The overbuild arithmetic — capacity factors by fuel", src:"oe_facility · market_daily", what:"Realised capacity factor by fuel (avg output ÷ registered capacity), Aug-2025→Aug-2026.",
+     fig:["Wind <b>~28%</b>, utility solar <b>~15%</b>, coal ~61%, gas ~9%.","Replacing 1 GW of ~61% coal needs <b>~2.2 GW of wind or ~4 GW of solar</b> on energy alone — before storage and curtailment losses."],
+     cav:"CFs derived from regional daily-mean MW ÷ registered nameplate — indicative, not AEMO-published.",
+     prompts:["At 15% solar / 28% wind CF the overbuild multiple to firm demand is 4–7× — is our transmission/connection queue priced for that much nameplate?","Gas runs at 9% CF but is the firming backstop — how does a 9%-CF peaker earn its capital without a capacity payment?"]},
+    {t:"Minimum demand is collapsing", src:"market_daily", what:"Lowest daily-average operational demand vs peak, by region — the rooftop squeeze.",
+     fig:["SA daily-avg demand troughs at <b>776 MW against a 3,140 MW peak — 24.7%</b>.","VIC troughs at 28.8% of peak; NSW 39.8%; QLD 47.1%.","SA operational demand routinely falls toward zero midday as rooftop swamps the grid."],
+     prompts:["If midday operational demand is near zero in SA, every new utility-solar MW competes for a <b>shrinking daytime market</b> — is storage-firmed dispatch the only viable solar model now?","Minimum demand, not peak, is becoming the binding security constraint — does that change what “the grid needs” from our next project?"]},
+    {t:"How renewable is the grid already? SA at 72%", src:"market_daily", what:"Grid-scale wind+solar as a share of grid generation by region (rooftop excluded).",
+     fig:["<b>SA 72% VRE</b> (and zero coal), VIC 31.7%, NSW 26.3%, QLD 21.9%, TAS 20.5% (TAS is 76% hydro).","SA is the live case study of a near-fully-renewable grid — and has the worst curtailment and most negative-price hours."],
+     prompts:["SA is at 72% grid VRE and it's where curtailment and negative prices bite hardest — is SA showing us the <b>cost curve of the last 20%</b> in real time?","What did it take (interconnection, gas, batteries, syncons) to get SA there, and who paid?"]},
+    {t:"The rooftop + home-battery wave", src:"der_postcode", what:"Cumulative small-scale rooftop solar and the new home-battery boom (rebate-eligible from Jul 2025).",
+     fig:["<b>26.5 GW</b> cumulative rooftop solar — larger than the entire utility-solar OR wind fleet (~14.6–14.8 GW each).","Home batteries added ~<b>11.3 GWh</b> in the first 12 months, peaking at 2,648 MWh in April 2026 alone."],
+     prompts:["26.5 GW of rooftop is bigger than our whole utility-solar fleet and AEMO can't curtail it — is behind-the-meter the real <b>daytime competitor</b>?","If households install 2+ GWh of battery a month, does distributed storage erode the arbitrage spread our grid-scale case depends on?"]},
+    {t:"Grid-scale batteries are still capturing fat spreads", src:"battery_capture", what:"Realised arbitrage spread and capture efficiency per battery unit-month.",
+     fig:["Average realised spread <b>$217/MWh</b>, capture efficiency <b>82%</b>.","Top-2hr price band $301, top-4hr $226 (across 908 unit-month records)."],
+     prompts:["Battery spreads are healthy because VRE creates the volatility — but as more batteries arbitrage it away, how durable is a <b>$217 spread over 15 years</b>?","Is there a self-limiting point where enough storage flattens the very curve that funds storage?"]},
+    {t:"The FCAS warning — a market competed to near-zero", src:"price_trend", what:"Total FCAS price ($/MW/hr) — a preview of what “over-firming” does to a revenue stream.",
+     fig:["NSW total FCAS collapsed <b>$68.6 (2020) → $5.9 (2026)</b>; SA <b>$159.7 → $6.2</b> — roughly a 95% collapse.","FCAS was the early-mover super-profit; it's now largely competed away."],
+     prompts:["FCAS shows exactly how fast a storage revenue stream can go to near-zero — is <b>energy arbitrage next</b>?","If we stack revenue (energy + FCAS + capacity), which layer are we assuming survives to year 10?"]}
+  ]
+  };
+
+  Object.entries(DATASETS).forEach(([tid,arr])=>{
+    const el=document.getElementById('ds-'+tid); if(!el) return;
+    el.innerHTML=arr.map((d,i)=>{
+      const figs=d.fig.map(f=>'<li>'+f+'</li>').join('');
+      const cav=d.cav?'<div class="ds-cav">'+d.cav+'</div>':'';
+      const prompts=d.prompts.map(p=>'<p>'+p+'</p>').join('');
+      return '<details class="ds"'+(i===0?' open':'')+'><summary><span class="ds-n">'+(i+1)+
+        '</span><span class="ds-t">'+d.t+'</span><span class="ds-src">'+d.src+
+        '</span></summary><div class="ds-body"><p class="ds-what">'+d.what+'</p><ul class="ds-fig">'+figs+
+        '</ul>'+cav+'<div class="ds-prompts"><span class="pl">Discussion prompts</span>'+prompts+'</div></div></details>';
+    }).join('');
+  });
+})();
+</script>
+<script>
+(function(){
+
+  const css=k=>getComputedStyle(document.documentElement).getPropertyValue(k).trim();
+  const lp=pts=>pts.map((p,i)=>`${i?'L':'M'}${p[0].toFixed(1)},${p[1].toFixed(1)}`).join(' ');
+  const RC={NSW:"#3b82c4",QLD:"#c1494a",SA:"#d98a2b",VIC:"#7a5bd0",TAS:"#2ea3a3"};
+  const hexA=(h,a)=>{const n=parseInt(h.slice(1),16);return `rgba(${n>>16&255},${n>>8&255},${n&255},${a})`;};
+  /* recolour a .cyc-lev callout box to a state colour (or revert to panel default when All) */
+  function tintBox(id,state){const b=document.getElementById(id); if(!b) return;
+    if(state && RC[state]){b.style.setProperty('--tc',RC[state]);b.style.setProperty('--tb',hexA(RC[state],0.10));}
+    else {b.style.removeProperty('--tc');b.style.removeProperty('--tb');}}
+
+  function axes(svg,o){
+    const x0=o.padL,x1=o.W-o.padR,y0=o.H-o.padB,y1=o.padT;
+    const px=v=>x0+(v-o.xmin)/(o.xmax-o.xmin)*(x1-x0);
+    const py=v=>y0-(v-0)/(o.ymax-0)*(y0-y1);
+    const grid=css('--grid'),mut=css('--muted'),mono=css('--mono');
+    let g='';
+    o.yticks.forEach(t=>{const y=py(t);g+=`<line x1="${x0}" y1="${y.toFixed(1)}" x2="${x1}" y2="${y.toFixed(1)}" stroke="${grid}" stroke-width="1"/><text x="${x0-6}" y="${(y+3).toFixed(1)}" text-anchor="end" font-size="10" font-family="${mono}" fill="${mut}">${o.yfmt(t)}</text>`;});
+    o.xticks.forEach(t=>{g+=`<text x="${px(t.v).toFixed(1)}" y="${(y0+16).toFixed(1)}" text-anchor="middle" font-size="9.5" font-family="${mono}" fill="${mut}">${t.l}</text>`;});
+    return {px,py,g,x0,x1,y0,y1,mono,mut};
+  }
+
+  /* generic multi-line chart (per-series x arrays) */
+  function simpleChart(id,o){
+    const svg=document.getElementById(id); if(!svg) return;
+    const A=axes(svg,{W:720,H:320,padL:46,padR:o.padR||56,padT:24,padB:34,xmin:o.xmin,xmax:o.xmax,ymax:o.ymax,yticks:o.yticks,yfmt:o.yfmt,xticks:o.xticks});
+    const {px,py}=A; let g=A.g;
+    (o.annos||[]).forEach(a=>{g+=`<text x="${px(a.x).toFixed(1)}" y="${py(a.y).toFixed(1)}" text-anchor="${a.anchor||'middle'}" font-size="9.5" font-family="${A.mono}" fill="${a.c||A.mut}" font-style="${a.it?'italic':'normal'}" font-weight="${a.b?'700':'400'}">${a.t}</text>`;});
+    o.seriesList.forEach(s=>{
+      const pts=s.v.map((v,i)=>[px(s.x[i]),py(v)]);
+      g+=`<path d="${lp(pts)}" fill="none" stroke="${s.c}" stroke-width="${s.w||2.2}"${s.dash?' stroke-dasharray="5 4"':''}/>`;
+      const last=pts[pts.length-1];
+      g+=`<circle cx="${last[0].toFixed(1)}" cy="${last[1].toFixed(1)}" r="3" fill="${s.c}"/>`;
+      if(s.end) g+=`<text x="${(last[0]+5).toFixed(1)}" y="${(last[1]+3).toFixed(1)}" font-size="9.5" font-family="${A.mono}" fill="${s.c}" font-weight="700">${s.end}</text>`;
+    });
+    svg.innerHTML=g;
+    if(o.legendId) document.getElementById(o.legendId).innerHTML=o.seriesList.map(s=>`<span class="lg"><span class="sw" style="background:${s.c}"></span>${s.leg||s.id}${s.dash?' (forecast)':''}</span>`).join('');
+  }
+
+    const YRS=[2015,2016,2017,2018,2019,2020,2021,2022,2023,2024,2025,2026];
+/* ===================== TOPIC 2 — who sets the price ===================== */
+  simpleChart('t2-chart',{xmin:2015,xmax:2026,ymax:90,yticks:[0,30,60,90],yfmt:t=>t+'%',
+    xticks:[2015,2017,2019,2021,2023,2025,2026].map(y=>({v:y,l:y===2026?"'26*":"'"+String(y).slice(2)})),
+    annos:[{x:2025.9,y:44,t:'storage ≈ fossil',c:css('--t2'),anchor:'end',it:true}],
+    seriesList:[
+      {id:'Fossil',c:'#8a94a1',x:YRS,v:[78.3,76.7,73.3,73,68.8,72,61.5,49.8,47.7,42.5,37.5,31.4],leg:'Fossil',end:'31%'},
+      {id:'Storage',c:css('--t2'),w:2.7,x:YRS,v:[0.1,0.2,0,0.7,1.1,2.2,3.8,7.6,9.9,12.8,16.9,31.5],leg:'Storage',end:'31%'},
+      {id:'Renewable',c:css('--t5'),x:YRS,v:[0.1,0.7,0.1,0.4,1,1.6,5.5,8.4,8,7.8,11.4,8.1],leg:'Wind/solar',end:'8%'}
+    ],legendId:'t2-legend'});
+
+  })();
+</script>
