@@ -305,25 +305,25 @@
     <div class="thead">
       <div class="t-tag"><span class="core">Topic 3</span> Through the lens of demand</div>
       <h2>Demand has been flat for a decade — could it double?</h2>
-      <p class="thesis"><b>Operational demand</b> — the electricity the grid must serve, <i>after</i> rooftop solar is netted off behind the meter — has barely moved from ~177 TWh since 2020. But that flatline hides real growth: <b>rooftop quietly added ~16 TWh</b> of behind-the-meter supply (2020→2025), soaking up underlying growth of ~7% so the grid never saw it. That truce is ending — EVs, electrification and data centres pull up. Whether demand grows ~60% or <b>roughly doubles</b> by 2050 is a range of outcomes, not a certainty. Shape matters as much as size; the calculator below builds the duck curve live.</p>
+      <p class="thesis"><b>Operational demand</b> — the electricity the grid must serve, <i>after</i> rooftop solar is netted off behind the meter — has barely moved from ~177 TWh since 2020. But that flatline hides real growth: <b>rooftop quietly added ~16 TWh</b> of behind-the-meter supply (2020→2025), soaking up underlying growth of ~7% so the grid never saw it. That truce is ending — EVs, electrification and data centres pull up. Whether demand grows <b>~86%</b> or <b>nearly triples</b> by 2050 is a range of outcomes, not a certainty — and the latest (2026 ESOO) call is materially higher than a year ago. Shape matters as much as size; the calculator below builds the duck curve live.</p>
     </div>
 
     <div class="block-h"><span class="tc">◆</span> The trend — flat for a decade, then the climb</div>
-    <p class="ds-lead">NEM operational demand sat flat near 177 TWh for years; the ISP 2026 central case now bends up ~60% by 2050. Solid line = actual, dashed = Step Change forecast.</p>
+    <p class="ds-lead">NEM operational demand sat flat near 177 TWh for years; the <b>2026 ESOO</b> central case now bends up <b>~86% to ~329 TWh</b> by 2050 (revised up from ~290 in the ISP a year ago). Solid line = actual, dashed = Step Change forecast.</p>
     <div class="chartbox" style="padding:14px 14px 10px"><div class="ct">NEM operational demand — TWh/yr (actual 2020–25 · Step Change forecast to 2050)</div>
       <svg id="t3-chart" viewBox="0 0 720 320" preserveAspectRatio="xMinYMin meet"></svg></div>
     <div class="cyc-legend" id="t3-legend"></div>
     <div class="cyc-read"><div class="rh">Reading the trend</div><ul>
       <li>Operational demand was <b>flat (~177–181 TWh) from 2020 to 2025</b> — but behind-the-meter rooftop grew from <b>13 → 29 TWh (+16 TWh)</b> and efficiency did the rest, so underlying use actually rose ~7% while the grid saw none of it.</li>
-      <li>Step Change lifts it to <b>~290 TWh by 2050 (+62%)</b>; the scenario fan runs <b>244–433 TWh</b> — i.e. anywhere from +38% to <b>~2.4×</b>. The flat line is ending; the whole game is the slope.</li>
+      <li>Step Change lifts it to <b>~329 TWh by 2050 (+86%)</b>; the scenario fan runs <b>269–493 TWh</b> — i.e. anywhere from <b>~1.5×</b> (Slower Growth) to <b>~2.8×</b> (Accelerated Transition), with a new <b>High Data Centre Sensitivity</b> case at ~355 TWh. The flat line is ending; the whole game is the slope.</li>
       <li><b>The open question:</b> can rooftop keep adding ~2.7 GW/yr fast enough to keep <i>masking</i> the new load? Rooftop has added ~3 TWh/yr; EVs + electrification alone add ~4–5 TWh/yr through the 2030s — so the masking effect starts to lose the race.</li>
     </ul></div>
 
     <div class="block-h"><span class="tc">◆</span> The data on the table</div>
     <div class="stats">
       <div class="stat"><div class="v tnum">~16<small>TWh</small></div><div class="l">behind-the-meter rooftop added 2020→2025 — the growth that never hit the grid</div></div>
-      <div class="stat"><div class="v tnum">1.6–2.4×</div><div class="l">demand by 2050 across ISP scenarios (central Step Change ~1.6×)</div></div>
-      <div class="stat"><div class="v tnum">0.9 → 61<small>TWh</small></div><div class="l">EV charging load, 2026→2050</div></div>
+      <div class="stat"><div class="v tnum">1.5–2.8×</div><div class="l">demand by 2050 across ESOO 2026 scenarios (central Step Change ~1.9×)</div></div>
+      <div class="stat"><div class="v tnum">0.9 → 71<small>TWh</small></div><div class="l">EV charging load, 2026→2050 (ESOO 2026)</div></div>
       <div class="stat"><div class="v tnum">26.5<small>GW</small></div><div class="l">rooftop solar today, installing ~2.7 GW/yr</div></div>
     </div>
     <div class="sources"><span class="src"><b>esoo_demand</b></span><span class="src"><b>der_postcode</b></span><span class="src"><b>rooftop_pv_actual</b></span><span class="src"><b>weather_demand</b></span><span class="src"><b>records</b> (min-demand)</span></div>
@@ -388,7 +388,7 @@
   </div>
 </main>
 <footer><div class="wrap">
-  Reading the NEM · session kit v1 · figures from the AusEnergy Lens (AEMO MMSDM + ISP 2026 + Open Electricity + CER), current to Aug 2026. Calculators are transparent teaching models, not planning tools.
+  Reading the NEM · session kit v1 · figures from the AusEnergy Lens (AEMO MMSDM + 2026 ESOO + ISP 2026 + Open Electricity + CER), current to Aug 2026. Calculators are transparent teaching models, not planning tools.
 </div></footer>
 <script>
 (function(){
@@ -455,16 +455,19 @@
 (function(){
   const DATASETS = {
   t3: [
-    {t:"The decade of flat demand — then the climb", src:"esoo_demand", what:"NEM operational consumption was flat for years; the ISP 2026 central case now bends steeply upward.",
-     fig:["Actual: <b>180.7 (2020), 177.0 (2024), 177.3 (2025)</b> TWh — a flat decade.","Step Change forecast: <b>179.3 (2026) → 192.3 (2030) → 260.6 (2040) → 289.6 (2050)</b> — +62% on 2026."],
+    {t:"The decade of flat demand — then the climb", src:"esoo_demand (ESOO 2026)", what:"NEM operational consumption was flat for years; the 2026 ESOO central case now bends steeply upward — and higher than the ISP did a year ago.",
+     fig:["Actual: <b>180.7 (2020), 177.0 (2024), 177.5 (2025)</b> TWh — a flat decade.","Step Change forecast (ESOO 2026): <b>180 (2026) → 197 (2030) → 278 (2040) → 329 (2050)</b> — <b>+83%</b>, revised up from the ISP's ~290."],
      cav:"Operational (sent-out) — the single clean total row, not a sum across overlapping categories.",
      prompts:["Our pipeline was sized in the flat-demand era — which assets are being planned against the <b>wrong baseline</b>?","The steepest gradient is 2030→2040 (+68 TWh) — does our timeline front-load or back-load capacity relative to that inflection?"]},
-    {t:"The scenario fan — how wide is 2050?", src:"esoo_demand", what:"2050 NEM operational demand across ISP scenarios — the planning envelope.",
-     fig:["Accelerated Transition <b>433.2</b>, Higher Demand 331.9, Step Change 289.6, Slower Growth 244.6 TWh.","Spread ≈ <b>189 TWh</b> — more than today's entire NEM; Accelerated is 1.5× central."],
+    {t:"The scenario fan — how wide is 2050?", src:"esoo_demand (ESOO 2026)", what:"2050 NEM operational demand across the 2026 ESOO scenarios — the planning envelope.",
+     fig:["Accelerated Transition <b>493</b>, High Data Centre Sensitivity 355, Step Change 329, Slower Growth 269 TWh.","Spread ≈ <b>224 TWh</b> — larger than today's entire NEM; Accelerated is ~1.5× the central case and ~2.8× today."],
      prompts:["A 189 TWh spread is bigger than today's NEM — which scenario does our investment committee actually underwrite to, <b>explicitly</b>?","What optionality (staged sites, grid headroom) captures the Accelerated upside without stranding under Slower Growth?"]},
-    {t:"The three new demand engines", src:"esoo_demand", what:"Where the new load comes from under Step Change — near-zero today, very large by 2050.",
-     fig:["Electric Vehicles: <b>0.9 (2026) → 30.1 (2040) → 60.9 (2050)</b> TWh — ~67×.","Electrification (gas→electric): 0.2 → 40.0 → <b>56.5</b> TWh.","Data Centres: <b>4.7 (2026) → 11.8 (2030) → 33.8 (2050)</b> TWh."],
-     prompts:["Data centres are the <b>nearest-term</b> engine (already 4.7 TWh, tripling by 2030) while EVs dominate later — does our origination match that timing?","EV load is shiftable; electrification is weather-peaky — which of the three helps our revenue shape and which hurts it?"]},
+    {t:"The three new demand engines", src:"esoo_demand (ESOO 2026)", what:"Where the new load comes from under Step Change — near-zero today, very large by 2050.",
+     fig:["Electric Vehicles: <b>0.3 (2026) → 71 (2050)</b> TWh — the biggest single engine.","Electrification (gas→electric): 0 → <b>56</b> TWh; Hydrogen 0 → 33 TWh.","Data centres: <b>5 → 34 TWh</b> across the decade — from ~3% to ~13% of operational demand (225 known projects, but >40% since 2025 have dropped out or regressed in connection status)."],
+     prompts:["Data centres are the <b>nearest-term</b> engine (already ~5 TWh, tripling by 2030) while EVs dominate later — does our origination match that timing?","EV load is shiftable; electrification is weather-peaky — which of the three helps our revenue shape and which hurts it?"]},
+    {t:"Reliability — when the standard is forecast to be breached", src:"2026 ESOO", what:"The ESOO's headline: with growing demand and retiring coal, when does the NEM exceed the reliability standard under each development outlook?",
+     fig:["Under <b>Committed &amp; Anticipated developments</b> (the stricter, RRO-relevant view): the standard is exceeded from <b>2030-31 (NSW &amp; VIC), 2031-32 (SA), 2032-33 (QLD), 2033-34 (TAS)</b>.","Under <b>Government Schemes &amp; Actionable developments</b> (if the fuller pipeline delivers on time): reliability holds to <b>2033-34</b> (NSW/SA/VIC) and 2034-35 (TAS).","No reliability gaps at the RRO's T-1 (2027-28) or T-3 (2029-30) timings — the risk is next decade, and hinges on timely delivery."],
+     prompts:["The gap between the two outlooks (early-2030s vs mid-2030s) is entirely <b>delivery risk</b> — how much of our pipeline is in the ‘actionable-but-not-yet-committed’ bucket the optimistic case relies on?","A 2030-31 NSW/VIC breach is inside a project we'd FID today — is that the tightness window our COD should target?"]},
     {t:"Rooftop PV — the load-eraser that keeps growing", src:"esoo_demand", what:"Rooftop generation (which subtracts from grid demand) grows almost as fast as the new loads.",
      fig:["Rooftop PV: <b>29.8 (2026) → 39.4 (2030) → 60.8 (2040) → 89.1 (2050)</b> TWh — 3×."],
      prompts:["Rooftop rising 30→89 TWh deepens the midday trough every year — how does that reshape the merchant value of <b>our</b> utility-scale solar?","If behind-the-meter PV erases daytime grid demand, is the scarce product increasingly the <b>evening ramp</b>, not daytime energy?"]},
@@ -549,13 +552,13 @@
 
     const YRS=[2015,2016,2017,2018,2019,2020,2021,2022,2023,2024,2025,2026];
 /* ===================== TOPIC 3 — demand: flat then climb ===================== */
-  simpleChart('t3-chart',{xmin:2020,xmax:2050,ymax:320,yticks:[0,80,160,240,320],yfmt:t=>t,padR:60,
+  simpleChart('t3-chart',{xmin:2020,xmax:2050,ymax:360,yticks:[0,90,180,270,360],yfmt:t=>t,padR:60,
     xticks:[2020,2025,2030,2035,2040,2045,2050].map(y=>({v:y,l:"'"+String(y).slice(2)})),
-    annos:[{x:2022.5,y:205,t:'flat ~177 TWh',c:css('--muted'),it:true},{x:2044,y:308,t:'~290 TWh by 2050',c:css('--t3'),anchor:'end',b:true}],
+    annos:[{x:2022.5,y:205,t:'flat ~177 TWh',c:css('--muted'),it:true},{x:2044,y:345,t:'~329 TWh by 2050',c:css('--t3'),anchor:'end',b:true}],
     seriesList:[
-      {id:'Actual',c:css('--t3'),w:2.7,x:[2020,2021,2022,2023,2024,2025],v:[180.7,177.6,177.8,177.2,177,177.3],leg:'Actual'},
+      {id:'Actual',c:css('--t3'),w:2.7,x:[2020,2021,2022,2023,2024,2025],v:[180.7,177.6,177.8,177.2,177,177.5],leg:'Actual'},
       {id:'Forecast',c:css('--t3'),dash:true,x:[2025,2026,2027,2028,2029,2030,2031,2032,2033,2034,2035,2036,2037,2038,2039,2040,2041,2042,2043,2044,2045,2046,2047,2048,2049,2050],
-        v:[177.3,179.3,180.7,182.3,184.5,192.3,199,207.4,215.4,222.7,230.3,237.2,244.3,250.8,256.3,260.6,264.3,267.9,272.2,275.4,278,281.2,283.9,286.4,288.3,289.6],leg:'Step Change'}
+        v:[177.5,179.8,183.1,186.1,191.9,197.1,208.6,217.9,227.4,234.9,242.7,251.3,258.2,264.8,271.8,278.1,283.0,288.1,294.2,300.0,304.7,310.8,315.5,320.1,324.9,329.4],leg:'Step Change (ESOO 2026)'}
     ],legendId:'t3-legend'});
 
   })();
