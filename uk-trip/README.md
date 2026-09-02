@@ -63,3 +63,30 @@ The idea to work through:
 - A **Bath** guided pub crawl (to match the Oxford one).
 - A **ticket-price / budget tracker** rolling up tickets + flights + stays per person.
 - Weather / packing notes for a UK summer.
+
+## 2026-09-02 — confirmed dates + live-fare Flights tab (SW v19)
+
+The trip stopped being hypothetical: the ECB confirmed the 2027 Ashes schedule on 23 Jul 2026,
+the ICC gave the WTC Final to The Oval, and both the Ashes and Wimbledon ballots are open now.
+Travis is travelling **solo** and meeting friends in the UK; cost is the deciding factor.
+
+**Confirmed dates now hard-coded** (`status:"conf"` on every cricket event):
+Trent Bridge 18–22 Jun · Lord's 30 Jun – 4 Jul · Edgbaston 8–12 Jul · Southampton 21–25 Jul ·
+The Oval 29 Jul – 2 Aug · WTC Final (The Oval) 9–13 Jun. Wimbledon 28 Jun – 11 Jul.
+Note the Test **order changed** from the old provisional seed — Trent Bridge opens, Edgbaston is
+3rd — so `ASH_COUNTY` for `ash1`/`ash3` was swapped to match.
+
+`migrate()` now **forces the seed dates for any `status:"conf"` non-flexible event**, overriding
+whatever a user saved while those dates were provisional, and drops day-picks that fall outside
+the new range. Without this, anyone with an existing localStorage plan would keep the wrong dates.
+
+**Flights tab rebuilt on live data** — real Google Flights quotes (AUD) pulled 2 Sep 2026 for
+MEL→LHR return economy, dep Fri 25 Jun / ret Tue 13 Jul 2027, replacing the old indicative bands.
+`BENCH` changed shape from `{lo,hi}` to a single `live` price. Headline findings baked into the copy:
+Middle East carriers are a A$1,600–2,000 *premium* (and a Gulf stopover in 45°C July is worthless);
+date flexibility is worth only ~A$300; Dublin/Paris are dearer than London; Turkish, Vietnam,
+China Eastern, Air India, Korean and Qantas economy haven't filed these dates yet so the floor
+should still soften. Buy window moved to **mid-Nov 2026 – Feb 2027**.
+
+A weekly fare watch runs outside this repo: scheduled task `uk-2027-fare-watch`, logging to
+`~/Claude/uk-2027-fare-watch/fares.csv`.

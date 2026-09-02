@@ -526,23 +526,24 @@
   <!-- ============ FLIGHTS ============ -->
   <section class="view" id="view-flights">
     <h2 class="vt">Flights</h2>
-    <p class="view-intro">Melbourne → London is the biggest single cost. Here's when to book, the tricks to cut it, and a group estimator. The <b>timing logic vs tickets</b> lives in Schedule → Booking Plan.</p>
+    <p class="view-intro">Melbourne → London is the biggest single cost, and it's the number that decides whether the trip happens. Everything below is built on <b>live fares pulled on 2 Sep 2026</b> for the real window. The <b>timing logic vs tickets</b> lives in Schedule → Booking Plan.</p>
     <div class="callout" style="margin-bottom:16px">
       <h3>⏰ The one-line answer</h3>
-      <p>For June–July 2027 travel, register the free ballots <b>now</b>, wait for the ECB to confirm exact Ashes dates (<b>summer 2026</b>), then book flights in the <b>Oct 2026 – Jan 2027</b> window once your anchor cricket day is secured. That overlaps the cheap-fare sweet spot; leaving it past March 2027 gets dear.</p>
+      <p>The Ashes dates are <b>locked</b> — Lord's 30 Jun – 4 Jul, Edgbaston 8–12 Jul 2027 — so the flight window is <b>~25/26 Jun → 13 Jul</b> and there is no date flexibility to trade on. Live MEL⇄London return economy for those exact dates already sits at <b>A$2,213–2,600</b>, and the realistic floor is only about <b>A$1,900</b>. <b>Book between mid-Nov 2026 and Feb 2027</b>, once the ballot outcome is known (mid-Oct 2026). Past March 2027 you're looking at A$2,800–3,500.</p>
+      <p class="mini" style="margin:8px 0 0">The uncomfortable maths: waiting might save you ~A$400. Waiting too long costs ~A$1,000+. That asymmetry is the whole strategy.</p>
     </div>
     <div class="section-label">When should we book?</div>
     <div class="card">
       <div class="tb-track" id="tbTrack"><div class="tb-win" id="tbWin"></div><div class="tb-now" id="tbNow"></div></div>
       <div class="tb-labels"><span>Jul 2026</span><span>Ideal window</span><span>Depart Jun 2027</span></div>
-      <p class="mini">Green–gold band = ideal booking window (<b>Sep 2026 – Feb 2027</b>). Qantas/Velocity classic-reward seats for peak June-2027 dates open ~353 days ahead (around now) — grab them the moment they load.</p>
+      <p class="mini">Green–gold band = the buy window (<b>mid-Nov 2026 – Feb 2027</b>): after the Ashes ballot outcome (mid-Oct) and across the Black Friday and New-Year sales, but before peak-summer fares firm up in March. The generic "book 6–16 weeks out" advice does <b>not</b> apply here — an Ashes series plus Wimbledon plus the start of the UK school holidays means these exact dates climb, not fall. Qantas/Velocity classic-reward seats for late-June 2027 released ~353 days out (mid-2026) so they're long gone — worth a look for cancellations, not a plan.</p>
     </div>
     <div class="section-label">Group cost estimator</div>
     <div class="card estimator">
       <div class="row">
         <div class="f"><label>Cabin</label><select id="estCabin"><option value="eco">Economy</option><option value="prem">Premium economy</option><option value="biz">Business</option></select></div>
         <div class="f"><label>Travellers</label><input type="number" id="estPax" min="1" max="12" value="4"></div>
-        <div class="f"><label>When you book</label><select id="estTiming"><option value="0.85">Early (Sep–Jan sales)</option><option value="1" selected>Standard (~6mo out)</option><option value="1.35">Last-minute (&lt;3mo)</option></select></div>
+        <div class="f"><label>When you book</label><select id="estTiming"><option value="0.92">Well (Nov 26 – Feb 27 sales)</option><option value="1" selected>Standard</option><option value="1.4">Left it late (Apr–Jun 27)</option></select></div>
       </div>
       <div class="est-out"><div class="pp">Return per person ≈ <b id="estPP">—</b></div><div class="total" id="estTotal">—</div><div class="tl2">estimated group total (return)</div></div>
       <p class="est-note" id="estNote"></p>
@@ -550,7 +551,7 @@
     <div class="section-label">Is it a good deal? — fare benchmarks</div>
     <div class="card" id="benchGauge"></div>
     <div class="card" id="benchTable"></div>
-    <div class="section-label">Stopovers — get put up, often free</div>
+    <div class="section-label">Stopovers — and why the Gulf ones don't work in July</div>
     <div class="card" id="stopovers"></div>
     <div class="section-label">Tricks to keep it down</div>
     <div class="card" id="tipsList"></div>
@@ -658,9 +659,10 @@ const TK = {
     ops:"ICC Travel & Tours (official packages); Seat Unique (hospitality)."
   },
   ash:{ /* shared Ashes base; per-Test county added below */
-    onSale:"~Oct–Nov 2026", confirm:"ECB confirms exact dates summer 2026", priceFrom:"~£70–200/day (~A$140–400)", conf:"high",
-    urgent:"", official:"https://www.ecb.co.uk/watch-cricket/international-tickets",
-    aus:"Use the ECB International Tickets page + the venue's own site. Join the free 'We Are England Cricket Supporters' for the priority window (~a week before general sale). Ballots apply to the hottest days — enter several to raise your odds.",
+    onSale:"Ballot 2–29 Sep 2026 · general sale from 14 Oct", confirm:"Dates CONFIRMED by the ECB, 23 Jul 2026", priceFrom:"~£70–200/day (~A$140–400)", conf:"high",
+    urgent:"⚡ The public ballot is OPEN: 10:00 on 2 Sep 2026 → 23:59 on 29 Sep 2026, free to enter. Winners get an assigned purchase window (1–5 Oct or 7–13 Oct); everything left goes to general sale from 10:00 on 14 Oct 2026.",
+    official:"https://www.ecb.co.uk/watch-cricket/international-tickets",
+    aus:"Enter the free ECB ballot for every day you'd genuinely travel for — entry costs nothing and each Test is balloted separately. If you miss, be logged in for the 14 Oct general sale. Join the free 'We Are England Cricket Supporters' for the priority window too.",
     uk:"The best 'in': join the HOST COUNTY as a member for priority buying at exclusive prices. A UK mate joining the relevant county is the single strongest route — see each Test below for which county.",
     life:"Ask a UK friend to enter the England-Supporters priority / county window for you. Or go hospitality for the one bucket-list day (guaranteed seat + lunch) and ballot for the rest. Email the venue's group-sales team early — a 50th 'trip of a lifetime' block request is exactly what they field.",
     members:"Melbourne CC → Lord's reciprocal (for the Lord's Tests) via a Letter of Introduction — clubhouse access, not a guaranteed match ticket. Marylebone-member friends rarely have spare international tickets (limited & balloted), so don't count on that route. SACA members: check your reciprocal-club list and ask SACA membership.",
@@ -668,11 +670,11 @@ const TK = {
     ops:"Australian Cricket Tours, AST Sports, Sport Tours, Events Travel, Global Sports, AOK Events; The Fanatics (the classic Aussie supporters' tour — tickets + social)."
   },
   wimb:{
-    onSale:"Ballot opens ~Aug–Sep 2026", confirm:"Dates fixed: 28 Jun–11 Jul 2027", priceFrom:"Grounds Pass £33 · show courts £65–315", conf:"medium",
-    urgent:"Create a free MyWimbledon account now so you're ready when the ballot opens (Aug–Sep 2026). UK & overseas ballots are separate.",
+    onSale:"Ballot OPEN — closes 16 Sep 2026", confirm:"Dates fixed: 28 Jun–11 Jul 2027", priceFrom:"Grounds Pass £33 · show courts £65–315", conf:"medium",
+    urgent:"⚡ The ballot is open and closes at the end of Tue 16 Sep 2026 — the tightest deadline on the whole trip. You need a free myWIMBLEDON account to enter. The old separate overseas ballot has been MERGED into the single online public ballot, and everyone in it has an equal chance.",
     official:"https://www.wimbledon.com/en_GB/tickets/ballot",
-    aus:"Enter the OVERSEAS public ballot (free registration at wimbledon.com). Or plan for The Queue — turn up early for same-day Grounds Passes and a limited number of show-court tickets.",
-    uk:"Enter the (separate) UK ballot. Once on the grounds, the daily online Resale releases returned show-court seats very cheaply (~£15–30) to people already inside.",
+    aus:"Enter the single online public ballot (free myWIMBLEDON registration) — there's no separate overseas ballot any more. Winners are offered either one pair of tickets, or two single non-adjacent seats (singles are only balloted once all pairs are allocated). Fallback: The Queue, for same-day Grounds Passes and a limited number of show-court tickets.",
+    uk:"Same single ballot — a UK friend has no advantage. Once on the grounds, the daily online Resale releases returned show-court seats very cheaply (~£15–30) to people already inside.",
     life:"The bucket-list move is The Queue with a Grounds Pass — camping overnight is part of the legend. Debentures are the ONLY transferable tickets (premium Centre/No.1, sold via official brokers — pricey but guaranteed). Keith Prowse = official hospitality.",
     members:"No cricket-membership route here. Debenture holders (or their guests) are the only 'members' with guaranteed access.",
     resale:"Official daily Resale ONLY. Every non-debenture ticket is name-tied & strictly non-transferable — Viagogo/StubHub listings risk being void. Don't.",
@@ -703,9 +705,9 @@ const TK = {
 };
 /* per-Ashes-Test county lines */
 const ASH_COUNTY = {
-  ash1:"Host county: <b>Warwickshire</b> (Edgbaston). Their '1882' membership gives priority Major-Match access at the best prices.",
+  ash1:"Host county: <b>Nottinghamshire</b> (Trent Bridge). County membership = priority international tickets.",
   ash2:"Host: <b>MCC / Middlesex</b> (Lord's). Marylebone members' own match tickets are scarce & balloted among members (a long shot to borrow), but <b>Melbourne CC</b> members can request a reciprocal Letter of Introduction for clubhouse access.",
-  ash3:"Host county: <b>Nottinghamshire</b> (Trent Bridge). County membership = priority international tickets.",
+  ash3:"Host county: <b>Warwickshire</b> (Edgbaston). Their '1882' membership gives priority Major-Match access at the best prices.",
   ash4:"Host county: <b>Hampshire</b> (Utilita/Ageas Bowl). First-ever men's Ashes Test here — membership gives priority.",
   ash5:"Host county: <b>Surrey</b> (The Oval). A Surrey membership gives priority on up to 8 Test tickets at exclusive prices — one of the best 'ins' going."
 };
@@ -714,18 +716,18 @@ const ASH_COUNTY = {
 function defaultState(){
   return {
     events:[
-      {id:"wtc", cat:"cricket", name:"World Test Championship Final", venue:"Lord's, London", city:"London", start:"2027-06-09", end:"2027-06-13", status:"prov", tk:"wtc",
-        note:"ICC confirms exact dates in early June 2027. Australia in contention to feature.", include:false, days:[]},
-      {id:"ash1", cat:"cricket", name:"Ashes · 1st Test", venue:"Edgbaston, Birmingham", city:"Birmingham", start:"2027-06-23", end:"2027-06-27", status:"prov", tk:"ash",
-        note:"Edgbaston confirmed to host the series opener. Exact dates from ECB in summer 2026.", include:false, days:[]},
-      {id:"ash2", cat:"cricket", name:"Ashes · 2nd Test", venue:"Lord's, London", city:"London", start:"2027-07-01", end:"2027-07-05", status:"prov", tk:"ash",
-        note:"Lord's confirmed as 2nd Test venue. Dates provisional.", include:false, days:[]},
-      {id:"ash3", cat:"cricket", name:"Ashes · 3rd Test", venue:"Trent Bridge, Nottingham", city:"Nottingham", start:"2027-07-15", end:"2027-07-19", status:"prov", tk:"ash",
-        note:"Venue confirmed; order & dates of Tests 3–5 provisional.", include:false, days:[]},
-      {id:"ash4", cat:"cricket", name:"Ashes · 4th Test", venue:"Utilita (Ageas) Bowl, Southampton", city:"Southampton", start:"2027-07-29", end:"2027-08-02", status:"prov", tk:"ash",
-        note:"Southampton hosts its first-ever men's Ashes Test in 2027. Dates provisional.", include:false, days:[]},
-      {id:"ash5", cat:"cricket", name:"Ashes · 5th Test", venue:"The Kia Oval, London", city:"London", start:"2027-08-12", end:"2027-08-16", status:"prov", tk:"ash",
-        note:"The Oval confirmed as a 2027 venue. Dates provisional.", include:false, days:[]},
+      {id:"wtc", cat:"cricket", name:"World Test Championship Final", venue:"The Kia Oval, London", city:"London", start:"2027-06-09", end:"2027-06-13", status:"conf", tk:"wtc",
+        note:"CONFIRMED by the ICC: The Oval, Wed 9 – Sun 13 Jun 2027, in the 150th year of Test cricket. Which two teams play isn't known until early June 2027 — a bonus, never the anchor.", include:false, days:[]},
+      {id:"ash1", cat:"cricket", name:"Ashes · 1st Test", venue:"Trent Bridge, Nottingham", city:"Nottingham", start:"2027-06-18", end:"2027-06-22", status:"conf", tk:"ash",
+        note:"CONFIRMED (ECB, 23 Jul 2026): Fri 18 – Tue 22 Jun. Trent Bridge's first men's Ashes Test since 2015. Two weeks clear of the Lord's/Edgbaston pair — a separate trip, effectively.", include:false, days:[]},
+      {id:"ash2", cat:"cricket", name:"Ashes · 2nd Test", venue:"Lord's, London", city:"London", start:"2027-06-30", end:"2027-07-04", status:"conf", tk:"ash",
+        note:"CONFIRMED: Wed 30 Jun – Sun 4 Jul. In the ballot for this one. Sits inside the Wimbledon fortnight.", include:false, days:[]},
+      {id:"ash3", cat:"cricket", name:"Ashes · 3rd Test", venue:"Edgbaston, Birmingham", city:"Birmingham", start:"2027-07-08", end:"2027-07-12", status:"conf", tk:"ash",
+        note:"CONFIRMED: Thu 8 – Mon 12 Jul. In the ballot for this one too — paired with Lord's it fixes the whole trip window at ~26 Jun – 13 Jul.", include:false, days:[]},
+      {id:"ash4", cat:"cricket", name:"Ashes · 4th Test", venue:"Utilita (Ageas) Bowl, Southampton", city:"Southampton", start:"2027-07-21", end:"2027-07-25", status:"conf", tk:"ash",
+        note:"CONFIRMED: Wed 21 – Sun 25 Jul. Southampton's first-ever men's Ashes Test — the 10th UK ground to host one.", include:false, days:[]},
+      {id:"ash5", cat:"cricket", name:"Ashes · 5th Test", venue:"The Kia Oval, London", city:"London", start:"2027-07-29", end:"2027-08-02", status:"conf", tk:"ash",
+        note:"CONFIRMED: Thu 29 Jul – Mon 2 Aug. The decider slot, and the same ground as June's WTC Final.", include:false, days:[]},
       {id:"wimb", cat:"tennis", name:"Wimbledon Championships", venue:"All England Club, London", city:"London", start:"2027-06-28", end:"2027-07-11", status:"conf", tk:"wimb",
         note:"Confirmed: 28 Jun – 11 Jul 2027.", include:false, days:[]},
       {id:"silv", cat:"f1", name:"British Grand Prix", venue:"Silverstone Circuit", city:"Silverstone", start:"2027-07-02", end:"2027-07-04", status:"prov", tk:"silv",
@@ -747,7 +749,7 @@ function defaultState(){
       {id:"t2", name:"Ace", color:"#4ade80", arrive:"2027-06-20", depart:"2027-07-25"},
       {id:"t3", name:"Northy", color:"#c084fc", arrive:"2027-06-28", depart:"2027-07-19"},
       {id:"t4", name:"Boxy", color:"#38bdf8", arrive:"2027-07-01", depart:"2027-07-22"},
-      {id:"t1", name:"Travis", color:"#f5b301", arrive:"2027-06-28", depart:"2027-07-11"}
+      {id:"t1", name:"Travis", color:"#f5b301", arrive:"2027-06-27", depart:"2027-07-13"}
     ],
     ui:{ filter:"all", itinFilter:"all", itinView:"date", seg:"plan", eseg:"uk" },
     tracker:{}, tour:{}
@@ -761,7 +763,16 @@ function migrate(s){
   const byId=Object.fromEntries((s.events||[]).map(e=>[e.id,e]));
   def.events=def.events.map(de=>{ const ue=byId[de.id];
     // keep user selections/edits but always refresh static content (note/tk/venue)
-    return ue ? {...de, include:ue.include, days:ue.days||[], start:ue.start||de.start, end:ue.end||de.end, flexDate:ue.flexDate||de.flexDate, nights:ue.nights||de.nights, ...(Array.isArray(ue.who)?{who:ue.who}:{})} : de; });
+    if(!ue) return de;
+    // Dates that are now OFFICIAL always win over anything a user saved while they were provisional.
+    // Still-provisional events keep the user's hand-edited dates. Stale day-picks outside the new
+    // range are dropped so the itinerary can't show a day the Test no longer runs on.
+    const lock = de.status==="conf" && !de.flexible;
+    const start = lock ? de.start : (ue.start||de.start);
+    const end   = lock ? de.end   : (ue.end||de.end);
+    const span  = eachDay(start,end);
+    const days  = (ue.days||[]).filter(d=>!lock || span.includes(d));
+    return {...de, include:ue.include, days, start, end, flexDate:ue.flexDate||de.flexDate, nights:ue.nights||de.nights, ...(Array.isArray(ue.who)?{who:ue.who}:{})}; });
   (s.events||[]).forEach(e=>{ if(!def.events.find(x=>x.id===e.id)) def.events.push(e); });
   if(s.travellers){
     const RN={"Me (Travis)":"Travis","My brother":"Ace","Friend 1":"Northy","Friend 2":"Boxy"};
@@ -875,31 +886,38 @@ function renderTldr(){
       <p>A group trip to the UK <b>celebrating 50ths with a sporting tour</b>, summer <b>2027</b>. Core mission: watch <b>at least one day of Ashes cricket</b> (Australia feature in the Ashes <i>and</i> the World Test Championship Final). Optional extras: Wimbledon, the British Grand Prix, The Open golf — plus <b>Oxford</b> (Travis's old town) and <b>Bath</b>. Everyone comes for different lengths (1–5 weeks).</p>
     </div>
     <div class="urgent" style="margin-bottom:16px">🚨 <b>Do this now — free, 2 minutes:</b><br>
-      • <b>The Open golf ballot opens ~6 July 2026</b> — join <a href="https://www.theopen.com/" target="_blank" rel="noopener">The One Club</a> (free) &amp; enter. Massive demand for the St Andrews anniversary.<br>
-      • Create a free <a href="https://www.wimbledon.com/" target="_blank" rel="noopener">MyWimbledon</a> account for the tennis ballot (opens Aug–Sep 2026).<br>
+      • <b>The Open ballot has closed</b> for 2027 (it ran Jul–Aug 2026) — if you missed it, <a href="https://www.theopen.com/" target="_blank" rel="noopener">The One Club</a> resale and official hospitality are the remaining routes.<br>
+      • <b>Wimbledon ballot is OPEN and closes 16 Sep 2026</b> — free <a href="https://www.wimbledon.com/en_GB/tickets/ballot" target="_blank" rel="noopener">myWIMBLEDON</a> account, then enter. UK &amp; overseas ballots are now merged into one.<br>
+      • <b>Ashes ballot is OPEN, 2–29 Sep 2026</b>, free — enter for every day you'd travel for.<br>
       • Set MEL→London flight price alerts (Google Flights / Skyscanner).</div>
 
     <div class="section-label">📅 Key dates — Summer 2027</div>
     <div class="card">
-      <div class="route"><div class="from">🏏 WTC Final <span>· Lord's, London</span></div><div class="time">9–13 Jun*</div></div>
-      <div class="route"><div class="from">🏏 The Ashes <span>· 5 Tests, 5 cities</span></div><div class="time">Jun–Aug*</div></div>
+      <div class="route"><div class="from">🏏 WTC Final <span>· The Oval, London</span></div><div class="time">9–13 Jun</div></div>
+      <div class="route"><div class="from">🏏 Ashes 1st <span>· Trent Bridge</span></div><div class="time">18–22 Jun</div></div>
       <div class="route"><div class="from">🎾 Wimbledon <span>· London</span></div><div class="time">28 Jun–11 Jul</div></div>
+      <div class="route"><div class="from">🏏 Ashes 2nd <span>· Lord's</span></div><div class="time">30 Jun–4 Jul</div></div>
       <div class="route"><div class="from">🏎️ British GP <span>· Silverstone</span></div><div class="time">2–4 Jul*</div></div>
+      <div class="route"><div class="from">🏏 Ashes 3rd <span>· Edgbaston</span></div><div class="time">8–12 Jul</div></div>
       <div class="route"><div class="from">⛳ The Open <span>· St Andrews</span></div><div class="time">15–18 Jul</div></div>
-      <p class="mini">*Provisional — the ECB confirms exact Ashes dates in summer 2026; the rest are fixed. Ashes venues: Edgbaston, Lord's, Trent Bridge, Southampton, The Oval.</p>
+      <div class="route"><div class="from">🏏 Ashes 4th <span>· Southampton</span></div><div class="time">21–25 Jul</div></div>
+      <div class="route"><div class="from">🏏 Ashes 5th <span>· The Oval</span></div><div class="time">29 Jul–2 Aug</div></div>
+      <p class="mini">All cricket dates are now <b>CONFIRMED</b> — ECB announced the Ashes schedule on 23 Jul 2026 and the ICC gave the WTC Final to The Oval. *Silverstone still provisional. <b>Lord's + Edgbaston set the core window: ~26 Jun → 13 Jul</b>, with the whole Wimbledon fortnight sitting inside it.</p>
     </div>
 
     <div class="section-label">🎟️ When tickets go on sale</div>
     <div class="card">
-      <div class="route"><div class="from">The Open (free ballot)</div><div class="time">~now, Jul 2026</div></div>
-      <div class="route"><div class="from">Wimbledon (free ballot)</div><div class="time">Aug–Sep 2026</div></div>
+      <div class="route"><div class="from">Wimbledon (free ballot) <span>· CLOSES 16 Sep 2026</span></div><div class="time">open now</div></div>
+      <div class="route"><div class="from">The Ashes ballot <span>· 2–29 Sep 2026</span></div><div class="time">open now</div></div>
+      <div class="route"><div class="from">Ashes ballot purchase windows</div><div class="time">1–5 &amp; 7–13 Oct 26</div></div>
+      <div class="route"><div class="from">Ashes general sale</div><div class="time">from 14 Oct 26</div></div>
       <div class="route"><div class="from">Silverstone GP</div><div class="time">~Sep 2026</div></div>
-      <div class="route"><div class="from">The Ashes</div><div class="time">~Oct–Nov 2026</div></div>
+      <div class="route"><div class="from">★ Book flights</div><div class="time">mid-Nov 26 – Feb 27</div></div>
       <div class="route"><div class="from">WTC Final</div><div class="time">~Jan–Feb 2027</div></div>
     </div>
 
     <div class="section-label">🧠 The one-rule booking logic</div>
-    <div class="card block"><p style="margin-top:0">Register the free ballots <b>now</b> → wait for the ECB to confirm Ashes dates (<b>summer 2026</b>) → grab your anchor cricket ticket when the Ashes goes on sale (<b>Oct–Nov 2026</b>) → <b>book flights right after</b>, in the Oct 2026–Jan 2027 sweet spot (~A$2,200–2,800 return economy at peak). Full reasoning &amp; a live countdown tracker are in the Schedule tab.</p>
+    <div class="card block"><p style="margin-top:0">The dates are locked, so the logic is now simple: <b>get the free ballots in</b> (Wimbledon closes 16 Sep, Ashes 29 Sep) → <b>find out what you've got</b> in the purchase windows 1–13 Oct 2026, with general sale from 14 Oct → <b>book flights in the mid-Nov 2026 – Feb 2027 window</b>. Live MEL⇄London economy for the Lord's/Edgbaston window already sits at <b>A$2,213–2,600</b> and the realistic floor is only ~A$1,900, so there isn't much left to squeeze — but leaving it past March 2027 costs A$2,800–3,500. Full reasoning &amp; a live countdown tracker are in the Schedule tab.</p>
       <p class="mini">⏭️ Next live deadline: ${nextLine}</p></div>
 
     <div class="section-label">📱 How to use this planner</div>
@@ -938,12 +956,14 @@ function renderPlan(){
   // fixed + derived milestones
   items.push({when:"Now",cls:"now",type:"act",t:"Register the free ballots",d:"Zero cost, keeps every option open. It's the smartest first move — do it before anything else."});
   if(on("open")) items.push({when:"~6 Jul 2026",cls:"now",type:"ticket",t:"⚡ Enter The Open ballot",d:"Opens ~now via The One Club (free). Results in Aug. Most time-critical item on the whole trip.",tag:"golf"});
-  if(on("wimb")) items.push({when:"Aug–Sep 2026",cls:"soon",type:"ticket",t:"Enter the Wimbledon ballot",d:"Create a free MyWimbledon account now; overseas ballot opens Aug–Sep 2026.",tag:"tennis"});
-  items.push({when:"Summer 2026",cls:"soon",type:"confirm",t:"ECB confirms exact Ashes dates",d:"This unlocks your real target dates. The F1 2027 calendar (Silverstone) is also confirmed around now.",tag:"key"});
+  if(on("wimb")) items.push({when:"by 16 Sep 2026",cls:"now",type:"ticket",t:"⚡ Enter the Wimbledon ballot",d:"OPEN NOW, closes end of Tue 16 Sep. Free myWIMBLEDON account; UK & overseas ballots are merged into one.",tag:"tennis"});
+  if(anyCricket) items.push({when:"by 29 Sep 2026",cls:"now",type:"ticket",t:"⚡ Enter the Ashes ballot",d:"OPEN NOW (2–29 Sep 2026), free. Each Test is balloted separately — enter every day you'd travel for.",tag:"cricket"});
+  items.push({when:"Done ✅",cls:"soon",type:"confirm",t:"ECB confirmed the Ashes dates",d:"Announced 23 Jul 2026. Trent Bridge 18–22 Jun · Lord's 30 Jun–4 Jul · Edgbaston 8–12 Jul · Southampton 21–25 Jul · The Oval 29 Jul–2 Aug.",tag:"key"});
   if(on("open")) items.push({when:"Aug 2026",cls:"soon",type:"confirm",t:"The Open ballot results",d:"You'll know if you've got golf before you commit to flights."});
   if(on("silv")) items.push({when:"~Sep 2026",cls:"soon",type:"ticket",t:"Silverstone GP tickets on sale",d:"Sells out & uses dynamic pricing — be on the presale list. Buy this early if it's a must.",tag:"f1"});
-  if(anyCricket) items.push({when:"Oct–Nov 2026",cls:"soon",type:"ticket",t:"Ashes tickets on sale",d:"Supporters/priority window ~Oct, general sale ~Nov. Secure your anchor cricket day here.",tag:"cricket"});
-  items.push({when:"Oct 26–Jan 27",cls:"soon",type:"flight",t:"★ Book flights in this window",d:"Once your anchor cricket ticket is in hand, book. This overlaps the cheap-fare sweet spot for Jun–Jul 2027 travel.",tag:"flights"});
+  if(anyCricket) items.push({when:"1–13 Oct 2026",cls:"soon",type:"ticket",t:"Ashes ballot purchase windows",d:"Winners buy in an assigned window: 1–5 Oct or 7–13 Oct. This is when you find out what you've actually got.",tag:"cricket"});
+  if(anyCricket) items.push({when:"from 14 Oct 2026",cls:"soon",type:"ticket",t:"Ashes general sale",d:"Everything unsold goes public from 10:00. Your backstop if the ballot misses.",tag:"cricket"});
+  items.push({when:"Nov 26 – Feb 27",cls:"soon",type:"flight",t:"★ Book flights in this window",d:"After the ballot outcome, across the Black Friday and New-Year sales, before peak fares firm up in March. Live economy for the locked window is A$2,213–2,600; floor ~A$1,900.",tag:"flights"});
   if(on("wtc")) items.push({when:"Jan–Feb 2027",cls:"later",type:"ticket",t:"WTC Final tickets on sale",d:"But teams aren't confirmed until early June — treat as a bonus, not the anchor."});
   if(on("wimb")) items.push({when:"Early 2027",cls:"later",type:"confirm",t:"Wimbledon ballot results",d:"If you miss, fall back to The Queue or the daily official Resale."});
   items.push({when:"Jun–Jul 2027",cls:"later",type:"act",t:"Travel · trip of a lifetime 🎉",d:"WTC finalists known early June. Last-chance resale (Twickets/official exchange) mops up any gaps."});
@@ -951,8 +971,9 @@ function renderPlan(){
   const cricketDays = S.events.filter(e=>e.cat==="cricket"&&e.include).length;
   const reco = `<div class="reco">
     <h3>🧠 Your booking brain</h3>
-    <p>The tension: flights are cheapest ~6–9 months out, but you don't want to commit before you know the <b>dates</b> and have <b>tickets</b>. The good news — for a 5-Test Ashes across five cities, getting <b>at least one day's cricket is high-confidence</b>, and tickets go on sale (Oct 2026–early 2027) right as the cheap-flight window opens. So they line up.</p>
-    <p><b>The play:</b> ① register free ballots now → ② wait for ECB to confirm Ashes dates (summer 2026) → ③ secure your anchor cricket day when tickets drop (Oct–Nov 2026) → ④ book flights immediately after, inside the Oct 2026–Jan 2027 sweet spot. Use flexible/refundable fares if you want to jump before tickets are 100% locked.</p>
+    <p>The dates are no longer the unknown — the ECB confirmed them on 23 Jul 2026. The only tension left is that you don't know <b>which days you've won</b> until the ballot purchase windows close on 13 Oct 2026, and flights for a locked peak-July window only get dearer from March 2027.</p>
+    <p><b>The play:</b> ① get the free ballots in (Wimbledon by 16 Sep, Ashes by 29 Sep) → ② find out what you've got, 1–13 Oct, with general sale from 14 Oct → ③ book flights mid-Nov 2026 – Feb 2027, across the Black Friday and New-Year sales. If you want to jump before tickets are locked, pay for a fare with cheap date-changes — cheap insurance on a A$2,300 ticket.</p>
+    <p class="mini" style="margin:6px 0 0">Reality check on the airfare: live MEL⇄London economy for the Lord's-to-Edgbaston window is already A$2,213–2,600 and the realistic floor is ~A$1,900. Waiting might save ~A$400; waiting too long costs ~A$1,000+. Full numbers in the Flights tab.</p>
     ${on("open")?`<div class="next">🚨 <b>Do this week:</b> The Open (St Andrews) ballot opens ~6 July 2026 via The One Club — free, no backlog, huge demand for the 100-year anniversary. Enter now.</div>`:``}
     ${!anyCricket?`<div class="next">Tip: you haven't ticked any cricket yet — the Ashes is your anchor. Add at least one Test in the Events tab to sharpen this plan.</div>`:``}
   </div>`;
@@ -975,19 +996,21 @@ function buildTracker(){
   it.push({id:"oneclub",title:"Join The One Club (free)",tag:"golf",when:"Now",anchor:"2026-07-05",detail:"Free membership you need before entering The Open ballot — set it up today.",url:"https://www.theopen.com/",show:has("open")});
   it.push({id:"open-open",title:"The Open ballot OPENS",tag:"golf",when:"~6 Jul 2026",anchor:"2026-07-06",detail:"Apply for St Andrews the moment it opens. 100-year anniversary = huge demand. Most time-critical item on the trip.",url:"https://www.theopen.com/",show:has("open")});
   it.push({id:"open-close",title:"The Open ballot closes",tag:"golf",when:"~early Aug 2026",anchor:"2026-08-06",detail:"Ballot runs ~1 month — make sure you're in before it shuts.",url:"https://www.theopen.com/",show:has("open")});
-  it.push({id:"mywim",title:"Create a MyWimbledon account",tag:"tennis",when:"Now",anchor:"2026-07-05",detail:"Needed to enter the ballot — get set up before it opens.",url:"https://www.wimbledon.com/",show:has("wimb")});
-  it.push({id:"reward",title:"Grab Qantas/Velocity reward seats",tag:"flights",when:"~now (353d out)",anchor:"2026-07-12",detail:"Classic-reward seats for peak June-2027 dates open ~now — book the second they load.",url:"",show:true});
+  it.push({id:"mywim",title:"Create a myWIMBLEDON account",tag:"tennis",when:"Now",anchor:"2026-09-03",detail:"Free, and you can't enter the ballot without one. Do it today — the ballot shuts 16 Sep.",url:"https://www.wimbledon.com/",show:has("wimb")});
+  it.push({id:"reward",title:"Check Qantas/Velocity reward seats",tag:"flights",when:"Long shot",anchor:"2026-09-10",detail:"Classic-reward seats for late-June 2027 released ~353 days out (mid-2026) and will be gone. Worth a look for cancellations, not a plan.",url:"",show:true});
   it.push({id:"silv-presale",title:"Register for the Silverstone presale",tag:"f1",when:"Mid-2026",anchor:"2026-08-01",detail:"The GP sells out & uses dynamic pricing — presale = first access.",url:"https://www.silverstone.co.uk/events/formula-1-british-grand-prix",show:has("silv")});
   it.push({id:"open-result",title:"The Open ballot results",tag:"golf",when:"Aug 2026",anchor:"2026-08-20",detail:"Results announced in stages during August — you'll know before committing to flights.",url:"",show:has("open")});
-  it.push({id:"ecb",title:"ECB confirms exact Ashes dates",tag:"key",when:"Summer 2026",anchor:"2026-08-31",detail:"Watch for this — it unlocks your real target dates. Then update the dates in the Events tab.",url:"https://www.ecb.co.uk/",show:anyAsh});
-  it.push({id:"wim-open",title:"Enter the Wimbledon ballot (overseas)",tag:"tennis",when:"~Aug–Sep 2026",anchor:"2026-08-20",detail:"UK & overseas ballots are separate — enter the overseas one.",url:"https://www.wimbledon.com/en_GB/tickets/ballot",show:has("wimb")});
+  it.push({id:"ash-ballot",title:"⚡ Enter the Ashes ballot",tag:"cricket",when:"2–29 Sep 2026",anchor:"2026-09-29",detail:"Free, open now. Each Test is balloted separately — enter every day you'd genuinely travel for.",url:"https://www.ecb.co.uk/watch-cricket/international-tickets",show:anyAsh});
+  it.push({id:"wim-open",title:"⚡ Enter the Wimbledon ballot",tag:"tennis",when:"closes 16 Sep 2026",anchor:"2026-09-16",detail:"One merged public ballot now — no separate overseas entry. Tightest deadline on the trip.",url:"https://www.wimbledon.com/en_GB/tickets/ballot",show:has("wimb")});
   it.push({id:"supporters",title:"Join 'We Are England Cricket Supporters'",tag:"cricket",when:"Before Oct 2026",anchor:"2026-09-15",detail:"Gets you the priority window before the general Ashes sale.",url:"https://www.ecb.co.uk/watch-cricket/international-tickets",show:anyAsh});
   it.push({id:"county",title:"Consider a host-county membership",tag:"cricket",when:"By autumn 2026",anchor:"2026-09-20",detail:"Best UK-resident hack — Surrey (Oval) gives priority on up to 8 Test tickets. A UK friend joining works too.",url:"",show:anyAsh});
   it.push({id:"silv-sale",title:"Silverstone GP tickets on sale",tag:"f1",when:"~Sep 2026",anchor:"2026-09-15",detail:"Buy early if it's a must — dynamic pricing climbs as it fills.",url:"https://www.silverstone.co.uk/",show:has("silv")});
-  it.push({id:"wim-close",title:"Wimbledon ballot closes",tag:"tennis",when:"~Sep 2026",anchor:"2026-09-30",detail:"Get your entry in before the window shuts.",url:"",show:has("wimb")});
-  it.push({id:"ash-priority",title:"Ashes priority/supporters window",tag:"cricket",when:"~mid-Oct 2026",anchor:"2026-10-12",detail:"Priority buyers get first crack — be logged in and ready.",url:"https://www.ecb.co.uk/watch-cricket/international-tickets",show:anyAsh});
-  it.push({id:"ash-general",title:"Ashes general on sale",tag:"cricket",when:"~Nov 2026",anchor:"2026-11-01",detail:"Secure your anchor cricket day. Enter ballots for the hottest days to lift your odds.",url:"https://www.ecb.co.uk/watch-cricket/international-tickets",show:anyAsh});
-  it.push({id:"flights",title:"★ Book flights (once cricket secured)",tag:"flights",when:"Oct 26 – Jan 27",anchor:"2026-11-15",detail:"Best window for Jun–Jul 2027 travel — book right after your anchor ticket is in hand.",url:"",show:true});
+  it.push({id:"ash-win1",title:"Ashes ballot purchase window 1",tag:"cricket",when:"1–5 Oct 2026",anchor:"2026-10-05",detail:"First tranche of winners buy here. You're given an assigned window — watch your email.",url:"https://www.ecb.co.uk/watch-cricket/international-tickets",show:anyAsh});
+  it.push({id:"ash-win2",title:"Ashes ballot purchase window 2",tag:"cricket",when:"7–13 Oct 2026",anchor:"2026-10-13",detail:"Final tranche. After this you know exactly which days you've got — and your flight dates.",url:"https://www.ecb.co.uk/watch-cricket/international-tickets",show:anyAsh});
+  it.push({id:"ash-general",title:"Ashes general on sale",tag:"cricket",when:"from 14 Oct 2026",anchor:"2026-10-14",detail:"10:00 UK time, everything unsold goes public. Your backstop if the ballot misses.",url:"https://www.ecb.co.uk/watch-cricket/international-tickets",show:anyAsh});
+  it.push({id:"bf",title:"Black Friday → Travel Tuesday sales",tag:"flights",when:"27 Nov – 1 Dec 2026",anchor:"2026-11-27",detail:"Biggest airfare event of the year. Check the SALE TRAVEL WINDOW first — peak late-June/July is usually excluded.",url:"",show:true});
+  it.push({id:"flights",title:"★ Book flights (window opens)",tag:"flights",when:"mid-Nov 26 – Feb 27",anchor:"2026-11-15",detail:"After the ballot outcome, across Black Friday and the New-Year sales. Good buy = A$1,900–2,300; book on sight under A$1,900.",url:"",show:true});
+  it.push({id:"boxing",title:"Boxing Day & New-Year sales",tag:"flights",when:"26 Dec 26 – mid Jan 27",anchor:"2027-01-05",detail:"★ Best realistic shot — January is the strongest long-haul discounting month and July is finally inside the travel windows.",url:"",show:true});
   it.push({id:"wtc-sale",title:"WTC Final tickets on sale",tag:"cricket",when:"~Jan–Feb 2027",anchor:"2027-01-31",detail:"Bonus only — teams unknown until early June, so don't hinge the trip on it.",url:"https://www.lords.org/",show:has("wtc")});
   it.push({id:"wim-result",title:"Wimbledon ballot results",tag:"tennis",when:"~Early 2027",anchor:"2027-02-15",detail:"If you miss, fall back to The Queue or the daily official Resale.",url:"",show:has("wimb")});
   return it.filter(x=>x.show).sort((a,b)=> a.anchor.localeCompare(b.anchor));
@@ -1136,7 +1159,7 @@ const HUBS=[
   {city:"London",near:"Lord's · The Oval · Wimbledon · WTC Final",tips:["Best hub for the London Tests + Wimbledon — base once, day-trip out.","A group Airbnb in a zone-2 area near a tube line beats scattered hotel rooms.","For Wimbledon week, staying SW London (Southfields/Wimbledon) shortens the queue slog."]},
   {city:"Oxford",near:"Your old home · ~1h from London",tips:["<b>University Rooms</b> = stay inside a college over summer vac.","Old Parsonage or Old Bank for a treat; The Randolph for grandeur.","Great Cotswolds base — pair with a Canopy & Stars night."]},
   {city:"Bath",near:"Cousin's city · ~1h30 from London",tips:["Georgian townhouse B&Bs around the Royal Crescent.","Landmark Trust has properties in the surrounding countryside.","Easy to fold in with a west-country or Cotswolds leg."]},
-  {city:"Birmingham",near:"Edgbaston · Ashes 1st Test",tips:["Stay central (Brindleyplace/Mailbox) — tram/walk to Edgbaston.","Only ~1h20 from London by train, so a single day's play is an easy day-trip from London too."]},
+  {city:"Birmingham",near:"Edgbaston · Ashes 3rd Test, 8–12 Jul",tips:["Stay central (Brindleyplace/Mailbox) — tram/walk to Edgbaston.","Only ~1h20 from London by train, so a single day's play is an easy day-trip from London too."]},
   {city:"Silverstone / Northants",near:"British Grand Prix",tips:["Rooms near the circuit spike & sell out on GP weekend — lock early or camp at the circuit.","Towcester, Northampton or Milton Keynes as a base; or day-trip from Oxford/London."]},
   {city:"St Andrews / Fife",near:"The Open · Scotland",tips:["The Open makes Fife rooms scarce & pricey — book the moment you commit.","University Rooms has St Andrews options; or base in Edinburgh (~1h30) and commute.","Consider flying into Edinburgh and doing an open-jaw home (see Flights)."]}
 ];
@@ -1146,71 +1169,80 @@ function renderStays(){
 }
 
 /* ============ FLIGHTS ============ */
-const TIPS=[
-  {k:"🔀",t:"Fly open-jaw",d:"Into London, home from Edinburgh or Glasgow (or reverse). Given the St Andrews leg for The Open, this saves a backtrack and often costs the same as a return."},
-  {k:"🛑",t:"Use a free stopover",d:"Singapore, Doha or Dubai carriers often let you break the 24-hour trip for a few nights at no extra airfare — turns a slog into part of the holiday."},
-  {k:"📅",t:"Go midweek & dodge school holidays",d:"Tue/Wed departures are cheaper. Aussie school holidays (late Jun–mid Jul) overlap your dates and lift fares — the 5-week brother can dodge the peak."},
-  {k:"🔔",t:"Set price alerts",d:"Google Flights, Skyscanner and Hopper alerts on MEL→LON. Watch deal feeds (I Know The Pilot, Flight Deals) for error fares & flash sales."},
-  {k:"🎫",t:"Book seats individually",d:"Airline 'group' fares (10+) are often dearer and less flexible. Book as individuals on the same flights and coordinate."},
-  {k:"⭐",t:"Chase reward seats early",d:"Qantas/Velocity classic-reward seats release ~353 days out. Peak-summer seats are gold — be ready to book the minute they load."},
-  {k:"✂️",t:"Consider self-transfer",d:"Sometimes MEL→Asia + a separate cheap Asia→London beats a through-fare. Only with long layovers & travel insurance — you own the risk if a leg is late."},
-  {k:"🛡️",t:"Flexible fare + insurance",d:"It's a year out and some dates/tickets are provisional. A fare with cheap date-changes plus travel insurance is worth it for a trip this big."}
-];
-const SALES=[
-  {mo:"Now – Nov 26",ev:"Watch & set alerts. Reward seats for early-June 2027 start appearing ~now."},
-  {mo:"Late Nov 26",ev:"Black Friday / Cyber Monday — one of the biggest airfare sale events of the year."},
-  {mo:"Jan 2027",ev:"New-Year 'travel sales' — historically strong for ex-Australia long-haul. Prime booking window."},
-  {mo:"Feb–Mar 27",ev:"Still good value; last comfortable window before peak-summer prices firm up."},
-  {mo:"Apr–May 27",ev:"Climbing. Book by now unless chasing a last-minute gamble."},
-  {mo:"Jun–Jul 27",ev:"Travel window — peak. Highest fares if still unbooked."}
-];
 const ROUTES=[
-  {n:"Via the Middle East",d:"Qatar (Doha), Emirates (Dubai), Etihad (Abu Dhabi) — usually best-value one-stop, strong service, easy free stopovers."},
-  {n:"Via Asia",d:"Singapore Airlines, Cathay (Hong Kong), Malaysia (KL), China Southern — competitive, great for a stopover on the way."},
-  {n:"Qantas one-stop",d:"MEL–London via Perth or Singapore. Premium price but single airline & alliance points; watch for nonstop 'Project Sunrise' options nearer 2027."}
+  {n:"Via Asia — the value play",d:"Malaysia (KL), China Airlines (Taipei), Singapore, Cathay (Hong Kong), Finnair (Bangkok+Helsinki), SriLankan (Colombo), THAI (Bangkok). This is where the cheap seats are for these dates: A$2,283–3,100. A KL or Singapore stopover in July is also genuinely pleasant."},
+  {n:"Via the Middle East — a premium, not a saving",d:"Etihad A$3,890, Emirates A$3,964, Qatar A$4,215 — A$1,600–2,000 ABOVE the cheapest one-stop, for maybe one notch better in economy. What you're actually buying is ~3 hours (22h25 vs 26h). That's roughly A$550 an hour."},
+  {n:"Qantas / British Airways one-stop",d:"BA via KL sits at A$3,194. Qantas hasn't filed proper economy fares for these dates yet. Premium price, but single-airline points & status, and Qantas' MEL–PER–LHR keeps the connection domestic."},
+  {n:"Finnair — the wildcard",d:"Brand-new Melbourne route from Oct 2026, oneworld so it earns Qantas points and status credits, and airlines price year-one routes hard. Already A$2,639 without trying, and they ran MEL–LON at A$1,386 for off-peak launch dates. Worth watching closely."}
 ];
-const FARES={eco:[2200,2800],prem:[4000,5500],biz:[8500,12000]};
-/* Benchmark: indicative PEAK-summer (Jun-Aug) return ECONOMY, MEL<->London, per person, A$ */
+/* Return MEL⇄London for the LOCKED window (~25/26 Jun – 13 Jul 2027), per person, A$.
+   Anchored to live Google Flights quotes pulled 2 Sep 2026, not generic peak-season bands. */
+const FARES={eco:[1900,2600],prem:[3300,4700],biz:[7500,11000]};
+/* LIVE quotes: MEL→LHR return economy, 1 adult, dep Fri 25 Jun / ret Tue 13 Jul 2027,
+   pulled from Google Flights (AUD) on 2 Sep 2026. */
 const BENCH=[
-  {air:"China Southern", via:"Guangzhou", lo:1700, hi:2300, note:"Cheapest full-service; longer routing. Free Guangzhou stopover hotel on long layovers."},
-  {air:"Vietnam Airlines", via:"Ho Chi Minh / Hanoi", lo:1800, hi:2400, note:"Cheap and decent; good Skytrax rating for the price."},
-  {air:"Malaysia Airlines", via:"Kuala Lumpur", lo:1900, hi:2500, note:"Solid value oneworld carrier; easy KL stopover."},
-  {air:"Turkish Airlines", via:"Istanbul", lo:2000, hi:2600, note:"Longer routing, but 1 FREE hotel night + free 'TourIstanbul' city tours on long layovers."},
-  {air:"Cathay Pacific", via:"Hong Kong", lo:2000, hi:2600, note:"Reliable, well-rated; good HK stopover."},
-  {air:"Qatar Airways", via:"Doha", lo:2100, hi:2700, note:"Perennial 'world's best'. +Qatar stopover hotels from ~US$14/night."},
-  {air:"Etihad", via:"Abu Dhabi", lo:2100, hi:2700, note:"Abu Dhabi Stopover: up to 2 FREE hotel nights."},
-  {air:"Emirates", via:"Dubai", lo:2200, hi:2800, note:"A380 comfort. Dubai Connect: FREE hotel + meals on long layovers."},
-  {air:"Qantas", via:"Perth or Singapore", lo:2300, hi:2900, note:"One-stop, Aussie service, points & status. Watch nonstop 'Project Sunrise' (premium)."},
-  {air:"Singapore Airlines", via:"Singapore", lo:2300, hi:2900, note:"Top-tier product; discounted Singapore Stopover Holiday."}
+  {air:"Malaysia + Oman Air", via:"KL + Muscat · 2 stops", live:2213, note:"The cheapest number on the board — but it's an extra sector and a Muscat connection for A$70. Not a trade worth making."},
+  {air:"Malaysia Airlines", via:"Kuala Lumpur · 1 stop, 26h", live:2283, note:"⭐ The sweet spot on price vs time. 3h50 in KL. Check the fare bucket includes a checked bag — the cheapest one doesn't."},
+  {air:"China Airlines", via:"Taipei · 1 stop, 27h40", live:2538, note:"Solid value, well-rated. Their premium economy is the cheapest credible upgrade on the route."},
+  {air:"Singapore + SWISS", via:"Singapore + Zurich", live:2636, note:"Two stops but two excellent airlines, and Zurich is a civilised place to change."},
+  {air:"Finnair", via:"Bangkok + Helsinki", live:2639, note:"New MEL route from Oct 2026. oneworld — earns Qantas points & status credits. The one most likely to undercut everyone by January."},
+  {air:"SriLankan", via:"Colombo · 23h", live:2939, note:"Fastest of the cheap options — only 55min in Colombo on the morning departure."},
+  {air:"THAI", via:"Bangkok", live:3104, note:"Fine product, 6h45 layover. Bangkok is a good July stopover if you want to break the trip."},
+  {air:"British Airways", via:"Kuala Lumpur · 23h30", live:3194, note:"Lowest emissions on the board and oneworld points. You're paying ~A$900 over Malaysia for the tail logo."},
+  {air:"Cathay Pacific", via:"Hong Kong · 24h15", live:3498, note:"Reliable and well-rated, 1h connection. Dear for what it is on these dates."},
+  {air:"China Southern", via:"Guangzhou · 31h20", live:3591, note:"Historically the cheapest carrier on this route — currently isn't. An 8h40 layover on top."},
+  {air:"Etihad", via:"Abu Dhabi · 22h40", live:3890, note:"Fastest routing, cheapest of the Gulf three. Still A$1,600 over Malaysia."},
+  {air:"Emirates", via:"Dubai · 22h25", live:3964, note:"Quickest total journey and A380 comfort — at a 74% premium over the best one-stop."},
+  {air:"Qatar Airways", via:"Doha · 23h15", live:4215, note:"Perennial 'world's best', and priced like it. Nearly double the Malaysia fare."}
 ];
 const GAUGE=[
-  {c:"var(--ok)", k:"🟢 Great", v:"under ~A$1,900", d:"Snap it up — that's a genuine peak-summer bargain."},
-  {c:"var(--gold-soft)", k:"🟡 Fair / normal", v:"~A$1,900–2,500", d:"A reasonable peak fare. Book if the dates & routing suit."},
-  {c:"var(--warn)", k:"🟠 Pricey", v:"~A$2,500–3,100", d:"Only worth it for specific dates/airline/short layover."},
-  {c:"var(--bad)", k:"🔴 Too high", v:"over ~A$3,100", d:"Keep looking (unless it's last-minute and you're stuck)."}
+  {c:"var(--ok)", k:"🟢 Exceptional", v:"under ~A$1,900", d:"Book it on sight. For these locked peak dates that's about as good as it gets."},
+  {c:"var(--gold-soft)", k:"🟡 Good buy", v:"~A$1,900–2,300", d:"A genuinely good result for late June–July. Take it and stop optimising."},
+  {c:"var(--warn)", k:"🟠 Fair / normal", v:"~A$2,300–2,600", d:"Where the market sits today. Fine if the routing and layover suit you."},
+  {c:"var(--bad)", k:"🔴 Window closing", v:"over ~A$2,800", d:"Fares are climbing towards the A$3,500 late-booking zone. Buy now rather than hope."}
 ];
 const STOPOVERS=[
-  {air:"Emirates — Dubai Connect", free:"FREE", d:"Free hotel, meals & transfers when your Dubai layover is long (roughly 8–24h) and there's no shorter same-day connection. Applied automatically if eligible."},
-  {air:"Etihad — Abu Dhabi Stopover", free:"FREE", d:"Book a deliberate stopover and get up to 2 free nights in a 4/5-star Abu Dhabi hotel."},
-  {air:"Turkish — Stopover in Istanbul", free:"FREE", d:"1 free hotel night in economy (2 in business) on long layovers, plus free guided 'TourIstanbul' city tours."},
-  {air:"China Southern — Guangzhou", free:"FREE", d:"Complimentary stopover hotel on qualifying long layovers — a cheap way to break the trip."},
-  {air:"Qatar — +Qatar", free:"CHEAP", d:"Not free, but Doha hotels from ~US$14/night (4★) or ~US$24 (5★) added to your ticket."},
-  {air:"Singapore — Stopover Holiday", free:"CHEAP", d:"Discounted hotel + attraction bundle to turn a Changi layover into a mini-break."}
+  {air:"⚠️ Read this first — July heat", free:"NOTE", d:"The Gulf stopover programs are genuinely good products — in February. Late June and July in Dubai and Doha is 42–48°C, so a 'free hotel' stopover is a hotel-and-mall exercise. On THESE dates, break the trip in Asia instead."},
+  {air:"Singapore — Stopover Holiday", free:"CHEAP", d:"Discounted hotel + attraction bundle that turns a Changi layover into a mini-break. Hot and humid in July but everything is indoors and 20 minutes from the airport."},
+  {air:"Malaysia — Kuala Lumpur", free:"CHEAP", d:"No formal program, but KL hotels are cheap, the airport train is 28 minutes, and Malaysia's fares are low enough that a paid night still beats the Gulf carriers outright."},
+  {air:"THAI / Finnair — Bangkok", free:"CHEAP", d:"Both route through BKK. A night in Bangkok on the way home is one of the better-value ways to soften a 26-hour trip."},
+  {air:"China Southern — Guangzhou", free:"FREE", d:"Complimentary stopover hotel on qualifying long layovers — worth knowing if their fares come back down."},
+  {air:"Emirates — Dubai Connect", free:"FREE", d:"Free hotel, meals & transfers on long Dubai layovers, applied automatically if eligible. Excellent scheme, wrong month."},
+  {air:"Etihad — Abu Dhabi Stopover", free:"FREE", d:"Up to 2 free nights in a 4/5-star hotel. Bank this one for a future off-peak trip."},
+  {air:"Qatar — +Qatar", free:"CHEAP", d:"Doha hotels from ~US$14/night (4★) or ~US$24 (5★) added to your ticket. Same heat caveat."}
+];
+const TIPS=[
+  {k:"📅",t:"Don't chase date flexibility",d:"The ±3-day grid runs A$2,189–2,558 — worth ~A$300 at absolute best, and the Tests don't move. Ignore this lever entirely and spend the effort on carrier choice."},
+  {k:"🛬",t:"Don't chase another gateway",d:"Checked on the same dates: Dublin A$3,156, Paris A$2,916, Manchester not even loaded. London is the CHEAPEST European entry point for this window. No open-jaw saving to be had."},
+  {k:"⏳",t:"Half the market hasn't priced yet",d:"Turkish, Vietnam Airlines, China Eastern, Air India, Korean and Qantas' own economy have filed nothing for these dates. A big chunk of the usual cheap set is still to come in — so A$2,213 is not the floor."},
+  {k:"⬆️",t:"Buy the upgrade directly",d:"If you want comfort, premium economy on China Airlines (A$4,693 now, target under A$4,000) beats Middle East economy at A$3,900. Don't pay a Gulf premium in the back of the plane and call it an upgrade."},
+  {k:"🧳",t:"Compare like for like",d:"The cheapest Malaysia and Finnair buckets are Light/Basic — no checked bag, no seat selection, no changes. Add A$150–250 before you declare a winner."},
+  {k:"🔔",t:"Set the alert, then stop looking",d:"Google Flights 'Track prices' on MEL→LHR for your dates emails you on any movement. The weekly fare watch is running too — checking daily just makes you anxious."},
+  {k:"🛡️",t:"Flexible fare while the ballot is live",d:"Until the purchase windows close (13 Oct 2026) you don't know your days. If you jump early, pay for cheap date-changes — it's insurance on a A$2,300 ticket."},
+  {k:"🎟️",t:"Skip the tour-operator flight bundle",d:"Ashes packages bundle flights at a markup. Worth it only if you want the ticket guarantee — never for the airfare itself."}
+];
+const SALES=[
+  {mo:"Sep – Oct 26",ev:"Routine ex-Australia sales. Low value here — travel windows almost never stretch to Jun–Jul 2027 yet. Watch, don't buy."},
+  {mo:"27 Nov – 1 Dec 26",ev:"Black Friday → Cyber Monday → Travel Tuesday. The biggest single event of the year. The catch: peak dates are historically EXCLUDED (Etihad's last Black Friday was travel 1 Jan – 30 Jun only, which would have missed you by a day). Check the travel window before you get excited."},
+  {mo:"26 Dec 26 – mid Jan 27",ev:"★ Boxing Day and New-Year sales. Your best realistic shot — January is the strongest long-haul discounting month, and by then July is ~6 months out so peak dates finally start getting included."},
+  {mo:"Feb – Mar 27",ev:"Airline birthday/anniversary sales and the Singapore Airlines Grand Sale. Third and final decent chance."},
+  {mo:"Apr – May 27",ev:"'Last-chance summer Europe' sales. Do NOT plan on these — Ashes and Wimbledon dates will have sold. Fares climb from here."},
+  {mo:"Jun – Jul 27",ev:"Travel window. A$2,800–3,500 if you're still unbooked."}
 ];
 function renderFlights(){
   document.getElementById("tipsList").innerHTML=TIPS.map(t=>`<div class="tip"><div class="k">${t.k}</div><div class="b"><b>${t.t}.</b> <span>${t.d}</span></div></div>`).join("");
   document.getElementById("salesCal").innerHTML=SALES.map(s=>`<div class="calrow"><div class="mo">${s.mo}</div><div class="ev">${s.ev}</div></div>`).join("");
   document.getElementById("routings").innerHTML=ROUTES.map(r=>`<div class="tip"><div class="k">✈️</div><div class="b"><b>${r.n}.</b> <span>${r.d}</span></div></div>`).join("");
-  document.getElementById("benchGauge").innerHTML=`<p class="mini" style="margin:0 0 11px">What a <b>return economy</b> seat MEL⇄London should cost <b>in peak summer</b> (your travel window). Off-peak, shift every band down ~A$500–700.</p>`+
+  document.getElementById("benchGauge").innerHTML=`<p class="mini" style="margin:0 0 11px">What a <b>return economy</b> seat MEL⇄London is worth <b>for the locked window</b> (~25/26 Jun – 13 Jul 2027). These bands are ~30% above the all-year "good price" benchmark of A$1,700, because your dates are the single worst fortnight of the year on this route.</p>`+
     GAUGE.map(g=>`<div class="gauge-row"><span class="gauge-bar" style="background:${g.c}"></span><div><div class="gauge-k">${g.k} · <span style="color:var(--text)">${g.v}</span></div><div class="gauge-d">${g.d}</div></div></div>`).join("");
-  document.getElementById("benchTable").innerHTML=`<div class="bench-head"><span>Airline · via</span><span>Return econ (peak)</span></div>`+
-    BENCH.map(b=>`<div class="bench-row"><div class="bench-air"><b>${b.air}</b><span>via ${b.via}</span></div><div class="bench-price">A$${b.lo.toLocaleString()}–${b.hi.toLocaleString()}</div><div class="bench-note">${b.note}</div></div>`).join("")+
-    `<p class="est-note">Indicative bands for planning — always check live fares. Budget self-connect (Scoot / AirAsia X via SIN/KL) can dip to ~A$1,300–2,000 but with no bags/meals and self-transfer risk.</p>`;
-  document.getElementById("stopovers").innerHTML=`<p class="mini" style="margin:0 0 11px">The 24-hour haul has a silver lining: several airlines will <b>put you up</b> to break the journey — turn a dead layover into a mini-holiday (great on the way home).</p>`+
+  document.getElementById("benchTable").innerHTML=`<div class="bench-head"><span>Airline · via</span><span>Return econ · live 2 Sep 26</span></div>`+
+    BENCH.map(b=>`<div class="bench-row"><div class="bench-air"><b>${b.air}</b><span>via ${b.via}</span></div><div class="bench-price">A$${b.live.toLocaleString()}</div><div class="bench-note">${b.note}</div></div>`).join("")+
+    `<p class="est-note">Real Google Flights quotes for MEL→LHR return economy, 1 adult, dep Fri 25 Jun / ret Tue 13 Jul 2027, pulled 2 Sep 2026 — not indicative bands. Premium economy on the same dates: China Airlines A$4,693 · Qantas/BA A$6,134 · BA A$6,318 · Cathay A$7,714 (Emirates' A$11,022 is a placeholder, not a real offer). Always re-check live before booking.</p>`;
+  document.getElementById("stopovers").innerHTML=`<p class="mini" style="margin:0 0 11px">The 26-hour haul has a silver lining: several airlines will <b>put you up</b> to break the journey. But for a late-June/July trip the usual advice inverts — read the first row.</p>`+
     STOPOVERS.map(s=>`<div class="tip"><div class="k"><span class="stop-badge ${s.free==='FREE'?'sf':'sc'}">${s.free}</span></div><div class="b"><b>${s.air}.</b> <span>${s.d}</span></div></div>`).join("");
   const t0=new Date("2026-07-01").getTime(),t1=new Date("2027-06-30").getTime();
   const pct=d=>Math.max(0,Math.min(100,(new Date(d).getTime()-t0)/(t1-t0)*100));
-  const win=document.getElementById("tbWin"),a=pct("2026-09-01"),b=pct("2027-02-28");
+  const win=document.getElementById("tbWin"),a=pct("2026-11-15"),b=pct("2027-02-28");
   win.style.left=a+"%"; win.style.width=(b-a)+"%"; document.getElementById("tbNow").style.left=pct(iso(TODAY))+"%";
   runEstimator();
 }
@@ -1219,8 +1251,8 @@ function runEstimator(){
   const [lo,hi]=FARES[cabin]; const plo=Math.round(lo*mult/50)*50, phi=Math.round(hi*mult/50)*50; const f=n=>"A$"+n.toLocaleString();
   document.getElementById("estPP").textContent=`${f(plo)} – ${f(phi)}`;
   document.getElementById("estTotal").textContent=`${f(plo*pax)} – ${f(phi*pax)}`;
-  const notes={0.85:"Early booking (Sep–Jan sales) — discount baked in.",1:"Standard ~6 months out.",1.35:"Last-minute premium applied — try to avoid."};
-  document.getElementById("estNote").textContent=`Ballpark return economy MEL⇄London runs A$2,200–2,800 in peak summer; premium economy ~A$4–5.5k; business ~A$8.5–12k. ${notes[mult]} Indicative only — always check live fares.`;
+  const notes={0.92:"Booked in the mid-Nov 26 – Feb 27 sale window — the discount you can realistically expect.",1:"Booked at the standard rate for these locked dates.",1.4:"Left until Apr–Jun 2027 — Ashes + Wimbledon demand premium applied."};
+  document.getElementById("estNote").textContent=`Base = live fares for the actual window (25/26 Jun – 13 Jul 2027) checked 2 Sep 2026: economy A$1,900–2,600, premium economy A$3,300–4,700, business A$7,500–11,000. ${notes[mult]} Indicative only — always check live fares.`;
 }
 
 /* ============ LOGISTICS ============ */
