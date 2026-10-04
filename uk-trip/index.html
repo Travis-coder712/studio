@@ -334,6 +334,32 @@
   .climbtag.awesome{background:rgba(251,91,109,.16);color:var(--f1)}
   .climbtag.scenic{background:rgba(72,182,240,.16);color:var(--place)}
 
+  /* costed-trip line items */
+  .costrow{display:grid;grid-template-columns:1.35fr .8fr .8fr .8fr;gap:3px 8px;padding:9px 0;border-bottom:1px solid var(--border);align-items:baseline}
+  .costrow:last-child{border-bottom:none}
+  .costrow.h{font-size:9.5px;font-weight:800;letter-spacing:.4px;text-transform:uppercase;color:var(--faint);padding:0 0 7px;border-bottom:1px solid var(--border2)}
+  .costrow.h .v{color:var(--faint)}
+  .costrow.h .v.mid{color:var(--gold-soft)}
+  .costrow .k{font-size:13px;font-weight:650}
+  .costrow .k small{display:block;font-size:10.5px;font-weight:400;color:var(--faint);margin-top:2px;line-height:1.35}
+  .costrow .v{text-align:right;font-size:12.5px;color:var(--muted);white-space:nowrap;font-variant-numeric:tabular-nums}
+  .costrow .v.mid{color:var(--gold-soft);font-weight:800}
+  .costrow.tot{border-bottom:none;border-top:2px solid var(--gold-soft);margin-top:5px;padding-top:11px}
+  .costrow.tot .k{font-size:14px;font-weight:800}
+  .costrow.tot .v{font-size:13.5px;font-weight:800;color:var(--text)}
+  .costrow.tot .v.mid{color:var(--gold-soft);font-size:15px}
+
+  /* trip-shape blocks */
+  .blk{display:grid;grid-template-columns:54px 1fr auto;gap:11px;padding:11px 0;border-bottom:1px solid var(--border);align-items:start}
+  .blk:last-child{border-bottom:none}
+  .blk .nn{font-size:21px;font-weight:800;color:var(--gold-soft);line-height:1;text-align:center}
+  .blk .nn small{display:block;font-size:8.5px;font-weight:800;color:var(--faint);letter-spacing:.4px;text-transform:uppercase;margin-top:4px}
+  .blk .ti{font-size:13.5px;font-weight:750}
+  .blk .dt{font-size:11.5px;color:var(--gold-soft);font-weight:650;margin-top:1px}
+  .blk .ds{font-size:11.5px;color:var(--muted);margin-top:3px}
+  .blk .wh{font-size:9.5px;font-weight:800;letter-spacing:.4px;text-transform:uppercase;color:var(--faint);white-space:nowrap;padding-top:4px}
+  @media(max-width:400px){ .blk{grid-template-columns:46px 1fr} .blk .wh{display:none} }
+
   /* generic content blocks (logistics/explore) */
   .block h3{font-size:15px;font-weight:750;display:flex;align-items:center;gap:8px}
   .block .sub{font-size:11.5px;color:var(--faint);margin-top:1px}
@@ -589,7 +615,7 @@
   <!-- ============ BUDGET ============ -->
   <section class="view" id="view-budget">
     <h2 class="vt">Budget</h2>
-    <p class="view-intro">What it costs on the ground, in <b>£ (with A$ in brackets)</b>. Three comfort tiers — from camping to a treat — with real examples, group deals for 4–6, and a quick per-person estimator. Flights live in their own tab.</p>
+    <p class="view-intro">Starts with <b>the actual costed trip</b> — the full Lord's + Edgbaston run, line by line, in three tiers. Then the generic comfort tiers and group deals for anyone travelling a different shape. Flights have their own tab.</p>
     <div id="budgetBody"></div>
   </section>
 
@@ -887,9 +913,9 @@ function renderTldr(){
     </div>
     <div class="urgent" style="margin-bottom:16px">🚨 <b>Do this now — free, 2 minutes:</b><br>
       • <b>The Open ballot has closed</b> for 2027 (it ran Jul–Aug 2026) — if you missed it, <a href="https://www.theopen.com/" target="_blank" rel="noopener">The One Club</a> resale and official hospitality are the remaining routes.<br>
-      • <b>Wimbledon ballot is OPEN and closes 16 Sep 2026</b> — free <a href="https://www.wimbledon.com/en_GB/tickets/ballot" target="_blank" rel="noopener">myWIMBLEDON</a> account, then enter. UK &amp; overseas ballots are now merged into one.<br>
-      • <b>Ashes ballot is OPEN, 2–29 Sep 2026</b>, free — enter for every day you'd travel for.<br>
-      • Set MEL→London flight price alerts (Google Flights / Skyscanner).</div>
+      • <b>The Lord's ballot is still open — closes Mon 26 Oct 2026.</b> It is <a href="https://www.lords.org/ballot" target="_blank" rel="noopener">a separate ballot</a> run by Lord's, free, no card details, no limit on days. A second shot even if you already entered the ECB one.<br>
+      • <b>Edgbaston general sale: 14 Oct 2026, 10am UK</b> (9pm Melbourne). Its ballot closed 29 Sep and winners' windows opened 1 Oct — check your email.<br>
+      • <b>Set a Google Flights price alert</b> on MEL→LHR for your dates. It emails you and runs whether your laptop is on or not.</div>
 
     <div class="section-label">📅 Key dates — Summer 2027</div>
     <div class="card">
@@ -907,13 +933,15 @@ function renderTldr(){
 
     <div class="section-label">🎟️ When tickets go on sale</div>
     <div class="card">
-      <div class="route"><div class="from">Wimbledon (free ballot) <span>· CLOSES 16 Sep 2026</span></div><div class="time">open now</div></div>
-      <div class="route"><div class="from">The Ashes ballot <span>· 2–29 Sep 2026</span></div><div class="time">open now</div></div>
-      <div class="route"><div class="from">Ashes ballot purchase windows</div><div class="time">1–5 &amp; 7–13 Oct 26</div></div>
-      <div class="route"><div class="from">Ashes general sale</div><div class="time">from 14 Oct 26</div></div>
-      <div class="route"><div class="from">Silverstone GP</div><div class="time">~Sep 2026</div></div>
+      <div class="route"><div class="from">⚡ <b>Lord's own ballot</b> <span>· separate from the ECB one, free</span></div><div class="time">CLOSES 26 Oct 26</div></div>
+      <div class="route"><div class="from">Edgbaston winners' purchase window</div><div class="time">opened 1 Oct 26</div></div>
+      <div class="route"><div class="from">Edgbaston general sale</div><div class="time">14 Oct 26, 10am UK</div></div>
+      <div class="route"><div class="from">Lord's ballot results</div><div class="time">early Nov 26</div></div>
+      <div class="route"><div class="from">Lord's winners' purchase window</div><div class="time">from 17 Nov 26</div></div>
       <div class="route"><div class="from">★ Book flights</div><div class="time">mid-Nov 26 – Feb 27</div></div>
+      <div class="route"><div class="from">Lord's general sale</div><div class="time">10 Dec 26</div></div>
       <div class="route"><div class="from">WTC Final</div><div class="time">~Jan–Feb 2027</div></div>
+      <p class="mini" style="margin:10px 0 0">The two venues run on <b>completely different clocks</b>. Edgbaston's ballot closed 29 Sep and resolves this month. Lord's runs its <b>own</b> ballot at lords.org/ballot — still open until 26 Oct, no card needed, no limit on days, and a second independent shot on top of the ECB ballot.</p>
     </div>
 
     <div class="section-label">🧠 The one-rule booking logic</div>
@@ -961,8 +989,9 @@ function renderPlan(){
   items.push({when:"Done ✅",cls:"soon",type:"confirm",t:"ECB confirmed the Ashes dates",d:"Announced 23 Jul 2026. Trent Bridge 18–22 Jun · Lord's 30 Jun–4 Jul · Edgbaston 8–12 Jul · Southampton 21–25 Jul · The Oval 29 Jul–2 Aug.",tag:"key"});
   if(on("open")) items.push({when:"Aug 2026",cls:"soon",type:"confirm",t:"The Open ballot results",d:"You'll know if you've got golf before you commit to flights."});
   if(on("silv")) items.push({when:"~Sep 2026",cls:"soon",type:"ticket",t:"Silverstone GP tickets on sale",d:"Sells out & uses dynamic pricing — be on the presale list. Buy this early if it's a must.",tag:"f1"});
-  if(anyCricket) items.push({when:"1–13 Oct 2026",cls:"soon",type:"ticket",t:"Ashes ballot purchase windows",d:"Winners buy in an assigned window: 1–5 Oct or 7–13 Oct. This is when you find out what you've actually got.",tag:"cricket"});
-  if(anyCricket) items.push({when:"from 14 Oct 2026",cls:"soon",type:"ticket",t:"Ashes general sale",d:"Everything unsold goes public from 10:00. Your backstop if the ballot misses.",tag:"cricket"});
+  if(anyCricket) items.push({when:"by 26 Oct 2026",cls:"now",type:"ticket",t:"⚡ Enter the LORD'S ballot — separate from the ECB one",d:"Run by Lord's at lords.org/ballot. Free, no card, no limit on days. A second independent shot at the Lord's Test.",tag:"cricket"});
+  if(anyCricket) items.push({when:"14 Oct 2026",cls:"now",type:"ticket",t:"Edgbaston general sale",d:"10am UK / 9pm Melbourne. Ballot winners' windows opened 1 Oct — check your email first.",tag:"cricket"});
+  if(anyCricket) items.push({when:"Nov – Dec 2026",cls:"soon",type:"ticket",t:"Lord's resolves",d:"Results early Nov, winners buy from 17 Nov, general sale 10 Dec. Later than Edgbaston — plan around the gap.",tag:"cricket"});
   items.push({when:"Nov 26 – Feb 27",cls:"soon",type:"flight",t:"★ Book flights in this window",d:"After the ballot outcome, across the Black Friday and New-Year sales, before peak fares firm up in March. Live economy for the locked window is A$2,213–2,600; floor ~A$1,900.",tag:"flights"});
   if(on("wtc")) items.push({when:"Jan–Feb 2027",cls:"later",type:"ticket",t:"WTC Final tickets on sale",d:"But teams aren't confirmed until early June — treat as a bonus, not the anchor."});
   if(on("wimb")) items.push({when:"Early 2027",cls:"later",type:"confirm",t:"Wimbledon ballot results",d:"If you miss, fall back to The Queue or the daily official Resale."});
@@ -972,8 +1001,10 @@ function renderPlan(){
   const reco = `<div class="reco">
     <h3>🧠 Your booking brain</h3>
     <p>The dates are no longer the unknown — the ECB confirmed them on 23 Jul 2026. The only tension left is that you don't know <b>which days you've won</b> until the ballot purchase windows close on 13 Oct 2026, and flights for a locked peak-July window only get dearer from March 2027.</p>
-    <p><b>The play:</b> ① get the free ballots in (Wimbledon by 16 Sep, Ashes by 29 Sep) → ② find out what you've got, 1–13 Oct, with general sale from 14 Oct → ③ book flights mid-Nov 2026 – Feb 2027, across the Black Friday and New-Year sales. If you want to jump before tickets are locked, pay for a fare with cheap date-changes — cheap insurance on a A$2,300 ticket.</p>
-    <p class="mini" style="margin:6px 0 0">Reality check on the airfare: live MEL⇄London economy for the Lord's-to-Edgbaston window is already A$2,213–2,600 and the realistic floor is ~A$1,900. Waiting might save ~A$400; waiting too long costs ~A$1,000+. Full numbers in the Flights tab.</p>
+    <p><b>The play:</b> ① <b>enter the Lord's ballot before 26 Oct</b> — it's separate from the ECB one and free → ② Edgbaston resolves first: winners' windows opened 1 Oct, general sale 14 Oct → ③ Lord's resolves later: results early Nov, purchase from 17 Nov, general sale 10 Dec → ④ book flights mid-Nov 2026 – Feb 2027 once you know your days → ⑤ book accommodation to the days you actually hold, not to the maximum window.</p>
+    <p class="mini" style="margin:6px 0 0">The two venues are on different clocks, which is awkward: you may have Edgbaston confirmed in October but not know about Lord's until December. If that happens, a flexible fare is worth the premium.</p>
+    <p class="mini" style="margin:6px 0 0"><b>Reality check (5 Oct 2026):</b> the cheapest MEL⇄London economy for the Lord's-to-Edgbaston window is now <b>A$2,503</b> on British Airways — the floor has <i>risen</i> ~A$220 in a month, and no live airline sale covers late-June/July 2027. Waiting might save ~A$400; waiting too long costs ~A$1,000+.</p>
+    <p class="mini" style="margin:6px 0 0"><b>And the bigger number nobody looks at:</b> 17 nights of accommodation costs roughly <b>double the airfare</b> (~A$4,900 vs ~A$2,450). Every night you cut saves ~A$480 all-in in London. Full line-by-line costing in the <b>Budget</b> tab.</p>
     ${on("open")?`<div class="next">🚨 <b>Do this week:</b> The Open (St Andrews) ballot opens ~6 July 2026 via The One Club — free, no backlog, huge demand for the 100-year anniversary. Enter now.</div>`:``}
     ${!anyCricket?`<div class="next">Tip: you haven't ticked any cricket yet — the Ashes is your anchor. Add at least one Test in the Events tab to sharpen this plan.</div>`:``}
   </div>`;
@@ -1005,9 +1036,14 @@ function buildTracker(){
   it.push({id:"supporters",title:"Join 'We Are England Cricket Supporters'",tag:"cricket",when:"Before Oct 2026",anchor:"2026-09-15",detail:"Gets you the priority window before the general Ashes sale.",url:"https://www.ecb.co.uk/watch-cricket/international-tickets",show:anyAsh});
   it.push({id:"county",title:"Consider a host-county membership",tag:"cricket",when:"By autumn 2026",anchor:"2026-09-20",detail:"Best UK-resident hack — Surrey (Oval) gives priority on up to 8 Test tickets. A UK friend joining works too.",url:"",show:anyAsh});
   it.push({id:"silv-sale",title:"Silverstone GP tickets on sale",tag:"f1",when:"~Sep 2026",anchor:"2026-09-15",detail:"Buy early if it's a must — dynamic pricing climbs as it fills.",url:"https://www.silverstone.co.uk/",show:has("silv")});
-  it.push({id:"ash-win1",title:"Ashes ballot purchase window 1",tag:"cricket",when:"1–5 Oct 2026",anchor:"2026-10-05",detail:"First tranche of winners buy here. You're given an assigned window — watch your email.",url:"https://www.ecb.co.uk/watch-cricket/international-tickets",show:anyAsh});
-  it.push({id:"ash-win2",title:"Ashes ballot purchase window 2",tag:"cricket",when:"7–13 Oct 2026",anchor:"2026-10-13",detail:"Final tranche. After this you know exactly which days you've got — and your flight dates.",url:"https://www.ecb.co.uk/watch-cricket/international-tickets",show:anyAsh});
-  it.push({id:"ash-general",title:"Ashes general on sale",tag:"cricket",when:"from 14 Oct 2026",anchor:"2026-10-14",detail:"10:00 UK time, everything unsold goes public. Your backstop if the ballot misses.",url:"https://www.ecb.co.uk/watch-cricket/international-tickets",show:anyAsh});
+  it.push({id:"edg-win",title:"Edgbaston winners' purchase window",tag:"cricket",when:"from 1 Oct 2026",anchor:"2026-10-05",detail:"Ballot closed 29 Sep. If you won, the email has a deadline on it — check now.",url:"https://www.edgbaston.com/ballot",show:has("ash3")});
+  it.push({id:"edg-general",title:"Edgbaston general sale",tag:"cricket",when:"14 Oct 2026, 10am UK",anchor:"2026-10-14",detail:"9pm Melbourne. First come, first served — be logged in and ready.",url:"https://www.edgbaston.com/ballot",show:has("ash3")});
+  it.push({id:"lords-ballot",title:"⚡ Enter the LORD'S ballot (separate!)",tag:"cricket",when:"closes 26 Oct 2026",anchor:"2026-10-26",detail:"Run by Lord's at lords.org/ballot, not the ECB. Free, no card details, no limit on days, equal chance whenever you enter. A second independent shot even if you entered the ECB ballot.",url:"https://www.lords.org/ballot",show:has("ash2")});
+  it.push({id:"lords-result",title:"Lord's ballot results",tag:"cricket",when:"early Nov 2026",anchor:"2026-11-05",detail:"Successful applicants contacted by email.",url:"https://www.lords.org/ballot",show:has("ash2")});
+  it.push({id:"lords-buy",title:"Lord's winners' purchase window",tag:"cricket",when:"from 17 Nov 2026",anchor:"2026-11-17",detail:"Buy your allocated days. This is when your trip window finally locks.",url:"https://www.lords.org/ballot",show:has("ash2")});
+  it.push({id:"lords-general",title:"Lord's general sale",tag:"cricket",when:"10 Dec 2026",anchor:"2026-12-10",detail:"Backstop if the ballot misses.",url:"https://www.lords.org/ballot",show:has("ash2")});
+  it.push({id:"accom",title:"★ Book accommodation to your actual days",tag:"flights",when:"once days are known",anchor:"2026-11-20",detail:"17 nights costs ~A$4,900 — double the airfare. Size it to the days you hold, not the maximum window. Unlike flights, London in July rewards booking early.",url:"",show:true});
+  it.push({id:"eta",title:"UK ETA (£20, 2 years)",tag:"key",when:"any time before you fly",anchor:"2027-05-01",detail:"Mandatory for Australians since 25 Feb 2026. Approved in minutes. Airlines check it at the gate.",url:"https://www.gov.uk/guidance/apply-for-an-electronic-travel-authorisation-eta",show:true});
   it.push({id:"bf",title:"Black Friday → Travel Tuesday sales",tag:"flights",when:"27 Nov – 1 Dec 2026",anchor:"2026-11-27",detail:"Biggest airfare event of the year. Check the SALE TRAVEL WINDOW first — peak late-June/July is usually excluded.",url:"",show:true});
   it.push({id:"flights",title:"★ Book flights (window opens)",tag:"flights",when:"mid-Nov 26 – Feb 27",anchor:"2026-11-15",detail:"After the ballot outcome, across Black Friday and the New-Year sales. Good buy = A$1,900–2,300; book on sight under A$1,900.",url:"",show:true});
   it.push({id:"boxing",title:"Boxing Day & New-Year sales",tag:"flights",when:"26 Dec 26 – mid Jan 27",anchor:"2027-01-05",detail:"★ Best realistic shot — January is the strongest long-haul discounting month and July is finally inside the travel windows.",url:"",show:true});
@@ -1181,19 +1217,17 @@ const FARES={eco:[1900,2600],prem:[3300,4700],biz:[7500,11000]};
 /* LIVE quotes: MEL→LHR return economy, 1 adult, dep Fri 25 Jun / ret Tue 13 Jul 2027,
    pulled from Google Flights (AUD) on 2 Sep 2026. */
 const BENCH=[
-  {air:"Malaysia + Oman Air", via:"KL + Muscat · 2 stops", live:2213, note:"The cheapest number on the board — but it's an extra sector and a Muscat connection for A$70. Not a trade worth making."},
-  {air:"Malaysia Airlines", via:"Kuala Lumpur · 1 stop, 26h", live:2283, note:"⭐ The sweet spot on price vs time. 3h50 in KL. Check the fare bucket includes a checked bag — the cheapest one doesn't."},
-  {air:"China Airlines", via:"Taipei · 1 stop, 27h40", live:2538, note:"Solid value, well-rated. Their premium economy is the cheapest credible upgrade on the route."},
-  {air:"Singapore + SWISS", via:"Singapore + Zurich", live:2636, note:"Two stops but two excellent airlines, and Zurich is a civilised place to change."},
-  {air:"Finnair", via:"Bangkok + Helsinki", live:2639, note:"New MEL route from Oct 2026. oneworld — earns Qantas points & status credits. The one most likely to undercut everyone by January."},
-  {air:"SriLankan", via:"Colombo · 23h", live:2939, note:"Fastest of the cheap options — only 55min in Colombo on the morning departure."},
-  {air:"THAI", via:"Bangkok", live:3104, note:"Fine product, 6h45 layover. Bangkok is a good July stopover if you want to break the trip."},
-  {air:"British Airways", via:"Kuala Lumpur · 23h30", live:3194, note:"Lowest emissions on the board and oneworld points. You're paying ~A$900 over Malaysia for the tail logo."},
-  {air:"Cathay Pacific", via:"Hong Kong · 24h15", live:3498, note:"Reliable and well-rated, 1h connection. Dear for what it is on these dates."},
-  {air:"China Southern", via:"Guangzhou · 31h20", live:3591, note:"Historically the cheapest carrier on this route — currently isn't. An 8h40 layover on top."},
-  {air:"Etihad", via:"Abu Dhabi · 22h40", live:3890, note:"Fastest routing, cheapest of the Gulf three. Still A$1,600 over Malaysia."},
-  {air:"Emirates", via:"Dubai · 22h25", live:3964, note:"Quickest total journey and A380 comfort — at a 74% premium over the best one-stop."},
-  {air:"Qatar Airways", via:"Doha · 23h15", live:4215, note:"Perennial 'world's best', and priced like it. Nearly double the Malaysia fare."}
+  {air:"British Airways", via:"Kuala Lumpur · 1 stop, 23h30", live:2503, note:"⭐ Now the cheapest on the board, down A$691 since Sep. Lowest emissions on the route, oneworld points & status credits. Best product-for-price on these dates."},
+  {air:"Qantas + British Airways", via:"Sydney + Singapore · 2 stops", live:2611, note:"New entrant. Two stops, but full Qantas points and an all-oneworld itinerary."},
+  {air:"Philippine + Qatar", via:"Manila + Doha · 2 stops, 30h25", live:2640, note:"New entrant. Cheap, but 30 hours and an awkward pairing — only if the price gap widens."},
+  {air:"Finnair", via:"Bangkok + Helsinki · 2 stops", live:2645, note:"Flat since Sep. New MEL route, oneworld, earns Qantas points. Still the one most likely to undercut everyone in a January sale."},
+  {air:"Malaysia Airlines", via:"Kuala Lumpur · 1 stop, 26h05", live:2781, note:"Was the pick in September at A$2,282 — has since risen A$499. Still fine, no longer the value play."},
+  {air:"Cathay Pacific", via:"Hong Kong · 1 stop, 24h50", live:2850, note:"Down A$648. Reliable, well-rated, 1h connection — now genuinely competitive."},
+  {air:"Malaysia + British Airways", via:"Kuala Lumpur · 1 stop, 25h", live:2985, note:"Lowest emissions of the one-stops after BA."},
+  {air:"THAI", via:"Bangkok · 1 stop, 26h45", live:3197, note:"4h45 in Bangkok. A good July stopover city if you want to break the trip."},
+  {air:"Qatar Airways", via:"Doha · 1 stop, 23h15", live:3271, note:"Down A$944 — the biggest faller. Still a A$768 premium over BA for a similar journey time."},
+  {air:"Etihad", via:"Abu Dhabi · 1 stop, 22h40", live:3931, note:"Fastest routing on the board. Up slightly. A$1,428 over BA to save an hour."},
+  {air:"Emirates", via:"Dubai · 1 stop, 22h25", live:4080, note:"Quickest total journey, A380 comfort — and A$1,577 more than British Airways."}
 ];
 const GAUGE=[
   {c:"var(--ok)", k:"🟢 Exceptional", v:"under ~A$1,900", d:"Book it on sight. For these locked peak dates that's about as good as it gets."},
@@ -1235,9 +1269,9 @@ function renderFlights(){
   document.getElementById("routings").innerHTML=ROUTES.map(r=>`<div class="tip"><div class="k">✈️</div><div class="b"><b>${r.n}.</b> <span>${r.d}</span></div></div>`).join("");
   document.getElementById("benchGauge").innerHTML=`<p class="mini" style="margin:0 0 11px">What a <b>return economy</b> seat MEL⇄London is worth <b>for the locked window</b> (~25/26 Jun – 13 Jul 2027). These bands are ~30% above the all-year "good price" benchmark of A$1,700, because your dates are the single worst fortnight of the year on this route.</p>`+
     GAUGE.map(g=>`<div class="gauge-row"><span class="gauge-bar" style="background:${g.c}"></span><div><div class="gauge-k">${g.k} · <span style="color:var(--text)">${g.v}</span></div><div class="gauge-d">${g.d}</div></div></div>`).join("");
-  document.getElementById("benchTable").innerHTML=`<div class="bench-head"><span>Airline · via</span><span>Return econ · live 2 Sep 26</span></div>`+
+  document.getElementById("benchTable").innerHTML=`<div class="bench-head"><span>Airline · via</span><span>Return econ · live 5 Oct 26</span></div>`+
     BENCH.map(b=>`<div class="bench-row"><div class="bench-air"><b>${b.air}</b><span>via ${b.via}</span></div><div class="bench-price">A$${b.live.toLocaleString()}</div><div class="bench-note">${b.note}</div></div>`).join("")+
-    `<p class="est-note">Real Google Flights quotes for MEL→LHR return economy, 1 adult, dep Fri 25 Jun / ret Tue 13 Jul 2027, pulled 2 Sep 2026 — not indicative bands. Premium economy on the same dates: China Airlines A$4,693 · Qantas/BA A$6,134 · BA A$6,318 · Cathay A$7,714 (Emirates' A$11,022 is a placeholder, not a real offer). Always re-check live before booking.</p>`;
+    `<p class="est-note">Real Google Flights quotes for MEL→LHR return economy, 1 adult, dep Fri 25 Jun / ret Tue 13 Jul 2027, pulled <b>5 Oct 2026</b> — not indicative bands. <b>The floor has RISEN ~A$220 since early September</b> (A$2,283 → A$2,503): these dates firm up, they don't soften. Free win: shifting to <b>dep Sat 26 Jun / ret Wed 14 Jul brings it to A$2,394</b> and still covers both Tests in full. No live airline sale covers late-June/July 2027 travel. Always re-check before booking.</p>`;
   document.getElementById("stopovers").innerHTML=`<p class="mini" style="margin:0 0 11px">The 26-hour haul has a silver lining: several airlines will <b>put you up</b> to break the journey. But for a late-June/July trip the usual advice inverts — read the first row.</p>`+
     STOPOVERS.map(s=>`<div class="tip"><div class="k"><span class="stop-badge ${s.free==='FREE'?'sf':'sc'}">${s.free}</span></div><div class="b"><b>${s.air}.</b> <span>${s.d}</span></div></div>`).join("");
   const t0=new Date("2026-07-01").getTime(),t1=new Date("2027-06-30").getTime();
@@ -1571,6 +1605,40 @@ function trav(id){ return S.travellers.find(t=>t.id===id); }
 
 /* ============ tabs ============ */
 /* ============ BUDGET TAB ============ */
+/* THE COSTED TRIP — solo baseline, built 5 Oct 2026.
+   Depart MEL Sat 26 Jun 2027 → land Sun 27 Jun → fly home Wed 14 Jul. 17 nights on the ground.
+   Anchored to live Google Flights fares (5 Oct 2026) and published 2027 ticket prices. £1 ≈ A$2.00. */
+const TRIP_SHAPE=[
+  {n:1, ti:"Land", dt:"Tue 29 Jun", w:"London",
+   ds:"Depart Melbourne Mon 28 Jun, land Tuesday. One night to find your feet and nothing more — straight into it."},
+  {n:5, ti:"Ashes · 2nd Test", dt:"Wed 30 Jun – Sun 4 Jul", w:"Lord's",
+   ds:"Day 1 the morning after you land. Wimbledon is running across town if you only hold a day or two of cricket."},
+  {n:3, ti:"The gap", dt:"Mon 5 – Wed 7 Jul", w:"Bath → Oxford",
+   ds:"Bath 2 nights — John's crawl needs a full day, not an afternoon — then Oxford 1 night. Oxford→Birmingham is 1h15 on the Thursday."},
+  {n:5, ti:"Ashes · 3rd Test", dt:"Thu 8 – Mon 12 Jul", w:"Edgbaston",
+   ds:"Birmingham base through day 5. Stumps on Mon 12 Jul is the end of the cricket."},
+  {n:0, ti:"Fly home", dt:"Tue 13 Jul", w:"from Heathrow",
+   ds:"Day 5 finishes around 6pm — too late to make an evening departure out of Heathrow. Sleep on it, travel down Tuesday morning, fly out. (Or swap this for the Paris tail below.)"}
+];
+const GATEWAYS=[
+  {g:"London Heathrow", p:2437, d:"⭐ The baseline. Dep MEL Mon 28 Jun, ret Tue 13 Jul. Full carrier competition — BA via KL, Malaysia, Cathay, Finnair, Qantas all bidding for you. Birmingham→London is 1h20 and £15–50."},
+  {g:"Birmingham (BHX)", p:3300, d:"❌ <b>+A$863, and worse.</b> Every single option routes via Doha or Dubai — Birmingham has no long-haul service to the Asian hubs, so you're locked onto Qatar or Emirates. You'd pay A$863 to avoid a £25 train."},
+  {g:"Paris (CDG)", p:2490, d:"✅ <b>+A$53 — effectively free.</b> Eurostar London→Paris is 2h20. The airfare is not what makes this option cost money; the two extra nights are."}
+];
+const TRIPCOST=[
+  {k:"Flights", s:"MEL⇄LHR return economy, dep 28 Jun / ret 13 Jul. A$2,437 live on 5 Oct.", lean:2300, mid:2437, comf:3200},
+  {k:"Accommodation", s:"14 nights — London 6 · Bath + Oxford 3 · Birmingham 5", lean:2310, mid:3860, comf:5380},
+  {k:"Match tickets", s:"2 days Lord's + 2 days Edgbaston at published 2027 prices", lean:900, mid:1110, comf:1800},
+  {k:"Food &amp; drink", s:"14 days — £55 / £80 / £120 a day", lean:1540, mid:2240, comf:3360},
+  {k:"Trains &amp; transport", s:"Intercity Advance singles, Oyster, airport transfers", lean:230, mid:380, comf:570},
+  {k:"Insurance, ETA, sundries", s:"UK ETA £20 · travel cover · eSIM · incidentals", lean:300, mid:550, comf:900}
+];
+const TICKET_PRICES=[
+  {v:"Lord's · days 1–4", p:"£125 – £195", d:"Cat D £125 · Cat C £160 · Cat B £175 · Cat A £195."},
+  {v:"Lord's · day 5", p:"£25", d:"All categories. The cheapest day of Test cricket you will ever buy."},
+  {v:"Edgbaston · days 1–4", p:"from £115", d:"Cheapest non-member, plus a £2.50 booking fee per ticket. Prices rose 43% on 2023."},
+  {v:"Edgbaston · day 5", p:"£25", d:"All stands. Under-16s £5."}
+];
 const ACCOM=[
   {t:"🏕️ Camp / thrifty", pp:"£15–35 pp/night", au:"A$30–70", ex:"Campsites (£8–20/pitch) &amp; glamping pods, YHA hostels (£25–40pp), basic self-catering. Camp in the Lakes for the Tour, or near a Test — cheap, and a laugh with the crew."},
   {t:"🛏️ Comfortable", pp:"£45–80 pp/night", au:"A$90–155", ex:"The sweet spot: a big shared cottage/Airbnb split 4–6 (often ~£30–50pp), a good B&amp;B (£45–70pp), or a Premier Inn. A group self-catering house is the best value going."},
@@ -1582,9 +1650,53 @@ const FOOD=[
   {t:"✨ Treat", pp:"£70–110 pp/day", au:"A$135–215", ex:"A proper dinner with wine (£35–60pp), a gastropub blow-out, a nice lunch at the cricket. Save it for the big nights."}
 ];
 const DAYRATE={thrifty:[95,150], comfortable:[200,300], treat:[400,560]}; // A$/person/day incl. accom+food+local transport
+function money(n){ return "A$"+n.toLocaleString(); }
+function renderTripShape(){
+  const nights=TRIP_SHAPE.reduce((a,b)=>a+b.n,0);
+  return `<div class="card">
+    <p class="mini" style="margin:0 0 10px"><b>Get in, get out.</b> Land the day before Lord's day 1, leave the morning after Edgbaston day 5 — <b>${nights} nights on the ground</b>, no slack. Depart Melbourne <b>Mon 28 Jun</b>, home from Heathrow <b>Tue 13 Jul</b>. Wimbledon (28 Jun – 11 Jul) runs the whole time you're there, so it costs no extra days — it just competes for them.</p>
+    ${TRIP_SHAPE.map(b=>`<div class="blk"><div class="nn">${b.n||"✈"}<small>${b.n===0?"out":(b.n===1?"night":"nights")}</small></div><div><div class="ti">${b.ti}</div><div class="dt">${b.dt}</div><div class="ds">${b.ds}</div></div><div class="wh">${b.w}</div></div>`).join("")}
+  </div>
+  <div class="card block"><h3>⚠️ Three things that will change this</h3><ul class="tick">
+    <li><b>The ballot gives you specific DAYS, not whole Tests.</b> ${nights} nights already assumes you need both Tests end to end. If your days cluster — say day 2 at Lord's and day 3 at Edgbaston — the hard window shrinks to 1–10 July and this drops to about 11 nights, worth roughly <b>A$1,400</b>. Don't book accommodation before you know.</li>
+    <li><b>Edgbaston day 1 is the pinch point.</b> Oxford → Birmingham gets you in late morning on Thu 8 Jul, after play starts. Hold a day-1 ticket and you get Bath <i>or</i> Oxford properly, not both.</li>
+    <li><b>Landing the day before day 1 is tight by design.</b> You'll walk into Lord's about 36 hours off a 24-hour flight. That's the trade for a shorter trip — just don't expect much of the Tuesday.</li>
+  </ul></div>
+  <div class="section-label">Which airport do you fly home from?</div>
+  <div class="card">${GATEWAYS.map(g=>`<div class="bench-row"><div class="bench-air"><b>${g.g}</b></div><div class="bench-price">A$${g.p.toLocaleString()}</div><div class="bench-note">${g.d}</div></div>`).join("")}
+    <p class="est-note">Return MEL⇄gateway, dep 28 Jun 2027, live 5 Oct 2026 (Paris priced to 15 Jul to allow the Eurostar tail). <b>Verdict: fly home from Heathrow.</b> Birmingham looks convenient on a map and is the single most expensive thing you could do to this itinerary.</p></div>
+  <div class="card block"><h3>🇫🇷 The Paris tail — if you want it</h3>
+    <p>Stumps at Edgbaston Mon 12 Jul → train to London that evening → <b>Eurostar Tue 13 Jul</b> (2h20) → two nights in Paris → fly home from CDG Thu 15 Jul.</p>
+    <p>The airfare is the same (+A$53). What it costs is <b>2 extra nights, the Eurostar (~£90) and two days of eating in Paris in July — about <b>A$1,000 all up</b>, taking the trip to ~A$11,600.</p>
+    <p class="mini">Worth it if you want the trip to be more than cricket. Skip it if the point is to get in, watch, and get home.</p></div>`;
+}
+function renderTripCost(){
+  const tot=k=>TRIPCOST.reduce((a,r)=>a+r[k],0);
+  const row=r=>`<div class="costrow"><div class="k">${r.k}<small>${r.s}</small></div><div class="v">${money(r.lean)}</div><div class="v mid">${money(r.mid)}</div><div class="v">${money(r.comf)}</div></div>`;
+  return `<div class="card">
+    <div class="costrow h"><div class="k">Per person</div><div class="v">Lean</div><div class="v mid">Realistic</div><div class="v">Comfortable</div></div>
+    ${TRIPCOST.map(row).join("")}
+    <div class="costrow tot"><div class="k">Total</div><div class="v">${money(Math.round(tot("lean")/100)*100)}</div><div class="v mid">${money(Math.round(tot("mid")/100)*100)}</div><div class="v">${money(Math.round(tot("comf")/100)*100)}</div></div>
+  </div>
+  <div class="card block"><h3>💡 The thing that jumps out</h3>
+    <p><b>Accommodation still costs more than the airfare</b> — A$3,860 against A$2,437 — even after cutting the trip to 14 nights. Tightening the schedule from 17 nights to 14 took about <b>A$1,500</b> off the total, which is more than any airfare sale was ever going to deliver.</p>
+    <ul class="tick">
+      <li><b>Every night you cut saves about A$480</b> all-in in London, less in Birmingham. That is the most powerful lever on this trip and it is entirely within your control.</li>
+      <li><b>Unlike airfares, London accommodation genuinely rewards booking early.</b> The "wait for a sale" logic that applies to flights does not apply here.</li>
+      <li>Birmingham runs 30–40% under London — the five Edgbaston nights are the cheap part of the trip.</li>
+      <li>Still don't book until the ballot tells you which days you actually hold.</li>
+    </ul></div>
+  <div class="section-label">What the cricket actually costs</div>
+  <div class="card">${TICKET_PRICES.map(t=>`<div class="bench-row"><div class="bench-air"><b>${t.v}</b></div><div class="bench-price">${t.p}</div><div class="bench-note">${t.d}</div></div>`).join("")}
+    <p class="est-note">Published 2027 prices. Four days of cricket at mid-range categories lands around <b>£555 ≈ A$1,110</b>. A day-5 ticket at £25 is the single best value on the whole trip if a Test goes the distance.</p></div>`;
+}
 function renderBudget(){
   const tierCard=(x,unit)=>`<div class="card block"><h3>${x.t}</h3><div class="sub" style="color:var(--gold-soft);font-weight:700">${x.pp} · ${x.au}</div><p>${x.ex}</p></div>`;
   const html=`
+    <div class="section-label">The trip, shaped</div>
+    ${renderTripShape()}
+    <div class="section-label">The trip, costed · per person</div>
+    ${renderTripCost()}
     <div class="section-label">Accommodation · per person / night</div>
     ${ACCOM.map(tierCard).join("")}
     <div class="card block"><h3>📍 Location &amp; group tips</h3><ul class="tick">
@@ -1600,7 +1712,7 @@ function renderBudget(){
     <div class="card estimator">
       <div class="row">
         <div class="f"><label>Comfort tier</label><select id="budTier"><option value="thrifty">Camp / thrifty</option><option value="comfortable" selected>Comfortable</option><option value="treat">Treat</option></select></div>
-        <div class="f"><label>Nights in UK</label><input type="number" id="budNights" min="1" max="60" value="12"></div>
+        <div class="f"><label>Nights in UK</label><input type="number" id="budNights" min="1" max="60" value="14"></div>
         <div class="f"><label>Flights (cabin)</label><select id="budCabin"><option value="eco" selected>Economy</option><option value="prem">Prem econ</option><option value="biz">Business</option></select></div>
       </div>
       <div class="est-out"><div class="pp">On the ground ≈ <b id="budGround">—</b></div><div class="total" id="budTotal">—</div><div class="tl2">estimated per-person total (incl. flights)</div></div>
@@ -1617,7 +1729,7 @@ function runBudget(){
   document.getElementById("budGround").textContent=`${money(gl)} – ${money(gh)}`;
   document.getElementById("budTotal").textContent=`${money(tl)} – ${money(th)}`;
   const pax=S.travellers.length;
-  document.getElementById("budNote").textContent=`${nights} nights on the '${tier}' tier ≈ A$${(Math.round(dl/50)*50).toLocaleString()}–${(Math.round(dh/50)*50).toLocaleString()}/day/person (accommodation + food + local transport), plus return flights. × ${pax} people ≈ ${money(tl*pax)}–${money(th*pax)} for the group. Indicative only.`;
+  document.getElementById("budNote").innerHTML=`${nights} nights on the '${tier}' tier ≈ A$${(Math.round(dl/50)*50).toLocaleString()}–${(Math.round(dh/50)*50).toLocaleString()}/day/person (accommodation + food + local transport), plus return flights. × ${pax} people ≈ ${money(tl*pax)}–${money(th*pax)} for the group. <br><b>Why this reads lower than the costed trip above:</b> these day rates assume a <b>group splitting a place</b> outside London. Travis's solo, London-heavy version works out nearer A$480/night all-in — hence A$10,600 rather than this. Use the table above for the real trip and this estimator for anyone doing a different shape.`;
 }
 
 /* ============ LE TOUR TAB ============ */
