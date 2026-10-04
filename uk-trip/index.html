@@ -1578,6 +1578,9 @@ document.addEventListener("change",e=>{
   if(t.dataset.trkowner!==undefined){ const id=t.dataset.trkowner; S.tracker[id]=S.tracker[id]||{}; S.tracker[id].owner=t.value||null; save(); renderTracker(); return; }
   if(["estCabin","estPax","estTiming"].includes(t.id)) runEstimator();
   if(["budTier","budNights","budCabin"].includes(t.id)) runBudget();
+  if(t.id==="budOpt"){ BUDSEL.opt=t.value; renderBudget(); }
+  if(t.id==="budTier2"){ BUDSEL.tier=t.value; renderBudget(); }
+  if(t.id==="budShare"){ BUDSEL.share=t.value; renderBudget(); }
 });
 document.addEventListener("click",e=>{
   const tk=e.target.closest("[data-tk]");
@@ -1608,30 +1611,54 @@ function trav(id){ return S.travellers.find(t=>t.id===id); }
 /* THE COSTED TRIP — solo baseline, built 5 Oct 2026.
    Depart MEL Sat 26 Jun 2027 → land Sun 27 Jun → fly home Wed 14 Jul. 17 nights on the ground.
    Anchored to live Google Flights fares (5 Oct 2026) and published 2027 ticket prices. £1 ≈ A$2.00. */
-const TRIP_SHAPE=[
-  {n:1, ti:"Land", dt:"Tue 29 Jun", w:"London",
-   ds:"Depart Melbourne Mon 28 Jun, land Tuesday. One night to find your feet and nothing more — straight into it."},
-  {n:5, ti:"Ashes · 2nd Test", dt:"Wed 30 Jun – Sun 4 Jul", w:"Lord's",
-   ds:"Day 1 the morning after you land. Wimbledon is running across town if you only hold a day or two of cricket."},
-  {n:3, ti:"The gap", dt:"Mon 5 – Wed 7 Jul", w:"Bath → Oxford",
-   ds:"Bath 2 nights — John's crawl needs a full day, not an afternoon — then Oxford 1 night. Oxford→Birmingham is 1h15 on the Thursday."},
-  {n:5, ti:"Ashes · 3rd Test", dt:"Thu 8 – Mon 12 Jul", w:"Edgbaston",
-   ds:"Birmingham base through day 5. Stumps on Mon 12 Jul is the end of the cricket."},
-  {n:0, ti:"Fly home", dt:"Tue 13 Jul", w:"from Heathrow",
-   ds:"Day 5 finishes around 6pm — too late to make an evening departure out of Heathrow. Sleep on it, travel down Tuesday morning, fly out. (Or swap this for the Paris tail below.)"}
+/* THREE TRIP SHAPES, costed. Live fares 5 Oct 2026 + published 2027 ticket prices. £1 ≈ A$2.00.
+   Accommodation is priced as a SOLO room and then scaled by the sharing factor. */
+const GBP=2.00;
+const NIGHTLY={ london:{lean:90,mid:160,comf:220}, west:{lean:80,mid:140,comf:190}, brum:{lean:75,mid:110,comf:160} };
+const DAILYFOOD={lean:55,mid:80,comf:120};
+const SHARE=[
+  {id:"solo", lbl:"On my own", f:1.00, d:"Your own room the whole way."},
+  {id:"twin", lbl:"Sharing a twin", f:0.55, d:"Splitting a twin or double with one mate. Just over half rather than exactly half — a twin costs a bit more than a single."},
+  {id:"group", lbl:"Sharing a place (3–4)", f:0.40, d:"An apartment or house split three or four ways. Best value going, and much easier to find outside London."}
+];
+const TRIP_OPTIONS=[
+  {id:"full", name:"Both Tests, full", nights:14, sub:"Land Tue 29 Jun · home Tue 13 Jul",
+   cricket:"Lord's all 5 days + Edgbaston all 5 days",
+   accomN:{london:6, west:3, brum:5},
+   flight:{lean:2300,mid:2437,comf:3200}, tickets:{lean:900,mid:1110,comf:1800},
+   trains:{lean:230,mid:380,comf:570}, sundries:{lean:300,mid:550,comf:900},
+   shape:[
+     {n:1, ti:"Land", dt:"Tue 29 Jun", w:"London", ds:"A night to find your feet before day 1."},
+     {n:5, ti:"Ashes · 2nd Test", dt:"Wed 30 Jun – Sun 4 Jul", w:"Lord's", ds:"Wimbledon running across town the whole time."},
+     {n:3, ti:"The gap", dt:"Mon 5 – Wed 7 Jul", w:"Bath → Oxford", ds:"Bath 2 nights for John's crawl, Oxford 1. Or swap the lot for Paris — Eurostar is 2h20 and costs about the same."},
+     {n:5, ti:"Ashes · 3rd Test", dt:"Thu 8 – Mon 12 Jul", w:"Edgbaston", ds:"Birmingham base through day 5."},
+     {n:0, ti:"Fly home", dt:"Tue 13 Jul", w:"from Heathrow", ds:"Day 5 ends ~6pm — too late for an evening Heathrow departure, so you travel down Tuesday morning."}
+   ]},
+  {id:"short", name:"Both Tests, tight", nights:10, sub:"Land on Lord's day 1 · out at tea on Edgbaston day 3",
+   cricket:"Lord's all 5 days + Edgbaston 2½ days",
+   accomN:{london:5, west:3, brum:2},
+   flight:{lean:2400,mid:2536,comf:3300}, tickets:{lean:900,mid:1110,comf:1800},
+   trains:{lean:200,mid:340,comf:500}, sundries:{lean:300,mid:550,comf:900},
+   shape:[
+     {n:5, ti:"Land → Ashes · 2nd Test", dt:"Wed 30 Jun – Sun 4 Jul", w:"Lord's", ds:"BA departs MEL 2:55pm Tue 29 Jun and lands 5:25am on day 1 — at the ground well before the 11am start. Etihad lands 7:00am. No other flight gets you there in time."},
+     {n:3, ti:"The gap", dt:"Mon 5 – Wed 7 Jul", w:"Bath → Oxford", ds:"Three of your ten nights with no cricket in them — forced by the fixture list, not by choice. Paris is the better use of it."},
+     {n:2, ti:"Ashes · 3rd Test", dt:"Thu 8 – Sat 10 Jul", w:"Edgbaston", ds:"Days 1 and 2 in full, then leave at tea on day 3."},
+     {n:0, ti:"Fly home", dt:"Sat 10 Jul, 9:30pm", w:"from Heathrow", ds:"Leave the ground ~3:40pm. Staying to stumps and flying the same night does NOT work — you'd reach Heathrow about 9pm. Watching day 3 out costs one more night (~A$400)."}
+   ]},
+  {id:"lords", name:"Lord's only", nights:5, sub:"Land on day 1 · home Mon 5 Jul",
+   cricket:"Lord's, all five days",
+   accomN:{london:5, west:0, brum:0},
+   flight:{lean:2400,mid:2536,comf:3300}, tickets:{lean:500,mid:640,comf:1000},
+   trains:{lean:90,mid:150,comf:240}, sundries:{lean:280,mid:500,comf:820},
+   shape:[
+     {n:5, ti:"Ashes · 2nd Test", dt:"Wed 30 Jun – Sun 4 Jul", w:"Lord's", ds:"Land 5:25am on day 1 on the BA service, five straight days at Lord's, Wimbledon across town on the rest days there aren't any."},
+     {n:0, ti:"Fly home", dt:"Mon 5 Jul", w:"from Heathrow", ds:"Door to door, about a week off work. No dead time at all."}
+   ]}
 ];
 const GATEWAYS=[
-  {g:"London Heathrow", p:2437, d:"⭐ The baseline. Dep MEL Mon 28 Jun, ret Tue 13 Jul. Full carrier competition — BA via KL, Malaysia, Cathay, Finnair, Qantas all bidding for you. Birmingham→London is 1h20 and £15–50."},
+  {g:"London Heathrow", p:2437, d:"⭐ The baseline. Full carrier competition — BA via KL, Malaysia, Cathay, Finnair, Qantas all bidding for you. Birmingham→London is 1h20 and £15–50."},
   {g:"Birmingham (BHX)", p:3300, d:"❌ <b>+A$863, and worse.</b> Every single option routes via Doha or Dubai — Birmingham has no long-haul service to the Asian hubs, so you're locked onto Qatar or Emirates. You'd pay A$863 to avoid a £25 train."},
-  {g:"Paris (CDG)", p:2490, d:"✅ <b>+A$53 — effectively free.</b> Eurostar London→Paris is 2h20. The airfare is not what makes this option cost money; the two extra nights are."}
-];
-const TRIPCOST=[
-  {k:"Flights", s:"MEL⇄LHR return economy, dep 28 Jun / ret 13 Jul. A$2,437 live on 5 Oct.", lean:2300, mid:2437, comf:3200},
-  {k:"Accommodation", s:"14 nights — London 6 · Bath + Oxford 3 · Birmingham 5", lean:2310, mid:3860, comf:5380},
-  {k:"Match tickets", s:"2 days Lord's + 2 days Edgbaston at published 2027 prices", lean:900, mid:1110, comf:1800},
-  {k:"Food &amp; drink", s:"14 days — £55 / £80 / £120 a day", lean:1540, mid:2240, comf:3360},
-  {k:"Trains &amp; transport", s:"Intercity Advance singles, Oyster, airport transfers", lean:230, mid:380, comf:570},
-  {k:"Insurance, ETA, sundries", s:"UK ETA £20 · travel cover · eSIM · incidentals", lean:300, mid:550, comf:900}
+  {g:"Paris (CDG)", p:2490, d:"✅ <b>+A$53 — effectively free.</b> Eurostar London→Paris is 2h20. The airfare is not what makes a Paris leg cost money; the extra nights are."}
 ];
 const TICKET_PRICES=[
   {v:"Lord's · days 1–4", p:"£125 – £195", d:"Cat D £125 · Cat C £160 · Cat B £175 · Cat A £195."},
@@ -1650,53 +1677,79 @@ const FOOD=[
   {t:"✨ Treat", pp:"£70–110 pp/day", au:"A$135–215", ex:"A proper dinner with wine (£35–60pp), a gastropub blow-out, a nice lunch at the cricket. Save it for the big nights."}
 ];
 const DAYRATE={thrifty:[95,150], comfortable:[200,300], treat:[400,560]}; // A$/person/day incl. accom+food+local transport
-function money(n){ return "A$"+n.toLocaleString(); }
-function renderTripShape(){
-  const nights=TRIP_SHAPE.reduce((a,b)=>a+b.n,0);
-  return `<div class="card">
-    <p class="mini" style="margin:0 0 10px"><b>Get in, get out.</b> Land the day before Lord's day 1, leave the morning after Edgbaston day 5 — <b>${nights} nights on the ground</b>, no slack. Depart Melbourne <b>Mon 28 Jun</b>, home from Heathrow <b>Tue 13 Jul</b>. Wimbledon (28 Jun – 11 Jul) runs the whole time you're there, so it costs no extra days — it just competes for them.</p>
-    ${TRIP_SHAPE.map(b=>`<div class="blk"><div class="nn">${b.n||"✈"}<small>${b.n===0?"out":(b.n===1?"night":"nights")}</small></div><div><div class="ti">${b.ti}</div><div class="dt">${b.dt}</div><div class="ds">${b.ds}</div></div><div class="wh">${b.w}</div></div>`).join("")}
-  </div>
-  <div class="card block"><h3>⚠️ Three things that will change this</h3><ul class="tick">
-    <li><b>The ballot gives you specific DAYS, not whole Tests.</b> ${nights} nights already assumes you need both Tests end to end. If your days cluster — say day 2 at Lord's and day 3 at Edgbaston — the hard window shrinks to 1–10 July and this drops to about 11 nights, worth roughly <b>A$1,400</b>. Don't book accommodation before you know.</li>
-    <li><b>Edgbaston day 1 is the pinch point.</b> Oxford → Birmingham gets you in late morning on Thu 8 Jul, after play starts. Hold a day-1 ticket and you get Bath <i>or</i> Oxford properly, not both.</li>
-    <li><b>Landing the day before day 1 is tight by design.</b> You'll walk into Lord's about 36 hours off a 24-hour flight. That's the trade for a shorter trip — just don't expect much of the Tuesday.</li>
-  </ul></div>
-  <div class="section-label">Which airport do you fly home from?</div>
-  <div class="card">${GATEWAYS.map(g=>`<div class="bench-row"><div class="bench-air"><b>${g.g}</b></div><div class="bench-price">A$${g.p.toLocaleString()}</div><div class="bench-note">${g.d}</div></div>`).join("")}
-    <p class="est-note">Return MEL⇄gateway, dep 28 Jun 2027, live 5 Oct 2026 (Paris priced to 15 Jul to allow the Eurostar tail). <b>Verdict: fly home from Heathrow.</b> Birmingham looks convenient on a map and is the single most expensive thing you could do to this itinerary.</p></div>
-  <div class="card block"><h3>🇫🇷 The Paris tail — if you want it</h3>
-    <p>Stumps at Edgbaston Mon 12 Jul → train to London that evening → <b>Eurostar Tue 13 Jul</b> (2h20) → two nights in Paris → fly home from CDG Thu 15 Jul.</p>
-    <p>The airfare is the same (+A$53). What it costs is <b>2 extra nights, the Eurostar (~£90) and two days of eating in Paris in July — about <b>A$1,000 all up</b>, taking the trip to ~A$11,600.</p>
-    <p class="mini">Worth it if you want the trip to be more than cricket. Skip it if the point is to get in, watch, and get home.</p></div>`;
+function money(n){ return "A$"+Math.round(n).toLocaleString(); }
+let BUDSEL={opt:"short", tier:"mid", share:"twin"};
+function tripCalc(o, tier, shareF){
+  const accomGBP=(o.accomN.london*NIGHTLY.london[tier] + o.accomN.west*NIGHTLY.west[tier] + o.accomN.brum*NIGHTLY.brum[tier]);
+  const accom=accomGBP*GBP*shareF;
+  const food=o.nights*DAILYFOOD[tier]*GBP;
+  const lines=[
+    {k:"Flights", s:"MEL⇄LHR return economy", v:o.flight[tier]},
+    {k:"Accommodation", s:`${o.nights} nights — London ${o.accomN.london}${o.accomN.west?" · Bath+Oxford "+o.accomN.west:""}${o.accomN.brum?" · Birmingham "+o.accomN.brum:""}`, v:accom},
+    {k:"Match tickets", s:o.cricket, v:o.tickets[tier]},
+    {k:"Food &amp; drink", s:`${o.nights} days at £${DAILYFOOD[tier]}/day`, v:food},
+    {k:"Trains &amp; transport", s:"Advance singles, Oyster, airport transfers", v:o.trains[tier]},
+    {k:"Insurance, ETA, sundries", s:"UK ETA £20 · cover · eSIM · incidentals", v:o.sundries[tier]}
+  ];
+  return {lines, total:lines.reduce((a,l)=>a+l.v,0), accom};
 }
-function renderTripCost(){
-  const tot=k=>TRIPCOST.reduce((a,r)=>a+r[k],0);
-  const row=r=>`<div class="costrow"><div class="k">${r.k}<small>${r.s}</small></div><div class="v">${money(r.lean)}</div><div class="v mid">${money(r.mid)}</div><div class="v">${money(r.comf)}</div></div>`;
+function renderTripShape(){
+  const o=TRIP_OPTIONS.find(x=>x.id===BUDSEL.opt);
   return `<div class="card">
-    <div class="costrow h"><div class="k">Per person</div><div class="v">Lean</div><div class="v mid">Realistic</div><div class="v">Comfortable</div></div>
-    ${TRIPCOST.map(row).join("")}
-    <div class="costrow tot"><div class="k">Total</div><div class="v">${money(Math.round(tot("lean")/100)*100)}</div><div class="v mid">${money(Math.round(tot("mid")/100)*100)}</div><div class="v">${money(Math.round(tot("comf")/100)*100)}</div></div>
-  </div>
-  <div class="card block"><h3>💡 The thing that jumps out</h3>
-    <p><b>Accommodation still costs more than the airfare</b> — A$3,860 against A$2,437 — even after cutting the trip to 14 nights. Tightening the schedule from 17 nights to 14 took about <b>A$1,500</b> off the total, which is more than any airfare sale was ever going to deliver.</p>
-    <ul class="tick">
-      <li><b>Every night you cut saves about A$480</b> all-in in London, less in Birmingham. That is the most powerful lever on this trip and it is entirely within your control.</li>
-      <li><b>Unlike airfares, London accommodation genuinely rewards booking early.</b> The "wait for a sale" logic that applies to flights does not apply here.</li>
-      <li>Birmingham runs 30–40% under London — the five Edgbaston nights are the cheap part of the trip.</li>
-      <li>Still don't book until the ballot tells you which days you actually hold.</li>
-    </ul></div>
-  <div class="section-label">What the cricket actually costs</div>
-  <div class="card">${TICKET_PRICES.map(t=>`<div class="bench-row"><div class="bench-air"><b>${t.v}</b></div><div class="bench-price">${t.p}</div><div class="bench-note">${t.d}</div></div>`).join("")}
-    <p class="est-note">Published 2027 prices. Four days of cricket at mid-range categories lands around <b>£555 ≈ A$1,110</b>. A day-5 ticket at £25 is the single best value on the whole trip if a Test goes the distance.</p></div>`;
+    <p class="mini" style="margin:0 0 10px"><b>${o.name}</b> — ${o.sub}. <b>${o.nights} nights on the ground</b>. ${o.cricket}.</p>
+    ${o.shape.map(b=>`<div class="blk"><div class="nn">${b.n||"✈"}<small>${b.n===0?"out":(b.n===1?"night":"nights")}</small></div><div><div class="ti">${b.ti}</div><div class="dt">${b.dt}</div><div class="ds">${b.ds}</div></div><div class="wh">${b.w}</div></div>`).join("")}
+  </div>`;
+}
+function renderCompare(){
+  const shareF=SHARE.find(x=>x.id===BUDSEL.share).f;
+  const cells=TRIP_OPTIONS.map(o=>({o, c:tripCalc(o, BUDSEL.tier, shareF)}));
+  const best=Math.min(...cells.map(x=>x.c.total));
+  return `<div class="card">
+    <div class="costrow h"><div class="k">Option</div><div class="v">14 nights</div><div class="v mid">10 nights</div><div class="v">5 nights</div></div>
+    ${["Flights","Accommodation","Match tickets","Food &amp; drink","Trains &amp; transport","Insurance, ETA, sundries"].map((lbl,i)=>
+      `<div class="costrow"><div class="k">${lbl}</div>${cells.map(x=>`<div class="v${x.o.id===BUDSEL.opt?" mid":""}">${money(x.c.lines[i].v)}</div>`).join("")}</div>`).join("")}
+    <div class="costrow tot"><div class="k">Total</div>${cells.map(x=>`<div class="v${x.o.id===BUDSEL.opt?" mid":""}">${money(Math.round(x.c.total/100)*100)}${x.c.total===best?" ✓":""}</div>`).join("")}</div>
+    <div class="costrow" style="border:none;padding-top:8px"><div class="k" style="font-weight:400;font-size:11px;color:var(--faint)">Cricket seen</div>${cells.map(x=>`<div class="v" style="font-size:10px;white-space:normal;text-align:right">${x.o.cricket.replace("Lord's","L").replace("Edgbaston","E")}</div>`).join("")}</div>
+  </div>`;
 }
 function renderBudget(){
   const tierCard=(x,unit)=>`<div class="card block"><h3>${x.t}</h3><div class="sub" style="color:var(--gold-soft);font-weight:700">${x.pp} · ${x.au}</div><p>${x.ex}</p></div>`;
+  const sh=SHARE.find(x=>x.id===BUDSEL.share);
+  const o=TRIP_OPTIONS.find(x=>x.id===BUDSEL.opt);
+  const calc=tripCalc(o, BUDSEL.tier, sh.f);
+  const solo=tripCalc(o, BUDSEL.tier, 1).total;
   const html=`
-    <div class="section-label">The trip, shaped</div>
+    <div class="section-label">Pick a shape</div>
+    <div class="card estimator">
+      <div class="row">
+        <div class="f"><label>Trip</label><select id="budOpt">${TRIP_OPTIONS.map(x=>`<option value="${x.id}"${x.id===BUDSEL.opt?" selected":""}>${x.name} · ${x.nights}n</option>`).join("")}</select></div>
+        <div class="f"><label>Comfort</label><select id="budTier2"><option value="lean"${BUDSEL.tier==="lean"?" selected":""}>Lean</option><option value="mid"${BUDSEL.tier==="mid"?" selected":""}>Realistic</option><option value="comf"${BUDSEL.tier==="comf"?" selected":""}>Comfortable</option></select></div>
+        <div class="f"><label>Sharing a room?</label><select id="budShare">${SHARE.map(x=>`<option value="${x.id}"${x.id===BUDSEL.share?" selected":""}>${x.lbl}</option>`).join("")}</select></div>
+      </div>
+      <div class="est-out"><div class="pp">${o.name} · ${o.nights} nights ≈</div><div class="total">${money(Math.round(calc.total/100)*100)}</div><div class="tl2">per person, everything in</div></div>
+      <p class="est-note">${sh.d}${sh.f<1?` <b>Sharing saves you ${money(solo-calc.total)}</b> on this option — it only touches accommodation, so flights, tickets and food are unchanged.`:""}</p>
+    </div>
+    <div class="section-label">The three options, side by side</div>
+    ${renderCompare()}
+    <div class="card block"><h3>💡 How to read this</h3><ul class="tick">
+      <li><b>Three of the 10-night trip's nights have no cricket in them.</b> The 5–7 July gap is forced by the fixture list — Lord's finishes Sunday, Edgbaston starts Thursday. On a 14-night trip that's a pleasant interlude; on a 10-night trip it's 30% of your time away.</li>
+      <li><b>The shorter trip's airfare is HIGHER</b> (A$2,536 vs A$2,437) — you're buying arrival timing, not a cheap pairing. Only the BA 2:55pm (lands 5:25am) and Etihad 5:20pm (lands 7:00am) get you to Lord's for day 1.</li>
+      <li><b>Sharing is the single biggest saving available</b> — bigger than any airfare sale, bigger than cutting days. It costs you nothing but a roommate.</li>
+      <li><b>Lord's-only is half the cost of the full trip</b> for five straight days of Ashes cricket and no dead time. Two grounds is the better trip; one ground is the better-value trip.</li>
+    </ul></div>
+    <div class="section-label">The shape you've picked</div>
     ${renderTripShape()}
-    <div class="section-label">The trip, costed · per person</div>
-    ${renderTripCost()}
+    <div class="card block"><h3>⚠️ What will change all of this</h3><ul class="tick">
+      <li><b>The ballot gives you specific DAYS, not whole Tests.</b> Every shape above assumes you hold the days you want. If you draw day 2 at Lord's and day 1 at Edgbaston, none of them survive contact. Don't book accommodation until you know.</li>
+      <li><b>Edgbaston day 1 is the pinch point on the 14-night plan.</b> Oxford → Birmingham gets you in late morning on Thu 8 Jul, after play starts. Hold a day-1 ticket and you get Bath <i>or</i> Oxford properly, not both.</li>
+      <li><b>Landing on day 1 is brutal.</b> 23½ hours in a seat, land 5:25am, at the ground for 11am, watching until 6pm — about a 40-hour day. Doable; just don't expect to remember the evening session.</li>
+    </ul></div>
+    <div class="section-label">Which airport do you fly home from?</div>
+    <div class="card">${GATEWAYS.map(g=>`<div class="bench-row"><div class="bench-air"><b>${g.g}</b></div><div class="bench-price">A$${g.p.toLocaleString()}</div><div class="bench-note">${g.d}</div></div>`).join("")}
+      <p class="est-note">Return MEL⇄gateway, dep 28 Jun 2027, live 5 Oct 2026 (Paris priced to 15 Jul to allow a Eurostar tail). <b>Verdict: fly home from Heathrow.</b> Birmingham looks convenient on a map and is the single most expensive thing you could do to this itinerary.</p></div>
+    <div class="section-label">What the cricket actually costs</div>
+    <div class="card">${TICKET_PRICES.map(t=>`<div class="bench-row"><div class="bench-air"><b>${t.v}</b></div><div class="bench-price">${t.p}</div><div class="bench-note">${t.d}</div></div>`).join("")}
+      <p class="est-note">Published 2027 prices. A day-5 ticket at £25 is the single best value on the whole trip if a Test goes the distance.</p></div>
     <div class="section-label">Accommodation · per person / night</div>
     ${ACCOM.map(tierCard).join("")}
     <div class="card block"><h3>📍 Location &amp; group tips</h3><ul class="tick">
