@@ -1623,7 +1623,19 @@ const SHARE=[
   {id:"group", lbl:"Sharing a place (3–4)", f:0.40, d:"An apartment or house split three or four ways. Best value going, and much easier to find outside London."}
 ];
 const TRIP_OPTIONS=[
-  {id:"oasis", name:"Oasis + Lord's", nights:11, sub:"Land Thu 24 Jun · Oasis Sat 26 Jun · home Mon 5 Jul",
+  {id:"lords10", name:"Lord's + a week", nights:10, sub:"Land Tue 29 Jun · home Thu 8 Jul · THE CURRENT PLAN",
+   cricket:"2 days at Lord's, then Wimbledon week 2 or Oxford/Bath",
+   accomN:{london:7, west:3, brum:0, manc:0},
+   flight:{lean:2100,mid:2190,comf:2733}, tickets:{lean:500,mid:640,comf:1000},
+   trains:{lean:150,mid:260,comf:400}, sundries:{lean:300,mid:550,comf:900},
+   shape:[
+     {n:1, ti:"Land", dt:"Tue 29 Jun", w:"London", ds:"Malaysia departs MEL 11:30pm Mon 28 Jun and lands 4:35pm Tuesday — evening and a full night before day 1. (Emirates lands 6:40pm Monday for an extra night; BA lands 5:25am Tuesday and gives you the whole day.)"},
+     {n:5, ti:"Ashes · 2nd Test", dt:"Wed 30 Jun – Sun 4 Jul", w:"Lord's", ds:"Two days of cricket from whatever the ballot gives you. Wimbledon running across town on the rest."},
+     {n:3, ti:"The open week", dt:"Mon 5 – Wed 7 Jul", w:"London or west", ds:"Two good uses now: <b>Wimbledon's second week</b> (fourth round Monday, quarter-finals Tue/Wed) or the Oxford + Bath run. No need to choose early."},
+     {n:1, ti:"Last night", dt:"Thu 8 Jul", w:"London", ds:"Fly out Thursday evening — Heathrow departures cluster 8:45–9:55pm."},
+     {n:0, ti:"Fly home", dt:"Thu 8 Jul", w:"from Heathrow", ds:"Same airfare as the 6-night dash. Length is free; only beds and food scale."}
+   ]},
+  {id:"oasis", name:"Oasis + Lord's (unlikely)", nights:11, sub:"Land Thu 24 Jun · Oasis Sat 26 Jun · home Mon 5 Jul · no ticket, now doubtful",
    cricket:"Oasis at the Etihad + 2 days at Lord's",
    accomN:{london:9, west:0, brum:0, manc:2},
    flight:{lean:2100,mid:2191,comf:2900}, tickets:{lean:650,mid:990,comf:1190},
@@ -1691,7 +1703,7 @@ const FOOD=[
 ];
 const DAYRATE={thrifty:[95,150], comfortable:[200,300], treat:[400,560]}; // A$/person/day incl. accom+food+local transport
 function money(n){ return "A$"+Math.round(n).toLocaleString(); }
-let BUDSEL={opt:"oasis", tier:"mid", share:"twin"};
+let BUDSEL={opt:"lords10", tier:"mid", share:"twin"};
 function tripCalc(o, tier, shareF){
   const accomGBP=(o.accomN.london*NIGHTLY.london[tier] + o.accomN.west*NIGHTLY.west[tier] + o.accomN.brum*NIGHTLY.brum[tier] + (o.accomN.manc||0)*NIGHTLY.manc[tier]);
   const accom=accomGBP*GBP*shareF;
