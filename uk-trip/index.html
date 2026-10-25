@@ -499,7 +499,6 @@
     <button data-tab="budget"><svg class="i"><use href="#n-budget"/></svg>Budget</button>
     <button data-tab="logistics"><svg class="i"><use href="#n-travel"/></svg>Travel</button>
     <button data-tab="explore"><svg class="i"><use href="#n-explore"/></svg>Explore</button>
-    <button data-tab="letour"><svg class="i"><use href="#n-bike"/></svg>Le Tour</button>
   </nav>
 </div>
 
@@ -541,8 +540,6 @@
     <p class="view-intro">The <b>London shortlist</b> first — 11 real places, priced live for 29 Jun – 4 Jul 2027, 5 adults. Then the "novel" UK stay sites and a per-hub guide.</p>
     <div class="section-label">London shortlist · 29 Jun – 4 Jul 2027 · 5 adults</div>
     <div id="shortList"></div>
-    <div class="section-label">Novel &amp; unique stay sites</div>
-    <div id="provList"></div>
     <div class="section-label">Where to base yourselves</div>
     <div id="hubList"></div>
     <div class="card" style="margin-top:6px"><div class="prov"><div class="logo">💡</div><div>
@@ -605,13 +602,11 @@
       <button data-eseg="rambles">Walks</button>
       <button data-eseg="oxford">Oxford</button>
       <button data-eseg="bath">Bath</button>
-      <button data-eseg="eu">Europe</button>
     </div>
     <div id="exp-uk"></div>
     <div id="exp-rambles" style="display:none"></div>
     <div id="exp-oxford" style="display:none"></div>
     <div id="exp-bath" style="display:none"></div>
-    <div id="exp-eu" style="display:none"></div>
   </section>
 
   <!-- ============ BUDGET ============ -->
@@ -622,11 +617,6 @@
   </section>
 
   <!-- ============ LE TOUR ============ -->
-  <section class="view" id="view-letour">
-    <h2 class="vt">Le Tour</h2>
-    <p class="view-intro">The best twist of 2027: the <b>Tour de France starts in Britain</b> — right in your trip window. Watch a stage without leaving the UK, ride some of the route, or chase the big French climbs on a longer leg.</p>
-    <div id="letourBody"></div>
-  </section>
 </main>
 
 <div class="toast" id="toast"></div>
@@ -669,23 +659,12 @@ const CATS = {
   tennis:{label:"Tennis", icon:"c-tennis", color:"var(--tennis)"},
   f1:{label:"Motorsport", icon:"c-f1", color:"var(--f1)"},
   golf:{label:"Golf", icon:"c-golf", color:"var(--golf)"},
-  cycling:{label:"Cycling", icon:"n-bike", color:"var(--cycling)"},
   place:{label:"Places", icon:"c-place", color:"var(--place)"}
 };
 function catIcon(cat){ const c=CATS[cat]; return `<svg class="i" style="color:${c.color}"><use href="#${c.icon}"/></svg>`; }
 
 /* ---------- Ticket intelligence per event (researched, best-estimate) ---------- */
 const TK = {
-  wtc:{
-    onSale:"~Jan–Feb 2027", confirm:"Teams confirmed early June 2027", priceFrom:"£45 adult · £15 U16", conf:"low",
-    urgent:"", official:"https://www.lords.org/",
-    aus:"Buy online at tickets.worldtestchampionship.com (up to 20/transaction). Watch for the ICC 'priority' pre-sale (ICC newsletter / ICC Family) ~48h before general sale — that's how 2025 ran.",
-    uk:"Same online sale; a UK friend can buy in the same window. WTC-final tickets generally aren't name-locked, but confirm at checkout.",
-    life:"Australia's spot isn't confirmed until ~early June 2027, so treat this as a bonus, not the anchor. If Australia makes it, hospitality (from ~£349+VAT/day via ICC Travel & Tours / Seat Unique) is the guaranteed fallback.",
-    members:"Melbourne CC full members: request a Lord's Letter of Introduction (Marylebone reciprocal) — visitor access to clubhouse facilities, not a guaranteed match ticket, but worth a call to MCC membership. Going via Marylebone-member friends is a long shot: their own international-match tickets are limited & balloted among members.",
-    resale:"Twickets (face value) if any surface; official hospitality otherwise.",
-    ops:"ICC Travel & Tours (official packages); Seat Unique (hospitality)."
-  },
   ash:{ /* shared Ashes base; per-Test county added below */
     onSale:"Ballot 2–29 Sep 2026 · general sale from 14 Oct", confirm:"Dates CONFIRMED by the ECB, 23 Jul 2026", priceFrom:"~£70–200/day (~A$140–400)", conf:"high",
     urgent:"⚡ The public ballot is OPEN: 10:00 on 2 Sep 2026 → 23:59 on 29 Sep 2026, free to enter. Winners get an assigned purchase window (1–5 Oct or 7–13 Oct); everything left goes to general sale from 10:00 on 14 Oct 2026.",
@@ -708,66 +687,23 @@ const TK = {
     resale:"Official daily Resale ONLY. Every non-debenture ticket is name-tied & strictly non-transferable — Viagogo/StubHub listings risk being void. Don't.",
     ops:"Keith Prowse (official hospitality); Championship debenture brokers."
   },
-  silv:{
-    onSale:"~Sep 2026 (sign up for presale)", confirm:"Provisional 2–4 Jul 2027", priceFrom:"GA from £70/day · grandstands £329–479", conf:"medium",
-    urgent:"Register for the Silverstone presale email — the GP sells out and uses dynamic pricing, so first access matters.",
-    official:"https://www.silverstone.co.uk/events/formula-1-british-grand-prix",
-    aus:"Buy direct at silverstone.co.uk — join the presale list for first access. Same process from AUS or UK. GA is walk-anywhere; grandstands are reserved seats. Friday (practice) is far cheaper than Sunday (race).",
-    uk:"Identical to the above. UK friends near Northants can help with a local base or car — parking/traffic on race weekend is brutal.",
-    life:"F1 Experiences = official hospitality & paddock packages (expensive but unforgettable). Circuit camping is the budget bucket-list option and a great atmosphere.",
-    members:"No membership route; it's first-come. The 'in' is being on the presale list.",
-    resale:"Silverstone runs an official resale/exchange; photo-ID rules can apply. Avoid touts.",
-    ops:"F1 Experiences (official); Silverstone hospitality; GP travel operators."
-  },
-  open:{
-    onSale:"Ballot ~6 Jul – early Aug 2026", confirm:"Dates fixed: 15–18 Jul 2027 (practice 12–14)", priceFrom:"Practice £40 · comp days £150 · final £190", conf:"medium",
-    urgent:"⚡ Most time-critical: The Open ballot opens ~6 July 2026 (basically now) via 'The One Club' — free to join, no backlog. It's the 100-year Bobby Jones anniversary at St Andrews, so demand will be huge. Enter immediately.",
-    official:"https://www.theopen.com/",
-    aus:"Join The One Club (free, Mastercard-backed) and enter the ballot NOW — identical for overseas & UK, no membership waiting list. Results come out in stages during August 2026. Kids under 16 go free; 16–24 discounted.",
-    uk:"Same ballot. UK friends can also enter and combine — but you each apply via your own One Club account.",
-    life:"Official hospitality via The Open, or golf-travel operators (PerryGolf, Your Golf Travel) that bundle tickets + a St Andrews stay. Practice days (£40) are a cheap way to walk the Old Course if the ballot for comp days misses.",
-    members:"No cricket link. 'Membership' = free One Club registration for the ballot.",
-    resale:"Official channels only; treat secondary sites with caution.",
-    ops:"PerryGolf, Your Golf Travel (packages); The Open official hospitality."
-  }
 };
 /* per-Ashes-Test county lines */
 const ASH_COUNTY = {
-  ash1:"Host county: <b>Nottinghamshire</b> (Trent Bridge). County membership = priority international tickets.",
   ash2:"Host: <b>MCC / Middlesex</b> (Lord's). Marylebone members' own match tickets are scarce & balloted among members (a long shot to borrow), but <b>Melbourne CC</b> members can request a reciprocal Letter of Introduction for clubhouse access.",
   ash3:"Host county: <b>Warwickshire</b> (Edgbaston). Their '1882' membership gives priority Major-Match access at the best prices.",
-  ash4:"Host county: <b>Hampshire</b> (Utilita/Ageas Bowl). First-ever men's Ashes Test here — membership gives priority.",
-  ash5:"Host county: <b>Surrey</b> (The Oval). A Surrey membership gives priority on up to 8 Test tickets at exclusive prices — one of the best 'ins' going."
 };
 
 /* ---------- Seed state ---------- */
 function defaultState(){
   return {
     events:[
-      {id:"wtc", cat:"cricket", name:"World Test Championship Final", venue:"The Kia Oval, London", city:"London", start:"2027-06-09", end:"2027-06-13", status:"conf", tk:"wtc",
-        note:"CONFIRMED by the ICC: The Oval, Wed 9 – Sun 13 Jun 2027, in the 150th year of Test cricket. Which two teams play isn't known until early June 2027 — a bonus, never the anchor.", include:false, days:[]},
-      {id:"ash1", cat:"cricket", name:"Ashes · 1st Test", venue:"Trent Bridge, Nottingham", city:"Nottingham", start:"2027-06-18", end:"2027-06-22", status:"conf", tk:"ash",
-        note:"CONFIRMED (ECB, 23 Jul 2026): Fri 18 – Tue 22 Jun. Trent Bridge's first men's Ashes Test since 2015. Two weeks clear of the Lord's/Edgbaston pair — a separate trip, effectively.", include:false, days:[]},
       {id:"ash2", cat:"cricket", name:"Ashes · 2nd Test", venue:"Lord's, London", city:"London", start:"2027-06-30", end:"2027-07-04", status:"conf", tk:"ash",
         note:"CONFIRMED: Wed 30 Jun – Sun 4 Jul. In the ballot for this one. Sits inside the Wimbledon fortnight.", include:false, days:[]},
       {id:"ash3", cat:"cricket", name:"Ashes · 3rd Test", venue:"Edgbaston, Birmingham", city:"Birmingham", start:"2027-07-08", end:"2027-07-12", status:"conf", tk:"ash",
         note:"CONFIRMED: Thu 8 – Mon 12 Jul. In the ballot for this one too — paired with Lord's it fixes the whole trip window at ~26 Jun – 13 Jul.", include:false, days:[]},
-      {id:"ash4", cat:"cricket", name:"Ashes · 4th Test", venue:"Utilita (Ageas) Bowl, Southampton", city:"Southampton", start:"2027-07-21", end:"2027-07-25", status:"conf", tk:"ash",
-        note:"CONFIRMED: Wed 21 – Sun 25 Jul. Southampton's first-ever men's Ashes Test — the 10th UK ground to host one.", include:false, days:[]},
-      {id:"ash5", cat:"cricket", name:"Ashes · 5th Test", venue:"The Kia Oval, London", city:"London", start:"2027-07-29", end:"2027-08-02", status:"conf", tk:"ash",
-        note:"CONFIRMED: Thu 29 Jul – Mon 2 Aug. The decider slot, and the same ground as June's WTC Final.", include:false, days:[]},
       {id:"wimb", cat:"tennis", name:"Wimbledon Championships", venue:"All England Club, London", city:"London", start:"2027-06-28", end:"2027-07-11", status:"conf", tk:"wimb",
         note:"Confirmed: 28 Jun – 11 Jul 2027.", include:false, days:[]},
-      {id:"silv", cat:"f1", name:"British Grand Prix", venue:"Silverstone Circuit", city:"Silverstone", start:"2027-07-02", end:"2027-07-04", status:"prov", tk:"silv",
-        note:"Provisional 2–4 Jul 2027 (race Sunday). Fri practice / Sat quali / Sun race.", include:false, days:[]},
-      {id:"open", cat:"golf", name:"The Open Championship (155th)", venue:"St Andrews (Old Course), Scotland", city:"St Andrews", start:"2027-07-15", end:"2027-07-18", status:"conf", tk:"open",
-        note:"Confirmed: 15–18 Jul 2027 — 100 years since Bobby Jones' 1927 win. Practice 12–14 Jul.", include:false, days:[]},
-      {id:"tdf1", cat:"cycling", name:"Tour de France · Stage 1 (Grand Départ)", venue:"Edinburgh → Carlisle", city:"Edinburgh", start:"2027-07-02", end:"2027-07-02", status:"prov",
-        note:"The 2027 Tour STARTS in Britain. Roadside viewing is free — no ticket. See the Le Tour tab for the plan.", include:false, days:[]},
-      {id:"tdf2", cat:"cycling", name:"Tour de France · Stage 2", venue:"Keswick → Lancashire (Lake District)", city:"Lake District", start:"2027-07-03", end:"2027-07-03", status:"prov",
-        note:"The scenic stage through the Lake District. Free roadside viewing. Clashes with the Silverstone GP weekend — choose wisely.", include:false, days:[]},
-      {id:"tdf3", cat:"cycling", name:"Tour de France · Stage 3", venue:"Welshpool → Cardiff, Wales", city:"Cardiff", start:"2027-07-04", end:"2027-07-04", status:"prov",
-        note:"The Welsh stage to a Cardiff finish, before the race transfers to France. Free roadside.", include:false, days:[]},
       {id:"oxford", cat:"place", name:"Oxford (my old town, 5 years)", venue:"Oxford", city:"Oxford", start:"", end:"", status:"conf", flexible:true,
         note:"A must — show the friends the old haunts. ~1h by train from London Paddington/Marylebone.", include:true, days:[], flexDate:"", nights:2},
       {id:"bath", cat:"place", name:"Bath (Cousin's city)", venue:"Bath, Somerset", city:"Bath", start:"", end:"", status:"conf", flexible:true,
@@ -1184,15 +1120,6 @@ function renderTravellers(){
 }
 
 /* ============ STAYS ============ */
-const PROVIDERS=[
-  {em:"🏰",name:"Landmark Trust",tag:"⚠️ Only 3 London properties — all unavailable for 29 Jun–4 Jul 2027",desc:"Castles, follies, towers, gatehouses and lighthouses saved from ruin. Sleeps 2–12 — brilliant for the group. Book ~12 months ahead; the icons vanish fast.",url:"https://www.landmarktrust.org.uk/"},
-  {em:"🌳",name:"National Trust Holidays",tag:"⚠️ NOTHING IN LONDON — rural & coastal only",desc:"Turreted towers, former observatories, fisherman's cottages, lighthouses and estate lodges. A stay gets you free entry to Trust places during your trip.",url:"https://www.nationaltrust.org.uk/holidays"},
-  {em:"🎓",name:"Oxford colleges — CHECKED, worth doing",tag:"Christ Church, Jesus, New, Queen's all let rooms in the summer vac",desc:"Over the summer vacation you can stay in college rooms across Oxford (also Cambridge, Bath, St Andrews). Perfect for your Oxford pilgrimage — atmospheric & good value.",url:"https://www.universityrooms.com/en-GB/city/oxford/home/"},
-  {em:"⛺",name:"Canopy & Stars",tag:"Treehouses, cabins & glamping",desc:"Sawday's collection of treehouses, shepherd's huts and off-grid cabins — a memorable night between cricket legs, especially in the Cotswolds near Oxford/Bath.",url:"https://www.canopyandstars.co.uk/"},
-  {em:"🗝️",name:"Unique Homestays",tag:"Design-led one-off houses",desc:"Hand-picked luxury boltholes with real character — worth a look for a special 50th base if the group wants to splash out for a few nights.",url:"https://www.uniquehomestays.com/"},
-  {em:"🏡",name:"Host Unusual",tag:"Directory of the weird & wonderful",desc:"An aggregator of unusual UK stays — windmills, water towers, converted chapels — with links out to each. Great for browsing ideas by region.",url:"https://www.hostunusual.com/"},
-  {em:"🛏️",name:"Sykes Holiday Cottages",tag:"Big mainstream cottage range",desc:"Huge inventory of self-catering cottages UK-wide, incl. many near National Trust sites — handy when the boutique options are booked out.",url:"https://www.sykescottages.co.uk/"}
-];
 const HUBS=[
   {city:"London",near:"Lord's · The Oval · Wimbledon · WTC Final",tips:["Best hub for the London Tests + Wimbledon — base once, day-trip out.","A group Airbnb in a zone-2 area near a tube line beats scattered hotel rooms.","For Wimbledon week, staying SW London (Southfields/Wimbledon) shortens the queue slog."]},
   {city:"Oxford",near:"Your old home · ~1h from London",tips:["<b>University Rooms</b> = stay inside a college over summer vac.","Old Parsonage or Old Bank for a treat; The Randolph for grandeur.","Great Cotswolds base — pair with a Canopy & Stars night."]},
@@ -1220,21 +1147,24 @@ const STAYS=[
    note:"4 beds, 2 baths, longest cancellation window here. <b>⚠️ The listing spells its own name with a Cyrillic а</b> — a known filter-evasion trick. With 17 reviews, treat carefully."},
   {n:"Stunning 4-Bed, Zone 1", a:"Bayswater / Westbourne Grove", tot:5895, bd:4, bed:4, ba:2, out:"Terrace", free:"24 Jun", r:"4.94", nr:64, id:"27100465", status:"open",
    note:"Technically W2 but right on the Notting Hill border among Chepstow and Pembridge Villas — stucco terraces, Westbourne Grove shops, Portobello a short walk. 4 bedrooms, but 4 beds for 5 still means one pair shares. ~30 min to Lord's."},
-  {n:"Beautiful Houseboat, sleeps 8", a:"Limehouse Basin", tot:4958, bd:4, bed:4, ba:3, out:"Deck / water", free:"24 Jun", r:"4.84", nr:123, id:"984770391419849337", tag:"THE NOVEL ONE · VERIFIED", status:"open",
-   note:"<b>The only genuinely unusual London stay that is actually bookable on your dates.</b> A houseboat in Limehouse Basin — 4 bedrooms, <b>3 bathrooms</b>, 4.84 from 123 stays, free cancel to 24 Jun, A$198pp/night. Against it: Limehouse is east, ~35–40 min to Lord's, and five adults on a boat for five days is either the best part of the trip or the worst. Worth looking at the photos before deciding which."},
+  {n:"Beautiful Houseboat, sleeps 8", a:"Limehouse Basin", tot:4958, bd:4, bed:4, ba:3, out:"Deck / water", free:"24 Jun", r:"4.84", nr:123, id:"984770391419849337", tag:"THE NOVEL ONE", status:"open",
+   note:"<b>The only genuinely unusual London stay bookable on your dates.</b> 4 bedrooms, 3 bathrooms, 4.84 from 123, free cancel 24 Jun, A$198pp. <b>The commute, honestly: ~40 min, ONE change.</b> DLR from Limehouse 3 stops to Canary Wharf, then the Jubilee runs direct all the way to St John's Wood — no second change. That same Jubilee train also gives you London Bridge, Waterloo, Westminster, Green Park and Bond Street direct, so the West End and South Bank are one ride, and the DLR puts Tower Bridge ~10 min and Greenwich ~20 min away. <b>But it's the longest commute on this list</b> — roughly 80 min round trip, five days running, against a 20-min walk from St John's Wood."},
+  {n:"London Fields Family Home", a:"Hackney · London Fields", tot:2986, bd:4, bed:4, ba:2.5, out:"—", free:"30 May", r:"4.87", nr:23, id:"15961454", tag:"★ BEST VALUE · VERIFIED", status:"open",
+   note:"<b>A$119pp/night — cheapest verified option by a distance</b>, and a proper 4-bedroom family home with 2.5 baths. Free cancellation out to 30 May. London Fields is one of the best bits of Hackney: the park, the lido, Broadway Market on Saturdays, excellent pubs. ~40 min to Lord's."},
+  {n:"4 bed in Stoke Newington", a:"Stoke Newington", tot:4327, bd:4, bed:4, ba:1.5, out:"Garden", free:"30 May", r:"5.0", nr:37, id:"579459731277649773", status:"open",
+   note:"<b>5.0 from 37 stays</b>, 4 bedrooms, garden, free cancel to 30 May. Stoke Newington's Church Street is a proper village high street — strong on the 'somewhere to walk out into' test. ~40 min to Lord's."},
+  {n:"Design-Led Home by Studio Lalola", a:"Columbia Road", tot:4836, bd:4, bed:4, ba:2, out:"—", free:"30 May", r:"4.93", nr:46, id:"949381102337266467", status:"open",
+   note:"Architect-designed, 4 bedrooms, by <b>Columbia Road</b> — Sunday flower market at the end of the street, Shoreditch and Brick Lane walkable. 4.93 from 46. ~40 min to Lord's."},
+  {n:"Vintage Heaven, designer East London home", a:"Dalston", tot:4736, bd:3, bed:3, ba:1.5, out:"—", free:"24 Jun", r:"4.95", nr:137, id:"36517474", status:"open",
+   note:"<b>4.95 from 137</b> — one of the strongest records found. A genuinely characterful designer house in Dalston. 3 beds for 5 means two pairs share."},
+  {n:"Hampstead Penthouse", a:"Hampstead", tot:4844, bd:3, bed:3, ba:2, out:"—", free:"30 May", r:"5.0", nr:105, id:"692014537844308929", status:"open",
+   note:"<b>5.0 from 105 stays</b> with, by all accounts, world-class views. Hampstead is the most handsome village in London and the Heath is on the doorstep. <b>Closest of the new finds to Lord's</b> — Jubilee from Finchley Road, ~20 min."},
+  {n:"Eclectic, completely individual loft", a:"Hackney", tot:4019, bd:3, bed:3, ba:2, out:"—", free:"⚠️ 24h only", r:"4.89", nr:80, id:"16226654", status:"open",
+   note:"A one-off loft conversion, 4.89 from 80. Character in spades, but 24-hour cancellation so you can't hold it while the ballot runs."},
+  {n:"Lovley 3 bedroom flat in Camden", a:"Camden", tot:2767, bd:3, bed:3, ba:1, out:"—", free:"⚠️ 24h only", r:"4.69", nr:175, id:"18985963", status:"open",
+   note:"A$111pp — the cheapest verified thing here, 175 reviews, and Camden is ~15 min to Lord's. But 4.69 is the weakest rating on the list, and 24-hour cancellation."},
   {n:"Spacious 4-ensuite home", a:"Camden / King's Cross", tot:6951, bd:4, bed:4, ba:4, out:"—", free:"24 Jun", r:"5.0", nr:6, id:"1582882797262936591", status:"open",
    note:"Four bedrooms, <b>four en-suites</b> — nobody queues for a shower. The premium answer to the bathroom problem, at A$278pp/night."}
-];
-const STAYS_OUT=[
-  ["King's Cross family house","A$4,349 · 4.9 (182)","Host's 2027 calendar isn't open — unavailable on every date tested, including controls in Aug 2027"],
-  ["Grand Marylebone House","A$6,656 · 4.96 (25)","Same — calendar not open for 2027"],
-  ["Our London Family Home, Dollis Hill","A$3,604 · 4.96 (28)","Calendar not open; and Dollis Hill failed the character test anyway"],
-  ["Camden Luxury Town House","A$3,471 · 4.81 (194)","Calendar not open"],
-  ["Spacious 4BR apt w/ balcony, K&C","A$2,589 · 5.0 (3)","Calendar not open"],
-  ["Excellent 3 bed House, Hyde Park","A$4,138 · 4.57 (28)","Calendar not open"],
-  ["Ivy | Clarendon Road","A$3,836 · 5.0 (6)","Calendar not open"],
-  ["Central London flat, Georgian Terrace","A$3,460 · 4.81 (178)","Bookable, but ruled out on viewing — shabby"],
-  ["Stylish house with superb space, Notting Hill","A$4,747 · 4.95 (223)","Bookable, but ruled out on viewing"]
 ];
 function renderShortlist(){
   const SB={held:['HELD — requested','#34d399'],gone:['❌ GONE','#f8817c'],open:['still open','#6aa8f0']};
@@ -1255,6 +1185,7 @@ function renderShortlist(){
     ${rows}</div>
   <div class="card block"><h3>⚠️ Three things that decide this</h3><ul class="tick">
     <li><b>Not one of the eleven has air conditioning.</b> That is period London — the character you want and aircon are close to mutually exclusive. If a 32°C week would ruin it, you need a new-build or a serviced apartment and you lose the Georgian terrace.</li>
+    <li><b>Bathrooms are no longer a filter</b> — Travis has said the group isn't fussed, which re-opens several good places that were scoring badly on 1 and 1.5 baths.</li>
     <li><b>Count beds, not bedrooms.</b> Five adults who aren't couples need four or five actual beds. Marylebone, Our London Family Home and the K&amp;C balcony flat have five. Notting Hill, Maida Vale, Belsize Park and Hyde Park have <b>three</b> — two pairs sharing doubles.</li>
     <li><b>Cancellation varies wildly</b> — "free until 30 May 2027" against "free for 24 hours". Nine of eleven let you hold the booking for free until late June, which is the whole game while the ballot is unresolved. Two don't.</li>
   </ul></div>
@@ -1262,10 +1193,6 @@ function renderShortlist(){
     <p>Not on Airbnb. An <b>18th-century Huguenot silk-weaver's house in Spitalfields</b> — four floors, walled garden, sleeps six in two twins and a double, original panelling, Hawksmoor's Christ Church on the corner. Roughly <b>£737/night ≈ A$295pp</b>, right at the ceiling.</p>
     <p class="mini">Caveats: ~25–30 min to Lord's, and its calendar is booked a long way out — the next free slot as at Oct 2026 was February 2027. Worth a direct enquiry rather than an assumption. (The National Trust's own holiday lets are almost all rural; Landmark is the one you were thinking of.)</p>
     <a class="go" href="https://www.landmarktrust.org.uk/properties/princelet-street/" target="_blank" rel="noopener">Princelet Street ↗</a></div>
-  <div class="card block"><h3>🚫 Checked and off the list</h3>
-    <div class="bench-head"><span>Property</span><span>Why</span></div>
-    ${STAYS_OUT.map(x=>`<div class="bench-row"><div class="bench-air"><b>${x[0]}</b><span>${x[1]}</span></div><div class="bench-price" style="font-size:10px;font-weight:600;white-space:normal;color:var(--muted)">${x[2]}</div></div>`).join("")}
-    <p class="est-note"><b>The lesson:</b> a price in Airbnb search is not an offer. Always open the listing and confirm the dates before getting attached to somewhere.</p></div>
   <div class="card block"><h3>❌ Three routes checked and closed</h3><ul class="tick">
     <li><b>National Trust — nothing in London.</b> Their holiday lets are rural and coastal. The one you were thinking of is the <b>Landmark Trust</b> (below).</li>
     <li><b>Serviced apartments — dearer than they look, and the aircon is soft.</b> The Marlo in Marylebone quotes a 3-bed at £600/night <b>excluding VAT</b> (£720 inc) on a <b>7-night minimum</b>, and its own site warns rates are "considerably higher during peak seasons and special London events" — i.e. exactly the Ashes/Wimbledon fortnight. That's A$10,000+ for seven nights. Air conditioning is "portable units on request, subject to availability", not fixed. Citylife's Marylebone 3-beds have real aircon but 7–14 night minimums.</li>
@@ -1277,7 +1204,6 @@ function renderShortlist(){
 }
 function renderStays(){
   document.getElementById("shortList").innerHTML=renderShortlist();
-  document.getElementById("provList").innerHTML=PROVIDERS.map(p=>`<div class="card"><div class="prov"><div class="logo">${p.em}</div><div><h3>${p.name}</h3><div class="tagline">${p.tag}</div><p>${p.desc}</p><a class="go" href="${p.url}" target="_blank" rel="noopener">Browse ${p.name} ↗</a></div></div></div>`).join("");
   document.getElementById("hubList").innerHTML=HUBS.map(h=>`<div class="card hub"><h3>📍 ${h.city}</h3><div class="near">${h.near}</div><ul class="tick">${h.tips.map(t=>`<li>${t}</li>`).join("")}</ul></div>`).join("");
 }
 
@@ -1569,10 +1495,8 @@ function renderExplore(){
   document.getElementById("exp-rambles").style.display=S.ui.eseg==="rambles"?"":"none";
   document.getElementById("exp-oxford").style.display=S.ui.eseg==="oxford"?"":"none";
   document.getElementById("exp-bath").style.display=S.ui.eseg==="bath"?"":"none";
-  document.getElementById("exp-eu").style.display=S.ui.eseg==="eu"?"":"none";
   const blk=b=>`<div class="card block"><h3>${b.em} ${b.title}</h3><div class="sub">${b.sub}</div><ul class="tick">${b.tips.map(t=>`<li>${t}</li>`).join("")}</ul></div>`;
   document.getElementById("exp-uk").innerHTML=UK_BLOCKS.map(blk).join("");
-  document.getElementById("exp-eu").innerHTML=EU_BLOCKS.map(blk).join("");
   renderOxford();
   renderBath();
   renderRambles();
@@ -1711,18 +1635,6 @@ const TRIP_OPTIONS=[
      {n:3, ti:"The open week", dt:"Mon 5 – Wed 7 Jul", w:"London or west", ds:"Two good uses now: <b>Wimbledon's second week</b> (fourth round Monday, quarter-finals Tue/Wed) or the Oxford + Bath run. No need to choose early."},
      {n:1, ti:"Last night", dt:"Thu 8 Jul", w:"London", ds:"Fly out Thursday evening — Heathrow departures cluster 8:45–9:55pm."},
      {n:0, ti:"Fly home", dt:"Thu 8 Jul", w:"from Heathrow", ds:"Same airfare as the 6-night dash. Length is free; only beds and food scale."}
-   ]},
-  {id:"oasis", name:"Oasis + Lord's (unlikely)", nights:11, sub:"Land Thu 24 Jun · Oasis Sat 26 Jun · home Mon 5 Jul · no ticket, now doubtful",
-   cricket:"Oasis at the Etihad + 2 days at Lord's",
-   accomN:{london:9, west:0, brum:0, manc:2},
-   flight:{lean:2100,mid:2191,comf:2900}, tickets:{lean:650,mid:990,comf:1190},
-   trains:{lean:220,mid:300,comf:450}, sundries:{lean:300,mid:550,comf:900},
-   shape:[
-     {n:1, ti:"Land", dt:"Thu 24 Jun", w:"London", ds:"Malaysia departs MEL 11:30pm Wed 23 Jun and lands 4:35pm Thursday. Two clear days before the gig — you won't be watching Oasis on no sleep."},
-     {n:2, ti:"🎸 Oasis · Etihad Stadium", dt:"Fri 25 – Sat 26 Jun", w:"Manchester", ds:"<b>TICKET NOT SECURED</b> — face-value resale via Twickets / Ticketmaster Face Value Exchange only, opening closer to the tour. Up Friday, the final show of the UK run Saturday 26th, back Sunday; the show ends ~11pm and the last train south has gone. Don't book these beds until you hold a ticket."},
-     {n:3, ti:"Breathing room", dt:"Sun 27 – Tue 29 Jun", w:"London", ds:"Back from Manchester Sunday. Three days before the cricket — Oxford is 1h from Paddington if you want it, or just be in London."},
-     {n:5, ti:"Ashes · 2nd Test", dt:"Wed 30 Jun – Sun 4 Jul", w:"Lord's", ds:"Two days of cricket from whichever the ballot gives you, Wimbledon across town on the others."},
-     {n:0, ti:"Fly home", dt:"Mon 5 Jul", w:"from Heathrow", ds:"Same airfare as a six-night dash — the extra week costs accommodation and food only."}
    ]},
   {id:"full", name:"Both Tests, full", nights:14, sub:"Land Tue 29 Jun · home Tue 13 Jul",
    cricket:"Lord's all 5 days + Edgbaston all 5 days",
@@ -1900,49 +1812,7 @@ function runBudget(){
 }
 
 /* ============ LE TOUR TAB ============ */
-const UK_STAGES=[
-  {n:"Stage 1 · Fri 2 Jul", route:"Edinburgh → Carlisle", desc:"The Grand Départ. Out of Edinburgh through Midlothian and the Scottish Borders (the Côte de Melrose), tracing the border into Cumberland to finish in Carlisle."},
-  {n:"Stage 2 · Sat 3 Jul", route:"Keswick → Lancashire", desc:"The scenic one — south from Keswick through the heart of the Lake District, past the lakes and along Morecambe Bay, into the Lancashire fells via Lancaster."},
-  {n:"Stage 3 · Sun 4 Jul", route:"Welshpool → Cardiff", desc:"Into Wales for a punchy leg south from Welshpool in Powys to a big-city finish in Cardiff."}
-];
-const CLIMBS=[
-  {name:"Mont Ventoux", tag:"awesome", stat:"21 km · avg 7.5% · 1,910 m", why:"'The Giant of Provence' — a barren, lunar-moonscape summit and the Tour's most mythical climb. The bucket-list ascent from Bédoin."},
-  {name:"Alpe d'Huez", tag:"awesome", stat:"13.8 km · avg 8.1% · 21 bends", why:"The most famous climb in cycling — 21 numbered, named hairpins packed with history and roadside crowds."},
-  {name:"Col du Tourmalet", tag:"awesome", stat:"19 km · avg 7.4% · 2,115 m", why:"The Pyrenees' giant and the most-climbed pass in Tour history. A proper rite of passage."},
-  {name:"Col du Galibier", tag:"awesome", stat:"~18 km · 2,642 m", why:"High, wild and spectacular — one of the great alpine passes, often the roof of the Tour."},
-  {name:"Col d'Izoard", tag:"scenic", stat:"~15 km · 2,360 m", why:"The surreal 'Casse Déserte' near the top — a lunar field of stone pinnacles. Beautiful and special."},
-  {name:"Col de la Bonette", tag:"scenic", stat:"~24 km · 2,802 m", why:"Among the highest paved roads in Europe — huge, empty and panoramic. A quieter epic."},
-  {name:"Gorges du Verdon", tag:"scenic", stat:"rolling gorge roads", why:"Not a climb — turquoise-river canyon riding with gentle gradients. Pure scenic joy for a rest-day spin."},
-  {name:"Lac d'Annecy loop", tag:"scenic", stat:"~40 km · flat", why:"A gorgeous, mostly-flat lakeside loop on a dedicated cycle path — the group ride everyone can enjoy."}
-];
-function renderLeTour(){
-  const hero=`<div class="tour-note" style="background:linear-gradient(155deg,rgba(245,179,1,.14),rgba(56,189,248,.06));border-color:rgba(245,179,1,.32)">🇬🇧🚴 <b>The 2027 Tour de France starts in Britain.</b> The Grand Départ rolls out of <b>Edinburgh on Fri 2 July 2027</b>, with three days of racing across Scotland, the Lake District and Wales before transferring to France (finish: Paris, Sun 25 July). That's slap in the middle of your trip — so you can watch, or ride, without even crossing the Channel. <span style="color:var(--faint)">Full French route announced Oct 2026 — provisional until then.</span></div>`;
-  const stages=`<div class="section-label">Watch · the UK Grand Départ</div>
-    ${UK_STAGES.map(s=>`<div class="card block"><h3>🏁 ${s.route}</h3><div class="sub">${s.n} · roadside viewing is free</div><p>${s.desc}</p></div>`).join("")}
-    <div class="card block"><h3>⚠️ Mind the clash</h3><p>The UK stages (2–4 Jul) land on the <b>same weekend as the Silverstone GP and Wimbledon's first week</b> — a huge sporting weekend. Pick your battle: e.g. Stage 2 in the Lakes on the Saturday, or catch the peloton near a town start/finish. Get there early, grab a spot on a climb, and soak up the publicity caravan.</p></div>`;
-  const ukride=`<div class="section-label">Ride · in the UK</div>
-    <div class="card block"><h3>🚵 Ride the route</h3><ul class="tick">
-      <li><b>Lake District (Stage 2 country):</b> the classic passes — Honister, Newlands, Kirkstone — are short but savage; gentler lake-side loops around Derwentwater/Buttermere are just as stunning without the pain.</li>
-      <li><b>Scottish Borders (Stage 1):</b> quiet, rolling roads and big views — very rideable at a cruising pace.</li>
-      <li>Hire road or e-bikes in Keswick/Ambleside; the Tour will have signage and buzz all over these roads in 2027.</li>
-    </ul></div>`;
-  const climbs=`<div class="section-label">Ride · the iconic French climbs</div>
-    <div class="card"><p class="mini" style="margin:0 0 6px">Tourist pace, not race pace — pick a couple as bucket-list days. <span style="color:var(--f1);font-weight:700">● awesome/extreme</span> · <span style="color:var(--place);font-weight:700">● scenic/special</span></p></div>
-    ${CLIMBS.map(c=>`<div class="card block" style="border-left:3px solid ${c.tag==='awesome'?'var(--f1)':'var(--place)'}"><h3>${c.name} <span class="climbtag ${c.tag}">${c.tag==='awesome'?'awesome':'scenic'}</span></h3><div class="sub">${c.stat}</div><p>${c.why}</p></div>`).join("")}`;
-  const fit=`<div class="section-label">How to do it (avid ≠ race-fit)</div>
-    <div class="card block"><ul class="tick">
-      <li><b>Pick ONE marquee climb</b> and ride it at your own pace — the road doesn't care if you take 1 hour or 3; the summit selfie is the same.</li>
-      <li><b>An e-bike is no shame</b> — it turns Ventoux or the Alpe into a grin instead of a grovel, and keeps the group together.</li>
-      <li><b>Go supported.</b> A guided tour with a van (bags carried, snacks, a lift if the legs go) makes the big cols achievable and social.</li>
-      <li>Book a <b>hire bike ahead</b> (road/gravel/e-bike); bring your own pedals, shoes &amp; helmet if you can.</li>
-      <li>Fly home <b>open-jaw out of a French city</b> (see Flights) so the France leg is the grand finale.</li>
-    </ul></div>`;
-  const france=`<div class="section-label">France · the mountain stages (Ace's leg)</div>
-    <div class="card block"><h3>🇫🇷 Chase the high mountains</h3><p>After the British start the Tour transfers to France, where the race is won and lost in the <b>Alps and Pyrenees through mid-to-late July</b>, finishing on the Champs-Élysées on <b>Sunday 25 July 2027</b>. Perfect for Ace's longer 5-week trip: roadside on a mountain col is free and unforgettable — choose a climb, arrive early, and live the day.</p><p class="mini">Exact French stages, towns and dates land in <b>October 2026</b> — tell me then and I'll drop the specifics (and any climbs you want to ride) right in here.</p></div>`;
-  document.getElementById("letourBody").innerHTML=hero+stages+ukride+climbs+fit+france;
-}
-
-const R={tldr:renderTldr,schedule:renderSchedule,events:renderEvents,stays:renderStays,flights:renderFlights,budget:renderBudget,logistics:renderLogistics,explore:renderExplore,letour:renderLeTour};
+const R={tldr:renderTldr,schedule:renderSchedule,events:renderEvents,stays:renderStays,flights:renderFlights,budget:renderBudget,logistics:renderLogistics,explore:renderExplore};
 document.getElementById("tabs").addEventListener("click",e=>{ const b=e.target.closest("button"); if(b) switchTab(b.dataset.tab); });
 function switchTab(name){
   document.querySelectorAll("nav.tabs button").forEach(b=>b.classList.toggle("active",b.dataset.tab===name));
