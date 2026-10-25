@@ -538,7 +538,9 @@
   <!-- ============ STAYS ============ -->
   <section class="view" id="view-stays">
     <h2 class="vt">Stays</h2>
-    <p class="view-intro">Somewhere memorable to base the trip — the "novel" UK sites (historic towers, lighthouses, treehouses, Oxford college rooms) plus a per-hub guide. This list will keep growing.</p>
+    <p class="view-intro">The <b>London shortlist</b> first — 11 real places, priced live for 29 Jun – 4 Jul 2027, 5 adults. Then the "novel" UK stay sites and a per-hub guide.</p>
+    <div class="section-label">London shortlist · 29 Jun – 4 Jul 2027 · 5 adults</div>
+    <div id="shortList"></div>
     <div class="section-label">Novel &amp; unique stay sites</div>
     <div id="provList"></div>
     <div class="section-label">Where to base yourselves</div>
@@ -1199,7 +1201,58 @@ const HUBS=[
   {city:"Silverstone / Northants",near:"British Grand Prix",tips:["Rooms near the circuit spike & sell out on GP weekend — lock early or camp at the circuit.","Towcester, Northampton or Milton Keynes as a base; or day-trip from Oxford/London."]},
   {city:"St Andrews / Fife",near:"The Open · Scotland",tips:["The Open makes Fife rooms scarce & pricey — book the moment you commit.","University Rooms has St Andrews options; or base in Edinburgh (~1h30) and commute.","Consider flying into Edinburgh and doing an open-jaw home (see Flights)."]}
 ];
+/* LONDON SHORTLIST — verified live on Airbnb 25 Oct 2026 for 29 Jun – 4 Jul 2027 (5 nights, 5 adults).
+   A$ totals for the whole stay. "free" = free-cancellation deadline. Zero of the eleven have air conditioning. */
+const STAYS=[
+  {n:"Spacious 4BR apt w/ large balcony", a:"Kensington & Chelsea", tot:2589, bd:4, bed:5, ba:1.5, out:"Large balcony", free:"24 Jun", r:"5.0", nr:3, id:"1196428780744091842",
+   note:"Cheapest 4-bedroom on the board and five real beds — but only three reviews and 1.5 bathrooms for five adults. Worth a look, not a blind booking."},
+  {n:"Central London flat · Georgian Terrace", a:"Marylebone", tot:3460, bd:3, bed:5, ba:1.5, out:"Terrace", free:"15 Jun", r:"4.81", nr:178, id:"16472888", tag:"BEST VALUE",
+   note:"Georgian terrace, five beds for five adults, best high street in London outside the door, ~15 min to Lord's. 178 reviews at 4.81. The catch is 1.5 bathrooms."},
+  {n:"Camden Luxury Town House", a:"Camden Town", tot:3471, bd:3, bed:4, ba:2.5, out:"Private garden", free:"⚠️ 24h only", r:"4.81", nr:194, id:"1127773273625033542",
+   note:"Private garden and a strong review record, but free cancellation lasts 24 hours — you cannot hold this one while the ballot plays out."},
+  {n:"Our London Family Home", a:"Brent · NW London", tot:3604, bd:4, bed:5, ba:2.5, out:"Private garden", free:"24 Jun", r:"4.96", nr:28, id:"909094523745782231", tag:"THE FIND",
+   note:"Four bedrooms, five beds, 2.5 baths AND a private garden for A$144pp a night — the best configuration-per-dollar on the list, and 4.96 from 28 stays. Brent borders St John's Wood; confirm exactly where before booking."},
+  {n:"Peaceful top flat, gorgeous views", a:"Maida Vale", tot:3823, bd:3, bed:3, ba:1.5, out:"Private balcony", free:"⚠️ 24h only", r:"4.77", nr:84, id:"830506605663839379",
+   note:"Genuinely in Maida Vale, which the others mostly aren't. But three beds for five adults and 24-hour cancellation only."},
+  {n:"Excellent 3 bed House, Hyde Park", a:"Westminster", tot:4138, bd:3, bed:3, ba:2.5, out:"Garden", free:"24 Jun", r:"4.57", nr:28, id:"1426696606876717369",
+   note:"Townhouse with a garden in a prime spot. The 4.57 rating is the weakest here — read the recent reviews before committing."},
+  {n:"Stylish Garden Flat + En-Suite Studio", a:"Belsize Park", tot:4665, bd:3, bed:3, ba:2, out:"Garden", free:"24 Jun", r:"4.93", nr:14, id:"1502872117413929070",
+   note:"Garden flat plus a separate en-suite studio — useful if someone wants their own door. Belsize Park is 15 min to Lord's on the Jubilee."},
+  {n:"Stylish house with superb space", a:"Notting Hill", tot:4747, bd:3, bed:3, ba:2.5, out:"Private terrace", free:"30 May", r:"4.95", nr:223, id:"771399380741456706", tag:"BEST REVIEWED",
+   note:"4.95 from 223 stays is the strongest record on the list by a distance, and the longest free-cancellation window. Against it: three beds for five, and ~30 min to Lord's."},
+  {n:"Serene retreat in elegant St John's Wood", a:"St John's Wood", tot:5705, bd:3, bed:4, ba:2.5, out:"Garden", free:"24 Jun", r:"4.91", nr:47, id:"48478669", tag:"BEST OVERALL",
+   note:"The only one that solves everything at once — walk to Lord's (so a shared-ticket handover is nothing), a real garden, 2.5 baths for five. Dearest here and still inside budget."},
+  {n:"Stunning 4-Bed, Zone 1", a:"Hyde Park / Notting Hill", tot:5895, bd:4, bed:4, ba:2, out:"Terrace", free:"24 Jun", r:"4.94", nr:64, id:"27100465",
+   note:"Four separate bedrooms at 4.94 from 64 stays — nobody has to share. Two bathrooms is the only grumble."},
+  {n:"Spacious 4-ensuite home", a:"Camden / King's Cross", tot:6951, bd:4, bed:4, ba:4, out:"—", free:"24 Jun", r:"5.0", nr:6, id:"1582882797262936591",
+   note:"Four bedrooms, four en-suites — everyone gets their own bathroom. The premium option, and the answer if the 1.5-bath places worry you."}
+];
+function renderShortlist(){
+  const rows=STAYS.map(x=>{
+    const pp=Math.round(x.tot/5/5);
+    const warn=/24h/.test(x.free);
+    return `<div class="bench-row"><div class="bench-air"><b>${x.n}</b><span>${x.a} · ${x.bd} bed / ${x.bed} beds / ${x.ba} bath · ${x.out}</span></div>
+      <div class="bench-price">A$${x.tot.toLocaleString()}<br><span style="font-weight:500;font-size:10.5px;color:var(--muted)">A$${pp} pp/night</span></div>
+      <div class="bench-note">${x.tag?`<span class="stop-badge sf" style="margin-right:6px">${x.tag}</span>`:""}★ ${x.r} (${x.nr}) · <b style="color:${warn?"var(--bad)":"var(--ok)"}">${warn?"free cancel 24h only":"free cancel to "+x.free}</b> · ${x.note} <a href="https://www.airbnb.com.au/rooms/${x.id}?check_in=2027-06-29&check_out=2027-07-04&adults=5" target="_blank" rel="noopener">View ↗</a></div></div>`;}).join("");
+  return `<div class="card">
+    <p class="mini" style="margin:0 0 11px">Prices are the <b>whole place for all five nights</b>, pulled live on 25 Oct 2026. Budget ceiling is A$300pp/night — everything here is A$104–278, so <b>money is not the constraint</b>; configuration is.</p>
+    <div class="bench-head"><span>Place · area · layout</span><span>Total / pp per night</span></div>
+    ${rows}</div>
+  <div class="card block"><h3>⚠️ Three things that decide this</h3><ul class="tick">
+    <li><b>Not one of the eleven has air conditioning.</b> That is period London — the character you want and aircon are close to mutually exclusive. If a 32°C week would ruin it, you need a new-build or a serviced apartment and you lose the Georgian terrace.</li>
+    <li><b>Count beds, not bedrooms.</b> Five adults who aren't couples need four or five actual beds. Marylebone, Our London Family Home and the K&amp;C balcony flat have five. Notting Hill, Maida Vale, Belsize Park and Hyde Park have <b>three</b> — two pairs sharing doubles.</li>
+    <li><b>Cancellation varies wildly</b> — "free until 30 May 2027" against "free for 24 hours". Nine of eleven let you hold the booking for free until late June, which is the whole game while the ballot is unresolved. Two don't.</li>
+  </ul></div>
+  <div class="card block"><h3>🏛️ The outlier: Landmark Trust, Princelet Street</h3>
+    <p>Not on Airbnb. An <b>18th-century Huguenot silk-weaver's house in Spitalfields</b> — four floors, walled garden, sleeps six in two twins and a double, original panelling, Hawksmoor's Christ Church on the corner. Roughly <b>£737/night ≈ A$295pp</b>, right at the ceiling.</p>
+    <p class="mini">Caveats: ~25–30 min to Lord's, and its calendar is booked a long way out — the next free slot as at Oct 2026 was February 2027. Worth a direct enquiry rather than an assumption. (The National Trust's own holiday lets are almost all rural; Landmark is the one you were thinking of.)</p>
+    <a class="go" href="https://www.landmarktrust.org.uk/properties/princelet-street/" target="_blank" rel="noopener">Princelet Street ↗</a></div>
+  <div class="card block"><h3>🧠 The play</h3>
+    <p>Hold <b>two or three</b> of the free-cancellation places now and release what you don't need. It costs nothing, and good London stock in Ashes week thins out. Travis's own lean is the <b>Marylebone Georgian terrace</b>; <b>Our London Family Home</b> is the one that appeared on the wider sweep and arguably beats it on configuration.</p>
+    <p class="mini">Still to do: the second London stay (7–8 Jul), and a serviced-apartment pass if air conditioning matters.</p></div>`;
+}
 function renderStays(){
+  document.getElementById("shortList").innerHTML=renderShortlist();
   document.getElementById("provList").innerHTML=PROVIDERS.map(p=>`<div class="card"><div class="prov"><div class="logo">${p.em}</div><div><h3>${p.name}</h3><div class="tagline">${p.tag}</div><p>${p.desc}</p><a class="go" href="${p.url}" target="_blank" rel="noopener">Browse ${p.name} ↗</a></div></div></div>`).join("");
   document.getElementById("hubList").innerHTML=HUBS.map(h=>`<div class="card hub"><h3>📍 ${h.city}</h3><div class="near">${h.near}</div><ul class="tick">${h.tips.map(t=>`<li>${t}</li>`).join("")}</ul></div>`).join("");
 }
