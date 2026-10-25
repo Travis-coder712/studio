@@ -1697,6 +1697,39 @@ const FOOD=[
 ];
 const DAYRATE={thrifty:[95,150], comfortable:[200,300], treat:[400,560]}; // A$/person/day incl. accom+food+local transport
 function money(n){ return "A$"+Math.round(n).toLocaleString(); }
+/* THE ACTUAL TRIP — real figures, 26 Oct 2026. Per person, 5 sharing. Excludes food & drink. */
+const ACTUAL=[
+  {k:"Flights", v:2190, st:"watching", s:"Malaysia Airlines MEL⇄LHR, dep Mon 28 Jun → ret Thu 8 Jul. <b>A$2,190 direct with the airline</b> (re-checked 26 Oct, unchanged). 1 stop KUL each way, 26h05 out / 23h40 back. Buy window mid-Nov – Feb."},
+  {k:"London — Hampstead", v:675, st:"requested", s:"Rosecroft Avenue, 29 Jun – 4 Jul, <b>5 nights</b>. A$3,375 for the house ÷ 5. Charged 22 May 2027, free cancel to 30 May."},
+  {k:"Oxford", v:275, st:"shortlisted", s:"4 – 6 Jul, <b>2 nights</b>. Jericho house A$1,356 or Binsey cottage A$1,402, ÷ 5. Both verified bookable, both refundable."},
+  {k:"Bath", v:198, st:"shortlisted", s:"6 – 8 Jul, <b>2 nights</b>. Georgian townhouse A$948 or the 4.98-rated one with parking A$1,035, ÷ 5. Both verified."},
+  {k:"Lord's tickets", v:640, st:"ballot", s:"2 days at Cat C (£160 each). Ballot result early Nov — could be Cat D £125 or Cat A £195."},
+  {k:"Trains &amp; Oyster", v:300, st:"estimate", s:"London→Oxford, Oxford→Bath, Bath→Heathrow, plus a week of London travel."},
+  {k:"ETA, insurance, eSIM", v:270, st:"estimate", s:"UK ETA £20 (mandatory, 2-year validity) · travel cover · data."}
+];
+function renderActual(){
+  const tot=ACTUAL.reduce((a,x)=>a+x.v,0);
+  const SC={watching:["WATCHING","#6aa8f0"],requested:["REQUESTED","#34d399"],shortlisted:["SHORTLISTED","#ffce4a"],ballot:["BALLOT","#b48bff"],estimate:["ESTIMATE","#a8a4b6"]};
+  return `<div class="card">
+    <div class="costrow h"><div class="k">The trip as it actually stands</div><div class="v"></div><div class="v"></div><div class="v mid">Per person</div></div>
+    ${ACTUAL.map(x=>`<div class="costrow"><div class="k" style="grid-column:1/4">${x.k}<small><span style="display:inline-block;font-size:8.5px;font-weight:900;letter-spacing:.4px;padding:2px 6px;border-radius:5px;background:${SC[x.st][1]}22;color:${SC[x.st][1]};margin-right:6px">${SC[x.st][0]}</span>${x.s}</small></div><div class="v mid">${money(x.v)}</div></div>`).join("")}
+    <div class="costrow tot"><div class="k" style="grid-column:1/4">Total per person <small style="font-weight:400">9 nights on the ground · <b>before food and drink</b></small></div><div class="v mid">${money(tot)}</div></div>
+  </div>
+  <div class="card block"><h3>📊 What moves it</h3><ul class="tick">
+    <li><b>The Hampstead booking says 4 guests, not 5.</b> Split four ways the London share is A$844 rather than A$675 — total <b>A$4,720</b>.</li>
+    <li><b>Cat A seats at Lord's</b> instead of Cat C: +A$140. <b>A third day's cricket:</b> +A$320.</li>
+    <li><b>Worst realistic case ≈ A$4,900.</b> You'd have to be unlucky to break five.</li>
+    <li><b>Food and drink on top:</b> 9 days at £55 / £80 / £120 a day ≈ A$990 / A$1,440 / A$2,160.</li>
+  </ul></div>
+  <div class="card block"><h3>✈️ Beating the fare — what most people don't do</h3><ul class="tick">
+    <li><b>Ask AGL's travel desk about corporate fares.</b> Big corporates hold negotiated rates with Qantas, Singapore and Emirates well below public pricing, and many allow leisure booking. One email, and almost nobody tries it.</li>
+    <li><b>ITA Matrix</b> (matrix.itasoftware.com) — the engine underneath Google Flights, with the routing language and fare codes exposed. Surfaces constructions the consumer front end hides. You can't book from it; you take the itinerary to the airline.</li>
+    <li><b>Try a different point of sale.</b> Airlines price the same seat differently by country — check malaysiaairlines.com set to Malaysia (MYR) and the UK (GBP) against the A$2,190. 5–15% gaps are common. Use a card with no foreign transaction fee.</li>
+    <li><b>Deal feeds for error fares</b> — I Know The Pilot, Secret Flying. They catch genuine airline mistakes that vanish within hours and never reach Google.</li>
+    <li><b>Credit the Malaysia ticket to Qantas</b> — oneworld, so it earns points and status credits. Free money otherwise left behind.</li>
+    <li><b>Ignore the cookies myth.</b> Incognito browsing does not lower airfares. Currency and point of sale do.</li>
+  </ul></div>`;
+}
 let BUDSEL={opt:"lords10", tier:"mid", share:"twin"};
 function tripCalc(o, tier, shareF){
   const accomGBP=(o.accomN.london*NIGHTLY.london[tier] + o.accomN.west*NIGHTLY.west[tier] + o.accomN.brum*NIGHTLY.brum[tier] + (o.accomN.manc||0)*NIGHTLY.manc[tier]);
@@ -1738,7 +1771,9 @@ function renderBudget(){
   const calc=tripCalc(o, BUDSEL.tier, sh.f);
   const solo=tripCalc(o, BUDSEL.tier, 1).total;
   const html=`
-    <div class="section-label">Pick a shape</div>
+    <div class="section-label">The trip, costed · 26 Oct 2026</div>
+    ${renderActual()}
+    <div class="section-label">Alternative shapes · estimator</div>
     <div class="card estimator">
       <div class="row">
         <div class="f"><label>Trip</label><select id="budOpt">${TRIP_OPTIONS.map(x=>`<option value="${x.id}"${x.id===BUDSEL.opt?" selected":""}>${x.name} · ${x.nights}n</option>`).join("")}</select></div>
