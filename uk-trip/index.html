@@ -1157,7 +1157,7 @@ const STAYS=[
    note:"Architect-designed, 4 bedrooms, by <b>Columbia Road</b> — Sunday flower market at the end of the street, Shoreditch and Brick Lane walkable. 4.93 from 46. ~40 min to Lord's."},
   {n:"Vintage Heaven, designer East London home", a:"Dalston", tot:4736, bd:3, bed:3, ba:1.5, out:"—", free:"24 Jun", r:"4.95", nr:137, id:"36517474", status:"open",
    note:"<b>4.95 from 137</b> — one of the strongest records found. A genuinely characterful designer house in Dalston. 3 beds for 5 means two pairs share."},
-  {n:"Hampstead Heath house", a:"Hampstead · the Crofts", tot:3376, bd:3, bed:3, ba:2, out:"Garden", free:"30 May", r:"4.98", nr:80, id:"48265544", tag:"★ BEST TRADE", status:"open",
+  {n:"Hampstead Heath house", a:"Hampstead · the Crofts", tot:3376, bd:3, bed:3, ba:2, out:"Garden", free:"30 May", r:"4.98", nr:80, id:"48265544", tag:"★ REQUESTED", status:"held",
    note:"<b>A house with a garden, not a penthouse</b> — 4.98 from 80 stays, Top 5% of homes, Heath 5 min away, free cancel to 30 May. <b>A$135pp — A$2,329 cheaper than St John's Wood</b> for about 13 extra minutes each way (Finchley Road is one Jubilee stop from St John's Wood, or the 46 bus runs direct). <b>With only 2 cricket days that's under an hour of extra travel across the whole trip.</b>"},
   {n:"Hampstead Penthouse", a:"Hampstead", tot:4844, bd:3, bed:3, ba:2, out:"—", free:"30 May", r:"5.0", nr:105, id:"692014537844308929", status:"open",
    note:"<b>5.0 from 105 stays</b> with, by all accounts, world-class views. Hampstead is the most handsome village in London and the Heath is on the doorstep. <b>Closest of the new finds to Lord's</b> — Jubilee from Finchley Road, ~20 min."},
@@ -1169,7 +1169,7 @@ const STAYS=[
    note:"Four bedrooms, <b>four en-suites</b> — nobody queues for a shower. The premium answer to the bathroom problem, at A$278pp/night."}
 ];
 function renderShortlist(){
-  const SB={held:['HELD — requested','#34d399'],gone:['❌ GONE','#f8817c'],open:['still open','#6aa8f0']};
+  const SB={held:['REQUESTED — pending','#34d399'],gone:['❌ GONE','#f8817c'],open:['still open','#6aa8f0']};
   const rows=STAYS.map(x=>{
     const pp=Math.round(x.tot/5/5);
     const warn=/24h/.test(x.free);
@@ -1177,8 +1177,10 @@ function renderShortlist(){
     return `<div class="bench-row"><div class="bench-air"><b>${x.n}</b><span>${x.a} · ${x.bd} bed / ${x.bed} beds / ${x.ba} bath · ${x.out}</span></div>
       <div class="bench-price">A$${x.tot.toLocaleString()}<br><span style="font-weight:500;font-size:10.5px;color:var(--muted)">A$${pp} pp/night</span></div>
       <div class="bench-note">${st}${x.tag?`<span class="stop-badge sf" style="margin-right:6px">${x.tag}</span>`:""}★ ${x.r} (${x.nr}) · <b style="color:${warn?"var(--bad)":"var(--ok)"}">${warn?"free cancel 24h only":"free cancel to "+x.free}</b> · ${x.note} <a href="https://www.airbnb.com.au/rooms/${x.id}?check_in=2027-06-29&check_out=2027-07-04&adults=5" target="_blank" rel="noopener">View ↗</a></div></div>`;}).join("");
-  return `<div class="urgent" style="margin:0 0 14px">🏠 <b>Where we're up to — 25 Oct 2026.</b><br>
-    ✅ <b>HELD:</b> Serene retreat, <b>St John's Wood</b> — booking requested, A$5,705, free cancel to 24 Jun.<br>
+  return `<div class="urgent" style="margin:0 0 14px">🏠 <b>Where we're up to — 25 Oct 2026. TWO requests pending.</b><br>
+    ⏳ <b>Rosecroft Avenue, Hampstead</b> — requested, <b>A$3,375.35</b>, charged 22 May 2027, free cancel to 30 May. The one to want.<br>
+    ⏳ <b>Serene retreat, St John's Wood</b> — requested, A$5,705, free cancel to 24 Jun.<br>
+    ⚠️ <b>If both confirm, cancel one promptly</b> — both are free to cancel, but don't leave a host hanging.<br>
     ⚠️ <b>Everything below has been individually checked as bookable on these exact dates.</b> Airbnb's search results list plenty of places that look available and priced but whose hosts have simply not opened their 2027 calendars — <b>seven of the original shortlist turned out to be phantoms</b>. They're listed at the bottom so nobody re-finds them.</div>
   <div class="card">
     <p class="mini" style="margin:0 0 11px"><b>Dates: check in Tue 29 Jun 2027, check out Sun 4 Jul 2027 — 5 nights.</b> That's right even though it drops Lord's day 5: the ballot entry covers days 1–4 only (30 Jun, 1, 2, 3 Jul), so the last cricket is Saturday the 3rd and a Sunday-morning checkout loses nothing.</p>
