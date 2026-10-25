@@ -1218,15 +1218,15 @@ const STAYS=[
    note:"Townhouse with a garden in a prime spot. The 4.57 rating is the weakest here — read the recent reviews before committing."},
   {n:"Stylish Garden Flat + En-Suite Studio", a:"Belsize Park", tot:4665, bd:3, bed:3, ba:2, out:"Garden", free:"24 Jun", r:"4.93", nr:14, id:"1502872117413929070",
    note:"Garden flat plus a separate en-suite studio — useful if someone wants their own door. Belsize Park is 15 min to Lord's on the Jubilee."},
-  {n:"Stylish house with superb space", a:"Notting Hill", tot:4747, bd:3, bed:3, ba:2.5, out:"Private terrace", free:"30 May", r:"4.95", nr:223, id:"771399380741456706", tag:"BEST REVIEWED",
+  {n:"Stylish house with superb space", a:"Notting Hill", tot:4747, bd:3, bed:3, ba:2.5, out:"Private terrace", free:"30 May", r:"4.95", nr:223, id:"771399380741456706", tag:"BEST REVIEWED", status:"open",
    note:"4.95 from 223 stays is the strongest record on the list by a distance, and the longest free-cancellation window. Against it: three beds for five, and ~30 min to Lord's."},
-  {n:"Serene retreat in elegant St John's Wood", a:"St John's Wood", tot:5705, bd:3, bed:4, ba:2.5, out:"Garden", free:"24 Jun", r:"4.91", nr:47, id:"48478669", tag:"★ THE PICK",
+  {n:"Serene retreat in elegant St John's Wood", a:"St John's Wood", tot:5705, bd:3, bed:4, ba:2.5, out:"Garden", free:"24 Jun", r:"4.91", nr:47, id:"48478669", tag:"★ THE PICK", status:"held",
    note:"Travis viewed it Oct 2026 — \"looks lovely\". Solves everything at once: walk to Lord's so a shared-ticket handover is nothing, a real garden, 2.5 baths for five, free cancel to 24 Jun. <b>One thing to check before booking: 4 beds for 5 guests means someone shares a double</b> — look at 'Where you'll sleep' for the layout. Caps at 5 guests, so no room if anyone brings a partner."},
-  {n:"Stunning 4-Bed, Zone 1", a:"Bayswater / Westbourne", tot:5895, bd:4, bed:4, ba:2, out:"Terrace", free:"24 Jun", r:"4.94", nr:64, id:"27100465",
+  {n:"Stunning 4-Bed, Zone 1", a:"Bayswater / Westbourne", tot:5895, bd:4, bed:4, ba:2, out:"Terrace", free:"24 Jun", r:"4.94", nr:64, id:"27100465", status:"open",
    note:"<b>Bayswater, near Westbourne Grove</b> (Airbnb's own location block) — technically W2, not Notting Hill, but it sits right on the border among Chepstow and Pembridge Villas, which is the good end: stucco terraces, Westbourne Grove's shops, the Prince Bonaparte round the corner, Portobello a short walk, Hyde Park ~15 min. A genuinely lovely part of London. Four bedrooms at 4.94 from 64 stays, but <b>4 beds for 5 people still means one pair shares a double</b> — same as St John's Wood, just with an extra private room — and it's <b>~30 min and a change or two to Lord's</b> against a walk."},
-  {n:"Grand Marylebone House", a:"Marylebone", tot:6656, bd:4, bed:6, ba:3.5, out:"Private garden", free:"24 Jun", r:"4.96", nr:25, id:"734516999957733627", tag:"★ THE BACKUP",
+  {n:"Grand Marylebone House", a:"Marylebone", tot:6656, bd:4, bed:6, ba:3.5, out:"Private garden", free:"24 Jun", r:"4.96", nr:25, id:"734516999957733627", tag:"★ THE BACKUP", status:"gone",
    note:"<b>Out-specs St John's Wood on everything but price.</b> 4 bedrooms, <b>6 beds so nobody shares</b>, 3.5 bathrooms, private garden, Marylebone, 4.96 from 25 stays, free cancel to 24 Jun. A$266pp/night — A$951 more than SJW across the stay. Baker Street is one Jubilee stop from St John's Wood, so ~20 min to Lord's: no slower than the SJW walk."},
-  {n:"Family house, King's Cross / Bloomsbury", a:"WC1 · 10 min to King's Cross", tot:4349, bd:4, bed:5, ba:2, out:"Private garden", free:"24 Jun", r:"4.9", nr:182, id:"7081504", tag:"★ THE VALUE PICK",
+  {n:"Family house, King's Cross / Bloomsbury", a:"WC1 · 10 min to King's Cross", tot:4349, bd:4, bed:5, ba:2, out:"Private garden", free:"24 Jun", r:"4.9", nr:182, id:"7081504", tag:"★ THE VALUE PICK", status:"gone",
    note:"Corrected on inspection: <b>4 bedrooms, 5 beds (bunks in one room) so NOBODY shares</b>, private garden, 182 stays at 4.9. <b>A$174pp/night — A$1,356 less than St John's Wood</b> and it fixes the bed problem. 10 min walk to King's Cross St Pancras = <b>six tube lines plus Eurostar to Paris</b>, so much the best base for exploring; British Museum ~15 min on foot, Clerkenwell and Exmouth Market round the corner. Lord's is ~28–30 min: walk to King's Cross, 3 stops to Baker St, one Jubilee stop. Only 2 bathrooms, and no aircon."},
   {n:"London 4 Bed House with Garden", a:"Kennington · south of the river", tot:2644, bd:4, bed:6, ba:3, out:"Garden", free:"24 Jun", r:"4.89", nr:9, id:"1436341029507787306",
    note:"Astonishing value — <b>6 beds, 3 baths and a garden for A$106pp/night</b>, the cheapest per head by a mile. The catch is Kennington: south of the river, ~30–35 min to Lord's, and nothing like the character brief. Here because the numbers deserve it, not because it fits."},
@@ -1234,13 +1234,20 @@ const STAYS=[
    note:"Four bedrooms, four en-suites — everyone gets their own bathroom. The premium option, and the answer if the 1.5-bath places worry you."}
 ];
 function renderShortlist(){
+  const SB={held:['HELD — requested','#34d399'],gone:['❌ GONE','#f8817c'],open:['still open','#6aa8f0']};
   const rows=STAYS.map(x=>{
     const pp=Math.round(x.tot/5/5);
     const warn=/24h/.test(x.free);
+    const st=x.status?`<span style="display:inline-block;font-size:9px;font-weight:900;letter-spacing:.4px;padding:3px 7px;border-radius:6px;background:${SB[x.status][1]}22;color:${SB[x.status][1]};margin-right:6px">${SB[x.status][0]}</span>`:"";
     return `<div class="bench-row"><div class="bench-air"><b>${x.n}</b><span>${x.a} · ${x.bd} bed / ${x.bed} beds / ${x.ba} bath · ${x.out}</span></div>
       <div class="bench-price">A$${x.tot.toLocaleString()}<br><span style="font-weight:500;font-size:10.5px;color:var(--muted)">A$${pp} pp/night</span></div>
-      <div class="bench-note">${x.tag?`<span class="stop-badge sf" style="margin-right:6px">${x.tag}</span>`:""}★ ${x.r} (${x.nr}) · <b style="color:${warn?"var(--bad)":"var(--ok)"}">${warn?"free cancel 24h only":"free cancel to "+x.free}</b> · ${x.note} <a href="https://www.airbnb.com.au/rooms/${x.id}?check_in=2027-06-29&check_out=2027-07-04&adults=5" target="_blank" rel="noopener">View ↗</a></div></div>`;}).join("");
-  return `<div class="card">
+      <div class="bench-note">${st}${x.tag?`<span class="stop-badge sf" style="margin-right:6px">${x.tag}</span>`:""}★ ${x.r} (${x.nr}) · <b style="color:${warn?"var(--bad)":"var(--ok)"}">${warn?"free cancel 24h only":"free cancel to "+x.free}</b> · ${x.note} <a href="https://www.airbnb.com.au/rooms/${x.id}?check_in=2027-06-29&check_out=2027-07-04&adults=5" target="_blank" rel="noopener">View ↗</a></div></div>`;}).join("");
+  return `<div class="urgent" style="margin:0 0 14px">🏠 <b>Where we're up to — checked 25 Oct 2026.</b><br>
+    ✅ <b>HELD:</b> Serene retreat, <b>St John's Wood</b> — booking requested, A$5,705, free cancel to 24 Jun.<br>
+    ❌ <b>LOST in a single afternoon:</b> the King's Cross family house <i>and</i> Grand Marylebone House both went from available to "those dates are not available" while we were still comparing them. Two of the best three, gone, <b>eight months out</b>.<br>
+    👉 <b>The lesson:</b> London stock for Ashes week is moving now. Free-cancellation places cost nothing to hold — book first, deliberate second.</div>
+  <div class="card">
+    <p class="mini" style="margin:0 0 11px"><b>Dates: check in Tue 29 Jun 2027, check out Sun 4 Jul 2027 — 5 nights.</b> That's right even though it drops Lord's day 5: the ballot entry covers days 1–4 only (30 Jun, 1, 2, 3 Jul), so the last cricket is Saturday the 3rd and a Sunday-morning checkout loses nothing.</p>
     <p class="mini" style="margin:0 0 11px">Prices are the <b>whole place for all five nights</b>, pulled live on 25 Oct 2026. Budget ceiling is A$300pp/night — everything here is A$104–278, so <b>money is not the constraint</b>; configuration is.</p>
     <div class="bench-head"><span>Place · area · layout</span><span>Total / pp per night</span></div>
     ${rows}</div>
