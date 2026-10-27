@@ -1189,7 +1189,7 @@ function renderShortlist(){
       <div class="bench-price">A$${x.tot.toLocaleString()}<br><span style="font-weight:500;font-size:10.5px;color:var(--muted)">A$${pp} pp/night</span></div>
       <div class="bench-note">${st}${x.tag?`<span class="stop-badge sf" style="margin-right:6px">${x.tag}</span>`:""}★ ${x.r} (${x.nr}) · <b style="color:${warn?"var(--bad)":"var(--ok)"}">${warn?"free cancel 24h only":"free cancel to "+x.free}</b> · ${x.note} <a href="https://www.airbnb.com.au/rooms/${x.id}?check_in=2027-06-29&check_out=2027-07-04&adults=5" target="_blank" rel="noopener">View ↗</a></div></div>`;}).join("");
   return `<div class="urgent" style="margin:0 0 14px">🏠 <b>LONDON IS BOOKED — 27 Oct 2026.</b><br>
-    ✅ <b>Rosecroft Avenue, Hampstead NW3</b> — <b>CONFIRMED</b>. A$3,375.35 for 29 Jun – 4 Jul, charged 22 May 2027, free cancel to 30 May. A house with a garden, 4.98 from 80 stays.<br>
+    ✅ <b>Rosecroft Avenue, Hampstead NW3</b> — <b>CONFIRMED</b>. A$3,375.35 for 29 Jun – 4 Jul (A$675/night for the whole house — <b>A$135pp/night at five, A$169 at four</b>), charged 22 May 2027, free cancel to 30 May. A house with a garden, 4.98 from 80 stays.<br>
     — St John's Wood was not confirmed and is no longer needed. <b>Withdraw that request</b> if it's still showing as pending, so the host isn't holding dates.<br>
     ⏭️ <b>Next:</b> Oxford (Jericho or Binsey) and Bath — both shortlisted, both verified, both refundable.</div>
   <div class="card">
@@ -1726,9 +1726,9 @@ function renderActual(){
     <div class="costrow tot"><div class="k" style="grid-column:1/4">Total per person <small style="font-weight:400">9 nights on the ground · <b>before food and drink</b></small></div><div class="v mid">${money(tot)}</div></div>
   </div>
   <div class="card block"><h3>📊 What moves it</h3><ul class="tick">
-    <li><b>The house is down to four.</b> Four sharing instead of five adds A$272pp across London, Oxford and Bath — total <b>A$4,845</b>. Getting the fifth back is worth A$272 to every one of you, which is the cheapest A$272 on this trip.</li>
+    <li><b>The house is down to four.</b> Four sharing instead of five adds <b>A$288pp</b> across London, Oxford and Bath (A$169 + A$69 + A$50) — total <b>A$4,861</b>. Hampstead alone goes from <b>A$135 to A$169 per person per night</b>. Getting the fifth back is worth A$288 to every one of you, which is the cheapest A$288 on this trip.</li>
     <li><b>Days 2 and 4 at Lord's</b> would add <b>A$665</b> (£350). Four days of Ashes cricket instead of two is the one thing that breaks A$5,000 — and it is worth breaking it for.</li>
-    <li><b>So the honest band is A$4,573 → A$5,510</b> — the floor being five sharing with two days' cricket, the ceiling four sharing with four days. Everything in between is a good outcome.</li>
+    <li><b>So the honest band is A$4,573 → A$5,526</b> — the floor being five sharing with two days' cricket, the ceiling four sharing with four days. Everything in between is a good outcome.</li>
     <li><b>Tickets are no longer a risk.</b> They were the one line that could have blown up; £175 Cat-equivalent is exactly what was budgeted, and they came through mates rather than a ballot, so there is nothing left to win or lose in November.</li>
     <li><b>Food and drink on top:</b> 9 days at £55 / £80 / £120 a day ≈ A$990 / A$1,440 / A$2,160.</li>
   </ul></div>
