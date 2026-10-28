@@ -1709,29 +1709,31 @@ const DAYRATE={thrifty:[95,150], comfortable:[200,300], treat:[400,560]}; // A$/
 function money(n){ return "A$"+Math.round(n).toLocaleString(); }
 /* THE ACTUAL TRIP — real figures, 26 Oct 2026. Per person, 5 sharing. Excludes food & drink. */
 const ACTUAL=[
-  {k:"Flights", v:2188, st:"watching", s:"Malaysia Airlines MEL⇄LHR, dep Mon 28 Jun → ret Thu 8 Jul. <b>A$2,189</b> (re-checked 28 Oct — fourth straight check at this level, A$1 of FX noise). Out MEL 11:30pm → LHR 4:35pm next day; back <b>LHR 9:35pm</b> → MEL 6:15am+2, which keeps the last full day in Bath. 1 stop KUL each way. <b>The floor is a plateau, not a point</b> — but it is narrowing: cheap departures were 26–29 Jun on 27 Oct and are <b>26, 28 and 29 Jun</b> today, Sunday the 27th having jumped to A$2,551 overnight. Returns 5–8 Jul all cost the same; 9 Jul or later jumps to A$2,400–2,660."},
-  {k:"London — Hampstead", v:675, st:"confirmed", s:"Rosecroft Avenue, 29 Jun – 4 Jul, <b>5 nights</b>. A$3,375 for the house ÷ 5. Charged 22 May 2027, free cancel to 30 May."},
-  {k:"Oxford", v:275, st:"shortlisted", s:"4 – 6 Jul, <b>2 nights</b>. Jericho house A$1,356 or Binsey cottage A$1,402, ÷ 5. Both verified bookable, both refundable."},
-  {k:"Bath", v:198, st:"shortlisted", s:"6 – 8 Jul, <b>2 nights</b>. Georgian townhouse A$948 or the 4.98-rated one with parking A$1,035, ÷ 5. Both verified."},
-  {k:"Lord's tickets", v:665, st:"secured", s:"<b>Days 1 and 3 are in hand</b> — £175 each, A$333 at 1.90 (26 Oct). Secured through the MCC mates, 27 Oct 2026, not the ballot. Days 2 and 4 are both live and would add A$665."},
-  {k:"Trains &amp; Oyster", v:300, st:"estimate", s:"London→Oxford, Oxford→Bath, Bath→Heathrow, plus a week of London travel."},
-  {k:"ETA, insurance, eSIM", v:270, st:"estimate", s:"UK ETA £20 (mandatory, 2-year validity) · travel cover · data."}
+  {k:"Flights", v:2502, st:"quoting", s:"<b>Malaysia Airlines, out Sun 27 Jun 11:30pm \u2192 back Thu 8 Jul 11:00am.</b> A$2,502. Lands LHR Mon 28 Jun 4:35pm (two clear nights before Day 1) and home <b>Fri 9 Jul 7:15pm</b>. 1 stop KUL, 3h50 connection. Alternatives for the same shape: <b>Emirates A$2,731</b> (dep 9:15pm, lands Mon 12:25pm \u2014 four hours earlier; back LHR 9:05am, home Fri 4:40pm) and <b>Qantas A$3,775</b> (back LHR 11:55am, home Fri 7:00pm). Taking the 9:35pm Thursday return instead saves A$136 but lands Sat 10 Jul. \u26a0\ufe0f These boards move: the same query returned A$3,080 / 2,366 / 2,366 / 2,517 within one hour. <b>Get CTM to quote it.</b>"},
+  {k:"London \u2014 Hampstead", v:945, st:"to confirm", s:"Rosecroft Avenue. Booked <b>29 Jun \u2013 4 Jul (5 nights)</b>; the Sunday-departure plan needs <b>28 Jun \u2013 5 Jul (7 nights)</b>. Two extra nights at A$675 = <b>+A$1,350</b>, so A$4,725 \u00f7 5. <b>Not yet checked that those nights are free</b> \u2014 this is the gating item for the whole shape."},
+  {k:"Bath", v:99, st:"shortlisted", s:"<b>Mon 5 Jul, 1 night</b> (was 2). Johno\u2019s pub crawl. Georgian townhouse A$948/2nt or the parking one A$1,035/2nt \u2014 halved, \u00f7 5. \u26a0\ufe0f Both were priced as 2-night stays; check a single Monday night is even bookable."},
+  {k:"Oxford", v:276, st:"shortlisted", s:"<b>Tue 6 \u2013 Thu 8 Jul, 2 nights.</b> Dinner Tuesday, tour + pub crawl Wednesday. Jericho house A$1,356 or Binsey cottage A$1,402, \u00f7 5. Both verified bookable and refundable."},
+  {k:"Lord\u2019s tickets", v:665, st:"secured", s:"<b>Days 1 and 3 are in hand</b> \u2014 \u00a3175 each, A$333 at 1.90 (26 Oct). Secured through the MCC mates, 27 Oct 2026, not the ballot. Days 2 and 4 are both live and would add A$665."},
+  {k:"Trains &amp; Oyster", v:300, st:"estimate", s:"London\u2192Bath (GWR Paddington, 1h25), Bath\u2192Oxford (1h25\u20131h35, change Didcot), <b>Oxford\u2192Heathrow (The Airline coach, 80 min to T5, every 20 min, ~\u00a325)</b>, plus a week of London travel."},
+  {k:"ETA, insurance, eSIM", v:270, st:"estimate", s:"UK ETA \u00a320 (mandatory, 2-year validity) \u00b7 travel cover \u00b7 data."}
 ];
 function renderActual(){
   const tot=ACTUAL.reduce((a,x)=>a+x.v,0);
-  const SC={watching:["WATCHING","#6aa8f0"],requested:["REQUESTED","#34d399"],secured:["✅ SECURED","#34d399"],confirmed:["✅ CONFIRMED","#34d399"],shortlisted:["SHORTLISTED","#ffce4a"],ballot:["BALLOT","#b48bff"],estimate:["ESTIMATE","#a8a4b6"]};
+  const SC={watching:["WATCHING","#6aa8f0"],quoting:["GET A QUOTE","#6aa8f0"],requested:["REQUESTED","#34d399"],secured:["✅ SECURED","#34d399"],confirmed:["✅ CONFIRMED","#34d399"],"to confirm":["⚠ CHECK DATES","#ffce4a"],shortlisted:["SHORTLISTED","#ffce4a"],ballot:["BALLOT","#b48bff"],estimate:["ESTIMATE","#a8a4b6"]};
   return `<div class="card">
     <div class="costrow h"><div class="k">The trip as it actually stands</div><div class="v"></div><div class="v"></div><div class="v mid">Per person</div></div>
     ${ACTUAL.map(x=>`<div class="costrow"><div class="k" style="grid-column:1/4">${x.k}<small><span style="display:inline-block;font-size:8.5px;font-weight:900;letter-spacing:.4px;padding:2px 6px;border-radius:5px;background:${SC[x.st][1]}22;color:${SC[x.st][1]};margin-right:6px">${SC[x.st][0]}</span>${x.s}</small></div><div class="v mid">${money(x.v)}</div></div>`).join("")}
-    <div class="costrow tot"><div class="k" style="grid-column:1/4">Total per person <small style="font-weight:400">9 nights on the ground · <b>before food and drink</b></small></div><div class="v mid">${money(tot)}</div></div>
+    <div class="costrow tot"><div class="k" style="grid-column:1/4">Total per person <small style="font-weight:400">10 nights on the ground · <b>before food and drink</b></small></div><div class="v mid">${money(tot)}</div></div>
   </div>
   <div class="card block"><h3>📊 What moves it</h3><ul class="tick">
-    <li><b>The house is down to four.</b> Four sharing instead of five adds <b>A$288pp</b> across London, Oxford and Bath (A$169 + A$69 + A$50) — total <b>A$4,861</b>. Hampstead alone goes from <b>A$135 to A$169 per person per night</b>. Getting the fifth back is worth A$288 to every one of you, which is the cheapest A$288 on this trip.</li>
-    <li><b>Days 2 and 4 at Lord's</b> would add <b>A$665</b> (£350). Four days of Ashes cricket instead of two is the one thing that breaks A$5,000 — and it is worth breaking it for.</li>
-    <li><b>So the honest band is A$4,573 → A$5,526</b> — the floor being five sharing with two days' cricket, the ceiling four sharing with four days. Everything in between is a good outcome.</li>
-    <li><b>Tickets are no longer a risk.</b> They were the one line that could have blown up; £175 Cat-equivalent is exactly what was budgeted, and they came through mates rather than a ballot, so there is nothing left to win or lose in November.</li>
-    <li><b>The dates are now fully locked, so flights can be bought whenever the price is right.</b> Waiting was about ballot uncertainty; that is gone. Friday's Day 2 / Day 4 attempts do not move the flights either — both days fall inside the booked house. The only remaining question is price timing.</li>
-    <li><b>Food and drink on top:</b> 9 days at £55 / £80 / £120 a day ≈ A$990 / A$1,440 / A$2,160.</li>
+    <li><b>⚠️ Everything here assumes Hampstead can be extended by two nights</b> (Mon 28 Jun and Sun 4 Jul). That has <b>not been checked</b>. If those nights are gone, the Sunday departure needs a different bed for the Monday and the shape changes.</li>
+    <li><b>The house is down to four.</b> Four sharing instead of five adds <b>A$330pp</b> across London, Bath and Oxford — total <b>A$5,387</b>. The gap grew with the trip: seven London nights instead of five makes the fifth man worth more, not less.</li>
+    <li><b>Days 2 and 4 at Lord’s</b> would add <b>A$665</b> (£350). Worth it — four days of Ashes cricket is the whole point of going.</li>
+    <li><b>The honest band is A$5,057 → A$6,052</b> — floor being five sharing with two days’ cricket, ceiling four sharing with four days. The trip has crossed A$5,000, and it did so by choice: two extra London nights and a Sunday departure so Day 1 isn’t spent jet-lagged.</li>
+    <li><b>Landing Friday costs A$136</b> — the Thursday 9:35pm Malaysia return is A$2,366 and lands Sat 10 Jul; the 11:00am is A$2,502 and lands Fri 9 Jul. The 11am means a ~6am coach out of Oxford.</li>
+    <li><b>Don’t trust a single fare read.</b> The same Google query returned A$3,080, A$2,366, A$2,366 and A$2,517 for the identical Malaysia flight inside one hour. The <i>gaps</i> between options held steady; the absolute numbers did not. Quote it through CTM.</li>
+    <li><b>Tickets are no longer a risk.</b> £175 Cat-equivalent is exactly what was budgeted, and they came through mates rather than a ballot, so there is nothing left to win or lose in November.</li>
+    <li><b>Food and drink on top:</b> 10 days at £55 / £80 / £120 a day ≈ A$1,100 / A$1,600 / A$2,400.</li>
   </ul></div>
   <div class="card block"><h3>✈️ Beating the fare — what most people don't do</h3><ul class="tick">
     <li><b>Ask AGL's travel desk about corporate fares.</b> Big corporates hold negotiated rates with Qantas, Singapore and Emirates well below public pricing, and many allow leisure booking. One email, and almost nobody tries it.</li>
