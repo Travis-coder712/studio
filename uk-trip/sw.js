@@ -1,5 +1,5 @@
 /* The Fifty Tour — offline app shell */
-const CACHE = "fifty-tour-v55";
+const CACHE = "fifty-tour-v56";
 const ASSETS = ["./", "./index.html", "./manifest.webmanifest", "./icon.svg"];
 
 self.addEventListener("install", e => {
