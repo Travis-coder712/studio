@@ -1,0 +1,778 @@
+<!doctype html>
+<html lang="en-AU">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<title>Raising the Bat — The Fifty Tour</title>
+<meta name="description" content="Twelve days. Four bases. Two days at Lord's. Travis turns fifty and the Ashes are in England.">
+<meta property="og:title" content="Raising the Bat — The Fifty Tour">
+<meta property="og:description" content="27 June – 9 July 2027. London, Bath, Oxford. Two days of Ashes cricket at Lord's. Here's the whole plan.">
+<meta property="og:type" content="website">
+<meta name="theme-color" content="#14532d">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,600;9..144,800;9..144,900&family=Inter:wght@400;500;600;700;800&display=swap">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/leaflet.min.css">
+<style>
+:root{
+  --paper:#f6f1e6; --paper2:#fffdf8; --ink:#1a2721; --ink2:#46564d; --muted:#7b8a81;
+  --green:#14532d; --green2:#2a7a4b; --red:#cf3a2c; --gold:#e8b52c; --line:#ddd4c2;
+  --shadow:0 1px 2px rgba(26,39,33,.06),0 8px 28px rgba(26,39,33,.09);
+  --maxw:720px; color-scheme:light;
+}
+@media (prefers-color-scheme:dark){ :root:not([data-theme="light"]){
+  --paper:#11150f; --paper2:#191e17; --ink:#eceade; --ink2:#b9c2b4; --muted:#8b968a;
+  --green:#5fbd84; --green2:#8ad5a6; --red:#f2705f; --gold:#f0c64f; --line:#2b3328;
+  --shadow:0 1px 2px rgba(0,0,0,.4),0 10px 34px rgba(0,0,0,.45); color-scheme:dark; }}
+:root[data-theme="dark"]{
+  --paper:#11150f; --paper2:#191e17; --ink:#eceade; --ink2:#b9c2b4; --muted:#8b968a;
+  --green:#5fbd84; --green2:#8ad5a6; --red:#f2705f; --gold:#f0c64f; --line:#2b3328;
+  --shadow:0 1px 2px rgba(0,0,0,.4),0 10px 34px rgba(0,0,0,.45); color-scheme:dark; }
+
+*{box-sizing:border-box}
+html,body{margin:0;padding:0}
+body{
+  background:var(--paper); color:var(--ink);
+  font:16px/1.65 Inter,-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,sans-serif;
+  -webkit-font-smoothing:antialiased; overflow-x:hidden;
+  padding-top:env(safe-area-inset-top,0px);
+}
+img{max-width:100%}
+[hidden]{display:none!important}
+
+/* ---------- chrome ---------- */
+.topbar{
+  position:sticky; top:0; z-index:40; background:color-mix(in srgb,var(--paper) 88%,transparent);
+  backdrop-filter:saturate(1.4) blur(12px); border-bottom:1px solid var(--line);
+}
+.topin{max-width:var(--maxw); margin:0 auto; display:flex; align-items:center; gap:10px;
+  padding:9px max(16px,env(safe-area-inset-right,0px)) 9px max(16px,env(safe-area-inset-left,0px));}
+.brand{font-family:Fraunces,Georgia,serif; font-weight:800; font-size:15px; letter-spacing:-.01em; white-space:nowrap}
+.brand b{color:var(--green)}
+.topspace{flex:1}
+.chip{font:600 11px/1 Inter,sans-serif; letter-spacing:.02em; padding:7px 11px; border-radius:999px;
+  border:1px solid var(--line); background:var(--paper2); color:var(--ink2); cursor:pointer}
+.chip:hover{border-color:var(--green); color:var(--green)}
+.chip.on{background:var(--green); color:var(--paper2); border-color:var(--green)}
+.prog{height:3px; background:var(--line)}
+.prog i{display:block; height:100%; background:linear-gradient(90deg,var(--green),var(--gold)); width:0; transition:width .45s cubic-bezier(.2,.8,.2,1)}
+
+/* ---------- page frame ---------- */
+main{max-width:var(--maxw); margin:0 auto;
+  padding:26px max(16px,env(safe-area-inset-left,0px)) 130px max(16px,env(safe-area-inset-right,0px));}
+.pg{animation:rise .5s cubic-bezier(.2,.8,.2,1)}
+@keyframes rise{from{opacity:0; transform:translateY(14px)} to{opacity:1; transform:none}}
+@media (prefers-reduced-motion:reduce){ .pg{animation:none} .prog i{transition:none} }
+
+.kicker{font:800 11px/1 Inter,sans-serif; letter-spacing:.16em; text-transform:uppercase; color:var(--green);
+  display:flex; align-items:center; gap:9px; margin:0 0 14px}
+.kicker::after{content:""; flex:1; height:1px; background:var(--line)}
+h1{font-family:Fraunces,Georgia,serif; font-weight:900; font-size:clamp(34px,8.4vw,54px); line-height:1.02;
+  letter-spacing:-.025em; margin:0 0 14px; text-wrap:balance}
+h2{font-family:Fraunces,Georgia,serif; font-weight:800; font-size:clamp(25px,5.6vw,34px); line-height:1.1;
+  letter-spacing:-.02em; margin:0 0 10px; text-wrap:balance}
+h3{font-family:Fraunces,Georgia,serif; font-weight:700; font-size:19px; line-height:1.25; margin:0 0 7px; letter-spacing:-.01em}
+p{margin:0 0 14px; color:var(--ink2)}
+p.lead{font-size:18.5px; line-height:1.6; color:var(--ink)}
+strong,b{color:var(--ink); font-weight:700}
+a{color:var(--green); text-underline-offset:3px}
+.small{font-size:13.5px; color:var(--muted); line-height:1.6}
+
+/* ---------- cover ---------- */
+.cover{text-align:center; padding:12px 0 0}
+.crest{width:74px; height:74px; margin:0 auto 22px; display:block}
+.cover h1{font-size:clamp(42px,12vw,74px); margin-bottom:6px}
+.cover .sub{font-family:Fraunces,Georgia,serif; font-style:italic; font-size:clamp(17px,4.4vw,22px); color:var(--ink2); margin:0 0 26px}
+.rule{display:flex; align-items:center; gap:12px; margin:26px 0; color:var(--gold)}
+.rule::before,.rule::after{content:""; flex:1; height:1px; background:var(--line)}
+.bigdates{font-family:Fraunces,Georgia,serif; font-weight:800; font-size:clamp(19px,5vw,25px); letter-spacing:-.01em; margin:0 0 4px}
+.cover .meta{font:600 12px/1.7 Inter,sans-serif; letter-spacing:.1em; text-transform:uppercase; color:var(--muted)}
+
+/* ---------- cards & grids ---------- */
+.card{background:var(--paper2); border:1px solid var(--line); border-radius:16px; padding:18px 18px 16px;
+  margin:0 0 14px; box-shadow:var(--shadow)}
+.card.tight{padding:14px 16px 12px}
+.card h3{margin-bottom:8px}
+.card p:last-child{margin-bottom:0}
+.grid2{display:grid; grid-template-columns:repeat(auto-fit,minmax(min(100%,158px),1fr)); gap:12px; margin:0 0 14px}
+.stat{background:var(--paper2); border:1px solid var(--line); border-radius:14px; padding:14px 15px; min-width:0}
+.stat .n{font-family:Fraunces,Georgia,serif; font-weight:900; font-size:clamp(25px,6.4vw,30px); line-height:1; letter-spacing:-.03em; color:var(--green)}
+.stat .l{font:600 11px/1.4 Inter,sans-serif; letter-spacing:.09em; text-transform:uppercase; color:var(--muted); margin-top:7px}
+.stat .x{font-size:13px; color:var(--ink2); margin-top:5px; line-height:1.5}
+
+/* ---------- day header ---------- */
+.dayhead{display:flex; align-items:flex-start; gap:15px; margin:0 0 18px}
+.daynum{flex:none; width:60px; height:68px; border-radius:13px; background:var(--green); color:#fff;
+  display:flex; flex-direction:column; align-items:center; justify-content:center; line-height:1}
+.daynum .d{font-family:Fraunces,Georgia,serif; font-weight:900; font-size:27px}
+.daynum .m{font:700 10px/1 Inter,sans-serif; letter-spacing:.13em; text-transform:uppercase; margin-top:5px; opacity:.86}
+.daynum.hero{background:var(--red)}
+.daynum.air{background:var(--ink2)}
+.dayhead .wrap{min-width:0; flex:1}
+.dayhead .dow{font:800 11px/1 Inter,sans-serif; letter-spacing:.15em; text-transform:uppercase; color:var(--muted); margin-bottom:7px}
+.dayhead h2{margin-bottom:5px}
+.where{font:600 13px/1.4 Inter,sans-serif; color:var(--green)}
+
+/* ---------- timeline ---------- */
+.tl{list-style:none; margin:0 0 14px; padding:0; position:relative}
+.tl::before{content:""; position:absolute; left:63px; top:9px; bottom:9px; width:2px; background:var(--line)}
+.tl li{display:flex; gap:14px; padding:0 0 15px; position:relative}
+.tl li:last-child{padding-bottom:0}
+.tl .t{flex:none; width:52px; text-align:right; font:700 12.5px/1.5 Inter,sans-serif;
+  font-variant-numeric:tabular-nums; color:var(--green); padding-top:1px}
+.tl .dot{flex:none; width:22px; display:flex; justify-content:center; padding-top:6px; z-index:1}
+.tl .dot i{width:9px; height:9px; border-radius:50%; background:var(--green); border:2.5px solid var(--paper); box-shadow:0 0 0 1.5px var(--green)}
+.tl li.key .dot i{background:var(--red); box-shadow:0 0 0 1.5px var(--red)}
+.tl li.soft .dot i{background:var(--paper); box-shadow:0 0 0 1.5px var(--line)}
+.tl .c{min-width:0; flex:1}
+.tl .c b{display:block; font-size:15px; line-height:1.4; color:var(--ink); font-weight:700}
+.tl .c span{display:block; font-size:13.5px; line-height:1.55; color:var(--ink2); margin-top:2px}
+
+/* ---------- transport leg ---------- */
+.leg{border:1px solid var(--line); border-radius:15px; overflow:hidden; margin:0 0 14px; background:var(--paper2)}
+.leg .lh{display:flex; align-items:center; gap:10px; padding:12px 15px; background:color-mix(in srgb,var(--green) 9%,transparent);
+  border-bottom:1px solid var(--line); font:700 13px/1.3 Inter,sans-serif; color:var(--green)}
+.leg .lb{padding:13px 15px}
+.opt{display:flex; gap:12px; padding:11px 0; border-bottom:1px dashed var(--line)}
+.opt:last-child{border-bottom:0; padding-bottom:0}
+.opt:first-child{padding-top:0}
+.opt .ico{flex:none; width:30px; height:30px; border-radius:9px; background:color-mix(in srgb,var(--green) 12%,transparent);
+  display:grid; place-items:center; font-size:15px}
+.opt .ob{min-width:0; flex:1}
+.opt .ob b{display:block; font-size:14.5px; color:var(--ink)}
+.opt .ob span{display:block; font-size:13px; color:var(--ink2); line-height:1.55; margin-top:1px}
+.opt .pill{flex:none; align-self:flex-start; font:700 11px/1 Inter,sans-serif; padding:5px 8px; border-radius:7px;
+  background:color-mix(in srgb,var(--gold) 26%,transparent); color:var(--ink); white-space:nowrap}
+
+/* ---------- stay pages ---------- */
+.plate{position:relative; border-radius:17px; overflow:hidden; border:1px solid var(--line);
+  margin:0 0 14px; background:var(--paper2); box-shadow:var(--shadow)}
+.plate img{display:block; width:100%; height:auto}
+.mapbox{height:268px; width:100%; background:var(--paper2)}
+.leaflet-container{font-family:Inter,sans-serif; background:var(--paper2)}
+.pin{display:grid; place-items:center; width:28px; height:28px; border-radius:50% 50% 50% 4px;
+  transform:rotate(-45deg); background:var(--red); color:#fff; font:800 12px/1 Inter,sans-serif;
+  border:2px solid #fff; box-shadow:0 2px 7px rgba(0,0,0,.33)}
+.pin span{transform:rotate(45deg)}
+.pin.alt{background:var(--green)}
+.addr{font:600 13.5px/1.5 Inter,sans-serif; color:var(--ink2); margin:0 0 14px; display:flex; gap:8px; align-items:flex-start}
+.addr svg{flex:none; margin-top:2px}
+.near{list-style:none; margin:0; padding:0; columns:2; column-gap:18px}
+@media (max-width:430px){ .near{columns:1} }
+.near li{break-inside:avoid; display:flex; align-items:baseline; gap:7px; padding:5px 0; font-size:13.5px; color:var(--ink2)}
+.near li .dots{flex:1; border-bottom:1px dotted var(--line); min-width:10px; transform:translateY(-3px)}
+.near li b{color:var(--ink); font-variant-numeric:tabular-nums; white-space:nowrap}
+.near li.hi b{color:var(--red)}
+
+/* ---------- money ---------- */
+.ticker{display:inline-flex; align-items:baseline; gap:7px; padding:7px 12px; border-radius:999px;
+  background:color-mix(in srgb,var(--green) 11%,transparent); border:1px solid color-mix(in srgb,var(--green) 26%,transparent);
+  font:600 12px/1 Inter,sans-serif; color:var(--green); margin:0 0 16px}
+.ticker b{font-family:Fraunces,Georgia,serif; font-weight:900; font-size:16px; font-variant-numeric:tabular-nums}
+table.money{width:100%; border-collapse:collapse; font-size:14px}
+table.money th{text-align:left; font:700 10.5px/1.3 Inter,sans-serif; letter-spacing:.1em; text-transform:uppercase;
+  color:var(--muted); padding:0 0 9px; border-bottom:1px solid var(--line)}
+table.money th.r,table.money td.r{text-align:right}
+table.money td{padding:11px 0; border-bottom:1px solid var(--line); color:var(--ink2); vertical-align:top}
+table.money td b{color:var(--ink)}
+table.money td.r{font-variant-numeric:tabular-nums; white-space:nowrap; color:var(--ink); font-weight:600}
+table.money tr.tot td{border-bottom:0; border-top:2px solid var(--ink); padding-top:13px;
+  font-family:Fraunces,Georgia,serif; font-weight:900; font-size:19px; color:var(--ink)}
+.pernight{display:grid; grid-template-columns:repeat(auto-fit,minmax(min(100%,150px),1fr)); gap:10px; margin:0 0 14px}
+.pn{background:var(--paper2); border:1px solid var(--line); border-radius:13px; padding:13px 14px}
+.pn .city{font:700 11px/1 Inter,sans-serif; letter-spacing:.1em; text-transform:uppercase; color:var(--muted)}
+.pn .v{font-family:Fraunces,Georgia,serif; font-weight:900; font-size:26px; line-height:1.05; letter-spacing:-.025em; margin:7px 0 2px}
+.pn .u{font-size:12px; color:var(--muted)}
+.bar{height:9px; border-radius:99px; background:var(--line); overflow:hidden; margin-top:9px}
+.bar i{display:block; height:100%; background:var(--green); border-radius:99px}
+
+/* ---------- misc ---------- */
+.quote{border-left:3px solid var(--gold); padding:3px 0 3px 16px; margin:0 0 16px;
+  font-family:Fraunces,Georgia,serif; font-style:italic; font-size:18px; line-height:1.5; color:var(--ink)}
+.note{background:color-mix(in srgb,var(--gold) 15%,transparent); border:1px solid color-mix(in srgb,var(--gold) 40%,transparent);
+  border-radius:13px; padding:13px 15px; margin:0 0 14px; font-size:14px; line-height:1.6; color:var(--ink2)}
+.note b{color:var(--ink)}
+.tag{display:inline-block; font:800 10px/1 Inter,sans-serif; letter-spacing:.1em; text-transform:uppercase;
+  padding:5px 8px; border-radius:6px; margin:0 5px 5px 0}
+.tag.g{background:color-mix(in srgb,var(--green) 16%,transparent); color:var(--green)}
+.tag.r{background:color-mix(in srgb,var(--red) 16%,transparent); color:var(--red)}
+.tag.y{background:color-mix(in srgb,var(--gold) 28%,transparent); color:var(--ink)}
+.go{display:inline-flex; align-items:center; gap:7px; font:700 13.5px/1 Inter,sans-serif; color:var(--green);
+  border:1px solid var(--line); background:var(--paper2); border-radius:10px; padding:10px 13px; text-decoration:none; margin:2px 6px 2px 0}
+.go:hover{border-color:var(--green)}
+
+/* ---------- nav ---------- */
+.navbar{position:fixed; left:0; right:0; bottom:0; z-index:45;
+  background:color-mix(in srgb,var(--paper) 93%,transparent); backdrop-filter:saturate(1.4) blur(14px);
+  border-top:1px solid var(--line);
+  padding:10px max(16px,env(safe-area-inset-right,0px)) calc(10px + env(safe-area-inset-bottom,0px)) max(16px,env(safe-area-inset-left,0px));}
+.navin{max-width:var(--maxw); margin:0 auto; display:flex; align-items:center; gap:10px}
+.nb{flex:none; display:inline-flex; align-items:center; gap:7px; font:700 14px/1 Inter,sans-serif;
+  border:1px solid var(--line); background:var(--paper2); color:var(--ink); border-radius:11px; padding:12px 15px; cursor:pointer}
+.nb:disabled{opacity:.33; cursor:default}
+.nb.pri{background:var(--green); border-color:var(--green); color:#fff; flex:1; justify-content:center}
+.nb:not(:disabled):hover{border-color:var(--green)}
+.counter{flex:none; font:600 11.5px/1.3 Inter,sans-serif; color:var(--muted); text-align:center; min-width:52px;
+  font-variant-numeric:tabular-nums}
+
+/* ---------- contents ---------- */
+.sheet{position:fixed; inset:0; z-index:60; background:rgba(10,14,11,.55); backdrop-filter:blur(3px);
+  display:flex; align-items:flex-end; justify-content:center}
+.sheet .inner{width:100%; max-width:var(--maxw); max-height:84vh; overflow:auto; background:var(--paper);
+  border-radius:20px 20px 0 0; border:1px solid var(--line); border-bottom:0;
+  padding:18px max(16px,env(safe-area-inset-left,0px)) calc(20px + env(safe-area-inset-bottom,0px)); animation:up .3s cubic-bezier(.2,.8,.2,1)}
+@keyframes up{from{transform:translateY(22px); opacity:.5} to{transform:none; opacity:1}}
+.toc{list-style:none; margin:0; padding:0}
+.toc li{display:flex; align-items:center; gap:12px; padding:11px 10px; border-radius:11px; cursor:pointer; border:1px solid transparent}
+.toc li:hover{background:var(--paper2); border-color:var(--line)}
+.toc li.on{background:color-mix(in srgb,var(--green) 11%,transparent); border-color:color-mix(in srgb,var(--green) 30%,transparent)}
+.toc .n{flex:none; width:26px; font:700 12px/1 Inter,sans-serif; color:var(--muted); font-variant-numeric:tabular-nums}
+.toc .tt{flex:1; min-width:0; font-size:14.5px; font-weight:600; color:var(--ink)}
+.toc .sb{font-size:12.5px; color:var(--muted); font-weight:400}
+footer{max-width:var(--maxw); margin:0 auto; padding:0 16px 20px; font-size:12px; color:var(--muted); text-align:center}
+</style>
+</head>
+<body>
+
+<div class="topbar">
+  <div class="topin">
+    <div class="brand">Raising the <b>Bat</b></div>
+    <div class="topspace"></div>
+    <button class="chip" id="btnMoney" title="What it costs">A$<span id="runTot">0</span></button>
+    <button class="chip" id="btnToc">Contents</button>
+  </div>
+  <div class="prog"><i id="progBar"></i></div>
+</div>
+
+<main id="stage"></main>
+
+<div class="navbar">
+  <div class="navin">
+    <button class="nb" id="prev">‹ Back</button>
+    <div class="counter" id="counter">1 / 20</div>
+    <button class="nb pri" id="next">Next ›</button>
+  </div>
+</div>
+
+<div class="sheet" id="sheet" hidden><div class="inner">
+  <div class="kicker">Contents</div>
+  <ul class="toc" id="tocList"></ul>
+</div></div>
+
+<footer>Built for the Fifty Tour · figures verified 6 November 2026 · maps © OpenStreetMap contributors</footer>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/leaflet.js"></script>
+<script>
+/* ============================================================
+   RAISING THE BAT — a click-through for the Fifty Tour
+   All distances measured from the confirmed street addresses
+   (haversine x 1.3 routing factor, 80 m/min walking).
+   ============================================================ */
+
+const MONEY = [
+  {k:"Flights",        v:2741, n:"Emirates, Melbourne–London return via Dubai", when:0},
+  {k:"Lord’s tickets", v:665, n:"Days 1 and 3, £175 each through the MCC mates", when:3},
+  {k:"London — Hampstead", v:810, n:"6 nights, Rosecroft Avenue", when:1},
+  {k:"Bath",           v:196,  n:"1 night, 12 Trim Street", when:12},
+  {k:"Oxford",         v:273,  n:"2 nights, 28 Wellington Street", when:14},
+  {k:"Trains &amp; Oyster", v:300, n:"Estimate — Paddington, Didcot, the Heathrow coach, tube", when:5},
+  {k:"ETA, insurance, eSIM", v:270, n:"Estimate — £20 UK ETA, cover, data", when:0}
+];
+const TOTAL = MONEY.reduce((a,b)=>a+b.v,0);
+
+const STAYS = {
+  hampstead:{
+    name:"The Coach House, Hampstead",
+    addr:"18 Rosecroft Avenue, London NW3 7QA",
+    nights:6, pp:135, tot:810, rating:"4.98 from 80 stays · Top 5% of homes",
+    ll:[51.560754,-0.191302], zoom:14,
+    near:[
+      {n:"Golders Hill Park",m:11},{n:"Whitestone Pond, the Heath",m:13},
+      {n:"Hampstead tube (Northern)",m:17},{n:"Golders Green tube",m:19},
+      {n:"Hampstead village",m:20},{n:"Finchley Road (Jubilee)",m:26},
+      {n:"Kenwood House",m:33},{n:"Lord’s — by bus, not on foot",m:40,hi:true}
+    ],
+    pins:[
+      {n:"Golders Hill Park",ll:[51.566819,-0.189381]},
+      {n:"Whitestone Pond",ll:[51.561522,-0.179872]},
+      {n:"Hampstead tube",ll:[51.556305,-0.177624]},
+      {n:"Kenwood House",ll:[51.571549,-0.167337]},
+      {n:"Finchley Road tube",ll:[51.547947,-0.181391]}
+    ],
+    url:"https://www.airbnb.com.au/rooms/48265544"
+  },
+  bath:{
+    name:"Trim Street Townhouse",
+    addr:"12 Trim Street, Bath BA1 1HB",
+    nights:1, pp:196, tot:196, rating:"Four beds, two and a half baths, a hot tub in the courtyard",
+    ll:[51.382566,-2.361535], zoom:15,
+    near:[
+      {n:"Roman Baths",m:4},{n:"Bath Abbey",m:4},{n:"Milsom Street",m:4},
+      {n:"Pulteney Bridge",m:4},{n:"The Circus",m:7},{n:"The Bell Inn",m:9,hi:true},
+      {n:"Bath Spa station",m:10},{n:"Royal Crescent",m:11}
+    ],
+    pins:[
+      {n:"Roman Baths",ll:[51.381033,-2.359554]},
+      {n:"Royal Crescent",ll:[51.387272,-2.368229]},
+      {n:"The Circus",ll:[51.3862,-2.363758]},
+      {n:"Pulteney Bridge",ll:[51.383043,-2.357922]},
+      {n:"The Bell",ll:[51.387529,-2.359407]},
+      {n:"Bath Spa station",ll:[51.377602,-2.356719]}
+    ],
+    url:"https://www.airbnb.com.au/rooms/5179055"
+  },
+  oxford:{
+    name:"The Jericho House",
+    addr:"28 Wellington Street, Oxford OX2 6BE",
+    nights:2, pp:137, tot:273, rating:"4.88 from 295 stays · Superhost · Top 10%",
+    ll:[51.757211,-1.267871], zoom:15,
+    near:[
+      {n:"Worcester College",m:4},{n:"Oxford station",m:7},
+      {n:"Gloucester Green coaches",m:9,hi:true},{n:"Port Meadow",m:9},
+      {n:"Covered Market",m:15},{n:"Radcliffe Square",m:17},
+      {n:"The Turf Tavern",m:17},{n:"Christ Church Meadow",m:26}
+    ],
+    pins:[
+      {n:"Worcester College",ll:[51.755325,-1.265508]},
+      {n:"Gloucester Green",ll:[51.754125,-1.261707]},
+      {n:"Oxford station",ll:[51.753451,-1.269954]},
+      {n:"Port Meadow",ll:[51.761972,-1.269132]},
+      {n:"Radcliffe Square",ll:[51.753472,-1.254359]},
+      {n:"The Turf",ll:[51.754694,-1.252856]}
+    ],
+    url:"https://www.airbnb.com.au/rooms/33860339"
+  }
+};
+
+const esc = s => String(s);
+const aud = n => "A$" + n.toLocaleString("en-AU");
+
+/* ---- small builders ---- */
+function timeline(rows){
+  return `<ul class="tl">${rows.map(r=>
+    `<li class="${r.cls||''}"><div class="t">${r.t||""}</div><div class="dot"><i></i></div>
+     <div class="c"><b>${r.h}</b>${r.d?`<span>${r.d}</span>`:""}</div></li>`).join("")}</ul>`;
+}
+function legBox(title, opts, foot){
+  return `<div class="leg"><div class="lh">${title}</div><div class="lb">
+    ${opts.map(o=>`<div class="opt"><div class="ico">${o.i}</div><div class="ob"><b>${o.h}</b><span>${o.d}</span></div>${o.p?`<div class="pill">${o.p}</div>`:""}</div>`).join("")}
+    ${foot?`<p class="small" style="margin:12px 0 0">${foot}</p>`:""}</div></div>`;
+}
+function stayPage(key, kicker, body){
+  const s = STAYS[key];
+  return {
+    id:"stay-"+key, nav:s.name, sub:"Where we stay", map:key,
+    html:`<div class="kicker">${kicker}</div>
+    <h2>${s.name}</h2>
+    <div class="addr">${pinSvg()}<div>${s.addr}<br><span class="small">${s.rating}</span></div></div>
+    <div class="plate"><div class="mapbox" id="map-${key}"></div></div>
+    <div class="grid2">
+      <div class="stat"><div class="n">${aud(s.pp)}</div><div class="l">per person, per night</div>
+        <div class="x">${s.nights} night${s.nights>1?"s":""} · ${aud(s.tot)} each all up</div></div>
+      <div class="stat"><div class="n">5</div><div class="l">of us, one front door</div>
+        <div class="x">Not five hotel rooms on five corridors.</div></div>
+    </div>
+    ${body}
+    <h3 style="margin-top:20px">From the front door, on foot</h3>
+    <ul class="near">${s.near.map(x=>`<li class="${x.hi?'hi':''}"><span>${x.n}</span><i class="dots"></i><b>${x.m} min</b></li>`).join("")}</ul>
+    <p class="small" style="margin-top:12px">Measured from the confirmed street address, not the listing’s fuzzy map pin. Walking times at a steady 80 metres a minute with a routing allowance, so they are honest rather than optimistic.</p>
+    <a class="go" href="${s.url}" target="_blank" rel="noopener">See the photos on Airbnb ↗</a>`
+  };
+}
+function pinSvg(){
+  return `<svg width="14" height="17" viewBox="0 0 14 17" fill="none" aria-hidden="true"><path d="M7 0C3.1 0 0 3.1 0 7c0 5.2 7 10 7 10s7-4.8 7-10c0-3.9-3.1-7-7-7Zm0 9.5A2.5 2.5 0 1 1 7 4.5a2.5 2.5 0 0 1 0 5Z" fill="currentColor"/></svg>`;
+}
+
+/* ============================ THE PAGES ============================ */
+const PAGES = [
+
+/* 1 */ { id:"cover", nav:"Cover", sub:"Raising the Bat", html:`
+<div class="cover">
+  <svg class="crest" viewBox="0 0 64 64" fill="none" aria-hidden="true">
+    <circle cx="32" cy="32" r="30" stroke="var(--green)" stroke-width="2.4"/>
+    <circle cx="32" cy="32" r="24" stroke="var(--gold)" stroke-width="1" stroke-dasharray="3 4"/>
+    <rect x="29.4" y="14" width="5.2" height="24" rx="2.2" fill="var(--green)" transform="rotate(20 32 26)"/>
+    <rect x="29.4" y="34" width="5.2" height="12" rx="1.4" fill="var(--gold)" transform="rotate(20 32 40)"/>
+    <circle cx="20" cy="44" r="5" fill="var(--red)"/>
+    <path d="M17 41.4c2 1.8 2 5.4 0 7.2M23 41.4c-2 1.8-2 5.4 0 7.2" stroke="#fff" stroke-width="1" stroke-linecap="round"/>
+  </svg>
+  <h1>Raising<br>the Bat</h1>
+  <p class="sub">Travis turns fifty, and the Ashes are in England.</p>
+  <div class="rule">◆</div>
+  <div class="bigdates">27 June – 9 July 2027</div>
+  <div class="meta">London · Bath · Oxford</div>
+  <div class="rule">◆</div>
+  <p class="lead" style="text-align:left">Twelve days. Three houses. Two days of Test cricket at Lord’s, a pub crawl a mate drew up by hand, and the city where two of us spent our twenties.</p>
+  <p class="small" style="text-align:left">Everything in here is booked or priced — real addresses, real times, real numbers. Click through. It takes about five minutes.</p>
+</div>`},
+
+/* 2 */ { id:"shape", nav:"The shape of it", sub:"Overview", html:`
+<div class="kicker">The shape of it</div>
+<h2>Four moves, twelve days, nothing rushed</h2>
+<p class="lead">This isn’t a coach tour. It’s three houses, long enough in each to stop being a tourist, with the cricket in the middle of it.</p>
+<div class="grid2">
+  <div class="stat"><div class="n">6</div><div class="l">nights in London</div><div class="x">Hampstead. A house with a garden, not a hotel corridor.</div></div>
+  <div class="stat"><div class="n">2</div><div class="l">days at Lord’s</div><div class="x">Days one and three of the Ashes Test. Already in hand.</div></div>
+  <div class="stat"><div class="n">1</div><div class="l">night in Bath</div><div class="x">Built entirely around Big John’s crawl.</div></div>
+  <div class="stat"><div class="n">2</div><div class="l">nights in Oxford</div><div class="x">Where Travis and Jess lived, 2001–05.</div></div>
+</div>
+${timeline([
+ {t:"Sun 27",h:"Melbourne → the air",d:"10:55pm. Nothing happens for a day and a half.",cls:"soft"},
+ {t:"Mon 28",h:"London. Hampstead.",d:"Land 2:25pm, in the house by late afternoon."},
+ {t:"Wed 30",h:"Lord’s, day one",d:"The Ashes, second Test.",cls:"key"},
+ {t:"Fri 2",h:"Lord’s, day three",d:"The second of our two days.",cls:"key"},
+ {t:"Sun 4",h:"Bath",d:"Train down after checkout. Then the crawl."},
+ {t:"Mon 5",h:"Oxford",d:"Two nights in Jericho."},
+ {t:"Wed 7",h:"Blenheim, then home",d:"Last day out, evening flight.",cls:"key"},
+ {t:"Fri 9",h:"Melbourne, 5:30am",d:"",cls:"soft"}
+])}
+<div class="note"><b>Why these dates and not others.</b> The Lord’s Test runs 30 June to 4 July. We fly in two days early to get over the flight, and out on the Wednesday night rather than the Thursday — which saves <b>A$229 a head</b> and buys a free last day in Oxford instead of a wasted one in a departure lounge.</div>`},
+
+/* 3 */ { id:"pitch", nav:"Why come", sub:"The case", html:`
+<div class="kicker">The case for it</div>
+<h2>An Ashes tour that doesn’t cost what an Ashes tour costs</h2>
+<p class="lead">The official tour packages for this series start north of A$9,000 a head and put you in a hotel with forty strangers. This is the same cricket, better beds, and roughly half.</p>
+<div class="grid2">
+  <div class="stat"><div class="n">${aud(TOTAL)}</div><div class="l">all in, per person</div><div class="x">Flights, beds, cricket, trains, the lot.</div></div>
+  <div class="stat"><div class="n">A$142</div><div class="l">per night, per person</div><div class="x">Nine nights across three houses. Hostel money for Hampstead and central Bath.</div></div>
+</div>
+<div class="card"><h3>What you actually get</h3>
+<p><b>Two days of an Ashes Test at Lord’s.</b> Not a tour-group block in the cheap seats — tickets already secured through the MCC mates, at face value, in November 2026.</p>
+<p><b>A house, not a room.</b> Five of us, one front door, one kitchen, somewhere to sit at the end of the day and argue about the morning session.</p>
+<p><b>Big John’s pub crawl in Bath</b>, walked in his order, finishing where he always finished.</p>
+<p style="margin-bottom:0"><b>Two days in Oxford with a resident guide</b> — the colleges, the old front doors, the river, and the pubs that were ours for four years.</p></div>
+<div class="quote">The whole thing is already booked. Flights, three houses, cricket. The only thing missing is you.</div>`},
+
+/* 4 */ { id:"d0", nav:"Sun 27 June", sub:"Melbourne → the air", html:`
+<div class="dayhead"><div class="daynum air"><div class="d">27</div><div class="m">Jun</div></div>
+<div class="wrap"><div class="dow">Sunday</div><h2>The long way to England</h2><div class="where">Melbourne · Tullamarine</div></div></div>
+<p class="lead">A Sunday night departure, which means you get the whole weekend first and lose nothing but a Monday you would have slept through anyway.</p>
+${timeline([
+ {t:"7:55pm",h:"At the airport",d:"Three hours before an international departure. Bag drop, then a drink.",cls:"soft"},
+ {t:"10:55pm",h:"Melbourne → Dubai",d:"Emirates. 14 hours, give or take, straight through the night.",cls:"key"},
+ {t:"—",h:"Dubai",d:"2 hours 50 on the ground. Long enough to walk, shower and eat; short enough not to drag."},
+ {t:"2:25pm",h:"Heathrow, Monday",d:"24 hours 30 door to door. Through the gate in the early afternoon, which is the best time to arrive.",cls:"key"}
+])}
+<div class="note"><b>Why the Emirates run and not the cheap one.</b> There were seats A$500 under this. They route through Delhi on a Thursday, cost an extra night’s bed at the far end, and the only agent quoting the headline price was one nobody has heard of. The honest gap to a bookable fare was about A$390 — and that bought a day of the trip back.</div>
+<p class="small">Fare verified on eleven separate reads across nine days. It has moved a total of nine dollars in that time.</p>`},
+
+/* 5 */ { id:"d1", nav:"Mon 28 June", sub:"Landing in London", html:`
+<div class="dayhead"><div class="daynum"><div class="d">28</div><div class="m">Jun</div></div>
+<div class="wrap"><div class="dow">Monday</div><h2>Hampstead by dinner</h2><div class="where">London · NW3</div></div></div>
+<p class="lead">You land at 2:25pm with a whole English summer evening still ahead of you. Check-in at the house opens at three.</p>
+${timeline([
+ {t:"2:25pm",h:"Wheels down, Heathrow",d:"Terminal 3. Allow an hour for the queue and the bags — it is the Monday of Wimbledon week."},
+ {t:"≈4:00pm",h:"Across London",d:"Roughly an hour to Hampstead, whichever way you go."},
+ {t:"≈5:00pm",h:"18 Rosecroft Avenue",d:"Keys, rooms, the first cup of tea that tastes different over there.",cls:"key"},
+ {t:"Evening",h:"Walk out, eat, sleep early",d:"Hampstead village is twenty minutes down the hill and full of pubs. Do not fight the jet lag past nine."}
+])}
+${legBox("✈️ &nbsp;Heathrow → Hampstead",[
+ {i:"🚕",h:"One taxi, five people, all the bags",d:"50–70 minutes door to door depending on the M4. About £80–100 for the car, which is £16–20 each.",p:"easiest"},
+ {i:"🚇",h:"Elizabeth line, then the Jubilee",d:"Heathrow to Paddington in about 30 minutes, change for the Jubilee to Finchley Road, then a short bus or cab up the hill. Around 70–80 minutes with bags.",p:"≈£15"},
+ {i:"🚌",h:"Piccadilly line the whole way",d:"Cheapest and slowest — well over an hour before you even change lines, on a narrow tube train with a suitcase on your knees. Not after 24 hours in the air."}
+],"After a day and a half in the air, split a cab. It is twenty pounds each and you are in the garden by five.")}`},
+
+/* 6 */ stayPage("hampstead","Where we stay · London", `
+<p class="lead">A proper house with a garden in the Crofts, the quiet grid of Edwardian streets between Frognal and the Heath. Not a penthouse, not a serviced flat — a home, 4.98 from eighty stays.</p>
+<p>This was chosen over a place twenty minutes nearer Lord’s, and the reasoning holds up: with only <b>two</b> cricket days, the extra travel costs about an hour <i>across the whole trip</i>, and it saved more than two thousand dollars. On the other four London days you want to be somewhere worth walking out into, and Hampstead is the most handsome village in London.</p>
+<div class="note"><b>Straight about the distances.</b> The house sits up in Frognal, so the Heath is close but the Underground is not on the doorstep. Golders Hill Park is eleven minutes and the top of the Heath thirteen; the nearest tube is a seventeen-minute walk. Buses run down Finchley Road constantly. It is a hill-top village house, and it behaves like one.</p>
+<div class="leg"><div class="lh">🏏 &nbsp;Getting to Lord’s on a match morning</div><div class="lb">
+<div class="opt"><div class="ico">🚌</div><div class="ob"><b>The 46 bus, no changes</b><span>Walk into Hampstead village, pick up the 46 at the station, and stay on it to St John’s Wood Station — seven minutes from the Grace Gates. About 40 minutes all up.</span></div><div class="pill">simplest</div></div>
+<div class="opt"><div class="ico">🚇</div><div class="ob"><b>Bus down, then the Jubilee</b><span>Any bus down Finchley Road, then two stops on the Jubilee (Swiss Cottage, St John’s Wood). Quicker when the traffic is bad, which on a Test morning it will be.</span></div></div>
+<p class="small" style="margin:12px 0 0">Play starts at 11am. Gates open 9:30. Leave the house at nine and you will be in your seat with a coffee and time to watch the warm-ups.</p></div></div>`),
+
+/* 7 */ { id:"d2", nav:"Tue 29 June", sub:"London, free", html:`
+<div class="dayhead"><div class="daynum"><div class="d">29</div><div class="m">Jun</div></div>
+<div class="wrap"><div class="dow">Tuesday</div><h2>The day you get your body back</h2><div class="where">London · Hampstead Heath</div></div></div>
+<p class="lead">One clear day between landing and the cricket. Do not waste it on a museum queue — spend it outside, get some light on your face, and be sharp for Wednesday.</p>
+${timeline([
+ {t:"Morning",h:"Walk onto the Heath",d:"Eleven minutes to Golders Hill Park, thirteen to the top. Eight hundred acres of it, and no plan required."},
+ {t:"Midday",h:"Kenwood House",d:"Thirty minutes across the Heath. A Robert Adam library and a free gallery holding a Rembrandt self-portrait and a Vermeer. Genuinely one of the best things in London and it costs nothing."},
+ {t:"Lunch",h:"The Spaniards Inn",d:"A 1585 coaching inn with low beams and a garden, ten minutes from Kenwood. Dickens and Keats drank here.",cls:"key"},
+ {t:"Afternoon",h:"Swim, or don’t",d:"The bathing ponds are open and the water is about 18°C in early July. Someone will. Someone won’t."},
+ {t:"Evening",h:"Hampstead village",d:"Down the hill. The Holly Bush, the Flask, the Wells. Early night — there is cricket tomorrow."}
+])}
+<div class="note">If anyone wants central London instead, it is thirty minutes door to the West End. But everybody who has done this trip says the same thing: the day after a long-haul flight is the day to stay local.</div>`},
+
+/* 8 */ { id:"d3", nav:"Wed 30 June", sub:"Lord’s, day one", html:`
+<div class="dayhead"><div class="daynum hero"><div class="d">30</div><div class="m">Jun</div></div>
+<div class="wrap"><div class="dow">Wednesday</div><h2>Lord’s. Day one.</h2><div class="where">St John’s Wood · The Ashes, 2nd Test</div></div></div>
+<span class="tag r">Ticket secured</span><span class="tag y">£175</span><span class="tag g">The reason for all of this</span>
+<p class="lead">First morning of an Ashes Test at Lord’s. The ground that has been doing this since 1814, a full house, and the first ball of five days of it.</p>
+${timeline([
+ {t:"9:00am",h:"Leave the house",d:"The 46 from Hampstead, or down to Finchley Road and two stops on the Jubilee."},
+ {t:"9:40am",h:"Through the Grace Gates",d:"Gates open 9:30. Go in early — the warm-ups on the Nursery Ground are half the pleasure and nobody is watching them.",cls:"key"},
+ {t:"11:00am",h:"First ball",d:"Two hours to lunch.",cls:"key"},
+ {t:"1:00pm",h:"Lunch, 40 minutes",d:"Walk the ground. The Pavilion, the Long Room windows, the slope — which is real, two and a half metres across the square."},
+ {t:"1:40pm",h:"Afternoon session",d:"Two hours to tea."},
+ {t:"3:40pm",h:"Tea, 20 minutes",d:""},
+ {t:"4:00pm",h:"Evening session",d:"Through to about 6pm, longer if overs are owed."},
+ {t:"Evening",h:"Stay in St John’s Wood",d:"Lord’s Tavern at the ground, or walk ten minutes into the village. Going straight home after the last ball is a waste of a Test match."}
+])}
+<div class="note"><b>Take a hat and sunscreen and mean it.</b> An English July can hand you 30°C and a cloudless sky, and a full day in the open at Lord’s will find anyone who did not take it seriously. There is no shade in most of the ground.</div>`},
+
+/* 9 */ { id:"d4", nav:"Thu 1 July", sub:"London, free", html:`
+<div class="dayhead"><div class="daynum"><div class="d">1</div><div class="m">Jul</div></div>
+<div class="wrap"><div class="dow">Thursday</div><h2>A day off in the middle of a Test</h2><div class="where">London · anywhere</div></div></div>
+<p class="lead">We hold days one and three, so Thursday is yours. The cricket is still going on without you, which is its own peculiar pleasure — following day two on the radio from a pub garden is a very English way to spend an afternoon.</p>
+<div class="card"><h3>If you want the obvious</h3>
+<p style="margin-bottom:0">The British Museum, the National Gallery and Tate Modern are all free and all thirty minutes away. Borough Market for lunch. A walk from Westminster along the South Bank to Tower Bridge takes about ninety minutes and shows you most of the city at once.</p></div>
+<div class="card"><h3>If you want the better version</h3>
+<p>Wimbledon is on. Not the show courts — those were balloted a year ago — but <b>the Queue</b> is real and it works: turn up early, pay on the day, get a grounds pass, and watch outside-court matches a metre from the baseline. It is the best value in world sport.</p>
+<p style="margin-bottom:0">Or: Regent’s Canal from Little Venice to Camden on foot, the Sir John Soane’s Museum (free, strange, unforgettable), or an afternoon in Greenwich.</p></div>
+<div class="note"><b>Worth a try:</b> Lord’s runs an official ticket exchange and day-two seats do come back. If one appears at face value, take it.</div>`},
+
+/* 10 */ { id:"d5", nav:"Fri 2 July", sub:"Lord’s, day three", html:`
+<div class="dayhead"><div class="daynum hero"><div class="d">2</div><div class="m">Jul</div></div>
+<div class="wrap"><div class="dow">Friday</div><h2>Lord’s. Day three.</h2><div class="where">St John’s Wood · The Ashes, 2nd Test</div></div></div>
+<span class="tag r">Ticket secured</span><span class="tag y">£175</span>
+<p class="lead">The best day of a Test match to hold. By day three the game has a shape — somebody is winning, somebody is hanging on, and everything that happens matters.</p>
+${timeline([
+ {t:"9:00am",h:"Same run as Wednesday",d:"You will know it by now."},
+ {t:"11:00am",h:"First ball",d:"",cls:"key"},
+ {t:"1:00pm",h:"Lunch",d:"If you missed it on day one, do the MCC Museum — it is inside the ground and it has the Ashes urn."},
+ {t:"4:00pm",h:"Evening session",d:"Day three evenings at Lord’s are where Tests get decided.",cls:"key"},
+ {t:"≈6:30pm",h:"Out into a Friday night",d:"Last cricket of the trip. Do not go quietly.",cls:"key"}
+])}
+<div class="card"><h3>About those tickets</h3>
+<p style="margin-bottom:0">Days one and three, £175 each, secured through the MCC mates on 27 October 2026 — not the public ballot, which most people miss. That is <b>A$665 for two days of Ashes cricket at Lord’s</b>, at face value. A tour package would charge four times it.</p></div>`},
+
+/* 11 */ { id:"d6", nav:"Sat 3 July", sub:"Last London day", html:`
+<div class="dayhead"><div class="daynum"><div class="d">3</div><div class="m">Jul</div></div>
+<div class="wrap"><div class="dow">Saturday</div><h2>London, properly, one more time</h2><div class="where">London · last full day</div></div></div>
+<p class="lead">A Saturday in London in July with nowhere you have to be. Pack tonight, because tomorrow starts with a train.</p>
+${timeline([
+ {t:"Morning",h:"A market",d:"Borough for food, Columbia Road for flowers and a Sunday-ish crowd on a Saturday, Portobello for the junk and the stalls. Broadway Market in Hackney if you want where Londoners actually go."},
+ {t:"Afternoon",h:"Pick one big thing",d:"The Tower, the Churchill War Rooms, a Thames Clipper down to Greenwich. One, not three."},
+ {t:"≈6:00pm",h:"Back to Hampstead",d:"Pack. Checkout is eleven tomorrow and the train south is booked."},
+ {t:"Evening",h:"Last night in the house",d:"Eat local. The Holly Bush does a proper Saturday dinner and it is four hundred years old.",cls:"key"}
+])}
+<div class="note"><b>Tomorrow is a travel day with a pub crawl at the end of it.</b> Whatever you do tonight, do it with that in mind.</div>`},
+
+/* 12 */ { id:"d7", nav:"Sun 4 July", sub:"London → Bath", html:`
+<div class="dayhead"><div class="daynum"><div class="d">4</div><div class="m">Jul</div></div>
+<div class="wrap"><div class="dow">Sunday</div><h2>West to Bath, and then John’s crawl</h2><div class="where">London → Bath · Somerset</div></div></div>
+<p class="lead">Out of London by late morning, into Georgian Bath by the middle of the afternoon, and then the whole evening belongs to a list a mate wrote down.</p>
+${timeline([
+ {t:"11:00am",h:"Checkout, Rosecroft Avenue",d:"Bags down the hill."},
+ {t:"≈12:30pm",h:"Paddington",d:"Great Western to the west country."},
+ {t:"≈2:00pm",h:"Bath Spa",d:"Ten minutes on foot from the station to the front door.",cls:"key"},
+ {t:"3:00pm",h:"12 Trim Street",d:"Check in. Four beds, two and a half baths, and a hot tub in the courtyard.",cls:"key"},
+ {t:"Late afternoon",h:"Look at Bath first",d:"Four minutes to the Roman Baths and the Abbey, seven to the Circus, eleven to the Royal Crescent. See it in daylight before the crawl takes the daylight away."},
+ {t:"Evening",h:"Big John’s pub crawl",d:"Twelve stops in his order, north down to the river. Three straight hours in the Bell in the middle, and back to the Bell to finish.",cls:"key"}
+])}
+${legBox("🚂 &nbsp;London Paddington → Bath Spa",[
+ {i:"🚄",h:"Great Western, direct",d:"About 1h25 on average, 1h12 on the fastest. Roughly every half hour, no changes, and the last half of it runs through the Avon valley.",p:"£25+ advance"},
+ {i:"🎫",h:"Book it the week before",d:"Advance singles start near £25; walk-up on a Sunday in July will be double. Five tickets, one booking, one person’s phone."}
+],"Paddington is about 35 minutes from Hampstead — Jubilee to Baker Street and across, or a cab with the bags.")}
+<div class="quote">Three hours in the Bell, then back to the Bell to finish. He knew what he was doing.</div>`},
+
+/* 13 */ stayPage("bath","Where we stay · Bath", `
+<p class="lead">A four-bed Georgian townhouse on a short, quiet lane thirty seconds off Queen Square — and about as central as Bath gets without being on a main road.</p>
+<p>Trim Street won this on evidence. The other finalist was a house up on Walcot Street, nearer the back half of the crawl, and the gap in price was four dollars. But Trim Street is <b>four minutes from the Roman Baths against nineteen</b>, four from Milsom Street against fourteen, and eleven from the Royal Crescent against seventeen — and the rival turned out to sit on the A4 with no living room. The Bell is nine minutes away. You walk <i>to</i> the crawl; you do not organise the stay around it.</p>
+<div class="note"><b>One night only, which is why the per-head figure is the highest of the three.</b> A single-night booking carries the whole cleaning fee over one night instead of spreading it. Nothing available in Bath fixed that — the alternative was A$197 a head. This is simply what one Sunday night in central Bath costs.</div>`),
+
+/* 14 */ { id:"d8", nav:"Mon 5 July", sub:"Bath → Oxford", html:`
+<div class="dayhead"><div class="daynum"><div class="d">5</div><div class="m">Jul</div></div>
+<div class="wrap"><div class="dow">Monday</div><h2>Across country to Oxford</h2><div class="where">Bath → Oxford · Oxfordshire</div></div></div>
+<p class="lead">A short hop and a gentle morning — which, after Big John’s crawl, is the only humane way to schedule this.</p>
+${timeline([
+ {t:"10:00am",h:"Checkout, Trim Street",d:"Early checkout. Bags out before ten, no exceptions."},
+ {t:"Morning",h:"Bath on a quiet Monday",d:"If anyone is upright: the Roman Baths open at nine and are four minutes away. Left luggage at Harington’s Hotel round the corner."},
+ {t:"≈1:00pm",h:"Bath Spa → Oxford",d:"Change at Didcot Parkway. Around 1h15 to 1h35 all up.",cls:"key"},
+ {t:"≈2:45pm",h:"Oxford station",d:"Seven minutes on foot to the house."},
+ {t:"3:00pm",h:"28 Wellington Street",d:"Jericho. Check in, drop bags.",cls:"key"},
+ {t:"Evening",h:"Dinner in Jericho",d:"Walton Street is three minutes away and is the best eating street in Oxford. Then a first pint somewhere Travis will choose.",cls:"key"}
+])}
+${legBox("🚂 &nbsp;Bath Spa → Oxford",[
+ {i:"🚄",h:"Great Western, one change at Didcot Parkway",d:"Bath Spa to Didcot is about 43 minutes, Didcot to Oxford about 13, plus the wait. Sources put the door-to-door between 1h03 and 1h32 — call it an hour and a quarter and do not cut the connection fine with five people and ten bags.",p:"one change"},
+ {i:"⚠️",h:"There is no direct train",d:"Anyone who tells you there is has looked at a proposal, not a timetable. Check gwr.com the week before — the Didcot connection is the whole journey."}
+])}
+<div class="note"><b>Oxford has an early checkout too — 10am on the Wednesday.</b> Worth knowing now, because it shapes the last day.</div>`},
+
+/* 15 */ stayPage("oxford","Where we stay · Oxford", `
+<p class="lead">Jericho: the old canal-and-printworks quarter just north-west of the colleges, and the part of Oxford that people who live there actually live in.</p>
+<p>Wellington Street runs off the Walton Street end, which puts the door <b>four minutes from Worcester College</b>, seven from the railway station and nine from Gloucester Green, where the Heathrow coach goes. The whole historic centre — the Radcliffe Camera, the Bodleian, the Bridge of Sighs and the Turf down its alley — is a fifteen-to-seventeen-minute walk, all of it through the middle of the city.</p>
+<p>And in the other direction, nine minutes gets you to <b>Port Meadow</b>: four hundred acres of common land that has never been ploughed, horses on it, the Thames running along one side, and the spires behind you.</p>
+<div class="note"><b>Two nights here with a resident guide.</b> Travis and Jess lived in Oxford from 2001 to 2005. The spires walk, the old front doors, the river loop and the pub list in this plan are not from a guidebook.</div>`),
+
+/* 16 */ { id:"d9", nav:"Tue 6 July", sub:"Oxford, all day", html:`
+<div class="dayhead"><div class="daynum hero"><div class="d">6</div><div class="m">Jul</div></div>
+<div class="wrap"><div class="dow">Tuesday</div><h2>Oxford, with someone who lived here</h2><div class="where">Oxford · the full day</div></div></div>
+<p class="lead">The one full day in Oxford, and the only day of the trip with a proper itinerary — because there is a lot of it and it is all within a mile.</p>
+${timeline([
+ {t:"Morning",h:"The dreaming-spires walk",d:"Out of Jericho past Worcester, down Broad Street, the Sheldonian, Blackwell’s, the Bodleian, Radcliffe Square and the Camera, through to the Bridge of Sighs.",cls:"key"},
+ {t:"Midday",h:"Where we lived, 2001–05",d:"The old front doors. Jericho, Botley, Wolvercote, Iffley — four addresses and four very different years."},
+ {t:"Lunch",h:"The Covered Market",d:"Fifteen minutes from the house. Been trading since 1774."},
+ {t:"Afternoon",h:"Christ Church Meadow and the river",d:"Down past Christ Church to the Isis, the college boathouses and back up the Cherwell. Or hire bikes — Oxford is flat and bike-mad and the river loop is the better version of all of this."},
+ {t:"≈5:00pm",h:"The pub crawl",d:"Nine historic pubs from St Giles down to Folly Bridge. The Turf (hidden down an alley, Hawke’s pub), the Bear (1242, ties on the ceiling), the Eagle and Child (Tolkien and Lewis, every Tuesday morning for sixteen years).",cls:"key"},
+ {t:"Late",h:"Finish somewhere on the water",d:"The Head of the River, or back up to Jericho."}
+])}
+<div class="note"><b>Do not try to go inside every college.</b> Pick two — Christ Church for the hall and the cathedral, and either Magdalen for the deer park or New College for the cloister. The rest is better from the street.</div>`},
+
+/* 17 */ { id:"d10", nav:"Wed 7 July", sub:"Blenheim, then home", html:`
+<div class="dayhead"><div class="daynum hero"><div class="d">7</div><div class="m">Jul</div></div>
+<div class="wrap"><div class="dow">Wednesday</div><h2>The back gate into Blenheim</h2><div class="where">Woodstock → Heathrow → the air</div></div></div>
+<p class="lead">The last day, and a free one — bought by flying out on the Wednesday night instead of the Thursday. There are two good ways to spend it and you decide on the morning.</p>
+${timeline([
+ {t:"10:00am",h:"Checkout, Wellington Street",d:"Bags into the car boot, or the lockers at the station. This is the one piece of logistics the day needs."},
+ {t:"≈11:00am",h:"Plan A — Woodstock",d:"Twenty-five minutes north. A green gate numbered 95, unsigned, on Manor Road — and through it, a public right of way into two thousand acres of ‘Capability’ Brown parkland. Free. Five minutes to the lake and the Grand Bridge, with the palace in front of you.",cls:"key"},
+ {t:"Lunch",h:"The Black Prince",d:"Directly across the road from the gate. Closed since 2023, but the new owners have planning in and their own FAQ targets a spring 2027 opening. Check it in the new year; the Woodstock Arms and the Bear are the fallbacks.",cls:"key"},
+ {t:"≈3:00pm",h:"Back into Oxford",d:""},
+ {t:"≈5:45pm",h:"Gloucester Green",d:"Nine minutes from the house. The Airline coach to Heathrow runs about every twenty minutes, around the clock.",cls:"key"},
+ {t:"≈7:15pm",h:"Heathrow",d:"80–90 minutes on the coach, roughly £18–25 single. Three hours before the gate."},
+ {t:"10:15pm",h:"London → Dubai → Melbourne",d:"",cls:"key"}
+])}
+<div class="card"><h3>Plan B, and it is not a consolation prize</h3>
+<p style="margin-bottom:0">No car, rain, or the Black Prince still shut — then the day is <b>one last walk around Oxford with nowhere to be</b>. Nine minutes to Port Meadow and the Thames path, back in through Walton Street to Radcliffe Square, the Covered Market for lunch, and Christ Church Meadow down to the river. Costs nothing, needs nothing, and ends wherever you want it to.</p></div>`},
+
+/* 18 */ { id:"d11", nav:"Thu 8 – Fri 9 July", sub:"The long way home", html:`
+<div class="dayhead"><div class="daynum air"><div class="d">8</div><div class="m">Jul</div></div>
+<div class="wrap"><div class="dow">Thursday into Friday</div><h2>Home the fast way round</h2><div class="where">Heathrow → Dubai → Melbourne</div></div></div>
+<p class="lead">22 hours 15 and two hours on the ground in Dubai. You leave on a Wednesday night and you are home before Friday breakfast.</p>
+${timeline([
+ {t:"10:15pm",h:"Heathrow, Wednesday",d:"Overnight to Dubai.",cls:"soft"},
+ {t:"Thursday",h:"Dubai, 2 hours",d:"Just long enough. Then thirteen and a half hours south."},
+ {t:"5:30am",h:"Melbourne, Friday 9 July",d:"Home by seven, in bed by nine, and the weekend to get over it.",cls:"key"}
+])}
+<div class="note"><b>There was an afternoon option.</b> The same flight at 2:25pm on the Wednesday costs exactly the same and gets you home Thursday night, a day earlier — but it needs a 9:30am coach out of Oxford, which kills the Blenheim day. We chose the day over the dawn.</div>
+<div class="quote">Twelve days, two Ashes days at Lord’s, three houses, and the only thing you actually have to organise is getting yourself to Tullamarine.</div>`},
+
+/* 19 */ { id:"money", nav:"What it costs", sub:"Every number", html:`
+<div class="kicker">What it costs</div>
+<h2>${aud(TOTAL)} a head, and here is every line of it</h2>
+<p class="lead">Priced for five people sharing. Everything below is either booked at that number or a deliberately cautious estimate — nothing in here is a guess dressed up as a figure.</p>
+<div class="card">
+<table class="money">
+<thead><tr><th>Line</th><th class="r">Per person</th></tr></thead>
+<tbody id="moneyRows"></tbody>
+</table>
+</div>
+<h3 style="margin-top:22px">The bit worth looking at twice</h3>
+<p>Nine nights of accommodation in Hampstead, central Bath and central Oxford, for five people, works out at:</p>
+<div class="pernight">
+  <div class="pn"><div class="city">London</div><div class="v">A$135</div><div class="u">per person per night · 6 nights</div><div class="bar"><i style="width:69%"></i></div></div>
+  <div class="pn"><div class="city">Bath</div><div class="v">A$196</div><div class="u">per person per night · 1 night</div><div class="bar"><i style="width:100%"></i></div></div>
+  <div class="pn"><div class="city">Oxford</div><div class="v">A$137</div><div class="u">per person per night · 2 nights</div><div class="bar"><i style="width:70%"></i></div></div>
+</div>
+<div class="card tight"><p style="margin:0"><b>A$1,279 each for nine nights</b> — an average of <b>A$142 a night</b>. That is hostel money for a house with a garden in Hampstead and a Georgian townhouse with a hot tub four minutes from the Roman Baths.</p></div>
+<h3 style="margin-top:22px">What is not in the number</h3>
+<p>Food, drink and anything you buy. Budget £50–70 a day if you eat and drink well, which on this trip you will — call it <b>A$1,100–1,500</b> across twelve days. Add a third Lord’s day (about A$333) if one comes back on the exchange.</p>
+<div class="note"><b>Four sharing instead of five costs about A$304 more each.</b> The houses are booked whole, so the beds divide the same way whoever is in them. Which is the polite way of saying: the fifth spot is worth filling.</div>
+<p class="small">Flights verified against Google Flights and the airline on eleven reads between 29 October and 6 November 2026. Accommodation totals are the confirmed Airbnb booking figures. Trains, Oyster, the Heathrow coach, the UK ETA, insurance and an eSIM are estimates and are deliberately on the high side.</p>`},
+
+/* 20 */ { id:"end", nav:"Come with us", sub:"The ask", html:`
+<div class="cover" style="padding-top:8px">
+<div class="kicker" style="justify-content:center">The ask</div>
+<h2 style="font-size:clamp(30px,7.4vw,44px)">There is one bed left</h2>
+<p class="lead" style="text-align:left">Flights are priced and holding. Three houses are booked and confirmed, with real addresses and real keys. Two days of Ashes cricket at Lord’s are already in hand at face value.</p>
+<p style="text-align:left">All of it is refundable until late spring, so saying yes now costs nothing and changes nothing except that you are coming.</p>
+<div class="rule">◆</div>
+<div class="grid2" style="text-align:left">
+  <div class="stat"><div class="n">${aud(TOTAL)}</div><div class="l">per person, all in</div></div>
+  <div class="stat"><div class="n">12</div><div class="l">days, 27 Jun – 9 Jul 2027</div></div>
+</div>
+<div class="card" style="text-align:left"><h3>What you need to do</h3>
+<p><b>1. Say yes.</b> That is the only time-critical part — the houses are booked for five.</p>
+<p><b>2. Book the flight.</b> Emirates, out Sunday 27 June 10:55pm, back Wednesday 7 July 10:15pm. A$2,741 at emirates.com. It has moved nine dollars in nine days, so there is nothing to be gained by waiting.</p>
+<p style="margin-bottom:0"><b>3. Get a UK ETA.</b> £20, approved in minutes, mandatory for Australians. Do it any time before you fly.</p></div>
+<div class="quote" style="text-align:left">He turns fifty once, and the Ashes are only in England every four years. These two things have never lined up before and they will not line up again until he is fifty-four.</div>
+<p class="small" style="text-align:left">Questions, or to see the full planning detail — the ticket tracker, the fare history, the pub crawls stop by stop — go back to the main planner.</p>
+<a class="go" href="../">← The full Fifty Tour planner</a>
+</div>`}
+
+];
+
+/* ============================ ENGINE ============================ */
+const stage=document.getElementById("stage"), counter=document.getElementById("counter"),
+      prevB=document.getElementById("prev"), nextB=document.getElementById("next"),
+      progBar=document.getElementById("progBar"), runTot=document.getElementById("runTot"),
+      sheet=document.getElementById("sheet"), tocList=document.getElementById("tocList");
+let idx=0, maps={};
+
+function spentBy(i){ return MONEY.filter(m=>m.when<=i).reduce((a,b)=>a+b.v,0); }
+
+function render(i,push){
+  idx=Math.max(0,Math.min(PAGES.length-1,i));
+  const p=PAGES[idx];
+  const spent=spentBy(idx);
+  const showTicker = idx>0 && idx<PAGES.length-2;
+  stage.innerHTML=`<article class="pg">${showTicker?
+    `<div class="ticker">Committed so far <b>${aud(spent)}</b> <span style="opacity:.7">of ${aud(TOTAL)}</span></div>`:""}${p.html}</article>`;
+  counter.textContent=(idx+1)+" / "+PAGES.length;
+  prevB.disabled=idx===0;
+  nextB.textContent = idx===PAGES.length-1 ? "Start again ↺" : "Next ›";
+  progBar.style.width=((idx+1)/PAGES.length*100)+"%";
+  runTot.textContent=TOTAL.toLocaleString("en-AU");
+  window.scrollTo({top:0,behavior:idx===0?"auto":"smooth"});
+  if(p.map) buildMap(p.map);
+  if(p.id==="money") fillMoney();
+  if(push!==false && location.hash!=="#"+p.id) history.replaceState(null,"","#"+p.id);
+  document.title = idx===0 ? "Raising the Bat — The Fifty Tour"
+                           : p.nav+" — Raising the Bat";
+}
+function fillMoney(){
+  const tb=document.getElementById("moneyRows"); if(!tb) return;
+  tb.innerHTML = MONEY.map(m=>`<tr><td><b>${m.k}</b><br><span class="small">${m.n}</span></td><td class="r">${aud(m.v)}</td></tr>`).join("")
+    + `<tr class="tot"><td>Total, per person</td><td class="r">${aud(TOTAL)}</td></tr>`;
+}
+function buildMap(key){
+  const s=STAYS[key], el=document.getElementById("map-"+key);
+  if(!el || typeof L==="undefined") return;
+  const dark=matchMedia("(prefers-color-scheme:dark)").matches && document.documentElement.dataset.theme!=="light";
+  const m=L.map(el,{scrollWheelZoom:false,attributionControl:true}).setView(s.ll,s.zoom);
+  /* Standard OSM in BOTH themes. Inverting the tiles for dark mode produced an unreadable
+     near-black slab, and CARTO's dark basemap now watermarks "API KEY REQUIRED" across every
+     tile. So dark mode gets the same map, gently dimmed so it sits on the page rather than
+     glaring off it. */
+  L.tileLayer("https://tile.openstreetmap.org/{z}/{x}/{y}.png",{
+    maxZoom:19, attribution:'&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a>'
+  }).addTo(m);
+  if(dark){
+    const tp=el.querySelector(".leaflet-tile-pane");
+    if(tp) tp.style.filter="brightness(.86) saturate(.85) contrast(1.05)";
+  }
+  const home=L.divIcon({className:"",html:`<div class="pin"><span>★</span></div>`,iconSize:[28,28],iconAnchor:[14,26]});
+  const other=L.divIcon({className:"",html:`<div class="pin alt"><span>●</span></div>`,iconSize:[28,28],iconAnchor:[14,26]});
+  const group=[L.marker(s.ll,{icon:home}).addTo(m).bindPopup("<b>"+s.name+"</b><br>"+s.addr)];
+  s.pins.forEach(p=>group.push(L.marker(p.ll,{icon:other}).addTo(m).bindPopup(p.n)));
+  m.fitBounds(L.featureGroup(group).getBounds().pad(0.22));
+  maps[key]=m;
+  setTimeout(()=>m.invalidateSize(),180);
+}
+function buildToc(){
+  tocList.innerHTML=PAGES.map((p,i)=>
+    `<li data-i="${i}" class="${i===idx?'on':''}"><span class="n">${String(i+1).padStart(2,"0")}</span>
+     <span class="tt">${p.nav}<br><span class="sb">${p.sub||""}</span></span></li>`).join("");
+}
+/* nav */
+nextB.onclick=()=>render(idx===PAGES.length-1?0:idx+1);
+prevB.onclick=()=>render(idx-1);
+document.getElementById("btnToc").onclick=()=>{buildToc(); sheet.hidden=false;};
+document.getElementById("btnMoney").onclick=()=>{const i=PAGES.findIndex(p=>p.id==="money"); render(i);};
+sheet.onclick=e=>{ if(e.target===sheet){sheet.hidden=true; return;}
+  const li=e.target.closest("li[data-i]"); if(li){ sheet.hidden=true; render(+li.dataset.i); } };
+addEventListener("keydown",e=>{
+  if(e.key==="Escape"){sheet.hidden=true;}
+  if(sheet.hidden===false) return;
+  if(e.key==="ArrowRight"||e.key===" "){e.preventDefault(); if(idx<PAGES.length-1) render(idx+1);}
+  if(e.key==="ArrowLeft"){e.preventDefault(); if(idx>0) render(idx-1);}
+});
+let tx=0,ty=0;
+addEventListener("touchstart",e=>{tx=e.changedTouches[0].clientX; ty=e.changedTouches[0].clientY;},{passive:true});
+addEventListener("touchend",e=>{
+  if(!sheet.hidden) return;
+  const dx=e.changedTouches[0].clientX-tx, dy=e.changedTouches[0].clientY-ty;
+  if(Math.abs(dx)>64 && Math.abs(dx)>Math.abs(dy)*1.8){
+    if(dx<0 && idx<PAGES.length-1) render(idx+1);
+    if(dx>0 && idx>0) render(idx-1);
+  }
+},{passive:true});
+
+/* boot */
+const startId=location.hash.replace("#","");
+const startI=PAGES.findIndex(p=>p.id===startId);
+render(startI>=0?startI:0,false);
+</script>
+</body>
+</html>

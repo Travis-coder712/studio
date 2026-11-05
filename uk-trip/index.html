@@ -845,6 +845,12 @@ function renderTldr(){
   const next=buildTracker().find(i=>!(S.tracker[i.id]&&S.tracker[i.id].done)&&countdown(i.anchor).cls!=="passed");
   const nextLine=next?`<b>${next.title}</b> — <span style="color:var(--gold-soft)">${next.when}</span> (${countdown(next.anchor).t})`:"—";
   document.getElementById("tldrBody").innerHTML=`
+    <a href="tour/" style="display:block;text-decoration:none;margin:0 0 14px;padding:16px 17px;border-radius:14px;
+       background:linear-gradient(135deg,rgba(52,211,153,.17),rgba(180,139,255,.14));border:1px solid rgba(52,211,153,.4)">
+      <div style="font-size:10px;font-weight:900;letter-spacing:.14em;text-transform:uppercase;color:var(--ok);margin-bottom:6px">New \u00b7 share this one</div>
+      <div style="font-size:19px;font-weight:800;color:var(--fg);letter-spacing:-.01em;margin-bottom:5px">\ud83c\udfcf Raising the Bat \u2014 the click-through</div>
+      <div style="font-size:13.5px;line-height:1.55;color:var(--muted)">Twenty pages, day by day: every time, every address, maps of each house with walking distances, the transport between cities and a running cost that ends at the per-night figure. <b style="color:var(--fg)">Built to send to the others.</b> \u2192</div>
+    </a>
     <div class="callout" style="margin-bottom:14px">
       <h3>🎉 The plan in a nutshell</h3>
       <p>A group trip to the UK <b>celebrating 50ths with a sporting tour</b>, summer <b>2027</b>. Core mission: watch <b>at least one day of Ashes cricket</b> (Australia feature in the Ashes <i>and</i> the World Test Championship Final). Optional extras: Wimbledon, the British Grand Prix, The Open golf — plus <b>Oxford</b> (Travis's old town) and <b>Bath</b>. Everyone comes for different lengths (1–5 weeks).</p>
