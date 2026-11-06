@@ -11,7 +11,7 @@
 <meta name="theme-color" content="#14532d">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,600;9..144,800;9..144,900&family=Inter:wght@400;500;600;700;800&display=swap">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Caveat:wght@500;600;700&family=Fraunces:opsz,wght@9..144,400;9..144,600;9..144,800;9..144,900&family=Inter:wght@400;500;600;700;800&display=swap">
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/leaflet.min.css">
 <style>
 :root{
@@ -260,7 +260,7 @@ footer{max-width:var(--maxw); margin:0 auto; padding:0 16px 20px; font-size:12px
 .lbtn{width:40px; height:40px; flex:0 0 auto; border-radius:50%; border:1px solid rgba(255,255,255,.22);
   background:rgba(255,255,255,.09); color:#fff; font-size:16px; cursor:pointer; line-height:1}
 .lbtn:disabled{opacity:.3; cursor:default}
-/* ---- Wenner’s crawl ---- */
+/* ---- Wenborn’s crawl ---- */
 .crawl{background:var(--paper2); border:1px solid var(--line); border-radius:17px;
   padding:19px 18px 17px; margin:18px 0 4px; box-shadow:var(--shadow)}
 .crawl .ck{font:700 10.5px/1 Inter,sans-serif; letter-spacing:.15em; text-transform:uppercase;
@@ -294,6 +294,52 @@ footer{max-width:var(--maxw); margin:0 auto; padding:0 16px 20px; font-size:12px
 .cwfoot b{font-family:Fraunces,Georgia,serif; font-weight:900; font-size:23px; color:var(--green);
   font-variant-numeric:tabular-nums; letter-spacing:-.02em}
 .cwnote{font:400 11.5px/1.6 Inter,sans-serif; color:var(--muted); margin:12px 0 0}
+/* ---- crawl sketch maps (pop-out) ---- */
+.crawlbtn{display:flex; align-items:center; gap:12px; width:100%; margin:16px 0 4px;
+  background:var(--paper2); border:1px solid var(--line); border-radius:16px;
+  padding:14px 15px; cursor:pointer; text-align:left; box-shadow:var(--shadow)}
+.crawlbtn .cbi{flex:0 0 auto; width:38px; height:38px; border-radius:11px; display:grid;
+  place-items:center; background:color-mix(in srgb,var(--green) 13%,transparent); color:var(--green)}
+.crawlbtn .cbt{flex:1; min-width:0}
+.crawlbtn .cbt b{display:block; font:600 14.5px/1.25 Inter,sans-serif; color:var(--ink)}
+.crawlbtn .cbt span{display:block; font:400 12px/1.4 Inter,sans-serif; color:var(--muted); margin-top:2px}
+.crawlbtn .cba{flex:0 0 auto; color:var(--green2); font:700 17px/1 Inter,sans-serif}
+
+.sheetmap{position:fixed; inset:0; z-index:95; background:rgba(8,14,11,.9);
+  overflow-y:auto; -webkit-overflow-scrolling:touch;
+  padding:max(14px,env(safe-area-inset-top,0px)) max(14px,env(safe-area-inset-right,0px))
+          max(26px,env(safe-area-inset-bottom,0px)) max(14px,env(safe-area-inset-left,0px))}
+.sheetmap[hidden]{display:none!important}
+.smcard{max-width:620px; margin:0 auto; background:var(--paper); border:1px solid var(--line);
+  border-radius:18px; padding:20px 18px 20px; box-shadow:0 20px 60px rgba(0,0,0,.45)}
+.smhead{display:flex; align-items:flex-start; gap:12px; margin-bottom:3px}
+.smhead h3{font-family:Fraunces,Georgia,serif; font-weight:800; font-size:clamp(21px,5.4vw,27px);
+  line-height:1.08; margin:0; letter-spacing:-.015em; flex:1; min-width:0}
+.smclose{flex:0 0 auto; width:34px; height:34px; border-radius:50%; border:1px solid var(--line);
+  background:var(--paper2); color:var(--ink2); font-size:15px; line-height:1; cursor:pointer}
+.smsub{font:500 12.5px/1.5 Inter,sans-serif; color:var(--ink2); margin:4px 0 14px}
+.smpaper{border:1px solid var(--line); border-radius:14px; overflow:hidden; background:var(--paper2)}
+.smpaper svg{display:block; width:100%; height:auto}
+.smcap{font:400 11px/1.55 Inter,sans-serif; color:var(--muted); margin:9px 0 0}
+.smgrid{display:grid; grid-template-columns:repeat(auto-fill,minmax(132px,1fr)); gap:12px; margin-top:17px}
+.smpub{min-width:0}
+.smpub .pf{border:1px solid var(--line); border-radius:11px; background:var(--paper2); padding:6px 6px 0}
+.smpub .pf svg{display:block; width:100%; height:auto; color:var(--ink2)}
+.smpub .pn{display:flex; align-items:baseline; gap:6px; margin-top:7px}
+.smpub .pnum{flex:0 0 auto; width:18px; height:18px; border-radius:50%; background:var(--green);
+  color:var(--paper2); font:700 10px/18px Inter,sans-serif; text-align:center}
+.smpub .pnm{font:600 12.5px/1.3 Inter,sans-serif; color:var(--ink); min-width:0}
+.smpub .pt{display:block; font:400 11px/1.4 Inter,sans-serif; color:var(--muted); margin:3px 0 0 24px}
+.smfoot{margin-top:17px; padding-top:13px; border-top:1px solid var(--line);
+  font:400 12px/1.6 Inter,sans-serif; color:var(--ink2)}
+.smfoot b{color:var(--ink)}
+
+.smlbl{font-family:Caveat,"Bradley Hand",cursive; font-size:20px; font-weight:600; fill:var(--ink)}
+.smhomelbl{fill:var(--red); font-size:18px}
+.smlm{font-size:16px; fill:var(--muted); font-weight:500}
+.smnote{font-family:Caveat,"Bradley Hand",cursive; font-size:16px; fill:var(--muted)}
+.smdot{fill:var(--green); stroke:var(--paper2); stroke-width:2.2}
+.smnum{font:700 12.5px Inter,sans-serif; fill:var(--paper2)}
 </style>
 </head>
 <body>
@@ -322,6 +368,15 @@ footer{max-width:var(--maxw); margin:0 auto; padding:0 16px 20px; font-size:12px
   <div class="kicker">Contents</div>
   <ul class="toc" id="tocList"></ul>
 </div></div>
+
+<svg width="0" height="0" style="position:absolute" aria-hidden="true"><defs>
+  <filter id="pncl" x="-7%" y="-7%" width="114%" height="114%">
+    <feTurbulence type="fractalNoise" baseFrequency="0.028" numOctaves="3" seed="11" result="n"/>
+    <feDisplacementMap in="SourceGraphic" in2="n" scale="2.6" xChannelSelector="R" yChannelSelector="G"/>
+  </filter>
+</defs></svg>
+
+<div class="sheetmap" id="sheetMap" hidden><div id="smBody"></div></div>
 
 <div class="lbox" id="lbox" hidden>
   <div class="lfig"><img id="lImg" alt=""></div>
@@ -519,12 +574,12 @@ function stayPage(key, kicker, body){
     <a class="go" href="${s.url}" target="_blank" rel="noopener">The full listing on Airbnb ↗</a>`
   };
 }
-/* ---- Wenner’s crawl: the six oldest pubs in Oxford, in his order ----
+/* ---- Wenborn’s crawl: the six oldest pubs in Oxford, in his order ----
    Years established are the pubs’ own claims, which is the only basis anyone has.
-   Ages are computed for the trip year so the number never goes stale: Wenner’s
+   Ages are computed for the trip year so the number never goes stale: Wenborn’s
    original count was 3,658 in 2024. */
 const TRIP_YEAR = 2027;
-const WENNER = [
+const WENBORN = [
   {n:"The Bear",        est:1242, w:"Alfred Street, off the High"},
   {n:"The Turf",        est:1381, w:"Down St Helen’s Passage, off Holywell"},
   {n:"The Chequers",    est:1279, w:"Through the passage off the High"},
@@ -534,12 +589,12 @@ const WENNER = [
 ];
 const WCAVE = {n:"The Cave", est:1856};
 const wAge = p => TRIP_YEAR - p.est;
-const W_TOTAL = WENNER.reduce((a,p)=>a+wAge(p),0);
+const W_TOTAL = WENBORN.reduce((a,p)=>a+wAge(p),0);
 
 function wennerPanel(){
-  const max = Math.max(...WENNER.map(wAge));
+  const max = Math.max(...WENBORN.map(wAge));
   let run = 0;
-  const rows = WENNER.map((p,i)=>{
+  const rows = WENBORN.map((p,i)=>{
     const age = wAge(p); run += age;
     return `<li>
       <span class="cwn">${i+1}</span>
@@ -552,13 +607,277 @@ function wennerPanel(){
     </li>`;
   }).join("");
   return `<div class="crawl">
-    <div class="ck">Wenner’s Oxford crawl</div>
+    <div class="ck">Wenborn’s Centuries Tour</div>
     <div class="cwhead"><div class="cwbig">${W_TOTAL.toLocaleString("en-AU")}</div></div>
     <p class="cwsub">years of licensed drinking, in six pubs, in one afternoon.</p>
     <ul class="cwlist">${rows}</ul>
-    <div class="cwfoot"><span>Six pubs, Wenner’s order</span><b>${W_TOTAL.toLocaleString("en-AU")} years</b></div>
-    <p class="cwnote">Founding dates are each pub’s own claim — the Bear has been arguing for 1242 since long before anyone could check. Wenner counted <b>3,658</b> when he drew this up in 2024; three more years on the clock for each of them makes it ${W_TOTAL.toLocaleString("en-AU")} by July 2027. The Cave (${WCAVE.est}, ${(TRIP_YEAR-WCAVE.est)} years) is the optional seventh, and by then nobody is counting.</p>
+    <div class="cwfoot"><span>Six pubs, in Wenborn’s order</span><b>${W_TOTAL.toLocaleString("en-AU")} years</b></div>
+    <p class="cwnote">Founding dates are each pub’s own claim — the Bear has been arguing for 1242 since long before anyone could check. Wenborn counted <b>3,658</b> when he drew this up in 2024; three more years on the clock for each of them makes it ${W_TOTAL.toLocaleString("en-AU")} by July 2027. The Cave (${WCAVE.est}, ${(TRIP_YEAR-WCAVE.est)} years) is the optional seventh, and by then nobody is counting.</p>
   </div>`;
+}
+
+
+/* ============ CRAWL SKETCH MAPS ============
+   Pencil-style pop-out maps for the two pub crawls. Positions are real (geocoded
+   from each pub's address), projected equirectangularly and then fitted to the box,
+   so the relative geography is right even though the drawing is deliberately loose.
+   The pub fronts are stylised archetypes, not drawings from life. */
+
+const CRAWLS = {
+  bath:{
+    title:"Big John’s Bath Tour",
+    sub:"Twelve hours, nine pubs, and three of them spent sitting in the same one. Walked in his order, south to north, up the hill and back to the Bell to finish.",
+    centre:[51.3848,-2.3595],
+    pubs:[
+      {k:"crystal",  n:"Crystal Palace", t:"11am",     f:"georgian", s:"Abbey Green"},
+      {k:"boater",   n:"The Boater",     t:"12",       f:"riverside",s:"Argyle Street, over the weir"},
+      {k:"rummer",   n:"The Rummer",     t:"1pm",      f:"arch",     s:"By the market"},
+      {k:"huntsman", n:"The Huntsman",   t:"2pm",      f:"corner",   s:"North Parade"},
+      {k:"salamander",n:"The Salamander",t:"3pm",      f:"terrace",  s:"John Street"},
+      {k:"bell",     n:"The Bell",       t:"4–7pm", f:"inn",      s:"Walcot Street — three hours", hero:true},
+      {k:"paragon",  n:"The Paragon",    t:"7pm",      f:"georgian", s:"Up the hill, the climb starts"},
+      {k:"farmhouse",n:"The Farmhouse",  t:"8pm",      f:"corner",   s:"Lansdown Road"},
+      {k:"beehive",  n:"The Beehive",    t:"9pm",      f:"lowinn",   s:"Belvedere"}
+    ],
+    ll:{crystal:[51.380511,-2.359232],boater:[51.383165,-2.356767],rummer:[51.384275,-2.359051],
+        huntsman:[51.380768,-2.358082],salamander:[51.383426,-2.36206],bell:[51.386216,-2.359608],
+        paragon:[51.387287,-2.359976],farmhouse:[51.38904,-2.362103],beehive:[51.38849,-2.361863]},
+    ret:"bell",
+    retNote:"and back down to the Bell for last orders",
+    foot:"Eleven in the morning to eleven at night, with <b>three straight hours in the Bell</b> in the middle of it and the last one raised there too. Nobody is required to do all twelve. The house is four minutes from the first pub and about twelve from the last."
+  },
+  oxford:{
+    title:"Wenborn’s Centuries Tour",
+    sub:"The six oldest pubs in Oxford, in Wenborn’s order — 3,676 years of licence between them, all inside half a square mile.",
+    centre:[51.7545,-1.2575],
+    pubs:[
+      {k:"bear",     n:"The Bear",      t:"est. 1242", f:"lowinn",  s:"Alfred Street", hero:true},
+      {k:"turf",     n:"The Turf",      t:"est. 1381", f:"inn",     s:"Down St Helen’s Passage"},
+      {k:"chequers", n:"The Chequers",  t:"est. 1279", f:"arch",    s:"Through the passage off the High"},
+      {k:"crown",    n:"The Crown",     t:"est. 1364", f:"terrace", s:"Cornmarket, back through the archway"},
+      {k:"lambflag", n:"Lamb &amp; Flag",t:"est. 1613",f:"georgian",s:"St Giles"},
+      {k:"kingsarms",n:"King’s Arms",t:"est. 1607", f:"corner",  s:"Holywell at Parks Road"}
+    ],
+    ll:{bear:[51.751555,-1.255704],turf:[51.754694,-1.252856],chequers:[51.751815,-1.256573],
+        crown:[51.752205,-1.258328],lambflag:[51.757396,-1.258823],kingsarms:[51.75508,-1.254321]},
+    foot:"No timetable — that is rather the point. Start about four. At an hour a pub you are at the King’s Arms by ten, which is where you want to be anyway. Jericho is a fifteen-minute walk home from there."
+  }
+};
+
+/* ---- pub fronts: stylised archetypes, 72 x 62. `v` nudges repeated types apart. ---- */
+function facade(type, sign, v){
+  const S = sign || "var(--green)";
+  const g = 'fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"';
+  const t = 'fill="none" stroke="currentColor" stroke-width="1" stroke-linecap="round"';
+  const flip = (v||0) % 2 === 1;
+  let body = "";
+  if(type==="inn"){
+    const sx = flip ? 12 : 47;
+    body = `
+      <path d="M8 60V34l28-13 28 13v26" ${g}/>
+      <path d="M4 35 36 20l32 15" ${g}/>
+      <path d="M12 34h48M12 46h48" ${t}/>
+      <path d="M20 40v-6M32 40v-6M44 40v-6M52 40v-6" ${t}/>
+      <rect x="30" y="48" width="13" height="12" ${g}/>
+      <rect x="14" y="48" width="10" height="8" ${t}/>
+      <rect x="49" y="48" width="10" height="8" ${t}/>
+      <rect x="${sx}" y="38" width="13" height="8" rx="1" fill="${S}" stroke="none"/>`;
+  } else if(type==="lowinn"){
+    body = `
+      <path d="M6 60V40h60v20" ${g}/>
+      <path d="M2 41 14 27h44l12 14" ${g}/>
+      <path d="M14 27h44" ${t}/>
+      <path d="M22 41v-9M36 41v-9M50 41v-9" ${t}/>
+      <rect x="31" y="47" width="12" height="13" ${g}/>
+      <rect x="12" y="46" width="12" height="8" ${t}/>
+      <rect x="49" y="46" width="12" height="8" ${t}/>
+      <path d="M31 53h12" ${t} stroke-width=".7"/>
+      <rect x="24" y="31" width="24" height="7" rx="1" fill="${S}" stroke="none"/>`;
+  } else if(type==="arch"){
+    body = `
+      <path d="M8 60V18h56v42" ${g}/>
+      <path d="M5 18h62" ${g}/>
+      <path d="M28 60V40a8 8 0 0 1 16 0v20" ${g}/>
+      <path d="M31 60V44a5 5 0 0 1 10 0v16" ${t}/>
+      <rect x="13" y="25" width="12" height="10" ${t}/>
+      <rect x="47" y="25" width="12" height="10" ${t}/>
+      <rect x="13" y="43" width="11" height="10" ${t}/>
+      <rect x="48" y="43" width="11" height="10" ${t}/>
+      <rect x="22" y="21" width="28" height="6" rx="1" fill="${S}" stroke="none"/>
+      <path d="M64 30h5v7h-5" ${t}/>`;
+  } else if(type==="georgian"){
+    body = `
+      <path d="M10 60V26h52v34" ${g}/>
+      <path d="M7 26h58M10 32h52" ${t}/>
+      <rect x="16" y="36" width="11" height="12" ${t}/>
+      <rect x="31" y="36" width="11" height="12" ${t}/>
+      <rect x="46" y="36" width="11" height="12" ${t}/>
+      <path d="M21.5 36v12M36.5 36v12M51.5 36v12M16 42h11M31 42h11M46 42h11" ${t} stroke-width=".7"/>
+      <path d="M30 60V50a6 6 0 0 1 12 0v10" ${g}/>
+      <path d="M30 54h12" ${t}/>
+      <rect x="14" y="20" width="44" height="6" rx="1" fill="${S}" stroke="none"/>`;
+  } else if(type==="corner"){
+    body = `
+      <path d="M6 60V32l14-8v-4" ${g}/>
+      <path d="M66 60V32l-14-8" ${g}/>
+      <path d="M20 24h32l14 8H6z" ${g}/>
+      <path d="M28 60V44a8 8 0 0 1 16 0v16" ${g}/>
+      <rect x="10" y="38" width="12" height="11" ${t}/>
+      <rect x="50" y="38" width="12" height="11" ${t}/>
+      <path d="M28 50h16" ${t}/>
+      <rect x="22" y="26" width="28" height="7" rx="1" fill="${S}" stroke="none"/>`;
+  } else if(type==="terrace"){
+    body = `
+      <path d="M16 60V22h40v38" ${g}/>
+      <path d="M13 22h46" ${g}/>
+      <rect x="22" y="27" width="12" height="10" ${t}/>
+      <rect x="38" y="27" width="12" height="10" ${t}/>
+      <path d="M18 42h36v18" ${t}/>
+      <rect x="21" y="45" width="15" height="15" ${g}/>
+      <path d="M21 52h15M28.5 45v15" ${t} stroke-width=".7"/>
+      <path d="M41 60V48h10v12" ${g}/>
+      <rect x="17" y="37" width="38" height="6" rx="1" fill="${S}" stroke="none"/>`;
+  } else { /* riverside */
+    body = `
+      <path d="M8 56V34h56v22" ${g}/>
+      <path d="M5 34 36 22l31 12" ${g}/>
+      <rect x="14" y="39" width="13" height="10" ${t}/>
+      <rect x="45" y="39" width="13" height="10" ${t}/>
+      <path d="M31 56V42h10v14" ${g}/>
+      <path d="M4 56h64" ${g}/>
+      <path d="M4 60q6-3 12 0t12 0 12 0 12 0 12 0" ${t}/>
+      <rect x="28" y="30" width="16" height="6" rx="1" fill="${S}" stroke="none"/>`;
+  }
+  return `<svg viewBox="0 0 72 62" role="img" aria-hidden="true"><g filter="url(#pncl)">${body}</g></svg>`;
+}
+
+/* ---- the map ----
+   Pubs and landmarks are geocoded from their real addresses and projected
+   equirectangularly, so the relative geography is honest. Everything is then drawn
+   through a displacement filter so it reads as pencil rather than as plotted data. */
+const LANDMARKS = {
+  oxford:[
+    {n:"Radcliffe Camera", g:"dome",  ll:[51.753453,-1.253991]},
+    {n:"Carfax",           g:"tower", ll:[51.751951,-1.258159]},
+    {n:"The Sheldonian",   g:"block", ll:[51.754321,-1.255022]}
+  ],
+  bath:[
+    {n:"Bath Abbey",      g:"spire",  ll:[51.381454,-2.358866]},
+    {n:"Pulteney Bridge", g:"bridge", ll:[51.383043,-2.357922]},
+    {n:"The Roman Baths", g:"block",  ll:[51.381033,-2.359554]}
+  ]
+};
+
+function glyph(g, x, y){
+  const st = 'fill="none" stroke="var(--muted)" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"';
+  if(g==="dome")   return `<path d="M${x-11} ${y+9}h22M${x-9} ${y+9}V${y-1}a9 9 0 0 1 18 0v10M${x} ${y-10}v-4" ${st}/>`;
+  if(g==="tower")  return `<path d="M${x-7} ${y+9}V${y-8}h14v17M${x-7} ${y-8}v-4h3v4m4 0v-4h3v4m4 0v-4h3v4" ${st}/>`;
+  if(g==="spire")  return `<path d="M${x-9} ${y+9}V${y-2}h18v11M${x-9} ${y-2} ${x} ${y-13} ${x+9} ${y-2}" ${st}/>`;
+  if(g==="bridge") return `<path d="M${x-13} ${y+2}h26M${x-13} ${y+2}v6M${x+13} ${y+2}v6M${x-9} ${y+8}a4 4 0 0 1 8 0M${x+1} ${y+8}a4 4 0 0 1 8 0M${x-10} ${y+2}v-7m10 7v-7m10 7v-7" ${st}/>`;
+  return `<path d="M${x-11} ${y+9}V${y-6}h22v15zM${x-5} ${y-1}h4v4h-4zm9 0h4v4h-4z" ${st}/>`;
+}
+
+function sketchMap(key){
+  const c = CRAWLS[key];
+  const PAD = 74;
+  const kx = Math.cos(c.centre[0]*Math.PI/180);
+  const pr = ll => ({x: ll[1]*kx, y: -ll[0]});
+  const pts = c.pubs.map(p => pr(c.ll[p.k]));
+  const xs = pts.map(a=>a.x), ys = pts.map(a=>a.y);
+  const minX=Math.min(...xs), maxX=Math.max(...xs), minY=Math.min(...ys), maxY=Math.max(...ys);
+  /* Shape the page to the crawl rather than the other way round. Big John's runs a
+     kilometre up the hill but only 350m across, so a landscape box would strand it
+     in a thin stripe down the middle. */
+  const spanX = (maxX-minX) || 1e-6, spanY = (maxY-minY) || 1e-6;
+  const ch = 600, cw = Math.max(250, Math.min(540, ch*(spanX/spanY)));
+  const W = Math.round(cw + PAD*2), H = Math.round(ch + PAD*2);
+  const sc = Math.min(cw/spanX, ch/spanY);
+  const ox = (W-spanX*sc)/2, oy = (H-spanY*sc)/2;
+  const P = a => [ +(ox+(a.x-minX)*sc).toFixed(1), +(oy+(a.y-minY)*sc).toFixed(1) ];
+  const xy = pts.map(P);
+
+  function curve(list){
+    if(list.length<2) return "";
+    let d = `M${list[0][0]} ${list[0][1]}`;
+    for(let i=0;i<list.length-1;i++){
+      const a=list[i], b=list[i+1];
+      const mx=(a[0]+b[0])/2, my=(a[1]+b[1])/2, dx=b[0]-a[0], dy=b[1]-a[1], bow=.1;
+      d += ` Q${(mx-dy*bow).toFixed(1)} ${(my+dx*bow).toFixed(1)} ${b[0]} ${b[1]}`;
+    }
+    return d;
+  }
+  const route = curve(xy);
+  const ret = c.ret ? curve([xy[xy.length-1], xy[c.pubs.findIndex(p=>p.k===c.ret)]]) : "";
+
+  /* Greedy label placement. Pubs get first refusal on the space; a landmark whose
+     label will not fit anywhere simply loses its label and keeps its drawing. */
+  const placed = [];
+  const hits = b => placed.some(o => !(b.x2<o.x1 || b.x1>o.x2 || b.y2<o.y1 || b.y1>o.y2));
+  function place(x, y, txt, cls, size){
+    const w = txt.length*(size*0.43) + 6, h = size;
+    const cand = [[x+17,y+5,"start"],[x-17,y+5,"end"],[x,y-18,"middle"],[x,y+28,"middle"],
+                  [x+16,y-12,"start"],[x-16,y+22,"end"]];
+    for(const [lx,ly,a] of cand){
+      const x1 = a==="start" ? lx : a==="end" ? lx-w : lx-w/2;
+      const box = {x1, x2:x1+w, y1:ly-h+4, y2:ly+5};
+      if(box.x1>3 && box.x2<W-3 && box.y1>12 && box.y2<H-30 && !hits(box)){
+        placed.push(box);
+        return `<text x="${lx.toFixed(1)}" y="${ly.toFixed(1)}" text-anchor="${a}" class="${cls}">${txt}</text>`;
+      }
+    }
+    return "";
+  }
+  const pubLabels = c.pubs.map((p,i)=>place(xy[i][0], xy[i][1], p.n, "smlbl", 20)).join("");
+
+  /* landmarks, but only the ones that actually fall inside the pubs' box */
+  const lms = (LANDMARKS[key]||[]).map(l=>({l, p:P(pr(l.ll))}))
+    .filter(o => o.p[0]>22 && o.p[0]<W-22 && o.p[1]>26 && o.p[1]<H-34);
+  const lmArt = lms.map(o=>glyph(o.l.g, o.p[0], o.p[1])).join("");
+  const lmLabels = lms.map(o=>place(o.p[0], o.p[1], o.l.n, "smlbl smlm", 16)).join("");
+
+  const marks = xy.map(([x,y],i)=>`<g><circle cx="${x}" cy="${y}" r="11.5" class="smdot"/>
+      <text x="${x}" y="${y+4}" text-anchor="middle" class="smnum">${i+1}</text></g>`).join("");
+
+  /* a real scale bar: metres per svg unit, rounded to something sayable */
+  const mPerUnit = 111320 / sc;
+  const nice = [100,150,200,250,300,400,500].find(m => m/mPerUnit > 68) || 500;
+  const barW = (nice/mPerUnit).toFixed(1);
+  const mins = Math.round(nice/80);
+  const bx = 18, by = H-26;
+
+  return `<svg viewBox="0 0 ${W} ${H}" role="img" aria-label="Sketch map of ${c.title}">
+    <defs>
+      <filter id="grain-${key}">
+        <feTurbulence type="fractalNoise" baseFrequency=".85" numOctaves="4" seed="3"/>
+        <feColorMatrix type="saturate" values="0"/>
+      </filter>
+      <marker id="arw-${key}" viewBox="0 0 10 10" refX="6" refY="5" markerWidth="5" markerHeight="5" orient="auto">
+        <path d="M0 1l8 4-8 4z" fill="var(--green2)"/>
+      </marker>
+    </defs>
+    <rect width="${W}" height="${H}" fill="var(--paper2)"/>
+    <rect width="${W}" height="${H}" filter="url(#grain-${key})" opacity=".06"/>
+    <g filter="url(#pncl)">
+      <rect x="9" y="9" width="${W-18}" height="${H-18}" rx="6" fill="none"
+        stroke="var(--line)" stroke-width="2.4"/>
+      ${lmArt}
+      <path d="${route}" fill="none" stroke="var(--green2)" stroke-width="3.4"
+        stroke-linecap="round" stroke-dasharray="1 9" marker-end="url(#arw-${key})"/>
+      ${ret ? `<path d="${ret}" fill="none" stroke="var(--green2)" stroke-width="2" opacity=".45"
+        stroke-linecap="round" stroke-dasharray="6 8"/>` : ""}
+      ${marks}
+      <path d="M${bx} ${by}v7m0-3.5h${barW}m0-3.5v7" fill="none" stroke="var(--ink2)"
+        stroke-width="1.6" stroke-linecap="round"/>
+    </g>
+    ${lmLabels}
+    ${pubLabels}
+    <text x="${bx*1 + (+barW) + 9}" y="${by+8}" class="smnote">${nice} m, about ${mins} min</text>
+    <g transform="translate(${W-34} ${H-40})">
+      <path d="M0 -16L4 -3 0 1 -4 -3z" fill="var(--ink2)"/>
+      <path d="M0 16L4 3 0 -1 -4 3z" fill="none" stroke="var(--ink2)" stroke-width="1.2"/>
+      <text x="0" y="-20" text-anchor="middle" class="smnote">N</text>
+    </g>
+  </svg>`;
 }
 
 function pinSvg(){
@@ -623,7 +942,7 @@ ${timeline([
 <p><b>A house, not a room.</b> Five of us, one front door, one kitchen, somewhere to sit at the end of the day and argue about the morning session.</p>
 <p><b>London, in between.</b> Six nights in the one house means the city is yours around the cricket — the British Museum, the National Gallery and Tate Modern all free, Borough Market, the South Bank from Westminster to Tower Bridge, Greenwich, the Wimbledon queue on the Thursday. Days two and six have nothing booked in them on purpose.</p>
 <p><b>Big John’s pub crawl in Bath</b>, walked in his order, finishing where he always finished.</p>
-<p style="margin-bottom:0"><b>Two days in Oxford</b> — the colleges, the river, Port Meadow, and Wenner’s crawl: six pubs with ${W_TOTAL.toLocaleString("en-AU")} years between them.</p></div>
+<p style="margin-bottom:0"><b>Two days in Oxford</b> — the colleges, the river, Port Meadow, and Wenborn’s crawl: six pubs with ${W_TOTAL.toLocaleString("en-AU")} years between them.</p></div>
 <div class="quote">The whole thing is already booked. Flights, three houses, cricket. The only thing missing is you.</div>`},
 
 /* 4 */ { id:"d0", nav:"Sun 27 June", sub:"Melbourne → the air", html:`
@@ -750,6 +1069,7 @@ ${legBox("🚂 &nbsp;London Paddington → Bath Spa",[
  {i:"🚄",h:"Great Western, direct",d:"About 1h25 on average, 1h12 on the fastest. Roughly every half hour, no changes, and the last half of it runs through the Avon valley.",p:"£25+ advance"},
  {i:"🎫",h:"Book it the week before",d:"Advance singles start near £25; walk-up on a Sunday in July will be double. Five tickets, one booking, one person’s phone."}
 ],"Paddington is about 35 minutes from Hampstead — Jubilee to Baker Street and across, or a cab with the bags.")}
+${crawlButton("bath","The hand-drawn route, pub by pub — tap to open")}
 <div class="quote">Three hours in the Bell, then back to the Bell to finish. He knew what he was doing.</div>`},
 
 /* 13 */ stayPage("bath","Where we stay · Bath", `
@@ -790,10 +1110,11 @@ ${timeline([
  {t:"Midday",h:"The old front doors",d:"Jericho, Botley, Wolvercote, Iffley — four addresses and four very different years."},
  {t:"Lunch",h:"The Covered Market",d:"Fifteen minutes from the house. Been trading since 1774."},
  {t:"Afternoon",h:"Christ Church Meadow and the river",d:"Down past Christ Church to the Isis, the college boathouses and back up the Cherwell. Or hire bikes — Oxford is flat and bike-mad and the river loop is the better version of all of this."},
- {t:"≈4:00pm",h:"Wenner’s crawl",d:"Six of the oldest pubs in England, walked in his order, starting at the Bear.",cls:"key"},
+ {t:"≈4:00pm",h:"Wenborn’s crawl",d:"Six of the oldest pubs in England, walked in his order, starting at the Bear.",cls:"key"},
  {t:"Late",h:"Finish somewhere on the water",d:"The Head of the River, or back up to Jericho."}
 ])}
 ${wennerPanel()}
+${crawlButton("oxford","The hand-drawn route, pub by pub — tap to open")}
 <div class="note"><b>Do not try to go inside every college.</b> Pick two — Christ Church for the hall and the cathedral, and either Magdalen for the deer park or New College for the cloister. The rest is better from the street.</div>`},
 
 /* 17 */ { id:"d10", nav:"Wed 7 July", sub:"Blenheim, then home", html:`
@@ -883,6 +1204,7 @@ function render(i,push){
   const spent=spentBy(idx);
   const showTicker = idx>0 && idx<PAGES.length-2;
   if(!lbox.hidden) lbClose();
+  if(!sheetMap.hidden) closeCrawl();
   stage.innerHTML=`<article class="pg">${showTicker?
     `<div class="ticker">Committed so far <b>${aud(spent)}</b> <span style="opacity:.7">of ${aud(TOTAL)}</span></div>`:""}${p.html}</article>`;
   counter.textContent=(idx+1)+" / "+PAGES.length;
@@ -966,6 +1288,44 @@ stage.addEventListener("click",e=>{
   gal.querySelectorAll(".gstrip button").forEach(b=>b.classList.toggle("on", b===btn));
 });
 
+const sheetMap = document.getElementById("sheetMap"), smBody = document.getElementById("smBody");
+function openCrawl(key){
+  const c = CRAWLS[key]; if(!c) return;
+  const pubs = c.pubs.map((p,i)=>`
+    <div class="smpub">
+      <div class="pf">${facade(p.f, p.hero ? "var(--gold)" : "var(--green)", i)}</div>
+      <div class="pn"><span class="pnum">${i+1}</span><span class="pnm">${p.n}</span></div>
+      <span class="pt">${p.t} — ${p.s}</span>
+    </div>`).join("");
+  smBody.innerHTML = `<div class="smcard">
+    <div class="smhead"><h3>${c.title}</h3>
+      <button class="smclose" id="smX" aria-label="Close">&#10005;</button></div>
+    <p class="smsub">${c.sub}</p>
+    <div class="smpaper">${sketchMap(key)}</div>
+    <p class="smcap">A sketch, not a map — the positions are real, the drawing is not to scale.${c.ret ? " The faint line is the walk back down to finish." : ""} Pub fronts are stylised, not portraits.</p>
+    <div class="smgrid">${pubs}</div>
+    <p class="smfoot">${c.foot}</p>
+  </div>`;
+  sheetMap.hidden = false;
+  document.body.style.overflow = "hidden";
+  document.getElementById("smX").onclick = closeCrawl;
+  sheetMap.scrollTop = 0;
+}
+function closeCrawl(){ sheetMap.hidden = true; smBody.innerHTML = ""; document.body.style.overflow = ""; }
+sheetMap.addEventListener("click", e => { if(e.target === sheetMap) closeCrawl(); });
+stage.addEventListener("click", e => {
+  const b = e.target.closest("[data-crawl]"); if(b) openCrawl(b.dataset.crawl);
+});
+
+function crawlButton(key, label){
+  return `<button class="crawlbtn" type="button" data-crawl="${key}">
+    <span class="cbi"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+      stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+      <path d="M9 3 3 5.5v15L9 18l6 3 6-2.5v-15L15 6z"/><path d="M9 3v15M15 6v15"/></svg></span>
+    <span class="cbt"><b>${CRAWLS[key].title}</b><span>${label}</span></span>
+    <span class="cba">&rsaquo;</span></button>`;
+}
+
 function buildToc(){
   tocList.innerHTML=PAGES.map((p,i)=>
     `<li data-i="${i}" class="${i===idx?'on':''}"><span class="n">${String(i+1).padStart(2,"0")}</span>
@@ -979,6 +1339,7 @@ document.getElementById("btnMoney").onclick=()=>{const i=PAGES.findIndex(p=>p.id
 sheet.onclick=e=>{ if(e.target===sheet){sheet.hidden=true; return;}
   const li=e.target.closest("li[data-i]"); if(li){ sheet.hidden=true; render(+li.dataset.i); } };
 addEventListener("keydown",e=>{
+  if(!sheetMap.hidden){ if(e.key==="Escape") closeCrawl(); return; }
   if(!lbox.hidden){
     if(e.key==="Escape") lbClose();
     if(e.key==="ArrowRight"){e.preventDefault(); lI++; lbDraw();}
