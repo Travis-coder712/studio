@@ -260,6 +260,40 @@ footer{max-width:var(--maxw); margin:0 auto; padding:0 16px 20px; font-size:12px
 .lbtn{width:40px; height:40px; flex:0 0 auto; border-radius:50%; border:1px solid rgba(255,255,255,.22);
   background:rgba(255,255,255,.09); color:#fff; font-size:16px; cursor:pointer; line-height:1}
 .lbtn:disabled{opacity:.3; cursor:default}
+/* ---- Wenner’s crawl ---- */
+.crawl{background:var(--paper2); border:1px solid var(--line); border-radius:17px;
+  padding:19px 18px 17px; margin:18px 0 4px; box-shadow:var(--shadow)}
+.crawl .ck{font:700 10.5px/1 Inter,sans-serif; letter-spacing:.15em; text-transform:uppercase;
+  color:var(--green2); margin:0 0 11px}
+.cwhead{display:flex; align-items:baseline; gap:11px; flex-wrap:wrap; margin-bottom:3px}
+.cwbig{font-family:Fraunces,Georgia,serif; font-weight:900; font-size:clamp(40px,11vw,54px);
+  line-height:.92; letter-spacing:-.03em; color:var(--green); font-variant-numeric:tabular-nums}
+.cwsub{font:500 13.5px/1.45 Inter,sans-serif; color:var(--ink2); margin:0 0 17px; max-width:34ch}
+.cwlist{list-style:none; margin:0; padding:0}
+.cwlist li{display:grid; grid-template-columns:23px minmax(0,1fr) auto; gap:11px;
+  align-items:center; padding:11px 0; border-top:1px solid var(--line)}
+.cwlist li:first-child{border-top:0; padding-top:2px}
+.cwn{width:23px; height:23px; border-radius:50%; background:var(--green); color:var(--paper2);
+  font:700 11.5px/23px Inter,sans-serif; text-align:center; font-variant-numeric:tabular-nums}
+.cwname{font:600 14.5px/1.25 Inter,sans-serif; color:var(--ink); display:flex;
+  align-items:baseline; gap:8px; flex-wrap:wrap}
+.cwest{font:700 10.5px/1 Inter,sans-serif; letter-spacing:.06em; color:var(--green2);
+  background:color-mix(in srgb,var(--green) 12%,transparent); border-radius:999px;
+  padding:4px 7px; font-variant-numeric:tabular-nums}
+.cwwhere{display:block; font:400 11.5px/1.4 Inter,sans-serif; color:var(--muted); margin:2px 0 6px}
+.cwtrack{display:block; height:7px; border-radius:4px; background:color-mix(in srgb,var(--green) 11%,transparent)}
+.cwtrack i{display:block; height:100%; border-radius:4px; background:var(--green2)}
+.cwlist li:nth-child(odd) .cwtrack i{background:var(--green)}
+.cwage{text-align:right; white-space:nowrap; font-variant-numeric:tabular-nums}
+.cwage b{display:block; font-family:Fraunces,Georgia,serif; font-weight:800; font-size:19px;
+  line-height:1.05; color:var(--ink)}
+.cwage span{font:400 10.5px/1.3 Inter,sans-serif; color:var(--muted)}
+.cwfoot{display:flex; justify-content:space-between; align-items:baseline; gap:12px;
+  margin-top:14px; padding-top:12px; border-top:2px solid var(--green);
+  font:600 13px/1.3 Inter,sans-serif; color:var(--ink)}
+.cwfoot b{font-family:Fraunces,Georgia,serif; font-weight:900; font-size:23px; color:var(--green);
+  font-variant-numeric:tabular-nums; letter-spacing:-.02em}
+.cwnote{font:400 11.5px/1.6 Inter,sans-serif; color:var(--muted); margin:12px 0 0}
 </style>
 </head>
 <body>
@@ -485,6 +519,48 @@ function stayPage(key, kicker, body){
     <a class="go" href="${s.url}" target="_blank" rel="noopener">The full listing on Airbnb ↗</a>`
   };
 }
+/* ---- Wenner’s crawl: the six oldest pubs in Oxford, in his order ----
+   Years established are the pubs’ own claims, which is the only basis anyone has.
+   Ages are computed for the trip year so the number never goes stale: Wenner’s
+   original count was 3,658 in 2024. */
+const TRIP_YEAR = 2027;
+const WENNER = [
+  {n:"The Bear",        est:1242, w:"Alfred Street, off the High"},
+  {n:"The Turf",        est:1381, w:"Down St Helen’s Passage, off Holywell"},
+  {n:"The Chequers",    est:1279, w:"Through the passage off the High"},
+  {n:"The Crown",       est:1364, w:"Cornmarket, back through the archway"},
+  {n:"Lamb &amp; Flag", est:1613, w:"St Giles, beside St John’s"},
+  {n:"King’s Arms",  est:1607, w:"Holywell at Parks Road"}
+];
+const WCAVE = {n:"The Cave", est:1856};
+const wAge = p => TRIP_YEAR - p.est;
+const W_TOTAL = WENNER.reduce((a,p)=>a+wAge(p),0);
+
+function wennerPanel(){
+  const max = Math.max(...WENNER.map(wAge));
+  let run = 0;
+  const rows = WENNER.map((p,i)=>{
+    const age = wAge(p); run += age;
+    return `<li>
+      <span class="cwn">${i+1}</span>
+      <div>
+        <span class="cwname">${p.n}<em class="cwest">est. ${p.est}</em></span>
+        <span class="cwwhere">${p.w}</span>
+        <span class="cwtrack"><i style="width:${(age/max*100).toFixed(1)}%"></i></span>
+      </div>
+      <span class="cwage"><b>${age}</b><span>years<br>${run.toLocaleString("en-AU")} ticked off</span></span>
+    </li>`;
+  }).join("");
+  return `<div class="crawl">
+    <div class="ck">Wenner’s Oxford crawl</div>
+    <div class="cwhead"><div class="cwbig">${W_TOTAL.toLocaleString("en-AU")}</div></div>
+    <p class="cwsub">years of licensed drinking, in six pubs, in one afternoon.</p>
+    <ul class="cwlist">${rows}</ul>
+    <div class="cwfoot"><span>Six pubs, Wenner’s order</span><b>${W_TOTAL.toLocaleString("en-AU")} years</b></div>
+    <p class="cwnote">Founding dates are each pub’s own claim — the Bear has been arguing for 1242 since long before anyone could check. Wenner counted <b>3,658</b> when he drew this up in 2024; three more years on the clock for each of them makes it ${W_TOTAL.toLocaleString("en-AU")} by July 2027. The Cave (${WCAVE.est}, ${(TRIP_YEAR-WCAVE.est)} years) is the optional seventh, and by then nobody is counting.</p>
+  </div>`;
+}
+
 function pinSvg(){
   return `<svg width="14" height="17" viewBox="0 0 14 17" fill="none" aria-hidden="true"><path d="M7 0C3.1 0 0 3.1 0 7c0 5.2 7 10 7 10s7-4.8 7-10c0-3.9-3.1-7-7-7Zm0 9.5A2.5 2.5 0 1 1 7 4.5a2.5 2.5 0 0 1 0 5Z" fill="currentColor"/></svg>`;
 }
@@ -547,7 +623,7 @@ ${timeline([
 <p><b>A house, not a room.</b> Five of us, one front door, one kitchen, somewhere to sit at the end of the day and argue about the morning session.</p>
 <p><b>London, in between.</b> Six nights in the one house means the city is yours around the cricket — the British Museum, the National Gallery and Tate Modern all free, Borough Market, the South Bank from Westminster to Tower Bridge, Greenwich, the Wimbledon queue on the Thursday. Days two and six have nothing booked in them on purpose.</p>
 <p><b>Big John’s pub crawl in Bath</b>, walked in his order, finishing where he always finished.</p>
-<p style="margin-bottom:0"><b>Two days in Oxford</b> — the colleges, the river, Port Meadow and a pub list that isn't from a guidebook.</p></div>
+<p style="margin-bottom:0"><b>Two days in Oxford</b> — the colleges, the river, Port Meadow, and Wenner’s crawl: six pubs with ${W_TOTAL.toLocaleString("en-AU")} years between them.</p></div>
 <div class="quote">The whole thing is already booked. Flights, three houses, cricket. The only thing missing is you.</div>`},
 
 /* 4 */ { id:"d0", nav:"Sun 27 June", sub:"Melbourne → the air", html:`
@@ -714,9 +790,10 @@ ${timeline([
  {t:"Midday",h:"The old front doors",d:"Jericho, Botley, Wolvercote, Iffley — four addresses and four very different years."},
  {t:"Lunch",h:"The Covered Market",d:"Fifteen minutes from the house. Been trading since 1774."},
  {t:"Afternoon",h:"Christ Church Meadow and the river",d:"Down past Christ Church to the Isis, the college boathouses and back up the Cherwell. Or hire bikes — Oxford is flat and bike-mad and the river loop is the better version of all of this."},
- {t:"≈5:00pm",h:"The pub crawl",d:"Nine historic pubs from St Giles down to Folly Bridge. The Turf (hidden down an alley, Hawke’s pub), the Bear (1242, ties on the ceiling), the Eagle and Child (Tolkien and Lewis, every Tuesday morning for sixteen years).",cls:"key"},
+ {t:"≈4:00pm",h:"Wenner’s crawl",d:"Six of the oldest pubs in England, walked in his order, starting at the Bear.",cls:"key"},
  {t:"Late",h:"Finish somewhere on the water",d:"The Head of the River, or back up to Jericho."}
 ])}
+${wennerPanel()}
 <div class="note"><b>Do not try to go inside every college.</b> Pick two — Christ Church for the hall and the cathedral, and either Magdalen for the deer park or New College for the cloister. The rest is better from the street.</div>`},
 
 /* 17 */ { id:"d10", nav:"Wed 7 July", sub:"Blenheim, then home", html:`
