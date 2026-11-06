@@ -230,6 +230,36 @@ table.money tr.tot td{border-bottom:0; border-top:2px solid var(--ink); padding-
 .toc .tt{flex:1; min-width:0; font-size:14.5px; font-weight:600; color:var(--ink)}
 .toc .sb{font-size:12.5px; color:var(--muted); font-weight:400}
 footer{max-width:var(--maxw); margin:0 auto; padding:0 16px 20px; font-size:12px; color:var(--muted); text-align:center}
+/* ---- gallery ---- */
+.gal{margin:18px 0 2px}
+.ghero{position:relative; border-radius:17px; overflow:hidden; border:1px solid var(--line);
+  background:var(--paper2); box-shadow:var(--shadow); cursor:zoom-in; display:block; width:100%; padding:0}
+.ghero img{display:block; width:100%; max-width:100%; aspect-ratio:3/2; object-fit:cover}
+.gcap{position:absolute; left:0; right:0; bottom:0; padding:34px 14px 11px; text-align:left;
+  font:500 12.5px/1.45 Inter,sans-serif; color:#fff;
+  background:linear-gradient(to top,rgba(10,18,14,.85),rgba(10,18,14,.45) 48%,rgba(10,18,14,0))}
+.gexp{position:absolute; top:10px; right:10px; width:30px; height:30px; border-radius:50%;
+  background:rgba(10,18,14,.55); color:#fff; display:grid; place-items:center; font-size:13px}
+.gstrip{display:flex; gap:7px; overflow-x:auto; padding:9px 1px 3px; -webkit-overflow-scrolling:touch}
+.gstrip button{flex:0 0 auto; width:76px; padding:0; border:1.5px solid transparent; background:none;
+  border-radius:9px; overflow:hidden; cursor:pointer; opacity:.6; transition:opacity .16s,border-color .16s}
+.gstrip button.on{opacity:1; border-color:var(--green2)}
+.gstrip img{display:block; width:100%; aspect-ratio:4/3; object-fit:cover; border-radius:7px}
+.gnote{font:400 11.5px/1.55 Inter,sans-serif; color:var(--muted); margin:6px 0 0}
+.lbox{position:fixed; inset:0; z-index:90; background:rgba(8,14,11,.95); display:grid;
+  grid-template-rows:1fr auto;
+  padding:max(14px,env(safe-area-inset-top,0px)) max(14px,env(safe-area-inset-right,0px))
+          max(14px,env(safe-area-inset-bottom,0px)) max(14px,env(safe-area-inset-left,0px))}
+.lbox[hidden]{display:none!important}
+.lfig{display:grid; place-items:center; min-height:0; min-width:0}
+.lfig img{max-width:100%; max-height:100%; object-fit:contain; border-radius:10px}
+.lbar{display:flex; align-items:center; gap:11px; padding:12px 2px 0; color:#f4f0e5}
+.lbar .lt{flex:1; min-width:0; margin:0; font:500 12.5px/1.45 Inter,sans-serif}
+.lbar .lt b{display:block; font:600 10.5px/1 Inter,sans-serif; letter-spacing:.1em;
+  text-transform:uppercase; opacity:.55; margin-bottom:4px}
+.lbtn{width:40px; height:40px; flex:0 0 auto; border-radius:50%; border:1px solid rgba(255,255,255,.22);
+  background:rgba(255,255,255,.09); color:#fff; font-size:16px; cursor:pointer; line-height:1}
+.lbtn:disabled{opacity:.3; cursor:default}
 </style>
 </head>
 <body>
@@ -259,7 +289,17 @@ footer{max-width:var(--maxw); margin:0 auto; padding:0 16px 20px; font-size:12px
   <ul class="toc" id="tocList"></ul>
 </div></div>
 
-<footer>Built for the Fifty Tour · figures verified 6 November 2026 · maps © OpenStreetMap contributors</footer>
+<div class="lbox" id="lbox" hidden>
+  <div class="lfig"><img id="lImg" alt=""></div>
+  <div class="lbar">
+    <button class="lbtn" id="lPrev" aria-label="Previous photo">&#8249;</button>
+    <button class="lbtn" id="lNext" aria-label="Next photo">&#8250;</button>
+    <p class="lt"><b id="lCount"></b><span id="lCap"></span></p>
+    <button class="lbtn" id="lClose" aria-label="Close">&#10005;</button>
+  </div>
+</div>
+
+<footer>Built for the Fifty Tour · figures verified 6 November 2026 · photographs from the three listings · maps © OpenStreetMap contributors</footer>
 
 <script src="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/leaflet.js"></script>
 <script>
@@ -344,6 +384,71 @@ const STAYS = {
   }
 };
 
+/* ---- the photographs ----
+   Pulled from each listing’s own gallery, with the hosts’ own captions as the starting point.
+   Stored locally rather than hot-linked so the page keeps working if a listing is edited. */
+const PHOTOS = {
+  hampstead:[
+    ["hampstead-street","Rosecroft Avenue. The coach house is the one to the right of the main house, set back from the road."],
+    ["hampstead-living","The living room, with a dining table that seats eight. This is where the day gets argued about."],
+    ["hampstead-kitchen","The kitchen: Nespresso, dishwasher, wine cooler, and a full set of everything else."],
+    ["hampstead-bed1","The master. Super king, top floor, opens straight onto the roof terrace."],
+    ["hampstead-bed2","Ground floor queen."],
+    ["hampstead-bed3","Ground floor single. Someone has to."],
+    ["hampstead-terrace","The roof terrace off the master bedroom."],
+    ["hampstead-garden","The garden. Properly big, properly green, and completely quiet."],
+    ["hampstead-alfresco","Out the back. Where the fifth evening in a row gets eaten."]
+  ],
+  bath:[
+    ["bath-street","Trim Street. Bath stone, a minute off Queen Square, right in the middle of it."],
+    ["bath-living","The living room."],
+    ["bath-kitchen","The kitchen."],
+    ["bath-bed1","Bedroom one."],
+    ["bath-bed2","Bedroom three."],
+    ["bath-bed3","Bedroom four. Four bedrooms, two and a half bathrooms, for one night."],
+    ["bath-hottub","The courtyard hot tub, at night. This is a real thing that is included."],
+    ["bath-terrace","The courtyard by day."],
+    ["bath-bath","One of the bathrooms."]
+  ],
+  oxford:[
+    ["oxford-street","28 Wellington Street. A Jericho terrace, four minutes from Worcester College."],
+    ["oxford-living","The living room."],
+    ["oxford-kitchen","The kitchen, ground floor. Honest rather than styled."],
+    ["oxford-dining","The dining area."],
+    ["oxford-bed1","Bedroom one."],
+    ["oxford-bed2","Bedroom two, up in the attic."],
+    ["oxford-bed3","Bedroom three."],
+    ["oxford-bath","The main bathroom, first floor."],
+    ["oxford-patio","The patio out the back."],
+    ["oxford-sighs","The Bridge of Sighs. Ten minutes from the front door, on foot."]
+  ]
+};
+
+function gallery(key){
+  const ps = PHOTOS[key]; if(!ps || !ps.length) return "";
+  return `<div class="gal" data-gal="${key}">
+    <button class="ghero" type="button" data-i="0">
+      <img src="photos/${ps[0][0]}.jpg" alt="${ps[0][1]}" loading="lazy" decoding="async">
+      <span class="gexp" aria-hidden="true">&#9974;</span>
+      <span class="gcap">${ps[0][1]}</span>
+    </button>
+    <div class="gstrip">${ps.map((p,i)=>
+      `<button type="button" class="${i===0?'on':''}" data-i="${i}" aria-label="${p[1]}">
+         <img src="photos/${p[0]}.jpg" alt="" loading="lazy" decoding="async"></button>`).join("")}
+    </div>
+    <p class="gnote">${ps.length} photographs from the listing. Tap any one to see it full size.</p>
+  </div>`;
+}
+function shot(key, i){
+  const p = PHOTOS[key][i];
+  return `<div class="gal" data-gal="${key}">
+    <button class="ghero" type="button" data-i="${i}">
+      <img src="photos/${p[0]}.jpg" alt="${p[1]}" loading="lazy" decoding="async">
+      <span class="gexp" aria-hidden="true">&#9974;</span>
+      <span class="gcap">${p[1]}</span>
+    </button></div>`;
+}
+
 const esc = s => String(s);
 const aud = n => "A$" + n.toLocaleString("en-AU");
 
@@ -366,6 +471,7 @@ function stayPage(key, kicker, body){
     <h2>${s.name}</h2>
     <div class="addr">${pinSvg()}<div>${s.addr}<br><span class="small">${s.rating}</span></div></div>
     <div class="plate"><div class="mapbox" id="map-${key}"></div></div>
+    ${gallery(key)}
     <div class="grid2">
       <div class="stat"><div class="n">${aud(s.pp)}</div><div class="l">per person, per night</div>
         <div class="x">${s.nights} night${s.nights>1?"s":""} · ${aud(s.tot)} each all up</div></div>
@@ -376,7 +482,7 @@ function stayPage(key, kicker, body){
     <h3 style="margin-top:20px">From the front door, on foot</h3>
     <ul class="near">${s.near.map(x=>`<li class="${x.hi?'hi':''}"><span>${x.n}</span><i class="dots"></i><b>${x.m} min</b></li>`).join("")}</ul>
     <p class="small" style="margin-top:12px">Measured from the confirmed street address, not the listing’s fuzzy map pin. Walking times at a steady 80 metres a minute with a routing allowance, so they are honest rather than optimistic.</p>
-    <a class="go" href="${s.url}" target="_blank" rel="noopener">See the photos on Airbnb ↗</a>`
+    <a class="go" href="${s.url}" target="_blank" rel="noopener">The full listing on Airbnb ↗</a>`
   };
 }
 function pinSvg(){
@@ -460,6 +566,7 @@ ${timeline([
 <div class="dayhead"><div class="daynum"><div class="d">28</div><div class="m">Jun</div></div>
 <div class="wrap"><div class="dow">Monday</div><h2>Hampstead by dinner</h2><div class="where">London · NW3</div></div></div>
 <p class="lead">You land at 2:25pm with a whole English summer evening still ahead of you. Check-in at the house opens at three.</p>
+${shot("hampstead",0)}
 ${timeline([
  {t:"2:25pm",h:"Wheels down, Heathrow",d:"Terminal 3. Allow an hour for the queue and the bags — it is the Monday of Wimbledon week."},
  {t:"≈4:00pm",h:"Across London",d:"Roughly an hour to Hampstead, whichever way you go."},
@@ -553,6 +660,7 @@ ${timeline([
 <div class="dayhead"><div class="daynum"><div class="d">4</div><div class="m">Jul</div></div>
 <div class="wrap"><div class="dow">Sunday</div><h2>West to Bath, and then John’s crawl</h2><div class="where">London → Bath · Somerset</div></div></div>
 <p class="lead">Out of London by late morning, into Georgian Bath by the middle of the afternoon, and then the whole evening belongs to a list a mate wrote down.</p>
+${shot("bath",6)}
 ${timeline([
  {t:"11:00am",h:"Checkout, Rosecroft Avenue",d:"Bags down the hill."},
  {t:"≈12:30pm",h:"Paddington",d:"Great Western to the west country."},
@@ -576,6 +684,7 @@ ${legBox("🚂 &nbsp;London Paddington → Bath Spa",[
 <div class="dayhead"><div class="daynum"><div class="d">5</div><div class="m">Jul</div></div>
 <div class="wrap"><div class="dow">Monday</div><h2>Across country to Oxford</h2><div class="where">Bath → Oxford · Oxfordshire</div></div></div>
 <p class="lead">A short hop and a gentle morning — which, after Big John’s crawl, is the only humane way to schedule this.</p>
+${shot("oxford",9)}
 ${timeline([
  {t:"10:00am",h:"Checkout, Trim Street",d:"Early checkout. Bags out before ten, no exceptions."},
  {t:"Morning",h:"Bath on a quiet Monday",d:"If anyone is upright: the Roman Baths open at nine and are four minutes away. Left luggage at Harington’s Hotel round the corner."},
@@ -697,6 +806,7 @@ function render(i,push){
   const p=PAGES[idx];
   const spent=spentBy(idx);
   const showTicker = idx>0 && idx<PAGES.length-2;
+  if(!lbox.hidden) lbClose();
   stage.innerHTML=`<article class="pg">${showTicker?
     `<div class="ticker">Committed so far <b>${aud(spent)}</b> <span style="opacity:.7">of ${aud(TOTAL)}</span></div>`:""}${p.html}</article>`;
   counter.textContent=(idx+1)+" / "+PAGES.length;
@@ -740,6 +850,46 @@ function buildMap(key){
   maps[key]=m;
   setTimeout(()=>m.invalidateSize(),180);
 }
+/* ============================ PHOTOS ============================ */
+const lbox=document.getElementById("lbox"), lImg=document.getElementById("lImg"),
+      lCap=document.getElementById("lCap"), lCount=document.getElementById("lCount"),
+      lPrev=document.getElementById("lPrev"), lNext=document.getElementById("lNext");
+let lKey=null, lI=0;
+
+function lbOpen(key,i){
+  lKey=key; lI=i; lbox.hidden=false;
+  document.body.style.overflow="hidden";
+  lbDraw();
+}
+function lbDraw(){
+  const ps=PHOTOS[lKey]; if(!ps) return;
+  lI=(lI+ps.length)%ps.length;
+  const p=ps[lI];
+  lImg.src="photos/"+p[0]+".jpg"; lImg.alt=p[1];
+  lCap.textContent=p[1];
+  lCount.textContent=(lI+1)+" of "+ps.length;
+  lPrev.disabled=lNext.disabled=ps.length<2;
+}
+function lbClose(){ lbox.hidden=true; lKey=null; document.body.style.overflow=""; }
+lPrev.onclick=()=>{lI--; lbDraw();};
+lNext.onclick=()=>{lI++; lbDraw();};
+document.getElementById("lClose").onclick=lbClose;
+lbox.addEventListener("click",e=>{ if(e.target===lbox||e.target.classList.contains("lfig")) lbClose(); });
+
+/* one delegated handler covers every gallery on every page */
+stage.addEventListener("click",e=>{
+  const btn=e.target.closest("[data-gal] button[data-i]"); if(!btn) return;
+  const gal=btn.closest("[data-gal]"), key=gal.dataset.gal, i=+btn.dataset.i;
+  if(btn.classList.contains("ghero")){ lbOpen(key,i); return; }
+  /* a thumbnail: swap the hero rather than opening the lightbox, so browsing stays cheap */
+  const hero=gal.querySelector(".ghero"), p=PHOTOS[key][i];
+  hero.querySelector("img").src="photos/"+p[0]+".jpg";
+  hero.querySelector("img").alt=p[1];
+  hero.querySelector(".gcap").textContent=p[1];
+  hero.dataset.i=i;
+  gal.querySelectorAll(".gstrip button").forEach(b=>b.classList.toggle("on", b===btn));
+});
+
 function buildToc(){
   tocList.innerHTML=PAGES.map((p,i)=>
     `<li data-i="${i}" class="${i===idx?'on':''}"><span class="n">${String(i+1).padStart(2,"0")}</span>
@@ -753,6 +903,12 @@ document.getElementById("btnMoney").onclick=()=>{const i=PAGES.findIndex(p=>p.id
 sheet.onclick=e=>{ if(e.target===sheet){sheet.hidden=true; return;}
   const li=e.target.closest("li[data-i]"); if(li){ sheet.hidden=true; render(+li.dataset.i); } };
 addEventListener("keydown",e=>{
+  if(!lbox.hidden){
+    if(e.key==="Escape") lbClose();
+    if(e.key==="ArrowRight"){e.preventDefault(); lI++; lbDraw();}
+    if(e.key==="ArrowLeft"){e.preventDefault(); lI--; lbDraw();}
+    return;
+  }
   if(e.key==="Escape"){sheet.hidden=true;}
   if(sheet.hidden===false) return;
   if(e.key==="ArrowRight"||e.key===" "){e.preventDefault(); if(idx<PAGES.length-1) render(idx+1);}
@@ -761,9 +917,11 @@ addEventListener("keydown",e=>{
 let tx=0,ty=0;
 addEventListener("touchstart",e=>{tx=e.changedTouches[0].clientX; ty=e.changedTouches[0].clientY;},{passive:true});
 addEventListener("touchend",e=>{
-  if(!sheet.hidden) return;
   const dx=e.changedTouches[0].clientX-tx, dy=e.changedTouches[0].clientY-ty;
-  if(Math.abs(dx)>64 && Math.abs(dx)>Math.abs(dy)*1.8){
+  const swipe = Math.abs(dx)>64 && Math.abs(dx)>Math.abs(dy)*1.8;
+  if(!lbox.hidden){ if(swipe){ lI += dx<0?1:-1; lbDraw(); } return; }
+  if(!sheet.hidden) return;
+  if(swipe){
     if(dx<0 && idx<PAGES.length-1) render(idx+1);
     if(dx>0 && idx>0) render(idx-1);
   }
