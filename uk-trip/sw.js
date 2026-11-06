@@ -3,7 +3,7 @@
    cache version bumped and (b) swallowed cross-origin map tiles, fonts and CDN scripts
    into the app cache forever. Now: cross-origin requests pass straight through, HTML is
    network-first so updates land immediately, and only same-origin assets are cache-first. */
-const CACHE = "fifty-tour-v72";
+const CACHE = "fifty-tour-v73";
 const ASSETS = ["./", "./index.html", "./manifest.webmanifest", "./icon.svg", "./tour/"];
 
 self.addEventListener("install", e => {
