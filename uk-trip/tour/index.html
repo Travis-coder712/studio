@@ -4,7 +4,7 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
 <title>Raising the Bat — The Fifty Tour</title>
-<meta name="description" content="Twelve days. Four bases. Two days at Lord's. Travis turns fifty and the Ashes are in England.">
+<meta name="description" content="Twelve days. Four bases. Two days at Lord's. A few of us have turned fifty, a couple have never seen Europe, and the Ashes are in England.">
 <meta property="og:title" content="Raising the Bat — The Fifty Tour">
 <meta property="og:description" content="27 June – 9 July 2027. London, Bath, Oxford. Two days of Ashes cricket at Lord's. Here's the whole plan.">
 <meta property="og:type" content="website">
@@ -296,15 +296,31 @@ footer{max-width:var(--maxw); margin:0 auto; padding:0 16px 20px; font-size:12px
   font-variant-numeric:tabular-nums; letter-spacing:-.02em}
 .cwnote{font:400 11.5px/1.6 Inter,sans-serif; color:var(--muted); margin:12px 0 0}
 /* ---- crawl sketch maps (pop-out) ---- */
-.crawlbtn{display:flex; align-items:center; gap:12px; width:100%; margin:16px 0 4px;
-  background:var(--paper2); border:1px solid var(--line); border-radius:16px;
-  padding:14px 15px; cursor:pointer; text-align:left; box-shadow:var(--shadow)}
+.crawlbtn{display:flex; align-items:center; gap:12px; width:100%; margin:18px 0 6px;
+  background:color-mix(in srgb,var(--green) 9%,var(--paper2));
+  border:1.5px solid color-mix(in srgb,var(--green) 44%,transparent); border-radius:16px;
+  padding:14px 15px; cursor:pointer; text-align:left; box-shadow:var(--shadow);
+  transition:background .18s,border-color .18s,transform .12s}
+.crawlbtn:hover{border-color:var(--green); background:color-mix(in srgb,var(--green) 15%,var(--paper2))}
+.crawlbtn:active{transform:scale(.993)}
+.crawlbtn:focus-visible{outline:2px solid var(--green); outline-offset:3px}
 .crawlbtn .cbi{flex:0 0 auto; width:38px; height:38px; border-radius:11px; display:grid;
-  place-items:center; background:color-mix(in srgb,var(--green) 13%,transparent); color:var(--green)}
+  place-items:center; background:var(--green); color:var(--paper)}
 .crawlbtn .cbt{flex:1; min-width:0}
+.crawlbtn .cbk{display:block; font:800 9.5px/1 Inter,sans-serif; letter-spacing:.15em;
+  text-transform:uppercase; color:var(--green2); margin:0 0 5px}
 .crawlbtn .cbt b{display:block; font:600 14.5px/1.25 Inter,sans-serif; color:var(--ink)}
-.crawlbtn .cbt span{display:block; font:400 12px/1.4 Inter,sans-serif; color:var(--muted); margin-top:2px}
-.crawlbtn .cba{flex:0 0 auto; color:var(--green2); font:700 17px/1 Inter,sans-serif}
+.crawlbtn .cbd{display:block; font:400 12px/1.4 Inter,sans-serif; color:var(--muted); margin-top:2px}
+.crawlbtn .cba{flex:0 0 auto; width:26px; height:26px; border-radius:50%; display:grid; place-items:center;
+  background:color-mix(in srgb,var(--green) 18%,transparent); color:var(--green);
+  font:700 16px/1 Inter,sans-serif; text-indent:1px}
+.covertip{display:flex; gap:10px; align-items:flex-start; margin:14px 0 0; padding:12px 13px;
+  border-radius:14px; background:color-mix(in srgb,var(--green) 9%,var(--paper2));
+  border:1px solid color-mix(in srgb,var(--green) 34%,transparent); text-align:left}
+.covertip .cti{flex:0 0 auto; width:26px; height:26px; border-radius:8px; display:grid; place-items:center;
+  background:var(--green); color:var(--paper)}
+.covertip span:last-child{font:400 12.5px/1.6 Inter,sans-serif; color:var(--ink2); min-width:0}
+.covertip b{color:var(--ink); font-weight:650}
 
 .sheetmap{position:fixed; inset:0; z-index:1200; background:rgba(8,14,11,.9);
   overflow-y:auto; -webkit-overflow-scrolling:touch;
@@ -1172,13 +1188,14 @@ const PAGES = [
     <path d="M17 41.4c2 1.8 2 5.4 0 7.2M23 41.4c-2 1.8-2 5.4 0 7.2" stroke="#fff" stroke-width="1" stroke-linecap="round"/>
   </svg>
   <h1>Raising<br>the Bat</h1>
-  <p class="sub">Travis turns fifty, and the Ashes are in England.</p>
+  <p class="sub">A few of us have turned fifty. A couple have never seen Europe. And the Ashes are in England.</p>
   <div class="rule">◆</div>
   <div class="bigdates">27 June – 9 July 2027</div>
   <div class="meta">London · Bath · Oxford</div>
   <div class="rule">◆</div>
-  <p class="lead" style="text-align:left">Twelve days. Three houses. At least two days of Test cricket at Lord’s, a pub crawl a mate drew up by hand, and two nights in Oxford to finish.</p>
-  <p class="small" style="text-align:left">Everything in here is booked or priced — real addresses, real times, real numbers. Click through. It takes about five minutes.</p>
+  <p class="lead" style="text-align:left">Twelve days. Three houses. At least two days of Test cricket at Lord’s, a pub crawl for Big John, and two nights in Oxford to finish — with some local knowledge.</p>
+  <p class="small" style="text-align:left">Everything in here is booked or priced — real addresses, real times, real numbers. Twenty pages, about five minutes.</p>
+  <div class="covertip"><span class="cti"><svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9 3 3 5.5v15L9 18l6 3 6-2.5v-15L15 6z"/><path d="M9 3v15M15 6v15"/></svg></span><span>Three pages carry a green <b>Tap to open the map</b> button — hand-drawn maps of both pub crawls, and of Hampstead with the walk to the tube, Lord’s and Wimbledon. Tap them.</span></div>
 </div>`},
 
 /* 2 */ { id:"shape", nav:"The shape of it", sub:"Overview", html:`
@@ -1343,7 +1360,7 @@ ${legBox("🚂 &nbsp;London Paddington → Bath Spa",[
  {i:"🚄",h:"Great Western, direct",d:"About 1h25 on average, 1h12 on the fastest. Roughly every half hour, no changes, and the last half of it runs through the Avon valley.",p:"£25+ advance"},
  {i:"🎫",h:"Book it the week before",d:"Advance singles start near £25; walk-up on a Sunday in July will be double. Five tickets, one booking, one person’s phone."}
 ],"Paddington is about 35 minutes from Hampstead — Jubilee to Baker Street and across, or a cab with the bags.")}
-${crawlButton("bath","The hand-drawn route, pub by pub — tap to open")}
+${crawlButton("bath","The hand-drawn route, pub by pub, with the streets to walk")}
 <div class="quote">Three hours in the Bell, then back to the Bell to finish. He knew what he was doing.</div>`},
 
 /* 13 */ stayPage("bath","Where we stay · Bath", `
@@ -1388,7 +1405,7 @@ ${timeline([
  {t:"Late",h:"Finish somewhere on the water",d:"The Head of the River, or back up to Jericho."}
 ])}
 ${wennerPanel()}
-${crawlButton("oxford","The hand-drawn route, pub by pub — tap to open")}
+${crawlButton("oxford","The hand-drawn route, pub by pub, with the streets to walk")}
 <div class="note"><b>Do not try to go inside every college.</b> Pick two — Christ Church for the hall and the cathedral, and either Magdalen for the deer park or New College for the cloister. The rest is better from the street.</div>`},
 
 /* 17 */ { id:"d10", nav:"Wed 7 July", sub:"Blenheim, then home", html:`
@@ -1598,7 +1615,8 @@ function crawlButton(key, label){
     <span class="cbi"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor"
       stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
       <path d="M9 3 3 5.5v15L9 18l6 3 6-2.5v-15L15 6z"/><path d="M9 3v15M15 6v15"/></svg></span>
-    <span class="cbt"><b>${CRAWLS[key].title}</b><span>${label}</span></span>
+    <span class="cbt"><span class="cbk">Tap to open the map</span>
+      <b>${CRAWLS[key].title}</b><span class="cbd">${label}</span></span>
     <span class="cba">&rsaquo;</span></button>`;
 }
 
