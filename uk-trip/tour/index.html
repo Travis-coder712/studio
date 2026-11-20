@@ -4,9 +4,9 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
 <title>Raising the Bat — The Fifty Tour</title>
-<meta name="description" content="Twelve days. Four bases. Two days at Lord's. A few of us have turned fifty, a couple have never seen Europe, and the Ashes are in England.">
+<meta name="description" content="Fourteen days. Three houses. Two days at Lord's. A few of us have turned fifty, a couple have never seen Europe, and the Ashes are in England.">
 <meta property="og:title" content="Raising the Bat — The Fifty Tour">
-<meta property="og:description" content="27 June – 9 July 2027. London, Bath, Oxford. Two days of Ashes cricket at Lord's. Here's the whole plan.">
+<meta property="og:description" content="23 June – 6 July 2027. Oxford, Bath, London. Two days of Ashes cricket at Lord's. Here's the whole plan.">
 <meta property="og:type" content="website">
 <meta name="theme-color" content="#14532d">
 <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -466,7 +466,7 @@ footer{max-width:var(--maxw); margin:0 auto; padding:0 16px 20px; font-size:12px
   </div>
 </div>
 
-<footer>Built for the Fifty Tour · figures verified 10 November 2026 · photographs from the three listings · maps © OpenStreetMap contributors</footer>
+<footer>Built for the Fifty Tour · figures verified 15 November 2026 · photographs from the three listings · maps © OpenStreetMap contributors</footer>
 
 <script src="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/leaflet.js"></script>
 <script>
@@ -477,12 +477,12 @@ footer{max-width:var(--maxw); margin:0 auto; padding:0 16px 20px; font-size:12px
    ============================================================ */
 
 const MONEY = [
-  {k:"Flights",        v:2746, n:"Emirates, Melbourne–London return via Dubai", when:0},
-  {k:"Lord’s tickets", v:665, n:"Days 1 and 3, £175 each through the MCC mates", when:3},
-  {k:"London — Hampstead", v:810, n:"6 nights, Rosecroft Avenue", when:1},
-  {k:"Bath",           v:196,  n:"1 night, 12 Trim Street", when:12},
-  {k:"Oxford",         v:273,  n:"2 nights, 28 Wellington Street", when:14},
-  {k:"Trains &amp; Oyster", v:300, n:"Estimate — Paddington, Didcot, the Heathrow coach, tube", when:5},
+  {k:"Flights — the points booking", v:1000, n:"Taxes and carrier charges only — Melbourne–Bangkok–Gatwick out, London–Singapore–Kuala Lumpur–Melbourne back", when:0},
+  {k:"Oxford — Cherwell Gates", v:314, n:"2 nights, the four-bed duplex on St Clement’s", when:3},
+  {k:"Bath",           v:181,  n:"1 night, 12 Trim Street", when:4},
+  {k:"London — Hampstead", v:810, n:"6 nights, Rosecroft Avenue", when:5},
+  {k:"Lord’s tickets", v:665, n:"Days 1 and 3, £175 each through the MCC mates", when:13},
+  {k:"Trains &amp; Oyster", v:300, n:"Estimate — the Heathrow coach, Didcot, Paddington, tube", when:6},
   {k:"ETA, insurance, eSIM", v:270, n:"Estimate — £20 UK ETA, cover, data", when:0}
 ];
 const TOTAL = MONEY.reduce((a,b)=>a+b.v,0);
@@ -529,25 +529,31 @@ const STAYS = {
     url:"https://www.airbnb.com.au/rooms/5179055"
   },
   oxford:{
-    name:"The Jericho House",
-    addr:"28 Wellington Street, Oxford OX2 6BE",
-    nights:2, pp:137, tot:273, rating:"4.88 from 295 stays · Superhost · Top 10%",
-    ll:[51.757211,-1.267871], zoom:15,
+    name:"Cherwell Gates",
+    addr:"St Clement\u2019s Street, Oxford OX4 \u2014 exact address comes on booking",
+    nights:2, pp:157, tot:314, rating:"4.28 from 32 stays \u00b7 cleanliness 4.5 \u00b7 a letting company, first year of hosting",
+    ll:[51.75025,-1.24255], zoom:14,
     near:[
-      {n:"Worcester College",m:4},{n:"Oxford station",m:7},
-      {n:"Gloucester Green coaches",m:9,hi:true},{n:"Port Meadow",m:9},
-      {n:"Covered Market",m:15},{n:"Radcliffe Square",m:17},
-      {n:"The Turf Tavern",m:17},{n:"Christ Church Meadow",m:26}
+      {n:"The Plain, for the punts",m:3,hi:true},
+      {n:"Cowley Road, to eat",m:3},
+      {n:"Oxford Botanic Garden",m:5},
+      {n:"Magdalen College",m:6},
+      {n:"Christ Church Meadow",m:7},
+      {n:"Radcliffe Square",m:14},
+      {n:"The Turf Tavern",m:14},
+      {n:"Gloucester Green coaches",m:23},
+      {n:"Oxford station",m:31}
     ],
     pins:[
-      {n:"Worcester College",ll:[51.755325,-1.265508]},
-      {n:"Gloucester Green",ll:[51.754125,-1.261707]},
-      {n:"Oxford station",ll:[51.753451,-1.269954]},
-      {n:"Port Meadow",ll:[51.761972,-1.269132]},
+      {n:"The Plain",ll:[51.74995,-1.24465]},
+      {n:"Botanic Garden",ll:[51.75155,-1.24590]},
+      {n:"Magdalen College",ll:[51.75210,-1.24700]},
       {n:"Radcliffe Square",ll:[51.753472,-1.254359]},
-      {n:"The Turf",ll:[51.754694,-1.252856]}
+      {n:"The Turf",ll:[51.754694,-1.252856]},
+      {n:"Gloucester Green",ll:[51.754125,-1.261707]},
+      {n:"Oxford station",ll:[51.753451,-1.269954]}
     ],
-    url:"https://www.airbnb.com.au/rooms/33860339"
+    url:"https://www.airbnb.com.au/rooms/1552150980275999675"
   }
 };
 
@@ -578,20 +584,25 @@ const PHOTOS = {
     ["bath-bath","One of the bathrooms."]
   ],
   oxford:[
-    ["oxford-street","28 Wellington Street. A Jericho terrace, four minutes from Worcester College."],
-    ["oxford-living","The living room."],
-    ["oxford-kitchen","The kitchen, ground floor. Honest rather than styled."],
-    ["oxford-dining","The dining area."],
-    ["oxford-bed1","Bedroom one."],
-    ["oxford-bed2","Bedroom two, up in the attic."],
-    ["oxford-bed3","Bedroom three."],
-    ["oxford-bath","The main bathroom, first floor."],
-    ["oxford-patio","The patio out the back."],
-    ["oxford-sighs","The Bridge of Sighs. Ten minutes from the front door, on foot."]
+    ["cherwell-living","The sitting room. Leather the whole way round, a gas fire, and french doors onto the terrace. The kitchen is through the opening on the right."],
+    ["cherwell-dining","The dining end, under a skylight. A wine rack that came with the house, and sunflowers that probably did not."],
+    ["cherwell-kitchen","The kitchen: a six-burner range, granite the length of it, a butcher\u2019s block the size of a small table, and two skylights."],
+    ["cherwell-terrace","The roof terrace. Decking, a barbecue, and Oxford rooftops \u2014 where the Friday evening happens."],
+    ["cherwell-bath","The bathroom. Walk-in shower and a separate bath, twin heated rails, a television in the wall. It is a good one. It is also the only one."],
+    ["cherwell-bed1","Bedroom one \u2014 the king, at the front, looking down onto St Clement\u2019s."],
+    ["cherwell-bed2","Bedroom two, a double."],
+    ["cherwell-bed3","Bedroom three, the smaller double."]
+  ],
+  oxsights:[
+    ["ox-sights-radcam","The Radcliffe Camera. James Gibbs, 1749, and still the building everyone means when they say Oxford."],
+    ["ox-sights-bridge","Hertford Bridge \u2014 the Bridge of Sighs, which looks nothing like the one in Venice and nobody minds."],
+    ["ox-sights-hall","The Great Hall at Christ Church. The one the Hogwarts hall was built from, and the staircase below it is the one they filmed."],
+    ["ox-sights-punting","Punting on the Cherwell. Hire from the Magdalen Bridge boathouse at the Plain, thirteen minutes from the door."],
+    ["ox-sights-trout","The Trout at Wolvercote. Two miles up the towpath, terrace on the water, and Morse drank here for thirty years."]
   ]
 };
 
-function gallery(key){
+function gallery(key, note){
   const ps = PHOTOS[key]; if(!ps || !ps.length) return "";
   return `<div class="gal" data-gal="${key}">
     <button class="ghero" type="button" data-i="0">
@@ -603,7 +614,7 @@ function gallery(key){
       `<button type="button" class="${i===0?'on':''}" data-i="${i}" aria-label="${p[1]}">
          <img src="photos/${p[0]}.jpg" alt="" loading="lazy" decoding="async"></button>`).join("")}
     </div>
-    <p class="gnote">${ps.length} photographs from the listing. Tap any one to see it full size.</p>
+    <p class="gnote">${note || (ps.length + " photographs from the listing.")} Tap any one to see it full size.</p>
   </div>`;
 }
 function shot(key, i){
@@ -649,7 +660,7 @@ function stayPage(key, kicker, body){
     ${body}
     <div class="staysec">From the front door, on foot</div>
     <ul class="near">${s.near.map(x=>`<li class="${x.hi?'hi':''}"><span>${x.tube?roundelInline():""}${x.n}${x.tube?`<em class="lineq">${x.tube}</em>`:""}</span><i class="dots"></i><b>${x.m} min</b></li>`).join("")}</ul>
-    <p class="small" style="margin-top:12px">Measured from the confirmed street address, not the listing’s fuzzy map pin. Walking times at a steady 80 metres a minute with a routing allowance, so they are honest rather than optimistic.</p>
+    <p class="small" style="margin-top:12px">${key==="oxford" ? "Measured from the listing’s own map pin on St Clement’s — the exact address only arrives on booking, so treat these as the conservative end." : "Measured from the confirmed street address, not the listing’s fuzzy map pin."} Walking times at a steady 80 metres a minute with a routing allowance, so they are honest rather than optimistic.</p>
     ${key === "hampstead" ? crawlButton("hampstead","The neighbourhood, the tubes, and how to reach Lord’s and Wimbledon") : ""}
     <div class="staysec">Where it sits</div>
     <div class="plate"><div class="mapbox" id="map-${key}"></div></div>
@@ -743,7 +754,7 @@ const CRAWLS = {
     ],
     ll:{bear:[51.751555,-1.255704],turf:[51.754694,-1.252856],chequers:[51.751815,-1.256573],
         crown:[51.752205,-1.258328],lambflag:[51.757396,-1.258823],kingsarms:[51.75508,-1.254321]},
-    foot:"No timetable — that is rather the point. Start about four. At an hour a pub you are at the King’s Arms by ten, which is where you want to be anyway. Jericho is a fifteen-minute walk home from there."
+    foot:"No timetable — that is rather the point. Start about four. At an hour a pub you are at the King’s Arms by ten, which is where you want to be anyway. St Clement’s is sixteen minutes home from there, or four quid in a cab, and after six pubs it will be the cab."
   }
 };
 
@@ -1214,42 +1225,44 @@ const PAGES = [
   <h1>Raising<br>the Bat</h1>
   <p class="sub">A few of us have turned fifty. A couple have never seen Europe. And the Ashes are in England.</p>
   <div class="rule">◆</div>
-  <div class="bigdates">27 June – 9 July 2027</div>
-  <div class="meta">London · Bath · Oxford</div>
+  <div class="bigdates">23 June – 6 July 2027</div>
+  <div class="meta">Oxford · Bath · London</div>
   <div class="rule">◆</div>
-  <p class="lead" style="text-align:left">Twelve days. Three houses. At least two days of Test cricket at Lord’s, a pub crawl for Big John, and two nights in Oxford to finish — with some local knowledge.</p>
+  <p class="lead" style="text-align:left">Fourteen days. Three houses. Two days of Test cricket at Lord’s, a pub crawl for Big John, and Oxford at the <i>front</i> this time — because the jet lag has to happen somewhere, and it may as well happen there.</p>
   <p class="small" style="text-align:left">Everything in here is secured or priced — real addresses, real times, real numbers. Twenty pages, about five minutes.</p>
   <div class="covertip"><span class="cti"><svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9 3 3 5.5v15L9 18l6 3 6-2.5v-15L15 6z"/><path d="M9 3v15M15 6v15"/></svg></span><span>Three pages carry a green <b>Tap to open the map</b> button — hand-drawn maps of both pub crawls, and of Hampstead with the walk to the tube, Lord’s and Wimbledon. Tap them.</span></div>
   <div class="runorder">
     <div class="rol">How it runs</div>
-    <div class="ro"><b>1</b><span>Why you should come, and the shape of the twelve days</span></div>
-    <div class="ro"><b>2</b><span>The three houses, one after the other</span></div>
-    <div class="ro"><b>3</b><span>Then every day in order, 27 June to 9 July</span></div>
+    <div class="ro"><b>1</b><span>Why you should come, and the shape of the fourteen days</span></div>
+    <div class="ro"><b>2</b><span>The three houses, in the order you reach them</span></div>
+    <div class="ro"><b>3</b><span>Then every day in order, 23 June to 6 July</span></div>
     <div class="ro"><b>4</b><span>And what the whole thing costs</span></div>
   </div>
 </div>`},
 
 /* 2 */ { id:"shape", nav:"The shape of it", sub:"Overview", html:`
 <div class="kicker">The shape of it</div>
-<h2>Four moves, twelve days, nothing rushed</h2>
-<p class="lead">This isn’t a coach tour. It’s three houses, long enough in each to stop being a tourist, with the cricket in the middle of it. The next three pages are the houses; after that it is day by day.</p>
+<h2>Three houses, fourteen days, and Oxford first</h2>
+<p class="lead">This isn’t a coach tour. It’s three houses, long enough in each to stop being a tourist, with the cricket in the middle of it. The order has flipped since the last version: Oxford and Bath now come <i>before</i> London, not after. The next three pages are the houses in the order you reach them; after that it is day by day.</p>
 <div class="grid2">
-  <div class="stat"><div class="n">6</div><div class="l">nights in London</div><div class="x">Hampstead. A house with a garden, not a hotel corridor.</div></div>
-  <div class="stat"><div class="n">2</div><div class="l">days at Lord’s</div><div class="x">Days one and three of the Ashes Test, as a minimum. Already in hand.</div></div>
+  <div class="stat"><div class="n">2</div><div class="l">nights in Oxford</div><div class="x">St Clement’s — a minute from Magdalen Bridge, and the gentlest place to be jet-lagged.</div></div>
   <div class="stat"><div class="n">1</div><div class="l">night in Bath</div><div class="x">Built entirely around Big John’s crawl.</div></div>
-  <div class="stat"><div class="n">2</div><div class="l">nights in Oxford</div><div class="x">Jericho, four minutes from Worcester College.</div></div>
+  <div class="stat"><div class="n">6</div><div class="l">nights in London</div><div class="x">Hampstead. A house with a garden, not a hotel corridor.</div></div>
+  <div class="stat"><div class="n">2</div><div class="l">days at Lord’s</div><div class="x">Days one and three of the Ashes Test. Already in hand.</div></div>
 </div>
 ${timeline([
- {t:"Sun 27",h:"Melbourne → the air",d:"10:55pm. Nothing happens for a day and a half.",cls:"soft"},
- {t:"Mon 28",h:"London. Hampstead.",d:"Land 2:25pm, in the house by late afternoon."},
+ {t:"Wed 23",h:"Melbourne → the air",d:"1:50pm. Bangkok, then Gatwick in the morning.",cls:"soft"},
+ {t:"Thu 24",h:"Oxford",d:"Travis lands and goes straight up. A mate’s spare room for one night."},
+ {t:"Fri 25",h:"The other four land",d:"Heathrow, the coach up, keys at three.",cls:"key"},
+ {t:"Sat 26",h:"Oxford, all of it",d:"The one full day. Wenborn’s six oldest pubs from four o’clock."},
+ {t:"Sun 27",h:"Bath",d:"Train after breakfast, then Big John’s twelve hours.",cls:"key"},
+ {t:"Mon 28",h:"London. Hampstead.",d:"Six nights in the one bed."},
  {t:"Wed 30",h:"Lord’s, day one",d:"The Ashes, second Test.",cls:"key"},
  {t:"Fri 2",h:"Lord’s, day three",d:"The second of our two days.",cls:"key"},
- {t:"Sun 4",h:"Bath",d:"Train down after checkout. Then the crawl."},
- {t:"Mon 5",h:"Oxford",d:"Two nights in Jericho."},
- {t:"Wed 7",h:"Blenheim, then home",d:"Last day out, evening flight.",cls:"key"},
- {t:"Fri 9",h:"Melbourne, 5:30am",d:"",cls:"soft"}
+ {t:"Sun 4",h:"Home the long way",d:"Checkout, then Heathrow at 7:25pm.",cls:"key"},
+ {t:"Tue 6",h:"Melbourne, 6:15am",d:"",cls:"soft"}
 ])}
-<div class="note"><b>Why these dates.</b> The Lord’s Test runs 30 June to 4 July, and we fly in two days early to get over the flight. The dates here are Travis’s own — the Wednesday flight home is his. Anyone who wants to stay on longer should, and the houses and the cricket are the fixed points to build around.</div>`},
+<div class="note"><b>Why the order changed.</b> The flights are a points booking, and the seats were there on the Wednesday, not the Sunday. That lands everyone in England before the cricket instead of after it — so Oxford and Bath move to the front, and the jet lag gets spent on a river and a pub crawl rather than on day one at Lord’s. The Lord’s Test itself has not moved: 30 June to 4 July, and our tickets are days one and three.</div>`},
 
 /* 3 */ { id:"pitch", nav:"Why come", sub:"The case", html:`
 <div class="kicker">The case for it</div>
@@ -1257,17 +1270,34 @@ ${timeline([
 <p class="lead">The official tour packages for this series start north of A$9,000 a head and put you in a hotel with forty strangers. This is the same cricket, better beds, and roughly half.</p>
 <div class="grid2">
   <div class="stat"><div class="n">${aud(TOTAL)}</div><div class="l">all in, per person</div><div class="x">Flights, beds, cricket, trains, the lot.</div></div>
-  <div class="stat"><div class="n">A$142</div><div class="l">per night, per person</div><div class="x">Nine nights across three houses. Hostel money for Hampstead and central Bath.</div></div>
+  <div class="stat"><div class="n">A$145</div><div class="l">per night, per person</div><div class="x">Nine nights across three houses, every one of them your own room.</div></div>
 </div>
 <div class="card"><h3>What you actually get</h3>
 <p><b>Two days of an Ashes Test at Lord’s, as a minimum.</b> Not a tour-group block in the cheap seats — tickets already secured through the MCC mates, at face value, in November 2026, with more days possible through the same channel.</p>
 <p><b>A house, not a room.</b> Five of us, one front door, one kitchen, somewhere to sit at the end of the day and argue about the morning session.</p>
-<p><b>London, in between.</b> Six nights in the one house means the city is yours around the cricket — the British Museum, the National Gallery and Tate Modern all free, Borough Market, the South Bank from Westminster to Tower Bridge, Greenwich, the Wimbledon queue on the Thursday. Days two and six have nothing booked in them on purpose.</p>
+<p><b>London, at the end.</b> Six nights in the one house means the city is yours around the cricket — the British Museum, the National Gallery and Tate Modern all free, Borough Market, the South Bank from Westminster to Tower Bridge, Greenwich, the Wimbledon queue. Tuesday the 29th and Saturday the 3rd have nothing booked in them on purpose.</p>
 <p><b>Big John’s pub crawl in Bath</b>, walked in his order, finishing where he always finished.</p>
-<p style="margin-bottom:0"><b>Two days in Oxford</b> — the colleges, the river, Port Meadow, and Wenborn’s crawl: six pubs with ${W_TOTAL.toLocaleString("en-AU")} years between them.</p></div>
-<div class="quote">Reservations for the accommodation have been secured. Flights priced, cricket in hand. The only thing missing is you.</div>`},
+<p style="margin-bottom:0"><b>And Oxford first</b> — the colleges, the Camera, Christ Church, a punt off Magdalen Bridge, and Wenborn’s crawl: six pubs with ${W_TOTAL.toLocaleString("en-AU")} years between them. The jet lag has to go somewhere, and this is where it goes.</p></div>
+<div class="quote">Flights on points, cricket in hand, three houses with real keys. All that is left is the booking.</div>`},
 
-/* 4 */ stayPage("hampstead","Where we stay · London", `
+/* 4 */ stayPage("oxford","Where we stay \u00b7 Oxford", `
+<p class="lead">St Clement\u2019s: the short, busy street that begins where Magdalen Bridge ends. Three minutes from the punts, six from Magdalen College, and just far enough outside the colleges that you can still get a table.</p>
+<p>This is a change of plan, and an honest one. The original booking was a terrace in Jericho, four minutes from Worcester College \u2014 and it was gone by the time the flights moved to June. What replaces it is better placed than the thing it replaces. <b>Cherwell Gates</b> is a four-bedroom duplex a few doors up from the bridge: a granite kitchen with a six-burner range under two skylights, a sitting room with a gas fire and french doors, and a decked roof terrace over the rooftops. It is also the cheapest four-bedroom in central Oxford on these dates \u2014 <b>A$157 each a night</b>, forty-five dollars a night under the flat we were looking at a week ago.</p>
+<div class="note"><b>The walk, measured the way everything in this book is measured.</b> The Plain and the punt station are <b>three minutes</b>. The Botanic Garden is five, Magdalen College six, Christ Church Meadow seven. Radcliffe Square and the Turf are fourteen each. Gloucester Green is twenty-three and the railway station thirty-one \u2014 so the Sunday train to Bath is still a cab, and that is the only real cost of the address. Everything else you came to Oxford to see is inside a quarter of an hour on foot.</div>
+<div class="staysec">Two things to know before anybody presses book</div>
+<p><b>There is one bathroom.</b> A good one \u2014 walk-in shower, separate bath, twin heated rails, a television in the wall \u2014 but one, for five people, with six medieval pubs on the Saturday and a train on the Sunday morning. Agree the shower order on the Friday night and it is a non-issue. Do not, and it is the one thing anybody will remember to complain about.</p>
+<p><b>And Airbnb flags the listing itself.</b> It carries their own label: <i>\u201cthis home is in the bottom 10% of eligible listings based on ratings, reviews and reliability\u201d</i>. It sits on <b>4.28 from thirty-two stays</b> \u2014 half of them five stars, sixteen per cent of them three. Cleanliness and accuracy both read 4.5. The host is a letting company in its first year, not a person. The listing also says four bedrooms while describing only two of them, so the beds in rooms three and four want confirming in writing before anybody pays. That is the trade for the location and the price, stated plainly \u2014 and it cancels free until <b>24 June 2027</b>, four days before we need it, so it is cheap to hold and cheap to drop.</p>
+<div class="staysec">And the Oxford you came for</div>
+<p>All of it is inside fifteen minutes on foot, and the Saturday is built around exactly this.</p>
+${gallery("oxsights","Five things to walk to while the jet lag wears off.")}
+<p class="small">Photographs: Michael D Beckwith, Andy Li, Julian Herzog, Txllxt TxllxT and Simon Burchell, via Wikimedia Commons \u2014 CC0, CC BY 4.0 and CC BY-SA 4.0.</p>`),
+
+/* 5 */ stayPage("bath","Where we stay · Bath", `
+<p class="lead">A four-bed Georgian townhouse on a short, quiet lane thirty seconds off Queen Square — and about as central as Bath gets without being on a main road.</p>
+<p>Trim Street won this on evidence. The other finalist was a house up on Walcot Street, nearer the back half of the crawl, and the gap in price was four dollars. But Trim Street is <b>four minutes from the Roman Baths against nineteen</b>, four from Milsom Street against fourteen, and eleven from the Royal Crescent against seventeen — and the rival turned out to sit on the A4 with no living room. The Bell is nine minutes away. You walk <i>to</i> the crawl; you do not organise the stay around it.</p>
+<div class="note"><b>One night only, which is what makes a single night cost what it does.</b> A one-night booking carries the entire cleaning fee instead of spreading it across a week. Nothing in Bath fixes that. The one piece of good news since the dates moved: the same house on Sunday 27 June prices at <b>A$907 the lot</b>, about seventy-five dollars under the July booking it replaces.</div>`),
+
+/* 6 */ stayPage("hampstead","Where we stay · London", `
 <p class="lead">A proper house with a garden in the Crofts, the quiet grid of Edwardian streets between Frognal and the Heath. Not a penthouse, not a serviced flat — a home, 4.98 from eighty stays.</p>
 <p>This was chosen over a place twenty minutes nearer Lord’s, and the reasoning holds up: with only <b>two</b> cricket days, the extra travel costs about an hour <i>across the whole trip</i>, and it saved more than two thousand dollars. On the other four London days you want to be somewhere worth walking out into, and Hampstead is the most handsome village in London.</p>
 <div class="note"><b>Straight about the distances.</b> The house sits up in Frognal, so the Heath is close but the Underground is not on the doorstep. Golders Hill Park is eleven minutes and the top of the Heath thirteen; the nearest tube is a seventeen-minute walk. Buses run down Finchley Road constantly. It is a hill-top village house, and it behaves like one.</p>
@@ -1291,50 +1321,113 @@ ${timeline([
 <div class="opt"><div class="ico">🚇</div><div class="ob"><b>Bus down, then the Jubilee</b><span>Any bus down Finchley Road, then two stops on the Jubilee (Swiss Cottage, St John’s Wood). Quicker when the traffic is bad, which on a Test morning it will be.</span></div></div>
 <p class="small" style="margin:12px 0 0">Play starts at 11am. Gates open 9:30. Leave the house at nine and you will be in your seat with a coffee and time to watch the warm-ups.</p></div></div>`),
 
-/* 5 */ stayPage("bath","Where we stay · Bath", `
-<p class="lead">A four-bed Georgian townhouse on a short, quiet lane thirty seconds off Queen Square — and about as central as Bath gets without being on a main road.</p>
-<p>Trim Street won this on evidence. The other finalist was a house up on Walcot Street, nearer the back half of the crawl, and the gap in price was four dollars. But Trim Street is <b>four minutes from the Roman Baths against nineteen</b>, four from Milsom Street against fourteen, and eleven from the Royal Crescent against seventeen — and the rival turned out to sit on the A4 with no living room. The Bell is nine minutes away. You walk <i>to</i> the crawl; you do not organise the stay around it.</p>
-<div class="note"><b>One night only, which is why the per-head figure is the highest of the three.</b> A single-night booking carries the whole cleaning fee over one night instead of spreading it. Nothing available in Bath fixed that — the alternative was A$197 a head. This is simply what one Sunday night in central Bath costs.</div>`),
-
-/* 6 */ stayPage("oxford","Where we stay · Oxford", `
-<p class="lead">Jericho: the old canal-and-printworks quarter just north-west of the colleges, and the part of Oxford that people who live there actually live in.</p>
-<p>Wellington Street runs off the Walton Street end, which puts the door <b>four minutes from Worcester College</b>, seven from the railway station and nine from Gloucester Green, where the Heathrow coach goes. The whole historic centre — the Radcliffe Camera, the Bodleian, the Bridge of Sighs and the Turf down its alley — is a fifteen-to-seventeen-minute walk, all of it through the middle of the city.</p>
-<p>And in the other direction, nine minutes gets you to <b>Port Meadow</b>: four hundred acres of common land that has never been ploughed, horses on it, the Thames running along one side, and the spires behind you.</p>`),
-
-/* 7 */ { id:"d0", nav:"Sun 27 June", sub:"Melbourne → the air", html:`
-<div class="dayhead"><div class="daynum air"><div class="d">27</div><div class="m">Jun</div></div>
-<div class="wrap"><div class="dow">Sunday</div><h2>The long way to England</h2><div class="where">Melbourne · Tullamarine</div></div></div>
-<p class="lead">A Sunday night departure, which means you get the whole weekend with the family first and lose nothing but a Monday you would have slept through anyway.</p>
+/* 7 */ { id:"d0", nav:"Wed 23 June", sub:"Melbourne → the air", html:`
+<div class="dayhead"><div class="daynum air"><div class="d">23</div><div class="m">Jun</div></div>
+<div class="wrap"><div class="dow">Wednesday</div><h2>The long way to England</h2><div class="where">Melbourne · Tullamarine</div></div></div>
+<p class="lead">A Wednesday lunchtime departure — civilised, and gone before the school term has finished. Travis goes first and alone, which is the price of a seat bought with somebody else’s points.</p>
 ${timeline([
- {t:"7:55pm",h:"At the airport",d:"Three hours before an international departure. Bag drop, then a drink.",cls:"soft"},
- {t:"10:55pm",h:"Melbourne → Dubai",d:"Emirates. 14 hours, give or take, straight through the night.",cls:"key"},
- {t:"—",h:"Dubai",d:"2 hours 50 on the ground. Long enough to walk, shower and eat; short enough not to drag."},
- {t:"2:25pm",h:"Heathrow, Monday",d:"24 hours 30 door to door. Through the gate in the early afternoon, which is the best time to arrive.",cls:"key"}
+ {t:"10:50am",h:"At the airport",d:"Three hours before an international departure. Bag drop, then a beer.",cls:"soft"},
+ {t:"1:50pm",h:"Melbourne → Bangkok",d:"Finnair, out over the top of Australia.",cls:"key"},
+ {t:"—",h:"Bangkok",d:"Connection length still to be confirmed with the man holding the booking."},
+ {t:"Thursday",h:"Bangkok → Gatwick",d:"British Airways — and it is Gatwick, not Heathrow. BA brought this route back in late 2024 after four years off, and it runs three times a week, which is exactly why there were only ever two departure days to choose from.",cls:"key"}
 ])}
-<div class="note"><b>Why the Emirates run and not the cheap one.</b> There were seats A$500 under this. They route through Delhi on a Thursday, cost an extra night’s bed at the far end, and the only agent quoting the headline price was one nobody has heard of. The honest gap to a bookable fare was about A$390 — and that bought a day of the trip back.</div>
-<p class="small">Fare verified on eleven separate reads across nine days. It has moved a total of nine dollars in that time.</p>`},
+<div class="note"><b>Why this flight and not the Emirates one this book was built on.</b> That fare has since stepped from A$2,745 to A$2,974, and on these June dates it goes to A$4,092. The points booking costs about a thousand dollars in taxes and carrier charges. That one fact is the reason the whole trip now starts in Oxford instead of London.</div>
+<p class="small">Four things still open on the booking: the Gatwick arrival time, the Bangkok connection, whether the thousand holds on the Wednesday as well as the Friday, and whether out and back are one ticket — which decides whether the bags check through at Singapore on the way home.</p>`},
 
-/* 8 */ { id:"d1", nav:"Mon 28 June", sub:"Landing in London", html:`
+/* 8 */ { id:"d1", nav:"Thu 24 June", sub:"Gatwick → Oxford", html:`
+<div class="dayhead"><div class="daynum"><div class="d">24</div><div class="m">Jun</div></div>
+<div class="wrap"><div class="dow">Thursday</div><h2>A spare room in Oxford</h2><div class="where">Gatwick → Oxford</div></div></div>
+<p class="lead">A day ahead of everybody else, and it costs nothing — there is a mate in Oxford with a spare bed. Meanwhile the other four are somewhere over the Indian Ocean.</p>
+${timeline([
+ {t:"Morning",h:"Gatwick",d:"Through the gate, through the bags, into England.",cls:"key"},
+ {t:"Midday",h:"Across to Oxford",d:"There is no direct coach from Gatwick the way there is from Heathrow. The train via Reading is the usual answer. This is the one leg of the trip still to be timetabled properly."},
+ {t:"Afternoon",h:"The spare room",d:"Which is precisely why the Oxford flat is booked from Friday and not Thursday — no sense paying for a five-person house to sleep one.",cls:"key"},
+ {t:"Evening",h:"Stay up until it is dark",d:"The single most useful thing you can do on day one. Oxford in late June does not go dark until half past nine, which makes it easy."}
+])}
+<div class="note"><b>And in Melbourne, the other four leave today.</b> Brother, niece, nephew and girlfriend, out of Tullamarine on the Thursday and into Heathrow tomorrow morning — <b>THAI, 1:30pm Melbourne, Heathrow 7:15am Friday</b>, which is exactly why tomorrow starts early. Most of them are staying on in Europe afterwards, so the only leg that has to be bought together is this one: <b>A$1,448 one way</b>, checked bag in the fare, drilled to the airline’s own booking page on 15 November 2026.</div>`},
+
+/* 9 */ { id:"d2", nav:"Fri 25 June", sub:"Heathrow → Oxford", html:`
+<div class="dayhead"><div class="daynum hero"><div class="d">25</div><div class="m">Jun</div></div>
+<div class="wrap"><div class="dow">Friday</div><h2>Five of us, on St Clement’s</h2><div class="where">Heathrow → Oxford</div></div></div>
+<p class="lead">The day the trip actually starts. Four of you land at Heathrow at quarter past seven in the morning, one is already in Oxford, and by mid-afternoon everybody is in the same kitchen.</p>
+${shot("oxford",3)}
+${timeline([
+ {t:"7:15am",h:"Heathrow",d:"THAI lands early. Allow an hour for the queue and the bags.",cls:"key"},
+ {t:"≈9:30am",h:"The Airline coach",d:"Straight to Gloucester Green, about every twenty minutes, around the clock. Eighty to ninety minutes, roughly £18–25 single.",cls:"key"},
+ {t:"≈11:00am",h:"Gloucester Green",d:"Then a cab across town. It is twenty-three minutes on foot and nobody is walking that with bags."},
+ {t:"Midday",h:"The four hours before check-in",d:"Landing at quarter past seven buys a whole morning and costs a wait. Bags behind the bar or into left luggage, then lunch on Cowley Road and a first walk to Magdalen Bridge. Staying upright and outdoors beats a nap, and the jet lag is shorter for it.",cls:"soft"},
+ {t:"3:00pm",h:"Cherwell Gates",d:"Self check-in on a key safe. Four bedrooms, one big bathroom, and a roof terrace off the top of the house. Agree the shower order now, not at seven on Sunday morning.",cls:"key"},
+ {t:"Evening",h:"Eat on the doorstep",d:"St Clement’s has the Port Mahon and the Coconut Tree at the end of the street; three minutes the other way is Cowley Road, where the choice is Caribbean, Bangladeshi, Lebanese or Polish.",cls:"key"},
+ {t:"Late",h:"Do not go hard tonight",d:"Tomorrow is the only full day in Oxford and it has six medieval pubs at the end of it."}
+])}
+${legBox("✈️ &nbsp;Heathrow → Oxford",[
+ {i:"🚌",h:"The Airline coach to Gloucester Green",d:"The sensible answer. Runs around the clock, takes luggage, no changes. Then four quid in a cab across to St Clement’s.",p:"≈£20"},
+ {i:"🚕",h:"One car the whole way",d:"About ninety minutes, and £130–160 for five with luggage. Worth it if the flight lands late or the bags are heavy.",p:"split five ways"}
+])}
+<div class="note"><b>Victorian Term 2 ends today.</b> The four flying out on Thursday miss the Friday; Travis misses the Wednesday as well. Term 3 does not start until Monday 12 July, so every day after this one sits inside the school holidays.</div>`},
+
+/* 10 */ { id:"d3", nav:"Sat 26 June", sub:"Oxford, all day", html:`
+<div class="dayhead"><div class="daynum hero"><div class="d">26</div><div class="m">Jun</div></div>
+<div class="wrap"><div class="dow">Saturday</div><h2>Oxford, with someone who lived here</h2><div class="where">Oxford · the full day</div></div></div>
+<p class="lead">The one full day in Oxford, and the only day of the trip with a proper itinerary — because there is a lot of it, it is all inside a mile and a half, and four of you are seeing it for the first time.</p>
+${timeline([
+ {t:"Morning",h:"The dreaming-spires walk",d:"Out the door and straight over Magdalen Bridge — it is at the end of the street — then along the High to Radcliffe Square and the Camera, the Bodleian, the Sheldonian, Blackwell’s and Broad Street, and round to the Bridge of Sighs.",cls:"key"},
+ {t:"Midday",h:"Christ Church",d:"The Great Hall is the one the Hogwarts hall was built from, and the staircase underneath it is the one they actually filmed. Book the slot online before you leave the house — it sells out on a July Saturday.",cls:"key"},
+ {t:"Lunch",h:"The Covered Market",d:"Trading since 1774, and two minutes off the High."},
+ {t:"Afternoon",h:"Punt from the Plain",d:"The Magdalen Bridge boathouse, thirteen minutes from the front door, and the closest thing Oxford has to a compulsory activity. Someone will go in.",cls:"key"},
+ {t:"≈4:00pm",h:"Wenborn’s crawl",d:"Six of the oldest pubs in England, walked in his order, starting at the Bear.",cls:"key"},
+ {t:"Late",h:"A cab home",d:"From the King’s Arms it is twenty-five minutes on foot. After six pubs it is four quid in a car."}
+])}
+${wennerPanel()}
+${crawlButton("oxford","The hand-drawn route, pub by pub, with the streets to walk")}
+<div class="card"><h3>If the day wants to be slower</h3>
+<p style="margin-bottom:0">Two miles up the towpath from Port Meadow sits <b>the Trout at Wolvercote</b> — a terrace on the water, a weir to sit beside, and the pub Morse drank in for thirty years. It makes a proper afternoon: walk the meadow out, eat on the terrace, bus or cab back. It does not fit the same day as Wenborn’s six, so it is a choice and not an addition.</p></div>
+<div class="note"><b>Do not try to get inside every college.</b> Pick two — Christ Church for the hall and the cathedral, and either Magdalen for the deer park or New College for the cloister. The rest is better from the street.</div>`},
+
+/* 11 */ { id:"d4", nav:"Sun 27 June", sub:"Oxford → Bath", html:`
+<div class="dayhead"><div class="daynum"><div class="d">27</div><div class="m">Jun</div></div>
+<div class="wrap"><div class="dow">Sunday</div><h2>Across country to Bath, and then John’s crawl</h2><div class="where">Oxford → Bath · Somerset</div></div></div>
+<p class="lead">Out of Oxford in the morning, into Georgian Bath by the middle of the day, and then the rest of it belongs to a list a mate wrote down.</p>
+${shot("bath",6)}
+${timeline([
+ {t:"11:00am",h:"Checkout, Cherwell Gates",d:"Bags out, and a cab to the station — thirty-one minutes on foot is not a thing anybody is doing with luggage."},
+ {t:"≈11:45am",h:"Oxford → Bath Spa",d:"Change at Didcot Parkway, about an hour and a quarter all up. There is no direct train, whatever anyone tells you.",cls:"key"},
+ {t:"≈1:30pm",h:"Bath Spa",d:"Ten minutes on foot from the station to the front door."},
+ {t:"≈2:00pm",h:"Join Big John’s crawl",d:"You cannot start at eleven — the train does not get in until half one. Pick his list up at the Huntsman on North Parade and run it from there. Bags into left luggage at Harington’s if check-in is not open yet.",cls:"key"},
+ {t:"4–7pm",h:"The Bell",d:"Three straight hours, which was not an accident. Five hundred and thirty-six of its own regulars clubbed together and bought it on 2 July 2013.",cls:"key"},
+ {t:"Evening",h:"Up the hill, and back down",d:"The Paragon, the Farmhouse, the Beehive — and then back down to the Bell for last orders."},
+ {t:"Late",h:"12 Trim Street",d:"Four beds, two and a half baths, and a hot tub in the courtyard. Nine minutes from the Bell.",cls:"key"}
+])}
+${legBox("🚂 &nbsp;Oxford → Bath Spa",[
+ {i:"🚄",h:"Great Western, one change at Didcot Parkway",d:"Oxford to Didcot is about thirteen minutes, Didcot to Bath about forty-three, plus the wait. Call it an hour and a quarter and do not cut the connection fine with five people and ten bags.",p:"one change"},
+ {i:"🎫",h:"Book it the week before",d:"Advance singles are cheap; walk-up on a Sunday in July will be double. Five tickets, one booking, one person’s phone."}
+])}
+${crawlButton("bath","The hand-drawn route, pub by pub, with the streets to walk")}
+<div class="quote">Three hours in the Bell, then back to the Bell to finish. He knew what he was doing.</div>`},
+
+/* 12 */ { id:"d5", nav:"Mon 28 June", sub:"Bath → London", html:`
 <div class="dayhead"><div class="daynum"><div class="d">28</div><div class="m">Jun</div></div>
-<div class="wrap"><div class="dow">Monday</div><h2>Hampstead by dinner</h2><div class="where">London · NW3</div></div></div>
-<p class="lead">You land at 2:25pm with a whole English summer evening still ahead of you. Check-in at the house opens at three.</p>
+<div class="wrap"><div class="dow">Monday</div><h2>Hampstead by dinner</h2><div class="where">Bath → London · NW3</div></div></div>
+<p class="lead">A short hop and a gentle morning — which, the day after Big John’s crawl, is the only humane way to schedule anything. And at the end of it you stop moving for six nights.</p>
 ${shot("hampstead",0)}
 ${timeline([
- {t:"2:25pm",h:"Wheels down, Heathrow",d:"Terminal 3. Allow an hour for the queue and the bags — it is the Monday of Wimbledon week."},
- {t:"≈4:00pm",h:"Across London",d:"Roughly an hour to Hampstead, whichever way you go."},
- {t:"≈5:00pm",h:"18 Rosecroft Avenue",d:"Keys, rooms, the first cup of tea that tastes different over there.",cls:"key"},
- {t:"Evening",h:"Walk out, eat, sleep early",d:"Hampstead village is twenty minutes down the hill and full of pubs. Do not fight the jet lag past nine."}
+ {t:"10:00am",h:"Checkout, Trim Street",d:"Early checkout. Bags out before ten, no exceptions. Left luggage at Harington’s round the corner."},
+ {t:"Morning",h:"Bath on a quiet Monday",d:"If anyone is upright: the Roman Baths open at nine and are four minutes away."},
+ {t:"≈12:30pm",h:"Bath Spa → Paddington",d:"Great Western, direct, about 1h25. Roughly every half hour, and the first half of it runs up the Avon valley.",cls:"key"},
+ {t:"≈2:30pm",h:"Across London",d:"Jubilee from Baker Street, or a cab with the bags. About thirty-five minutes to Hampstead."},
+ {t:"≈3:30pm",h:"18 Rosecroft Avenue",d:"Keys, rooms, and the first cup of tea that tastes different over there.",cls:"key"},
+ {t:"Evening",h:"Hampstead village",d:"Twenty minutes down the hill and full of pubs. The Holly Bush is up a flight of steps off Heath Street and has been there since 1807."}
 ])}
-${legBox("✈️ &nbsp;Heathrow → Hampstead",[
- {i:"🚕",h:"One taxi, five people, all the bags",d:"50–70 minutes door to door depending on the M4. About £80–100 for the car, which is £16–20 each.",p:"easiest"},
- {i:ROUNDEL_ICON,h:"Elizabeth line, then the Jubilee",d:"Heathrow to Paddington in about 30 minutes, change for the Jubilee to Finchley Road, then a short bus or cab up the hill. Around 70–80 minutes with bags.",p:"≈£15"},
- {i:ROUNDEL_ICON,h:"Piccadilly line the whole way",d:"Cheapest and slowest — well over an hour before you even change lines, on a narrow tube train with a suitcase on your knees. Not after 24 hours in the air."}
-],"After a day and a half in the air, split a cab. It is twenty pounds each and you are in the garden by five.")}`},
+${legBox("🚂 &nbsp;Bath Spa → London Paddington",[
+ {i:"🚄",h:"Great Western, direct",d:"About 1h25 on average, 1h12 on the fastest. Roughly every half hour, no changes.",p:"£25+ advance"},
+ {i:"🎫",h:"Book it the week before",d:"Advance singles start near £25; walk-up on a Monday in July will be more."}
+])}
+<div class="note"><b>Six nights in the one bed from here.</b> No more trains, no more checkouts, no more bags until the morning you fly home.</div>`},
 
-/* 9 */ { id:"d2", nav:"Tue 29 June", sub:"London, free", html:`
+/* 13 */ { id:"d6", nav:"Tue 29 June", sub:"London, free", html:`
 <div class="dayhead"><div class="daynum"><div class="d">29</div><div class="m">Jun</div></div>
 <div class="wrap"><div class="dow">Tuesday</div><h2>The day you get your body back</h2><div class="where">London · Hampstead Heath</div></div></div>
-<p class="lead">One clear day between landing and the cricket. Do not waste it on a museum queue — spend it outside, get some light on your face, and be sharp for Wednesday.</p>
+<p class="lead">The first day of the trip with nothing in it. Five days in, the body clock has sorted itself out, Big John’s crawl is forty-eight hours behind you and the cricket starts tomorrow. Spend it outside.</p>
 ${timeline([
  {t:"Morning",h:"Walk onto the Heath",d:"Eleven minutes to Golders Hill Park, thirteen to the top. Eight hundred acres of it, and no plan required."},
  {t:"Midday",h:"Kenwood House",d:"Thirty minutes across the Heath. A Robert Adam library and a free gallery holding a Rembrandt self-portrait and a Vermeer. Genuinely one of the best things in London and it costs nothing."},
@@ -1342,9 +1435,9 @@ ${timeline([
  {t:"Afternoon",h:"Swim, or don’t",d:"The bathing ponds are open and the water is about 18°C in early July. Someone will. Someone won’t."},
  {t:"Evening",h:"Hampstead village",d:"Down the hill. The Holly Bush, the Flask, the Wells. Early night — there is cricket tomorrow."}
 ])}
-<div class="note">If anyone wants central London instead, it is thirty minutes door to the West End. But everybody who has done this trip says the same thing: the day after a long-haul flight is the day to stay local.</div>`},
+<div class="note">If anyone wants central London instead, it is thirty minutes door to the West End. But you have just done four trains and two pub crawls in five days. The Heath is eleven minutes up the road and it asks nothing of you.</div>`},
 
-/* 10 */ { id:"d3", nav:"Wed 30 June", sub:"Lord’s, day one", html:`
+/* 14 */ { id:"d7", nav:"Wed 30 June", sub:"Lord’s, day one", html:`
 <div class="dayhead"><div class="daynum hero"><div class="d">30</div><div class="m">Jun</div></div>
 <div class="wrap"><div class="dow">Wednesday</div><h2>Lord’s. Day one.</h2><div class="where">St John’s Wood · The Ashes, 2nd Test</div></div></div>
 <span class="tag r">Ticket secured</span><span class="tag y">£175</span><span class="tag g">The reason for all of this</span>
@@ -1361,7 +1454,7 @@ ${timeline([
 ])}
 <div class="note"><b>Take a hat and sunscreen and mean it.</b> An English July can hand you 30°C and a cloudless sky, and a full day in the open at Lord’s will find anyone who did not take it seriously. There is no shade in most of the ground.</div>`},
 
-/* 11 */ { id:"d4", nav:"Thu 1 July", sub:"London, free", html:`
+/* 15 */ { id:"d8", nav:"Thu 1 July", sub:"London, free", html:`
 <div class="dayhead"><div class="daynum"><div class="d">1</div><div class="m">Jul</div></div>
 <div class="wrap"><div class="dow">Thursday</div><h2>A day off in the middle of a Test</h2><div class="where">London · anywhere</div></div></div>
 <p class="lead">We hold days one and three, so Thursday is yours. The cricket is still going on without you, which is its own peculiar pleasure — following day two on the radio from a pub garden is a very English way to spend an afternoon.</p>
@@ -1372,7 +1465,7 @@ ${timeline([
 <p style="margin-bottom:0">Or: Regent’s Canal from Little Venice to Camden on foot, the Sir John Soane’s Museum (free, strange, unforgettable), or an afternoon in Greenwich.</p></div>
 <div class="note"><b>Worth a try:</b> Lord’s runs an official ticket exchange and day-two seats do come back. If one appears at face value, take it.</div>`},
 
-/* 12 */ { id:"d5", nav:"Fri 2 July", sub:"Lord’s, day three", html:`
+/* 16 */ { id:"d9", nav:"Fri 2 July", sub:"Lord’s, day three", html:`
 <div class="dayhead"><div class="daynum hero"><div class="d">2</div><div class="m">Jul</div></div>
 <div class="wrap"><div class="dow">Friday</div><h2>Lord’s. Day three.</h2><div class="where">St John’s Wood · The Ashes, 2nd Test</div></div></div>
 <span class="tag r">Ticket secured</span><span class="tag y">£175</span>
@@ -1387,99 +1480,31 @@ ${timeline([
 <div class="card"><h3>About those tickets</h3>
 <p style="margin-bottom:0">Days one and three, £175 each, secured through the MCC mates on 27 October 2026 — not the public ballot, which most people miss. That is <b>A$665 for two days of Ashes cricket at Lord’s</b>, at face value. A tour package would charge four times it. <b>Treat two days as the minimum</b>, not the plan: more can come through the same channel or the official exchange, and the budget below assumes only the two we already hold.</p></div>`},
 
-/* 13 */ { id:"d6", nav:"Sat 3 July", sub:"Last London day", html:`
+/* 17 */ { id:"d10", nav:"Sat 3 July", sub:"Last London day", html:`
 <div class="dayhead"><div class="daynum"><div class="d">3</div><div class="m">Jul</div></div>
 <div class="wrap"><div class="dow">Saturday</div><h2>London, properly, one more time</h2><div class="where">London · last full day</div></div></div>
-<p class="lead">A Saturday in London in July with nowhere you have to be. Pack tonight, because tomorrow starts with a train.</p>
+<p class="lead">A Saturday in London in July with nowhere you have to be, and the last full day of the whole thing. Pack tonight.</p>
 ${timeline([
  {t:"Morning",h:"A market",d:"Borough for food, Columbia Road for flowers and a Sunday-ish crowd on a Saturday, Portobello for the junk and the stalls. Broadway Market in Hackney if you want where Londoners actually go."},
  {t:"Afternoon",h:"Pick one big thing",d:"The Tower, the Churchill War Rooms, a Thames Clipper down to Greenwich. One, not three."},
- {t:"≈6:00pm",h:"Back to Hampstead",d:"Pack. Checkout is eleven tomorrow and the train south is booked."},
+ {t:"≈6:00pm",h:"Back to Hampstead",d:"Pack properly. Checkout is eleven tomorrow and the flight is tomorrow night."},
  {t:"Evening",h:"Last night in the house",d:"Eat local. The Holly Bush does a proper Saturday dinner and it is four hundred years old.",cls:"key"}
 ])}
-<div class="note"><b>Tomorrow is a travel day with a pub crawl at the end of it.</b> Whatever you do tonight, do it with that in mind.</div>`},
+<div class="note"><b>Tomorrow you fly home.</b> Checkout at eleven, Heathrow in the afternoon, and then two days in the air. Whatever you do tonight, do it with that in mind.</div>`},
 
-/* 14 */ { id:"d7", nav:"Sun 4 July", sub:"London → Bath", html:`
-<div class="dayhead"><div class="daynum"><div class="d">4</div><div class="m">Jul</div></div>
-<div class="wrap"><div class="dow">Sunday</div><h2>West to Bath, and then John’s crawl</h2><div class="where">London → Bath · Somerset</div></div></div>
-<p class="lead">Out of London by late morning, into Georgian Bath by the middle of the afternoon, and then the whole evening belongs to a list a mate wrote down.</p>
-${shot("bath",6)}
+/* 18 */ { id:"d11", nav:"Sun 4 – Tue 6 July", sub:"The long way home", html:`
+<div class="dayhead"><div class="daynum air"><div class="d">4</div><div class="m">Jul</div></div>
+<div class="wrap"><div class="dow">Sunday</div><h2>Home the long way round</h2><div class="where">Hampstead → Heathrow → the air</div></div></div>
+<p class="lead">Checkout on the Sunday, an evening flight, and then two days of aeroplanes. You land on the Tuesday morning with a week of the school holidays still to run.</p>
 ${timeline([
- {t:"11:00am",h:"Checkout, Rosecroft Avenue",d:"Bags down the hill."},
- {t:"≈12:30pm",h:"Paddington",d:"Great Western to the west country."},
- {t:"≈2:00pm",h:"Bath Spa",d:"Ten minutes on foot from the station to the front door.",cls:"key"},
- {t:"3:00pm",h:"12 Trim Street",d:"Check in. Four beds, two and a half baths, and a hot tub in the courtyard.",cls:"key"},
- {t:"Late afternoon",h:"Look at Bath first",d:"Four minutes to the Roman Baths and the Abbey, seven to the Circus, eleven to the Royal Crescent. See it in daylight before the crawl takes the daylight away."},
- {t:"Evening",h:"Big John’s pub crawl",d:"Twelve stops in his order, north down to the river. Three straight hours in the Bell in the middle, and back to the Bell to finish.",cls:"key"}
+ {t:"11:00am",h:"Checkout, Rosecroft Avenue",d:"Six nights gone. The garden on the last morning, if July does what July usually does."},
+ {t:"Daytime",h:"A last London Sunday",d:"Bags into left luggage at Paddington and go and do one more thing. Day five at Lord’s is being played about four miles away and our tickets do not cover it.",cls:"soft"},
+ {t:"≈4:30pm",h:"Heathrow",d:"Three hours before the gate."},
+ {t:"7:25pm",h:"London → Singapore",d:"British Airways.",cls:"key"},
+ {t:"Monday",h:"Singapore → Kuala Lumpur → Melbourne",d:"Malaysian for the second half. If this is not the same ticket as the BA leg, the bags will not check through and somebody collects and re-drops them in Singapore."},
+ {t:"6:15am Tuesday",h:"Melbourne",d:"Term 3 does not start until Monday 12 July.",cls:"key"}
 ])}
-${legBox("🚂 &nbsp;London Paddington → Bath Spa",[
- {i:"🚄",h:"Great Western, direct",d:"About 1h25 on average, 1h12 on the fastest. Roughly every half hour, no changes, and the last half of it runs through the Avon valley.",p:"£25+ advance"},
- {i:"🎫",h:"Book it the week before",d:"Advance singles start near £25; walk-up on a Sunday in July will be double. Five tickets, one booking, one person’s phone."}
-],"Paddington is about 35 minutes from Hampstead — Jubilee to Baker Street and across, or a cab with the bags.")}
-${crawlButton("bath","The hand-drawn route, pub by pub, with the streets to walk")}
-<div class="quote">Three hours in the Bell, then back to the Bell to finish. He knew what he was doing.</div>`},
-
-/* 15 */ { id:"d8", nav:"Mon 5 July", sub:"Bath → Oxford", html:`
-<div class="dayhead"><div class="daynum"><div class="d">5</div><div class="m">Jul</div></div>
-<div class="wrap"><div class="dow">Monday</div><h2>Across country to Oxford</h2><div class="where">Bath → Oxford · Oxfordshire</div></div></div>
-<p class="lead">A short hop and a gentle morning — which, after Big John’s crawl, is the only humane way to schedule this.</p>
-${shot("oxford",9)}
-${timeline([
- {t:"10:00am",h:"Checkout, Trim Street",d:"Early checkout. Bags out before ten, no exceptions."},
- {t:"Morning",h:"Bath on a quiet Monday",d:"If anyone is upright: the Roman Baths open at nine and are four minutes away. Left luggage at Harington’s Hotel round the corner."},
- {t:"≈1:00pm",h:"Bath Spa → Oxford",d:"Change at Didcot Parkway. Around 1h15 to 1h35 all up.",cls:"key"},
- {t:"≈2:45pm",h:"Oxford station",d:"Seven minutes on foot to the house."},
- {t:"3:00pm",h:"28 Wellington Street",d:"Jericho. Check in, drop bags.",cls:"key"},
- {t:"Evening",h:"Dinner in Jericho",d:"Walton Street is three minutes away and is the best eating street in Oxford. Then a first pint somewhere Travis will choose.",cls:"key"}
-])}
-${legBox("🚂 &nbsp;Bath Spa → Oxford",[
- {i:"🚄",h:"Great Western, one change at Didcot Parkway",d:"Bath Spa to Didcot is about 43 minutes, Didcot to Oxford about 13, plus the wait. Sources put the door-to-door between 1h03 and 1h32 — call it an hour and a quarter and do not cut the connection fine with five people and ten bags.",p:"one change"},
- {i:"⚠️",h:"There is no direct train",d:"Anyone who tells you there is has looked at a proposal, not a timetable. Check gwr.com the week before — the Didcot connection is the whole journey."}
-])}
-<div class="note"><b>Oxford has an early checkout too — 10am on the Wednesday.</b> Worth knowing now, because it shapes the last day.</div>`},
-
-/* 16 */ { id:"d9", nav:"Tue 6 July", sub:"Oxford, all day", html:`
-<div class="dayhead"><div class="daynum hero"><div class="d">6</div><div class="m">Jul</div></div>
-<div class="wrap"><div class="dow">Tuesday</div><h2>Oxford, with someone who lived here</h2><div class="where">Oxford · the full day</div></div></div>
-<p class="lead">The one full day in Oxford, and the only day of the trip with a proper itinerary — because there is a lot of it and it is all within a mile.</p>
-${timeline([
- {t:"Morning",h:"The dreaming-spires walk",d:"Out of Jericho past Worcester, down Broad Street, the Sheldonian, Blackwell’s, the Bodleian, Radcliffe Square and the Camera, through to the Bridge of Sighs.",cls:"key"},
- {t:"Midday",h:"The old front doors",d:"Jericho, Botley, Wolvercote, Iffley — four addresses and four very different years."},
- {t:"Lunch",h:"The Covered Market",d:"Fifteen minutes from the house. Been trading since 1774."},
- {t:"Afternoon",h:"Christ Church Meadow and the river",d:"Down past Christ Church to the Isis, the college boathouses and back up the Cherwell. Or hire bikes — Oxford is flat and bike-mad and the river loop is the better version of all of this."},
- {t:"≈4:00pm",h:"Wenborn’s crawl",d:"Six of the oldest pubs in England, walked in his order, starting at the Bear.",cls:"key"},
- {t:"Late",h:"Finish somewhere on the water",d:"The Head of the River, or back up to Jericho."}
-])}
-${wennerPanel()}
-${crawlButton("oxford","The hand-drawn route, pub by pub, with the streets to walk")}
-<div class="note"><b>Do not try to go inside every college.</b> Pick two — Christ Church for the hall and the cathedral, and either Magdalen for the deer park or New College for the cloister. The rest is better from the street.</div>`},
-
-/* 17 */ { id:"d10", nav:"Wed 7 July", sub:"Blenheim, then home", html:`
-<div class="dayhead"><div class="daynum hero"><div class="d">7</div><div class="m">Jul</div></div>
-<div class="wrap"><div class="dow">Wednesday</div><h2>The back gate into Blenheim</h2><div class="where">Woodstock → Heathrow → the air</div></div></div>
-<p class="lead">The last day, and a free one — bought by flying out on the Wednesday night instead of the Thursday. There are two good ways to spend it and you decide on the morning.</p>
-${timeline([
- {t:"10:00am",h:"Checkout, Wellington Street",d:"Bags into the car boot, or the lockers at the station. This is the one piece of logistics the day needs."},
- {t:"≈11:00am",h:"Plan A — Woodstock",d:"Twenty-five minutes north. A green gate numbered 95, unsigned, on Manor Road — and through it, a public right of way into two thousand acres of ‘Capability’ Brown parkland. Free. Five minutes to the lake and the Grand Bridge, with the palace in front of you.",cls:"key"},
- {t:"Lunch",h:"The Black Prince",d:"Directly across the road from the gate. Closed since 2023, but the new owners have planning in and their own FAQ targets a spring 2027 opening. Check it in the new year; the Woodstock Arms and the Bear are the fallbacks.",cls:"key"},
- {t:"≈3:00pm",h:"Back into Oxford",d:""},
- {t:"≈5:45pm",h:"Gloucester Green",d:"Nine minutes from the house. The Airline coach to Heathrow runs about every twenty minutes, around the clock.",cls:"key"},
- {t:"≈7:15pm",h:"Heathrow",d:"80–90 minutes on the coach, roughly £18–25 single. Three hours before the gate."},
- {t:"10:15pm",h:"London → Dubai → Melbourne",d:"",cls:"key"}
-])}
-<div class="card"><h3>Plan B, and it is not a consolation prize</h3>
-<p style="margin-bottom:0">No car, rain, or the Black Prince still shut — then the day is <b>one last walk around Oxford with nowhere to be</b>. Nine minutes to Port Meadow and the Thames path, back in through Walton Street to Radcliffe Square, the Covered Market for lunch, and Christ Church Meadow down to the river. Costs nothing, needs nothing, and ends wherever you want it to.</p></div>`},
-
-/* 18 */ { id:"d11", nav:"Thu 8 – Fri 9 July", sub:"The long way home", html:`
-<div class="dayhead"><div class="daynum air"><div class="d">8</div><div class="m">Jul</div></div>
-<div class="wrap"><div class="dow">Thursday into Friday</div><h2>Home the fast way round</h2><div class="where">Heathrow → Dubai → Melbourne</div></div></div>
-<p class="lead">22 hours 15 and two hours on the ground in Dubai. You leave on a Wednesday night and you are home before Friday breakfast.</p>
-${timeline([
- {t:"10:15pm",h:"Heathrow, Wednesday",d:"Overnight to Dubai.",cls:"soft"},
- {t:"Thursday",h:"Dubai, 2 hours",d:"Just long enough. Then thirteen and a half hours south."},
- {t:"5:30am",h:"Melbourne, Friday 9 July",d:"Home by seven, in bed by nine, and the weekend to get over it.",cls:"key"}
-])}
-<div class="quote">Twelve days, two Ashes days at Lord’s, three houses, and the only thing you actually have to organise is getting yourself to Tullamarine.</div>`},
+<div class="note"><b>There is a second option on the return.</b> The same award booking can come home on Monday 5 July instead, landing Wednesday the 7th. It costs an extra night in London — Hampstead is only held to the Sunday — and what it buys is day five at Lord’s, if there is still a Test to watch by then.</div>`},
 
 /* 19 */ { id:"money", nav:"What it costs", sub:"Every number", html:`
 <div class="kicker">What it costs</div>
@@ -1492,38 +1517,40 @@ ${timeline([
 </table>
 </div>
 <h3 style="margin-top:22px">The bit worth looking at twice</h3>
-<p>Nine nights of accommodation in Hampstead, central Bath and central Oxford, for five people, works out at:</p>
+<p>Nine nights of accommodation across Oxford, Bath and Hampstead, for five people, works out at:</p>
 <div class="pernight">
-  <div class="pn"><div class="city">London</div><div class="v">A$135</div><div class="u">per person per night · 6 nights</div><div class="bar"><i style="width:69%"></i></div></div>
-  <div class="pn"><div class="city">Bath</div><div class="v">A$196</div><div class="u">per person per night · 1 night</div><div class="bar"><i style="width:100%"></i></div></div>
-  <div class="pn"><div class="city">Oxford</div><div class="v">A$137</div><div class="u">per person per night · 2 nights</div><div class="bar"><i style="width:70%"></i></div></div>
+  <div class="pn"><div class="city">Oxford</div><div class="v">A$157</div><div class="u">per person per night · 2 nights</div><div class="bar"><i style="width:87%"></i></div></div>
+  <div class="pn"><div class="city">Bath</div><div class="v">A$181</div><div class="u">per person per night · 1 night</div><div class="bar"><i style="width:100%"></i></div></div>
+  <div class="pn"><div class="city">London</div><div class="v">A$135</div><div class="u">per person per night · 6 nights</div><div class="bar"><i style="width:75%"></i></div></div>
 </div>
-<div class="card tight"><p style="margin:0"><b>A$1,279 each for nine nights</b> — accommodation <b>averaging A$142 a night</b> across the three houses. The average is the point. London is the cheapest of the three because six nights in one house spreads every fixed cost six ways; Bath is the dearest because a single night carries a whole cleaning fee on its own. That is the economy of scale you get from booking Airbnbs five-up — it comes from the whole place divided by five, and by the number of nights, not from any one night being cheap.</p></div>
+<div class="card tight"><p style="margin:0"><b>A$1,305 each for nine nights</b> — accommodation <b>averaging A$145 a night</b> across the three houses. The average is the point. London is much the cheapest because six nights in one house spreads every fixed cost six ways. Bath is the dearest for exactly the opposite reason: one night in a four-bedroom Georgian townhouse carries every fixed cost on its own. Oxford now sits between them, forty-five dollars a night under the Cowley Road flat we were comparing it with — though still twenty dollars a night over the Jericho house that was lost when the flights moved.</p></div>
 <h3 style="margin-top:22px">What a hostel would actually cost</h3>
 <p>Worth doing honestly, so here it is — priced on YHA’s own site, for our exact dates, on 7 November 2026.</p>
-<div class="card tight"><table class="money"><tbody><tr><td><b>YHA London Central</b><br><span class="small">Mon 28 Jun – Sat 3 Jul, bunk in a shared single-gender room</span></td><td class="r">£30 midweek<br>£50 Fri &amp; Sat</td></tr><tr><td><b>YHA Bath</b><br><span class="small">Sun 4 Jul, same thing</span></td><td class="r">£24</td></tr><tr><td><b>YHA Oxford</b><br><span class="small">There isn’t one. Oxford is not among the 92 YHA hostels in England and Wales.</span></td><td class="r">—</td></tr></tbody></table></div>
-<p>At about A$1.95 to the pound that is <b>A$59 a night midweek and A$98 on the weekend</b> in London, against <b>A$135</b> for the Hampstead house. So the house is running at roughly double a bunk — and Tuesday 29 June has no bed available at the hostel at all. Bath is the wide one: A$47 against A$196, for the single-night reason above.</p>
+<div class="card tight"><table class="money"><tbody><tr><td><b>YHA London Central</b><br><span class="small">Mon 28 Jun – Sat 3 Jul, bunk in a shared single-gender room</span></td><td class="r">£30 midweek<br>£50 Fri &amp; Sat</td></tr><tr><td><b>YHA Bath</b><br><span class="small">Read for Sun 4 Jul, before the dates moved to Sun 27 Jun</span></td><td class="r">£24</td></tr><tr><td><b>YHA Oxford</b><br><span class="small">There isn’t one. Oxford is not among the 92 YHA hostels in England and Wales.</span></td><td class="r">—</td></tr></tbody></table></div>
+<p>At about A$1.95 to the pound that is <b>A$59 a night midweek and A$98 on the weekend</b> in London, against <b>A$135</b> for the Hampstead house. So the house is running at roughly double a bunk — and Tuesday 29 June has no bed available at the hostel at all. Bath is the wide one: A$47 against A$181, for the single-night reason above.</p>
 <div class="note">For double a bunk bed you get your own room, a front door that is yours, a kitchen, somewhere to sit at the end of the day, and no 10am checkout into the street. That is the trade, stated plainly.</div>
 <h3 style="margin-top:22px">What is not in the number</h3>
-<p>Food, drink and anything you buy. Budget £50–70 a day if you eat and drink well, which on this trip you will — call it <b>A$1,100–1,500</b> across twelve days. Add a third Lord’s day (about A$333) if one comes back on the exchange.</p>
-<div class="note"><b>Four sharing instead of five costs about A$304 more each.</b> The houses are booked whole, so the beds divide the same way whoever is in them. Which is the polite way of saying: the fifth spot is worth filling.</div>
-<p class="small">Flights verified against Google Flights and the airline on thirteen reads between 29 October and 10 November 2026. Accommodation totals are the secured Airbnb reservation figures. Hostel rates read from yha.org.uk on 7 November 2026 for the same dates. Trains, Oyster, the Heathrow coach, the UK ETA, insurance and an eSIM are estimates and are deliberately on the high side.</p>`},
+<p>Food, drink and anything you buy. Budget £50–70 a day if you eat and drink well, which on this trip you will — call it <b>A$1,300–1,900</b> across fourteen days. Add a third Lord’s day (about A$333) if one comes back on the exchange. And the four flying out on the Thursday are buying their own fares, which are not in the figure above.</p>
+<div class="note"><b>Four sharing instead of five costs about A$326 more each.</b> The houses are booked whole, so the beds divide the same way whoever is in them — which is why a late drop-out is expensive for everybody else, not just for them.</div>
+<p class="small">Flights verified against Google Flights and the airlines on seventeen reads between 29 October and 14 November 2026; the figure here is the taxes-and-charges estimate on the points booking, not a cash fare. Bath and Hampstead are secured Airbnb reservation figures; Oxford is a live quote for 25–27 June read on 15 November 2026, not yet booked. Hostel rates read from yha.org.uk on 7 November 2026, against the London dates, which have not moved. Trains, Oyster, the Heathrow coach, the UK ETA, insurance and an eSIM are estimates and deliberately on the high side.</p>`},
 
 /* 20 */ { id:"end", nav:"Come with us", sub:"The ask", html:`
 <div class="cover" style="padding-top:8px">
 <div class="kicker" style="justify-content:center">The ask</div>
-<h2 style="font-size:clamp(30px,7.4vw,44px)">There is one bed left</h2>
-<p class="lead" style="text-align:left">Flights are priced and holding. Reservations for all three houses have been secured, with real addresses and real keys. Two days of Ashes cricket at Lord’s are already in hand at face value.</p>
-<p style="text-align:left">All of it is refundable until late spring, so saying yes now costs nothing and changes nothing except that you are coming.</p>
+<h2 style="font-size:clamp(30px,7.4vw,44px)">Five of us, and the dates are set</h2>
+<p class="lead" style="text-align:left">The flights are a points booking and the seats are held. Two days of Ashes cricket at Lord’s are in hand at face value. Hampstead is secured for six nights and does not move — the Test has not moved either.</p>
+<p style="text-align:left">What is left is the front half. Oxford and Bath both need rebooking onto the new June dates, and both of the old reservations cancel free, so nothing is at risk while that happens.</p>
 <div class="rule">◆</div>
 <div class="grid2" style="text-align:left">
   <div class="stat"><div class="n">${aud(TOTAL)}</div><div class="l">per person, all in</div></div>
-  <div class="stat"><div class="n">12</div><div class="l">days, 27 Jun – 9 Jul 2027</div></div>
+  <div class="stat"><div class="n">14</div><div class="l">days, 23 Jun – 6 Jul 2027</div></div>
 </div>
 <div class="card" style="text-align:left"><h3>What you need to do</h3>
-<p><b>1. Say yes.</b> That is the only time-critical part — the reservations are for five.</p>
-<p><b>2. Book the flight.</b> Emirates, out Sunday 27 June 10:55pm, back Wednesday 7 July 10:15pm. A$2,746 at emirates.com. Thirteen price reads over twelve days have all landed inside a fifteen-dollar band, so there is nothing to be gained by waiting.</p>
-<p style="margin-bottom:0"><b>3. Get a UK ETA.</b> £20, approved in minutes, mandatory for Australians. Do it any time before you fly.</p></div>
+<p><b>1. Rebook Oxford and Bath.</b> Cherwell Gates on St Clement’s for Friday 25 to Sunday 27 June, and Trim Street for the Sunday night. Bath comes in seventy-five dollars a head <i>under</i> the booking it replaces. Oxford comes in <i>over</i> — forty-one dollars a head more than the Jericho house, which is simply what the dates moving costs; against the Cowley Road flat we were looking at a week ago it is eighty-nine dollars cheaper. Read the two flags on the Oxford page first: one bathroom, and a listing Airbnb has marked bottom-ten-per-cent. Ask the host what is in bedrooms three and four before you pay.</p>
+<p><b>2. Release the old two.</b> Trim Street cancels free until 4 June 2027 and the Jericho house until 4 July 2027, so do it in that order and there is never a gap.</p>
+<p><b>3. Book the Thursday outbound.</b> This is the only leg the four have to buy together — most of them are coming home much later, so buy one ways. <b>THAI, A$1,448</b>: out 1:30pm Thursday, into Heathrow 7:15am Friday, one stop, <b>checked bag in the fare</b>, bookable on thaiairways.com itself. <b>Finnair is A$1,233</b> and lands at ten past nine, also direct with the airline — but it is a Light fare with <i>no</i> checked bag and Google will not quote the bag price, so the real gap is smaller than A$215. Ignore the A$672 Air India headline: Google hides the price because it <i>might be incorrect</i>, and on the return search both its pairings read <i>price unavailable</i> — tenth read running.</p>
+<p><b>3b. And if Northy comes, he comes home with you.</b> <b>THAI return, A$2,688.</b> Same outbound; home out of Heathrow 9:25pm on Sunday 4 July and into Melbourne 7:30am Tuesday — an hour and a quarter behind the award routing, off the same Sunday evening. Google rates it low, A$1,274 under the usual band.</p>
+<p style="margin-bottom:0"><b>4. Get a UK ETA.</b> £20, approved in minutes, mandatory for Australians. Do it any time before you fly.</p></div>
 <div class="quote" style="text-align:left">He turns fifty once, and the Ashes are only in England every four years. These two things have never lined up before and they will not line up again until he is fifty-four.</div>
 <p class="small" style="text-align:left">Questions, or to see the full planning detail — the ticket tracker, the fare history, the pub crawls stop by stop — go back to the main planner.</p>
 <a class="go" href="../">← The full Fifty Tour planner</a>
@@ -1691,7 +1718,7 @@ function openHampstead(){
 }
 
 
-const TOC_SECTIONS = {shape:"The case", "stay-hampstead":"Where we stay", d0:"Day by day",
+const TOC_SECTIONS = {shape:"The case", "stay-oxford":"Where we stay", d0:"Day by day",
   money:"The numbers"};
 function buildToc(){
   tocList.innerHTML=PAGES.map((p,i)=>
