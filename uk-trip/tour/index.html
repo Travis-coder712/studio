@@ -537,16 +537,18 @@ const STAYS = {
   },
   oxford:{
     name:"The En-suite House, St Clement’s",
-    addr:"St Clement’s, by South Park, Oxford OX4 — exact address comes on booking",
+    addr:"8 Cherwell Street, Oxford OX4 1BG",
     nights:2, pp:193, tot:385, rating:"4.82 from 98 stays · cleanliness 4.8 · Dori and Jim, Superhost, four years hosting",
-    ll:[51.75155,-1.24005], zoom:15,
+    ll:[51.752267,-1.237708], zoom:15,
     near:[
-      {n:"South Park, for the view over Oxford",m:3,hi:true},
-      {n:"Cowley Road, to eat",m:6},
-      {n:"The Plain and Magdalen Bridge",m:8,hi:true},
-      {n:"Sainsbury’s",m:8},
-      {n:"Merton College",m:10},
-      {n:"The High and the city centre",m:12},
+      {n:"Cave Street, where Travis sleeps",m:3,hi:true},
+      {n:"South Park, for the view over Oxford",m:6,hi:true},
+      {n:"Cowley Road, to eat",m:7},
+      {n:"The Plain",m:8},
+      {n:"Magdalen Bridge",m:10,hi:true},
+      {n:"The High and the city centre",m:15},
+      {n:"Merton College",m:16},
+      {n:"The Radcliffe Camera",m:19},
       {n:"Oxford station, on the 280 bus",m:17}
     ],
     pins:[
@@ -653,7 +655,7 @@ function stayPage(key, kicker, body){
     ${body}
     <div class="staysec">From the front door, on foot</div>
     <ul class="near">${s.near.map(x=>`<li class="${x.hi?'hi':''}"><span>${x.tube?roundelInline():""}${x.n}${x.tube?`<em class="lineq">${x.tube}</em>`:""}</span><i class="dots"></i><b>${x.m} min</b></li>`).join("")}</ul>
-    <p class="small" style="margin-top:12px">${key==="oxford" ? "These are the <b>host’s own stated times</b>, not ours — the exact address only arrives on booking, so there is nothing to measure from yet. The listing puts the front door 0.4 miles and eight minutes from Magdalen Bridge. Re-measure once the address lands." : "Measured from the confirmed street address, not the listing’s fuzzy map pin. Walking times at a steady 80 metres a minute with a routing allowance, so they are honest rather than optimistic."}</p>
+    <p class="small" style="margin-top:12px">${key==="oxford" ? "Measured from <b>8 Cherwell Street</b> once the booking confirmed it, routed on foot rather than drawn straight. The host’s own figures were close and a shade optimistic at the far end — Merton is sixteen minutes, not ten. The station is thirty-five minutes on foot, which is why it is the 280 bus or a cab with bags." : "Measured from the confirmed street address, not the listing’s fuzzy map pin. Walking times at a steady 80 metres a minute with a routing allowance, so they are honest rather than optimistic."}</p>
     ${key === "hampstead" ? crawlButton("hampstead","The neighbourhood, the tubes, and how to reach Lord’s and Wimbledon") : ""}
     <div class="staysec">Where it sits</div>
     <div class="plate"><div class="mapbox" id="map-${key}"></div></div>
@@ -1277,7 +1279,7 @@ ${timeline([
 <div class="quote">Flights on points, cricket in hand, three houses with real keys. All that is left is the booking.</div>`},
 
 /* 4 */ stayPage("oxford","Where we stay \u00b7 Oxford", `
-<p class="lead">A Victorian terrace off St Clement’s, three minutes from South Park and eight from the end of Magdalen Bridge. Three double bedrooms, and <b>every one of them has its own bathroom</b>.</p>
+<p class="lead">A Victorian terrace on <b>Cherwell Street</b>, off St Clement’s — six minutes from South Park, ten from the end of Magdalen Bridge, and three from the front door Travis is sleeping behind. Three double bedrooms, and <b>every one of them has its own bathroom</b>.</p>
 <p>This is the second change of plan on Oxford, and the reason is worth stating plainly. The original booking was a terrace in Jericho, gone the moment the flights moved to June. What replaced it was a four-bedroom duplex right on St Clement’s — unbeatable for position, and <b>flagged by Airbnb itself as being in the bottom ten per cent of listings for ratings, reviews and reliability</b>, on one bathroom for five people. Three weeks before this was written a guest left it two stars and described precisely the two things already flagged here: one toilet for a houseful, and an interior that “feels neglected”.</p>
 <p>So we moved. <b>This house is about five minutes further from the colleges and some four hundred reviews more certain.</b> It sits on <b>4.82 from ninety-eight stays</b> — cleanliness 4.8, check-in a flat 5.0 — hosted by <b>Dori and Jim, Superhosts of four years</b> who answer inside the hour. Refurbished top to bottom in 2022: an open-plan kitchen and living room, a private fenced garden, fast broadband, and cereal and milk put out for breakfast.</p>
 <div class="note"><b>Three bedrooms, three en-suites, and what that is actually worth.</b> Nobody queues. On the Sunday morning after six medieval pubs, with a train to catch at a quarter to twelve, five adults sharing one bathroom is the most predictable argument of the entire fortnight — and this removes it outright. It is also why the house takes <b>four</b> rather than five: three double beds, so a fifth person would be sharing with somebody they did not come with.</div>
@@ -1289,7 +1291,7 @@ ${timeline([
 <tr><td><b>Cherwell Gates</b><br><span class="small">4.3 from 33 · bottom-10% flag · 1 bathroom · five sleeping</span></td><td class="r">A$1,595.63<br><span class="small">A$319 each</span></td></tr>
 </tbody></table></div>
 <p><b>It is fifty-four dollars cheaper for the group and better on every reliability measure there is.</b> The four pay sixty-six dollars a head more, purely because they are splitting it four ways instead of five. That is the whole of the cost, and what it buys is a Superhost, three bathrooms and a garden.</p>
-<div class="note"><b>Ask for the luggage drop before you fly.</b> The listing offers <i>“luggage drop-off in the living room during preparing the house — request only”</i>. Check-in is three o’clock and the four land at quarter past seven in the morning, so message Dori about it in advance. It turns a seven-hour wait with four sets of suitcases into a seven-hour wait without them. <b>Booked on 23 November 2026</b>, and free cancellation runs to <b>20 June 2027</b>.</div>
+<div class="note"><b>Confirmed on 23 November 2026 — 8 Cherwell Street, Oxford OX4 1BG.</b> Free cancellation runs to <b>20 June 2027</b>. It is <b>self check-in after 3pm and self check-out before 11am</b>, and the access codes arrive by message <b>between 2pm and 3pm on the day you land</b> — so somebody needs a working phone that afternoon, not just a printout.<br><br><b>The luggage drop is still worth asking for, but ask early.</b> The listing offers it on request, and Dori has since explained why check-in cannot move: the previous guests are not out until 11am and the rooms are turned round between then and three. That is a real constraint, not a soft one — so treat the drop as a favour to be arranged weeks ahead, not something to spring on the day.</div>
 <p style="margin-bottom:0"><b>And it is not unflagged either.</b> Two recent guests noted small things — one found a stained towel and hair on the floors, another that new traffic restrictions turned the advertised car park into a long way round. Nobody is driving, and 4.8 cleanliness across ninety-eight stays is what a well-run house looks like, not a flawless one.</p>
 <div class="staysec">And the Oxford you came for</div>
 <p>All of it is inside fifteen minutes on foot, and the Saturday is built around exactly this.</p>
@@ -1362,8 +1364,9 @@ ${timeline([
  {t:"7:15am",h:"Heathrow",d:"THAI lands early. Allow an hour for the queue and the bags.",cls:"key"},
  {t:"≈9:30am",h:"The Airline coach",d:"Straight to Gloucester Green, about every twenty minutes, around the clock. Eighty to ninety minutes, roughly £18–25 single.",cls:"key"},
  {t:"≈11:00am",h:"Gloucester Green",d:"Then a cab across town. It is twenty-three minutes on foot and nobody is walking that with bags."},
- {t:"Midday",h:"The hours before check-in",d:"Landing at quarter past seven buys a whole morning and costs a wait. Dori offers a luggage drop in the living room on request — ask for it before you fly. Then lunch on Cowley Road, a first walk to Magdalen Bridge, and up to South Park for the view. Staying upright and outdoors beats a nap, and the jet lag is shorter for it.",cls:"soft"},
- {t:"3:00pm",h:"The en-suite house",d:"Self check-in on a key safe. Three doubles, three en-suites, an open-plan kitchen and a walled garden. Nobody has to agree a shower order, which on the Sunday morning will matter more than it sounds.",cls:"key"},
+ {t:"Midday",h:"The hours before check-in",d:"Landing at quarter past seven buys a whole morning and costs a wait. Dori offers a luggage drop in the living room on request — arrange it weeks ahead, not on the day. Then lunch on Cowley Road, a first walk to Magdalen Bridge, and up to South Park for the view. Staying upright and outdoors beats a nap, and the jet lag is shorter for it.",cls:"soft"},
+ {t:"2–3pm",h:"Watch your phone",d:"Dori sends the access codes by message between two and three on the day of arrival, not before. Somebody needs a charged phone and a signal.",cls:"key"},
+ {t:"3:00pm",h:"8 Cherwell Street",d:"Self check-in on the codes. Three doubles, three en-suites, an open-plan kitchen and a walled garden. Nobody has to agree a shower order, which on the Sunday morning will matter more than it sounds.",cls:"key"},
  {t:"Evening",h:"Eat on the doorstep",d:"St Clement’s has the Port Mahon and the Coconut Tree at the end of the street; three minutes the other way is Cowley Road, where the choice is Caribbean, Bangladeshi, Lebanese or Polish.",cls:"key"},
  {t:"Late",h:"Do not go hard tonight",d:"Tomorrow is the only full day in Oxford and it has six medieval pubs at the end of it."}
 ])}
