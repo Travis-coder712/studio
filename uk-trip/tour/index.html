@@ -214,6 +214,13 @@ table.money tr.tot td{border-bottom:0; border-top:2px solid var(--ink); padding-
 .note{background:color-mix(in srgb,var(--gold) 15%,transparent); border:1px solid color-mix(in srgb,var(--gold) 40%,transparent);
   border-radius:13px; padding:13px 15px; margin:0 0 14px; font-size:14px; line-height:1.6; color:var(--ink2)}
 .note b{color:var(--ink)}
+.todo{background:color-mix(in srgb,var(--red) 10%,transparent); border:1px solid color-mix(in srgb,var(--red) 38%,transparent);
+  border-radius:13px; padding:13px 15px; margin:0 0 14px; font-size:14px; line-height:1.6; color:var(--ink2)}
+.todo b{color:var(--ink)}
+.todo .th{display:flex; align-items:center; gap:7px; font:800 10px/1 Inter,sans-serif; letter-spacing:.11em;
+  text-transform:uppercase; color:var(--red); margin-bottom:7px}
+.todo .th svg{flex:0 0 auto}
+.todo p:last-child{margin-bottom:0}
 .tag{display:inline-block; font:800 10px/1 Inter,sans-serif; letter-spacing:.1em; text-transform:uppercase;
   padding:5px 8px; border-radius:6px; margin:0 5px 5px 0}
 .tag.g{background:color-mix(in srgb,var(--green) 16%,transparent); color:var(--green)}
@@ -477,11 +484,11 @@ footer{max-width:var(--maxw); margin:0 auto; padding:0 16px 20px; font-size:12px
    ============================================================ */
 
 const MONEY = [
-  {k:"Flights — the points booking", v:1000, n:"Taxes and carrier charges only — Melbourne–Bangkok–Gatwick out, London–Singapore–Kuala Lumpur–Melbourne back", when:0},
+  {k:"Flights — the points booking", v:1359, n:"Taxes and carrier charges only, now read off the two issued e-tickets — A$343.60 out, £515.74 back. Premium Economy Melbourne–Bangkok–Gatwick; Economy London–Singapore–Kuala Lumpur–Melbourne", when:0},
   {k:"Oxford — Cherwell Gates", v:314, n:"2 nights, the four-bed duplex on St Clement’s", when:3},
   {k:"Bath",           v:181,  n:"1 night, 12 Trim Street", when:4},
   {k:"London — Hampstead", v:810, n:"6 nights, Rosecroft Avenue", when:5},
-  {k:"Lord’s tickets", v:665, n:"Days 1 and 3, £175 each through the MCC mates", when:13},
+  {k:"Lord’s tickets", v:692, n:"Days 1 and 3, £175 each through the MCC mates — converted at 1.9767, the rate actually quoted on the transfer", when:13},
   {k:"Trains &amp; Oyster", v:300, n:"Estimate — the Heathrow coach, Didcot, Paddington, tube", when:6},
   {k:"ETA, insurance, eSIM", v:270, n:"Estimate — £20 UK ETA, cover, data", when:0}
 ];
@@ -1225,29 +1232,30 @@ const PAGES = [
   <h1>Raising<br>the Bat</h1>
   <p class="sub">A few of us have turned fifty. A couple have never seen Europe. And the Ashes are in England.</p>
   <div class="rule">◆</div>
-  <div class="bigdates">23 June – 6 July 2027</div>
+  <div class="bigdates">23 June – 7 July 2027</div>
   <div class="meta">Oxford · Bath · London</div>
   <div class="rule">◆</div>
-  <p class="lead" style="text-align:left">Fourteen days. Three houses. Two days of Test cricket at Lord’s, a pub crawl for Big John, and Oxford at the <i>front</i> this time — because the jet lag has to happen somewhere, and it may as well happen there.</p>
-  <p class="small" style="text-align:left">Everything in here is secured or priced — real addresses, real times, real numbers. Twenty pages, about five minutes.</p>
+  <p class="lead" style="text-align:left">Fifteen days. Three houses, and one night still to find. Two days of Test cricket at Lord’s, a pub crawl for Big John, and Oxford at the <i>front</i> this time — because the jet lag has to happen somewhere, and it may as well happen there.</p>
+  <p class="small" style="text-align:left">Everything in here is secured or priced — real addresses, real times, real numbers. Twenty-one pages, about five minutes.</p>
+  <div class="todo"><div class="th"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" aria-hidden="true"><path d="M12 9v4M12 17h.01"/><circle cx="12" cy="12" r="9"/></svg>One thing outstanding</div><p><b>The flights are booked</b> — real flight numbers, real times, both e-tickets issued. And they moved the end of the trip: the plane home is now <b>Monday 5 July</b>, not the Sunday. Hampstead only runs to the Sunday morning, so there is <b>one night with no bed behind it — Sunday 4 July</b>. Page eighteen is about nothing else.</p></div>
   <div class="covertip"><span class="cti"><svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9 3 3 5.5v15L9 18l6 3 6-2.5v-15L15 6z"/><path d="M9 3v15M15 6v15"/></svg></span><span>Three pages carry a green <b>Tap to open the map</b> button — hand-drawn maps of both pub crawls, and of Hampstead with the walk to the tube, Lord’s and Wimbledon. Tap them.</span></div>
   <div class="runorder">
     <div class="rol">How it runs</div>
     <div class="ro"><b>1</b><span>Why you should come, and the shape of the fourteen days</span></div>
     <div class="ro"><b>2</b><span>The three houses, in the order you reach them</span></div>
-    <div class="ro"><b>3</b><span>Then every day in order, 23 June to 6 July</span></div>
+    <div class="ro"><b>3</b><span>Then every day in order, 23 June to 7 July</span></div>
     <div class="ro"><b>4</b><span>And what the whole thing costs</span></div>
   </div>
 </div>`},
 
 /* 2 */ { id:"shape", nav:"The shape of it", sub:"Overview", html:`
 <div class="kicker">The shape of it</div>
-<h2>Three houses, fourteen days, and Oxford first</h2>
+<h2>Three houses, fifteen days, and Oxford first</h2>
 <p class="lead">This isn’t a coach tour. It’s three houses, long enough in each to stop being a tourist, with the cricket in the middle of it. The order has flipped since the last version: Oxford and Bath now come <i>before</i> London, not after. The next three pages are the houses in the order you reach them; after that it is day by day.</p>
 <div class="grid2">
   <div class="stat"><div class="n">2</div><div class="l">nights in Oxford</div><div class="x">St Clement’s — a minute from Magdalen Bridge, and the gentlest place to be jet-lagged.</div></div>
   <div class="stat"><div class="n">1</div><div class="l">night in Bath</div><div class="x">Built entirely around Big John’s crawl.</div></div>
-  <div class="stat"><div class="n">6</div><div class="l">nights in London</div><div class="x">Hampstead. A house with a garden, not a hotel corridor.</div></div>
+  <div class="stat"><div class="n">6<span style="font-size:.52em;color:var(--red)"> +1</span></div><div class="l">nights in London</div><div class="x">Hampstead, six nights. The seventh — Sunday 4 July — has no bed yet.</div></div>
   <div class="stat"><div class="n">2</div><div class="l">days at Lord’s</div><div class="x">Days one and three of the Ashes Test. Already in hand.</div></div>
 </div>
 ${timeline([
@@ -1259,10 +1267,12 @@ ${timeline([
  {t:"Mon 28",h:"London. Hampstead.",d:"Six nights in the one bed."},
  {t:"Wed 30",h:"Lord’s, day one",d:"The Ashes, second Test.",cls:"key"},
  {t:"Fri 2",h:"Lord’s, day three",d:"The second of our two days.",cls:"key"},
- {t:"Sun 4",h:"Home the long way",d:"Checkout, then Heathrow at 7:25pm.",cls:"key"},
- {t:"Tue 6",h:"Melbourne, 6:15am",d:"",cls:"soft"}
+ {t:"Sun 4",h:"A bed still to find",d:"Checkout at eleven, and the plane does not go until tomorrow night. Lord’s day five is on, four miles away.",cls:"key"},
+ {t:"Mon 5",h:"Home the long way",d:"BA 11 out of Heathrow, 7:25pm."},
+ {t:"Wed 7",h:"Melbourne, 6:15am",d:"",cls:"soft"}
 ])}
-<div class="note"><b>Why the order changed.</b> The flights are a points booking, and the seats were there on the Wednesday, not the Sunday. That lands everyone in England before the cricket instead of after it — so Oxford and Bath move to the front, and the jet lag gets spent on a river and a pub crawl rather than on day one at Lord’s. The Lord’s Test itself has not moved: 30 June to 4 July, and our tickets are days one and three.</div>`},
+<div class="note"><b>Why the order changed.</b> The flights are a points booking, and the seats were there on the Wednesday, not the Sunday. That lands everyone in England before the cricket instead of after it — so Oxford and Bath move to the front, and the jet lag gets spent on a river and a pub crawl rather than on day one at Lord’s. The Lord’s Test itself has not moved: 30 June to 4 July, and our tickets are days one and three.</div>
+<div class="todo"><div class="th"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" aria-hidden="true"><path d="M3 10h18M7 3v3M17 3v3"/><rect x="3" y="6" width="18" height="15" rx="2.4"/><path d="M12 13v4M10 15h4"/></svg>And then the tail grew a day</div><p>The booked return leaves <b>Monday 5 July</b> and lands Wednesday the 7th — a day later than this book was built for. Which is good news twice over: <b>Lord’s day five on the Sunday is now reachable</b> instead of being the day you fly. But <b>Hampstead is booked to Sunday morning only</b>, so Sunday 4 July needs a bed. It is the one unresolved line in the whole trip.</p></div>`},
 
 /* 3 */ { id:"pitch", nav:"Why come", sub:"The case", html:`
 <div class="kicker">The case for it</div>
@@ -1324,24 +1334,27 @@ ${gallery("oxsights","Five things to walk to while the jet lag wears off.")}
 /* 7 */ { id:"d0", nav:"Wed 23 June", sub:"Melbourne → the air", html:`
 <div class="dayhead"><div class="daynum air"><div class="d">23</div><div class="m">Jun</div></div>
 <div class="wrap"><div class="dow">Wednesday</div><h2>The long way to England</h2><div class="where">Melbourne · Tullamarine</div></div></div>
-<p class="lead">A Wednesday lunchtime departure — civilised, and gone before the school term has finished. Travis goes first and alone, which is the price of a seat bought with somebody else’s points.</p>
+<span class="tag r">Ticketed</span><span class="tag g">Premium Economy</span><span class="tag y">Finnair + BA</span>
+<p class="lead">A Wednesday lunchtime departure — civilised, and gone before the school term has finished. Travis goes first and alone, which is the price of a seat bought with somebody else’s points. And it is <b>Premium Economy the whole way out</b>, which is better than anything this book ever modelled.</p>
 ${timeline([
- {t:"10:50am",h:"At the airport",d:"Three hours before an international departure. Bag drop, then a beer.",cls:"soft"},
- {t:"1:50pm",h:"Melbourne → Bangkok",d:"Finnair, out over the top of Australia.",cls:"key"},
- {t:"—",h:"Bangkok",d:"Connection length still to be confirmed with the man holding the booking."},
- {t:"Thursday",h:"Bangkok → Gatwick",d:"British Airways — and it is Gatwick, not Heathrow. BA brought this route back in late 2024 after four years off, and it runs three times a week, which is exactly why there were only ever two departure days to choose from.",cls:"key"}
+ {t:"10:50am",h:"At the airport",d:"Three hours before an international departure. Terminal 2. Bag drop, then a beer.",cls:"soft"},
+ {t:"1:50pm",h:"AY 146 · Melbourne → Bangkok",d:"Finnair, an A350-900, nine hours twenty-five out over the top of Australia. Into Bangkok 8:15pm.",cls:"key"},
+ {t:"2h 20m",h:"Bangkok",d:"Tight but workable, and it is the only connection on the way out. Nothing to collect — straight through to the next gate."},
+ {t:"10:35pm",h:"BA 2230 · Bangkok → Gatwick",d:"British Airways, a 777, thirteen hours twenty. And it is Gatwick, not Heathrow — BA brought this route back in late 2024 after four years off, and it runs three times a week, which is exactly why there were only ever two departure days to choose from.",cls:"key"},
+ {t:"5:55am Thu",h:"London Gatwick · Terminal S",d:"",cls:"key"}
 ])}
-<div class="note"><b>Why this flight and not the Emirates one this book was built on.</b> That fare has since stepped from A$2,745 to A$2,974, and on these June dates it goes to A$4,092. The points booking costs about a thousand dollars in taxes and carrier charges. That one fact is the reason the whole trip now starts in Oxford instead of London.</div>
-<p class="small">Four things still open on the booking: the Gatwick arrival time, the Bangkok connection, whether the thousand holds on the Wednesday as well as the Friday, and whether out and back are one ticket — which decides whether the bags check through at Singapore on the way home.</p>`},
+<div class="note"><b>Why this flight and not the Emirates one this book was built on.</b> That fare had stepped from A$2,745 to A$2,974, and on these June dates to A$4,092. The points booking costs <b>A$343.60</b> in taxes and carrier charges going out, and <b>£515.74</b> coming back — about <b>A$1,359</b> all up, against four thousand for a cash seat. That one fact is the reason the whole trip now starts in Oxford instead of London.</div>
+<p class="small">Both e-tickets were issued 15 November 2026 and both were charged to the same card, so the one thing still to settle is whose card that was — which decides whether the A$1,359 is owed to the man with the points or already paid. Baggage allowance is not printed on either ticket and Premium out may not match Economy back; worth a look under Manage Booking before packing.</p>`},
 
 /* 8 */ { id:"d1", nav:"Thu 24 June", sub:"Gatwick → Oxford", html:`
 <div class="dayhead"><div class="daynum"><div class="d">24</div><div class="m">Jun</div></div>
 <div class="wrap"><div class="dow">Thursday</div><h2>A spare room in Oxford</h2><div class="where">Gatwick → Oxford</div></div></div>
-<p class="lead">A day ahead of everybody else, and it costs nothing — there is a mate in Oxford with a spare bed. Meanwhile the other four are somewhere over the Indian Ocean.</p>
+<p class="lead">A day ahead of everybody else, and it costs nothing — there is a mate in Oxford with a spare bed. Meanwhile the other four are somewhere over the Indian Ocean, a full day behind.</p>
 ${timeline([
- {t:"Morning",h:"Gatwick",d:"Through the gate, through the bags, into England.",cls:"key"},
- {t:"Midday",h:"Across to Oxford",d:"There is no direct coach from Gatwick the way there is from Heathrow. The train via Reading is the usual answer. This is the one leg of the trip still to be timetabled properly."},
- {t:"Afternoon",h:"The spare room",d:"Which is precisely why the Oxford flat is booked from Friday and not Thursday — no sense paying for a five-person house to sleep one.",cls:"key"},
+ {t:"5:55am",h:"Gatwick, Terminal S",d:"Through the gate, through the bags, into England. Call it seven o’clock before you are out the front — and seven o’clock at Gatwick in late June is broad daylight.",cls:"key"},
+ {t:"Morning",h:"Across to Oxford",d:"National Express runs Gatwick straight through to Oxford bus station without crossing London, which is the easy version; the early-morning departures still need checking against a 7am exit. The train via Reading is the known-reliable fallback. Either way this is now a bookable leg instead of a question mark — do it once the arrival time is in front of you."},
+ {t:"Mid-morning",h:"Oxford, with a whole day in hand",d:"Landing before six buys back the entire Thursday. Breakfast somewhere, then a walk, then stay outdoors.",cls:"key"},
+ {t:"Afternoon",h:"The spare room",d:"Which is precisely why Cherwell Gates is booked from Friday and not Thursday — no sense paying for a five-person house to sleep one.",cls:"key"},
  {t:"Evening",h:"Stay up until it is dark",d:"The single most useful thing you can do on day one. Oxford in late June does not go dark until half past nine, which makes it easy."}
 ])}
 <div class="note"><b>And in Melbourne, the other four leave today.</b> Brother, niece, nephew and girlfriend, out of Tullamarine on the Thursday and into Heathrow tomorrow morning — <b>THAI, 1:30pm Melbourne, Heathrow 7:15am Friday</b>, which is exactly why tomorrow starts early. Most of them are staying on in Europe afterwards, so the only leg that has to be bought together is this one: <b>A$1,448 one way</b>, checked bag in the fare, drilled to the airline’s own booking page on 15 November 2026.</div>`},
@@ -1478,46 +1491,70 @@ ${timeline([
  {t:"≈6:30pm",h:"Out into a Friday night",d:"Last cricket of the trip. Do not go quietly.",cls:"key"}
 ])}
 <div class="card"><h3>About those tickets</h3>
-<p style="margin-bottom:0">Days one and three, £175 each, secured through the MCC mates on 27 October 2026 — not the public ballot, which most people miss. That is <b>A$665 for two days of Ashes cricket at Lord’s</b>, at face value. A tour package would charge four times it. <b>Treat two days as the minimum</b>, not the plan: more can come through the same channel or the official exchange, and the budget below assumes only the two we already hold.</p></div>`},
+<p style="margin-bottom:0">Days one and three, £175 each, secured through the MCC mates on 27 October 2026 — not the public ballot, which most people miss. That is <b>A$692 for two days of Ashes cricket at Lord’s</b>, at face value. A tour package would charge four times it. <b>Treat two days as the minimum</b>, not the plan: more can come through the same channel or the official exchange, and the budget below assumes only the two we already hold.</p></div>`},
 
 /* 17 */ { id:"d10", nav:"Sat 3 July", sub:"Last London day", html:`
 <div class="dayhead"><div class="daynum"><div class="d">3</div><div class="m">Jul</div></div>
 <div class="wrap"><div class="dow">Saturday</div><h2>London, properly, one more time</h2><div class="where">London · last full day</div></div></div>
-<p class="lead">A Saturday in London in July with nowhere you have to be, and the last full day of the whole thing. Pack tonight.</p>
+<p class="lead">A Saturday in London in July with nowhere you have to be. It used to be the last full day of the whole thing; since the flights were booked it is not — there are two more.</p>
 ${timeline([
  {t:"Morning",h:"A market",d:"Borough for food, Columbia Road for flowers and a Sunday-ish crowd on a Saturday, Portobello for the junk and the stalls. Broadway Market in Hackney if you want where Londoners actually go."},
  {t:"Afternoon",h:"Pick one big thing",d:"The Tower, the Churchill War Rooms, a Thames Clipper down to Greenwich. One, not three."},
- {t:"≈6:00pm",h:"Back to Hampstead",d:"Pack properly. Checkout is eleven tomorrow and the flight is tomorrow night."},
+ {t:"≈6:00pm",h:"Back to Hampstead",d:"Pack properly anyway. Checkout is eleven tomorrow morning even though the flight is not until Monday evening."},
  {t:"Evening",h:"Last night in the house",d:"Eat local. The Holly Bush does a proper Saturday dinner and it is four hundred years old.",cls:"key"}
 ])}
-<div class="note"><b>Tomorrow you fly home.</b> Checkout at eleven, Heathrow in the afternoon, and then two days in the air. Whatever you do tonight, do it with that in mind.</div>`},
+<div class="todo"><div class="th"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" aria-hidden="true"><path d="M12 9v4M12 17h.01"/><circle cx="12" cy="12" r="9"/></svg>Last night in this house — but not the last night</div><p><b>Checkout is eleven tomorrow and the bags have nowhere to go.</b> Six nights at Rosecroft Avenue end on Sunday morning; the plane does not leave until Monday evening. Tomorrow’s page is the one to read.</p></div>`},
 
-/* 18 */ { id:"d11", nav:"Sun 4 – Tue 6 July", sub:"The long way home", html:`
-<div class="dayhead"><div class="daynum air"><div class="d">4</div><div class="m">Jul</div></div>
-<div class="wrap"><div class="dow">Sunday</div><h2>Home the long way round</h2><div class="where">Hampstead → Heathrow → the air</div></div></div>
-<p class="lead">Checkout on the Sunday, an evening flight, and then two days of aeroplanes. You land on the Tuesday morning with a week of the school holidays still to run.</p>
+/* 18 */ { id:"d11", nav:"Sun 4 July", sub:"● One night, no bed", html:`
+<div class="dayhead"><div class="daynum"><div class="d">4</div><div class="m">Jul</div></div>
+<div class="wrap"><div class="dow">Sunday</div><h2>The night that has no bed behind it</h2><div class="where">London · one night outstanding</div></div></div>
+<div class="todo"><div class="th"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" aria-hidden="true"><path d="M12 9v4M12 17h.01"/><circle cx="12" cy="12" r="9"/></svg>Accommodation needed · Sunday 4 July</div><p><b>Hampstead is booked Monday 28 June to Sunday 4 July — six nights, checkout eleven o’clock Sunday morning.</b> The flight home does not leave Heathrow until <b>7:25pm Monday 5 July</b>. That is one night, and a Monday daytime, with nothing booked under them.</p><p style="margin-bottom:0">It is the only unbooked night of the trip, and it exists because the award seats came back on the Monday rather than the Sunday. Nothing has gone wrong — it simply has to be filled.</p></div>
+<p class="lead">Which is not a bad problem. The Sunday you have gained is <b>day five of the Lord’s Test</b>, four miles down the road, and the Monday is a free London day instead of a departure scramble. You only need somewhere to sleep in between.</p>
 ${timeline([
- {t:"11:00am",h:"Checkout, Rosecroft Avenue",d:"Six nights gone. The garden on the last morning, if July does what July usually does."},
- {t:"Daytime",h:"A last London Sunday",d:"Bags into left luggage at Paddington and go and do one more thing. Day five at Lord’s is being played about four miles away and our tickets do not cover it.",cls:"soft"},
- {t:"≈4:30pm",h:"Heathrow",d:"Three hours before the gate."},
- {t:"7:25pm",h:"London → Singapore",d:"British Airways.",cls:"key"},
- {t:"Monday",h:"Singapore → Kuala Lumpur → Melbourne",d:"Malaysian for the second half. If this is not the same ticket as the BA leg, the bags will not check through and somebody collects and re-drops them in Singapore."},
- {t:"6:15am Tuesday",h:"Melbourne",d:"Term 3 does not start until Monday 12 July.",cls:"key"}
+ {t:"11:00am",h:"Checkout, Rosecroft Avenue",d:"Six nights gone. The garden on the last morning, if July does what July usually does. Bags out by eleven whatever happens.",cls:"key"},
+ {t:"Daytime",h:"Lord’s, day five — if there is a day five",d:"Being played about four miles away. A fifth day is the cheapest ticket of the Test and the most likely to be a classic. If the match is already over, the ground is shut and you have a free London Sunday instead.",cls:"soft"},
+ {t:"Tonight",h:"← This is the bed that is missing",d:"Three ways to fill it, below."},
+ {t:"Mon daytime",h:"A whole spare Monday",d:"Nothing booked and nothing needed until mid-afternoon. Left luggage, one last thing, a long lunch."},
+ {t:"≈4:00pm Mon",h:"Out to Heathrow T5",d:"Terminal 5 for BA. Three hours before the gate puts you there by half four.",cls:"key"}
 ])}
-<div class="note"><b>There is a second option on the return.</b> The same award booking can come home on Monday 5 July instead, landing Wednesday the 7th. It costs an extra night in London — Hampstead is only held to the Sunday — and what it buys is day five at Lord’s, if there is still a Test to watch by then.</div>`},
+${legBox("🛏️ &nbsp;Three ways to fill Sunday night",[
+ {i:"🏡",h:"A seventh night at the Coach House",d:"The obvious first ask: message the Hampstead host and extend to Monday 5 July. Nobody moves, nobody re-packs, and the Monday checkout is on the way to Heathrow instead of away from it. It should also be the cheapest night of the whole trip per head — the cleaning fee is already paid, so an added night carries only the nightly rate.",p:"ask first"},
+ {i:"🚇",h:"One night central, on the Heathrow line",d:"Paddington or Victoria. Costs a bag move on the Sunday, buys a direct run to T5 on the Monday and a last night somewhere you would actually want to be.",p:"to price"},
+ {i:"✈️",h:"One night out by Heathrow",d:"The easy-Monday option, and the dullest. It also kills the Sunday evening in London and makes day five at Lord’s a round trip out and back. Only worth it if the Coach House says no and central is dear.",p:"to price"}
+],"Ask the Hampstead host before pricing the other two — if the seventh night is free the question is closed, and it is the only one of the three that costs nothing in bag-dragging.")}
+<div class="note"><b>One thing to settle before it can be priced: how many beds.</b> The other four fly out on the Thursday and most are staying on in Europe afterwards, so it is not yet clear who is still in London on 4 July. At a minimum it is one bed; at a maximum it is the same five. Worth asking them this week, because a room for one and a house for five are very different numbers.</div>
+<p class="small">This night is deliberately <i>not</i> in the cost figure on the money page. The accommodation total there covers nine booked nights across Oxford, Bath and Hampstead; this would be a tenth, and until it is priced putting a guess in the total would make the whole number softer than it is.</p>`},
 
-/* 19 */ { id:"money", nav:"What it costs", sub:"Every number", html:`
+/* 19 */ { id:"d12", nav:"Mon 5 – Wed 7 July", sub:"The long way home", html:`
+<div class="dayhead"><div class="daynum air"><div class="d">5</div><div class="m">Jul</div></div>
+<div class="wrap"><div class="dow">Monday</div><h2>Home the long way round</h2><div class="where">London → Heathrow → Singapore → KL → Melbourne</div></div></div>
+<span class="tag r">Ticketed</span><span class="tag g">Economy</span><span class="tag y">BA + Malaysia</span>
+<p class="lead">An evening flight out of Heathrow and then two days of aeroplanes, three sectors and two stops. You land on the Wednesday morning with the best part of a week of the school holidays still to run.</p>
+${timeline([
+ {t:"Daytime",h:"A last London Monday",d:"Bags into left luggage and go and do one more thing. Everything is open and nothing is crowded on a Monday in July.",cls:"soft"},
+ {t:"≈4:00pm",h:"Heathrow, Terminal 5",d:"Three hours before the gate. T5 is the BA terminal and the Piccadilly line runs to it directly."},
+ {t:"7:25pm",h:"BA 11 · London → Singapore",d:"British Airways, an A380, thirteen hours forty. Into Changi Terminal 1 at 4:05pm Tuesday.",cls:"key"},
+ {t:"2h 10m",h:"Singapore — and a terminal change",d:"Arrive T1 4:05pm, depart T2 6:15pm. Two hours and ten minutes with a terminal move inside it. The Skytrain between T1 and T2 is a few minutes and runs constantly, but this is the connection on the whole trip worth knowing about in advance.",cls:"key"},
+ {t:"6:15pm Tue",h:"MH 608 · Singapore → Kuala Lumpur",d:"Malaysia Airlines, a 737, seventy minutes. Into KL 7:25pm, then an hour and five on the ground."},
+ {t:"8:30pm Tue",h:"MH 147 · Kuala Lumpur → Melbourne",d:"An A330-900, seven hours forty-five, overnight."},
+ {t:"6:15am Wed",h:"Melbourne, Terminal 2",d:"Wednesday 7 July. Term 3 does not start until Monday 12 July.",cls:"key"}
+])}
+<div class="note"><b>Economy coming home, Premium going out.</b> Out and back are two separate tickets on two separate records, which is normal for an award booking and means the bags will not necessarily check all the way through. Ask the question in Singapore rather than assume it — and check the two allowances, because Premium out and Economy back may not match.</div>
+<div class="note"><b>The trip got a day longer than this book was written for.</b> The old plan flew home Sunday 4 July and landed Tuesday the 6th. The booked tickets leave Monday 5 July and land Wednesday the 7th. What that buys is the Sunday — day five at Lord’s, and a last unhurried London day. What it costs is one night’s accommodation, which is the page before this one.</div>`},
+
+/* 20 */ { id:"money", nav:"What it costs", sub:"Every number", html:`
 <div class="kicker">What it costs</div>
 <h2>${aud(TOTAL)} a head, and here is every line of it</h2>
-<p class="lead">Priced for five people sharing. Everything below is either secured at that number or a deliberately cautious estimate — nothing in here is a guess dressed up as a figure.</p>
+<p class="lead">Priced for five people sharing. Everything below is either secured at that number or a deliberately cautious estimate — nothing in here is a guess dressed up as a figure. The flight line is no longer an estimate at all: it is read straight off the two issued e-tickets.</p>
 <div class="card">
 <table class="money">
 <thead><tr><th>Line</th><th class="r">Per person</th></tr></thead>
 <tbody id="moneyRows"></tbody>
 </table>
 </div>
+<div class="todo"><div class="th"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" aria-hidden="true"><path d="M3 18V8a2 2 0 0 1 2-2h8a3 3 0 0 1 3 3v2h3a3 3 0 0 1 3 3v4M3 18h18M7 10h3"/></svg>One line is missing from this table</div><p><b>Sunday 4 July has no accommodation booked and no figure in the total above.</b> Hampstead runs out on the Sunday morning and the plane does not go until Monday evening, so there is a tenth night to buy. It is left out deliberately rather than guessed at.</p><p style="margin-bottom:0">For scale: a seventh night at the Coach House at the same rate the other six average would be about <b>A$135 a head</b> — and it should come in under that, because the cleaning fee is already paid. Treat <b>A$100–180 a head</b> as the band until it is actually priced, and note that it may be one bed rather than five.</p></div>
 <h3 style="margin-top:22px">The bit worth looking at twice</h3>
-<p>Nine nights of accommodation across Oxford, Bath and Hampstead, for five people, works out at:</p>
+<p>Nine <i>booked</i> nights of accommodation across Oxford, Bath and Hampstead, for five people, works out at:</p>
 <div class="pernight">
   <div class="pn"><div class="city">Oxford</div><div class="v">A$157</div><div class="u">per person per night · 2 nights</div><div class="bar"><i style="width:87%"></i></div></div>
   <div class="pn"><div class="city">Bath</div><div class="v">A$181</div><div class="u">per person per night · 1 night</div><div class="bar"><i style="width:100%"></i></div></div>
@@ -1530,27 +1567,28 @@ ${timeline([
 <p>At about A$1.95 to the pound that is <b>A$59 a night midweek and A$98 on the weekend</b> in London, against <b>A$135</b> for the Hampstead house. So the house is running at roughly double a bunk — and Tuesday 29 June has no bed available at the hostel at all. Bath is the wide one: A$47 against A$181, for the single-night reason above.</p>
 <div class="note">For double a bunk bed you get your own room, a front door that is yours, a kitchen, somewhere to sit at the end of the day, and no 10am checkout into the street. That is the trade, stated plainly.</div>
 <h3 style="margin-top:22px">What is not in the number</h3>
-<p>Food, drink and anything you buy. Budget £50–70 a day if you eat and drink well, which on this trip you will — call it <b>A$1,300–1,900</b> across fourteen days. Add a third Lord’s day (about A$333) if one comes back on the exchange. And the four flying out on the Thursday are buying their own fares, which are not in the figure above.</p>
+<p><b>Sunday 4 July’s bed</b> — see the red box above; it is the one real hole in the number. Then food, drink and anything you buy: budget £50–70 a day if you eat and drink well, which on this trip you will — call it <b>A$1,400–2,050</b> across fifteen days. Add a third Lord’s day (about A$346) if one comes back on the exchange, and day five on the Sunday is now reachable too. And the four flying out on the Thursday are buying their own fares, which are not in the figure above.</p>
 <div class="note"><b>Four sharing instead of five costs about A$326 more each.</b> The houses are booked whole, so the beds divide the same way whoever is in them — which is why a late drop-out is expensive for everybody else, not just for them.</div>
-<p class="small">Flights verified against Google Flights and the airlines on seventeen reads between 29 October and 14 November 2026; the figure here is the taxes-and-charges estimate on the points booking, not a cash fare. Bath and Hampstead are secured Airbnb reservation figures; Oxford is a live quote for 25–27 June read on 15 November 2026, not yet booked. Hostel rates read from yha.org.uk on 7 November 2026, against the London dates, which have not moved. Trains, Oyster, the Heathrow coach, the UK ETA, insurance and an eSIM are estimates and deliberately on the high side.</p>`},
+<p class="small">The flight figure is read off the two Qantas e-tickets, both issued 15 November 2026 and both logged on 22 November 2026: A$343.60 charged in AUD on the outbound, £515.74 charged in GBP on the return, converted at mid-market. It is taxes and carrier charges on a points booking, not a cash fare, and the GBP side will land a little higher if the card added a foreign-currency margin. Cash fares were verified against Google Flights and the airlines on seventeen reads between 29 October and 14 November 2026, for comparison only. Bath and Hampstead are secured Airbnb reservation figures; Oxford is a live quote for 25–27 June read on 15 November 2026, not yet booked. Hostel rates read from yha.org.uk on 7 November 2026, against the London dates, which have not moved. Trains, Oyster, the Heathrow coach, the UK ETA, insurance and an eSIM are estimates and deliberately on the high side.</p>`},
 
-/* 20 */ { id:"end", nav:"Come with us", sub:"The ask", html:`
+/* 21 */ { id:"end", nav:"Come with us", sub:"The ask", html:`
 <div class="cover" style="padding-top:8px">
 <div class="kicker" style="justify-content:center">The ask</div>
-<h2 style="font-size:clamp(30px,7.4vw,44px)">Five of us, and the dates are set</h2>
-<p class="lead" style="text-align:left">The flights are a points booking and the seats are held. Two days of Ashes cricket at Lord’s are in hand at face value. Hampstead is secured for six nights and does not move — the Test has not moved either.</p>
-<p style="text-align:left">What is left is the front half. Oxford and Bath both need rebooking onto the new June dates, and both of the old reservations cancel free, so nothing is at risk while that happens.</p>
+<h2 style="font-size:clamp(30px,7.4vw,44px)">Five of us, and the flights are issued</h2>
+<p class="lead" style="text-align:left">The outbound and the return are both <b>ticketed</b> — real flight numbers, real times, Premium Economy out of Melbourne on Wednesday 23 June and home out of Heathrow on Monday 5 July. Two days of Ashes cricket at Lord’s are in hand at face value. Hampstead is secured for six nights and does not move — the Test has not moved either.</p>
+<p style="text-align:left">What is left is the front half and one night at the back. Oxford and Bath both need rebooking onto the new June dates, and both of the old reservations cancel free, so nothing is at risk while that happens. And <b>Sunday 4 July needs a bed</b>, because the booked flight home is a day later than this book was built for.</p>
 <div class="rule">◆</div>
 <div class="grid2" style="text-align:left">
   <div class="stat"><div class="n">${aud(TOTAL)}</div><div class="l">per person, all in</div></div>
-  <div class="stat"><div class="n">14</div><div class="l">days, 23 Jun – 6 Jul 2027</div></div>
+  <div class="stat"><div class="n">15</div><div class="l">days, 23 Jun – 7 Jul 2027</div></div>
 </div>
 <div class="card" style="text-align:left"><h3>What you need to do</h3>
 <p><b>1. Rebook Oxford and Bath.</b> Cherwell Gates on St Clement’s for Friday 25 to Sunday 27 June, and Trim Street for the Sunday night. Bath comes in seventy-five dollars a head <i>under</i> the booking it replaces. Oxford comes in <i>over</i> — forty-one dollars a head more than the Jericho house, which is simply what the dates moving costs; against the Cowley Road flat we were looking at a week ago it is eighty-nine dollars cheaper. Read the two flags on the Oxford page first: one bathroom, and a listing Airbnb has marked bottom-ten-per-cent. Ask the host what is in bedrooms three and four before you pay.</p>
 <p><b>2. Release the old two.</b> Trim Street cancels free until 4 June 2027 and the Jericho house until 4 July 2027, so do it in that order and there is never a gap.</p>
 <p><b>3. Book the Thursday outbound.</b> This is the only leg the four have to buy together — most of them are coming home much later, so buy one ways. <b>THAI, A$1,448</b>: out 1:30pm Thursday, into Heathrow 7:15am Friday, one stop, <b>checked bag in the fare</b>, bookable on thaiairways.com itself. <b>Finnair is A$1,233</b> and lands at ten past nine, also direct with the airline — but it is a Light fare with <i>no</i> checked bag and Google will not quote the bag price, so the real gap is smaller than A$215. Ignore the A$672 Air India headline: Google hides the price because it <i>might be incorrect</i>, and on the return search both its pairings read <i>price unavailable</i> — tenth read running.</p>
-<p><b>3b. And if Northy comes, he comes home with you.</b> <b>THAI return, A$2,688.</b> Same outbound; home out of Heathrow 9:25pm on Sunday 4 July and into Melbourne 7:30am Tuesday — an hour and a quarter behind the award routing, off the same Sunday evening. Google rates it low, A$1,274 under the usual band.</p>
-<p style="margin-bottom:0"><b>4. Get a UK ETA.</b> £20, approved in minutes, mandatory for Australians. Do it any time before you fly.</p></div>
+<p><b>3b. And if Northy comes — the THAI return no longer gets him home alongside you.</b> <b>THAI return, A$2,688</b>, same outbound, home out of Heathrow 9:25pm on <i>Sunday</i> 4 July and into Melbourne 7:30am Tuesday. That was an hour and a quarter behind the award routing when the award routing flew on the Sunday. It now flies on the <b>Monday</b> and lands Wednesday 7 July — so on the THAI fare Northy would get in <b>nearly a full day ahead</b>, not just behind. The fare is still well priced, A$1,274 under the usual band. But if travelling home together is the point, the leg to match is <b>BA 11, Heathrow 7:25pm Monday 5 July</b>.</p>
+<p><b>4. Fill Sunday 4 July.</b> The one unbooked night. Message the Hampstead host first and ask for a seventh night to Monday 5 July — it is the cheapest and simplest answer, and the cleaning fee is already paid. If that is a no, price one night central on the Heathrow line. Ask the other four whether they are still in London that night before pricing anything, because it may be one bed rather than five.</p>
+<p style="margin-bottom:0"><b>5. Get a UK ETA.</b> £20, approved in minutes, mandatory for Australians. Do it any time before you fly.</p></div>
 <div class="quote" style="text-align:left">He turns fifty once, and the Ashes are only in England every four years. These two things have never lined up before and they will not line up again until he is fifty-four.</div>
 <p class="small" style="text-align:left">Questions, or to see the full planning detail — the ticket tracker, the fare history, the pub crawls stop by stop — go back to the main planner.</p>
 <a class="go" href="../">← The full Fifty Tour planner</a>
