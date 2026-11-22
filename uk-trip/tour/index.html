@@ -485,8 +485,8 @@ footer{max-width:var(--maxw); margin:0 auto; padding:0 16px 20px; font-size:12px
 
 const MONEY = [
   {k:"Flights — the points booking", v:1359, n:"Taxes and carrier charges only, now read off the two issued e-tickets — A$343.60 out, £515.74 back. Premium Economy Melbourne–Bangkok–Gatwick; Economy London–Singapore–Kuala Lumpur–Melbourne", when:0},
-  {k:"Oxford — Cherwell Gates", v:314, n:"2 nights, the four-bed duplex on St Clement’s", when:3},
-  {k:"Bath",           v:181,  n:"1 night, 12 Trim Street", when:4},
+  {k:"Oxford — the en-suite house", v:0, n:"Travis sleeps at his mate’s on Cave Street, round the corner. The other four take the house: A$1,542 the lot, A$385 each for the two nights", when:3},
+  {k:"Bath",           v:219,  n:"1 night, 12 Trim Street — re-read live 23 Nov 2026 at A$1,096.56 for the house", when:4},
   {k:"London — Hampstead", v:810, n:"6 nights, Rosecroft Avenue", when:5},
   {k:"Lord’s tickets", v:692, n:"Days 1 and 3, £175 each through the MCC mates — converted at 1.9767, the rate actually quoted on the transfer", when:13},
   {k:"Trains &amp; Oyster", v:300, n:"Estimate — the Heathrow coach, Didcot, Paddington, tube", when:6},
@@ -518,7 +518,7 @@ const STAYS = {
   bath:{
     name:"Trim Street Townhouse",
     addr:"12 Trim Street, Bath BA1 1HB",
-    nights:1, pp:181, tot:181, rating:"Four beds, two and a half baths, a hot tub in the courtyard",
+    nights:1, pp:219, tot:219, rating:"4.85 from 468 stays · Guest Favourite · location 5.0 · Dream Stays Bath, twelve years hosting",
     ll:[51.382566,-2.361535], zoom:15,
     near:[
       {n:"Roman Baths",m:4},{n:"Bath Abbey",m:4},{n:"Milsom Street",m:4},
@@ -536,31 +536,27 @@ const STAYS = {
     url:"https://www.airbnb.com.au/rooms/5179055"
   },
   oxford:{
-    name:"Cherwell Gates",
-    addr:"St Clement\u2019s Street, Oxford OX4 \u2014 exact address comes on booking",
-    nights:2, pp:157, tot:314, rating:"4.28 from 32 stays \u00b7 cleanliness 4.5 \u00b7 a letting company, first year of hosting",
-    ll:[51.75025,-1.24255], zoom:14,
+    name:"The En-suite House, St Clement’s",
+    addr:"St Clement’s, by South Park, Oxford OX4 — exact address comes on booking",
+    nights:2, pp:193, tot:385, rating:"4.82 from 98 stays · cleanliness 4.8 · Dori and Jim, Superhost, four years hosting",
+    ll:[51.75155,-1.24005], zoom:15,
     near:[
-      {n:"The Plain, for the punts",m:3,hi:true},
-      {n:"Cowley Road, to eat",m:3},
-      {n:"Oxford Botanic Garden",m:5},
-      {n:"Magdalen College",m:6},
-      {n:"Christ Church Meadow",m:7},
-      {n:"Radcliffe Square",m:14},
-      {n:"The Turf Tavern",m:14},
-      {n:"Gloucester Green coaches",m:23},
-      {n:"Oxford station",m:31}
+      {n:"South Park, for the view over Oxford",m:3,hi:true},
+      {n:"Cowley Road, to eat",m:6},
+      {n:"The Plain and Magdalen Bridge",m:8,hi:true},
+      {n:"Sainsbury’s",m:8},
+      {n:"Merton College",m:10},
+      {n:"The High and the city centre",m:12},
+      {n:"Oxford station, on the 280 bus",m:17}
     ],
     pins:[
+      {n:"South Park",ll:[51.75330,-1.23760]},
       {n:"The Plain",ll:[51.74995,-1.24465]},
+      {n:"Magdalen College",ll:[51.75230,-1.24700]},
       {n:"Botanic Garden",ll:[51.75155,-1.24590]},
-      {n:"Magdalen College",ll:[51.75210,-1.24700]},
-      {n:"Radcliffe Square",ll:[51.753472,-1.254359]},
-      {n:"The Turf",ll:[51.754694,-1.252856]},
-      {n:"Gloucester Green",ll:[51.754125,-1.261707]},
-      {n:"Oxford station",ll:[51.753451,-1.269954]}
+      {n:"Merton College",ll:[51.75030,-1.25160]}
     ],
-    url:"https://www.airbnb.com.au/rooms/1552150980275999675"
+    url:"https://www.airbnb.com.au/rooms/869665744625011167"
   }
 };
 
@@ -589,16 +585,6 @@ const PHOTOS = {
     ["bath-hottub","The courtyard hot tub, at night. This is a real thing that is included."],
     ["bath-terrace","The courtyard by day."],
     ["bath-bath","One of the bathrooms."]
-  ],
-  oxford:[
-    ["cherwell-living","The sitting room. Leather the whole way round, a gas fire, and french doors onto the terrace. The kitchen is through the opening on the right."],
-    ["cherwell-dining","The dining end, under a skylight. A wine rack that came with the house, and sunflowers that probably did not."],
-    ["cherwell-kitchen","The kitchen: a six-burner range, granite the length of it, a butcher\u2019s block the size of a small table, and two skylights."],
-    ["cherwell-terrace","The roof terrace. Decking, a barbecue, and Oxford rooftops \u2014 where the Friday evening happens."],
-    ["cherwell-bath","The bathroom. Walk-in shower and a separate bath, twin heated rails, a television in the wall. It is a good one. It is also the only one."],
-    ["cherwell-bed1","Bedroom one \u2014 the king, at the front, looking down onto St Clement\u2019s."],
-    ["cherwell-bed2","Bedroom two, a double."],
-    ["cherwell-bed3","Bedroom three, the smaller double."]
   ],
   oxsights:[
     ["ox-sights-radcam","The Radcliffe Camera. James Gibbs, 1749, and still the building everyone means when they say Oxford."],
@@ -661,13 +647,13 @@ function stayPage(key, kicker, body){
     <div class="grid2" style="margin-top:16px">
       <div class="stat"><div class="n">${aud(s.pp)}</div><div class="l">per person, per night</div>
         <div class="x">${s.nights} night${s.nights>1?"s":""} · ${aud(s.tot)} each all up</div></div>
-      <div class="stat"><div class="n">5</div><div class="l">of us, one front door</div>
-        <div class="x">Not five hotel rooms on five corridors.</div></div>
+      <div class="stat"><div class="n">${key==="oxford"?4:5}</div><div class="l">${key==="oxford"?"in the house, one each":"of us, one front door"}</div>
+        <div class="x">${key==="oxford"?"Three doubles, three en-suites. Travis is at his mate’s on Cave Street, round the corner.":"Not five hotel rooms on five corridors."}</div></div>
     </div>
     ${body}
     <div class="staysec">From the front door, on foot</div>
     <ul class="near">${s.near.map(x=>`<li class="${x.hi?'hi':''}"><span>${x.tube?roundelInline():""}${x.n}${x.tube?`<em class="lineq">${x.tube}</em>`:""}</span><i class="dots"></i><b>${x.m} min</b></li>`).join("")}</ul>
-    <p class="small" style="margin-top:12px">${key==="oxford" ? "Measured from the listing’s own map pin on St Clement’s — the exact address only arrives on booking, so treat these as the conservative end." : "Measured from the confirmed street address, not the listing’s fuzzy map pin."} Walking times at a steady 80 metres a minute with a routing allowance, so they are honest rather than optimistic.</p>
+    <p class="small" style="margin-top:12px">${key==="oxford" ? "These are the <b>host’s own stated times</b>, not ours — the exact address only arrives on booking, so there is nothing to measure from yet. The listing puts the front door 0.4 miles and eight minutes from Magdalen Bridge. Re-measure once the address lands." : "Measured from the confirmed street address, not the listing’s fuzzy map pin. Walking times at a steady 80 metres a minute with a routing allowance, so they are honest rather than optimistic."}</p>
     ${key === "hampstead" ? crawlButton("hampstead","The neighbourhood, the tubes, and how to reach Lord’s and Wimbledon") : ""}
     <div class="staysec">Where it sits</div>
     <div class="plate"><div class="mapbox" id="map-${key}"></div></div>
@@ -1253,7 +1239,7 @@ const PAGES = [
 <h2>Three houses, fifteen days, and Oxford first</h2>
 <p class="lead">This isn’t a coach tour. It’s three houses, long enough in each to stop being a tourist, with the cricket in the middle of it. The order has flipped since the last version: Oxford and Bath now come <i>before</i> London, not after. The next three pages are the houses in the order you reach them; after that it is day by day.</p>
 <div class="grid2">
-  <div class="stat"><div class="n">2</div><div class="l">nights in Oxford</div><div class="x">St Clement’s — a minute from Magdalen Bridge, and the gentlest place to be jet-lagged.</div></div>
+  <div class="stat"><div class="n">2</div><div class="l">nights in Oxford</div><div class="x">Off St Clement’s, by South Park. Three en-suites and a garden — the gentlest place to be jet-lagged.</div></div>
   <div class="stat"><div class="n">1</div><div class="l">night in Bath</div><div class="x">Built entirely around Big John’s crawl.</div></div>
   <div class="stat"><div class="n">6<span style="font-size:.52em;color:var(--red)"> +1</span></div><div class="l">nights in London</div><div class="x">Hampstead, six nights. The seventh — Sunday 4 July — has no bed yet.</div></div>
   <div class="stat"><div class="n">2</div><div class="l">days at Lord’s</div><div class="x">Days one and three of the Ashes Test. Already in hand.</div></div>
@@ -1291,12 +1277,20 @@ ${timeline([
 <div class="quote">Flights on points, cricket in hand, three houses with real keys. All that is left is the booking.</div>`},
 
 /* 4 */ stayPage("oxford","Where we stay \u00b7 Oxford", `
-<p class="lead">St Clement\u2019s: the short, busy street that begins where Magdalen Bridge ends. Three minutes from the punts, six from Magdalen College, and just far enough outside the colleges that you can still get a table.</p>
-<p>This is a change of plan, and an honest one. The original booking was a terrace in Jericho, four minutes from Worcester College \u2014 and it was gone by the time the flights moved to June. What replaces it is better placed than the thing it replaces. <b>Cherwell Gates</b> is a four-bedroom duplex a few doors up from the bridge: a granite kitchen with a six-burner range under two skylights, a sitting room with a gas fire and french doors, and a decked roof terrace over the rooftops. It is also the cheapest four-bedroom in central Oxford on these dates \u2014 <b>A$157 each a night</b>, forty-five dollars a night under the flat we were looking at a week ago.</p>
-<div class="note"><b>The walk, measured the way everything in this book is measured.</b> The Plain and the punt station are <b>three minutes</b>. The Botanic Garden is five, Magdalen College six, Christ Church Meadow seven. Radcliffe Square and the Turf are fourteen each. Gloucester Green is twenty-three and the railway station thirty-one \u2014 so the Sunday train to Bath is still a cab, and that is the only real cost of the address. Everything else you came to Oxford to see is inside a quarter of an hour on foot.</div>
-<div class="staysec">Two things to know before anybody presses book</div>
-<p><b>There is one bathroom.</b> A good one \u2014 walk-in shower, separate bath, twin heated rails, a television in the wall \u2014 but one, for five people, with six medieval pubs on the Saturday and a train on the Sunday morning. Agree the shower order on the Friday night and it is a non-issue. Do not, and it is the one thing anybody will remember to complain about.</p>
-<p><b>And Airbnb flags the listing itself.</b> It carries their own label: <i>\u201cthis home is in the bottom 10% of eligible listings based on ratings, reviews and reliability\u201d</i>. It sits on <b>4.28 from thirty-two stays</b> \u2014 half of them five stars, sixteen per cent of them three. Cleanliness and accuracy both read 4.5. The host is a letting company in its first year, not a person. The listing also says four bedrooms while describing only two of them, so the beds in rooms three and four want confirming in writing before anybody pays. That is the trade for the location and the price, stated plainly \u2014 and it cancels free until <b>24 June 2027</b>, four days before we need it, so it is cheap to hold and cheap to drop.</p>
+<p class="lead">A Victorian terrace off St Clement’s, three minutes from South Park and eight from the end of Magdalen Bridge. Three double bedrooms, and <b>every one of them has its own bathroom</b>.</p>
+<p>This is the second change of plan on Oxford, and the reason is worth stating plainly. The original booking was a terrace in Jericho, gone the moment the flights moved to June. What replaced it was a four-bedroom duplex right on St Clement’s — unbeatable for position, and <b>flagged by Airbnb itself as being in the bottom ten per cent of listings for ratings, reviews and reliability</b>, on one bathroom for five people. Three weeks before this was written a guest left it two stars and described precisely the two things already flagged here: one toilet for a houseful, and an interior that “feels neglected”.</p>
+<p>So we moved. <b>This house is about five minutes further from the colleges and some four hundred reviews more certain.</b> It sits on <b>4.82 from ninety-eight stays</b> — cleanliness 4.8, check-in a flat 5.0 — hosted by <b>Dori and Jim, Superhosts of four years</b> who answer inside the hour. Refurbished top to bottom in 2022: an open-plan kitchen and living room, a private fenced garden, fast broadband, and cereal and milk put out for breakfast.</p>
+<div class="note"><b>Three bedrooms, three en-suites, and what that is actually worth.</b> Nobody queues. On the Sunday morning after six medieval pubs, with a train to catch at a quarter to twelve, five adults sharing one bathroom is the most predictable argument of the entire fortnight — and this removes it outright. It is also why the house takes <b>four</b> rather than five: three double beds, so a fifth person would be sharing with somebody they did not come with.</div>
+<p><b>Which is why Travis is not in it.</b> He is at his mate’s on Cave Street, round the corner — exactly as he already is on the Thursday night, so the arrangement is unchanged, just two nights longer. The house costs the same whether four sleep in it or five, so this saves nothing; it only changes the divisor. The four pay <b>A$385 each</b> for the two nights. Travis pays nothing.</p>
+<div class="staysec">The honest comparison</div>
+<p>Against the St Clement’s duplex it replaces, both read live on 23 November 2026:</p>
+<div class="card tight"><table class="money"><tbody>
+<tr><td><b>This house</b><br><span class="small">4.82 from 98 · Superhost · 3 bathrooms · four sleeping</span></td><td class="r"><b>A$1,541.66</b><br><span class="small">A$385 each</span></td></tr>
+<tr><td><b>Cherwell Gates</b><br><span class="small">4.3 from 33 · bottom-10% flag · 1 bathroom · five sleeping</span></td><td class="r">A$1,595.63<br><span class="small">A$319 each</span></td></tr>
+</tbody></table></div>
+<p><b>It is fifty-four dollars cheaper for the group and better on every reliability measure there is.</b> The four pay sixty-six dollars a head more, purely because they are splitting it four ways instead of five. That is the whole of the cost, and what it buys is a Superhost, three bathrooms and a garden.</p>
+<div class="note"><b>Ask for the luggage drop before you fly.</b> The listing offers <i>“luggage drop-off in the living room during preparing the house — request only”</i>. Check-in is three o’clock and the four land at quarter past seven in the morning, so message Dori about it in advance. It turns a seven-hour wait with four sets of suitcases into a seven-hour wait without them. Free cancellation runs to <b>20 June 2027</b>.</div>
+<p style="margin-bottom:0"><b>And it is not unflagged either.</b> Two recent guests noted small things — one found a stained towel and hair on the floors, another that new traffic restrictions turned the advertised car park into a long way round. Nobody is driving, and 4.8 cleanliness across ninety-eight stays is what a well-run house looks like, not a flawless one.</p>
 <div class="staysec">And the Oxford you came for</div>
 <p>All of it is inside fifteen minutes on foot, and the Saturday is built around exactly this.</p>
 ${gallery("oxsights","Five things to walk to while the jet lag wears off.")}
@@ -1354,27 +1348,27 @@ ${timeline([
  {t:"5:55am",h:"Gatwick, Terminal S",d:"Through the gate, through the bags, into England. Call it seven o’clock before you are out the front — and seven o’clock at Gatwick in late June is broad daylight.",cls:"key"},
  {t:"Morning",h:"Across to Oxford",d:"National Express runs Gatwick straight through to Oxford bus station without crossing London, which is the easy version; the early-morning departures still need checking against a 7am exit. The train via Reading is the known-reliable fallback. Either way this is now a bookable leg instead of a question mark — do it once the arrival time is in front of you."},
  {t:"Mid-morning",h:"Oxford, with a whole day in hand",d:"Landing before six buys back the entire Thursday. Breakfast somewhere, then a walk, then stay outdoors.",cls:"key"},
- {t:"Afternoon",h:"The spare room",d:"Which is precisely why Cherwell Gates is booked from Friday and not Thursday — no sense paying for a five-person house to sleep one.",cls:"key"},
+ {t:"Afternoon",h:"Cave Street",d:"And this is where Travis stays for the whole Oxford leg, not just tonight — the house the other four take has three double beds, which is four people, not five. It is round the corner from them.",cls:"key"},
  {t:"Evening",h:"Stay up until it is dark",d:"The single most useful thing you can do on day one. Oxford in late June does not go dark until half past nine, which makes it easy."}
 ])}
 <div class="note"><b>And in Melbourne, the other four leave today.</b> Brother, niece, nephew and girlfriend, out of Tullamarine on the Thursday and into Heathrow tomorrow morning — <b>THAI, 1:30pm Melbourne, Heathrow 7:15am Friday</b>, which is exactly why tomorrow starts early. Most of them are staying on in Europe afterwards, so the only leg that has to be bought together is this one: <b>A$1,448 one way</b>, checked bag in the fare, drilled to the airline’s own booking page on 15 November 2026.</div>`},
 
 /* 9 */ { id:"d2", nav:"Fri 25 June", sub:"Heathrow → Oxford", html:`
 <div class="dayhead"><div class="daynum hero"><div class="d">25</div><div class="m">Jun</div></div>
-<div class="wrap"><div class="dow">Friday</div><h2>Five of us, on St Clement’s</h2><div class="where">Heathrow → Oxford</div></div></div>
-<p class="lead">The day the trip actually starts. Four of you land at Heathrow at quarter past seven in the morning, one is already in Oxford, and by mid-afternoon everybody is in the same kitchen.</p>
-${shot("oxford",3)}
+<div class="wrap"><div class="dow">Friday</div><h2>All five of us, in Oxford</h2><div class="where">Heathrow → Oxford</div></div></div>
+<p class="lead">The day the trip actually starts. Four of you land at Heathrow at quarter past seven in the morning, one is already in Oxford, and by mid-afternoon everybody is in the same kitchen — even if only four of you sleep in it.</p>
+${shot("oxsights",3)}
 ${timeline([
  {t:"7:15am",h:"Heathrow",d:"THAI lands early. Allow an hour for the queue and the bags.",cls:"key"},
  {t:"≈9:30am",h:"The Airline coach",d:"Straight to Gloucester Green, about every twenty minutes, around the clock. Eighty to ninety minutes, roughly £18–25 single.",cls:"key"},
  {t:"≈11:00am",h:"Gloucester Green",d:"Then a cab across town. It is twenty-three minutes on foot and nobody is walking that with bags."},
- {t:"Midday",h:"The four hours before check-in",d:"Landing at quarter past seven buys a whole morning and costs a wait. Bags behind the bar or into left luggage, then lunch on Cowley Road and a first walk to Magdalen Bridge. Staying upright and outdoors beats a nap, and the jet lag is shorter for it.",cls:"soft"},
- {t:"4:00pm",h:"Cherwell Gates",d:"Check-in is after four, not three — so there is a long morning to fill either way. Self check-in on a key safe. Four bedrooms, one bathroom, and a roof terrace off the top of the house. Agree the shower order now, not at seven on Sunday morning.",cls:"key"},
+ {t:"Midday",h:"The hours before check-in",d:"Landing at quarter past seven buys a whole morning and costs a wait. Dori offers a luggage drop in the living room on request — ask for it before you fly. Then lunch on Cowley Road, a first walk to Magdalen Bridge, and up to South Park for the view. Staying upright and outdoors beats a nap, and the jet lag is shorter for it.",cls:"soft"},
+ {t:"3:00pm",h:"The en-suite house",d:"Self check-in on a key safe. Three doubles, three en-suites, an open-plan kitchen and a walled garden. Nobody has to agree a shower order, which on the Sunday morning will matter more than it sounds.",cls:"key"},
  {t:"Evening",h:"Eat on the doorstep",d:"St Clement’s has the Port Mahon and the Coconut Tree at the end of the street; three minutes the other way is Cowley Road, where the choice is Caribbean, Bangladeshi, Lebanese or Polish.",cls:"key"},
  {t:"Late",h:"Do not go hard tonight",d:"Tomorrow is the only full day in Oxford and it has six medieval pubs at the end of it."}
 ])}
 ${legBox("✈️ &nbsp;Heathrow → Oxford",[
- {i:"🚌",h:"The Airline coach to Gloucester Green",d:"The sensible answer. Runs around the clock, takes luggage, no changes. Then four quid in a cab across to St Clement’s.",p:"≈£20"},
+ {i:"🚌",h:"The Airline coach to Gloucester Green",d:"The sensible answer. Runs around the clock, takes luggage, no changes. Then a short cab east across town — four quid, and nobody is walking it with bags.",p:"≈£20"},
  {i:"🚕",h:"One car the whole way",d:"About ninety minutes, and £130–160 for five with luggage. Worth it if the flight lands late or the bags are heavy.",p:"split five ways"}
 ])}
 <div class="note"><b>Victorian Term 2 ends today.</b> The four flying out on Thursday miss the Friday; Travis misses the Wednesday as well. Term 3 does not start until Monday 12 July, so every day after this one sits inside the school holidays.</div>`},
@@ -1403,13 +1397,13 @@ ${crawlButton("oxford","The hand-drawn route, pub by pub, with the streets to wa
 <p class="lead">Out of Oxford in the morning, into Georgian Bath by the middle of the day, and then the rest of it belongs to a list a mate wrote down.</p>
 ${shot("bath",6)}
 ${timeline([
- {t:"11:00am",h:"Checkout, Cherwell Gates",d:"Bags out, and a cab to the station — thirty-one minutes on foot is not a thing anybody is doing with luggage."},
+ {t:"11:00am",h:"Checkout, the en-suite house",d:"Bags out, and a cab to the station — or the 280 bus, which the host times at a quarter of an hour. Nobody is walking it with luggage."},
  {t:"≈11:45am",h:"Oxford → Bath Spa",d:"Change at Didcot Parkway, about an hour and a quarter all up. There is no direct train, whatever anyone tells you.",cls:"key"},
  {t:"≈1:30pm",h:"Bath Spa",d:"Ten minutes on foot from the station to the front door."},
  {t:"≈2:00pm",h:"Join Big John’s crawl",d:"You cannot start at eleven — the train does not get in until half one. Pick his list up at the Huntsman on North Parade and run it from there. Bags into left luggage at Harington’s if check-in is not open yet.",cls:"key"},
  {t:"4–7pm",h:"The Bell",d:"Three straight hours, which was not an accident. Five hundred and thirty-six of its own regulars clubbed together and bought it on 2 July 2013.",cls:"key"},
  {t:"Evening",h:"Up the hill, and back down",d:"The Paragon, the Farmhouse, the Beehive — and then back down to the Bell for last orders."},
- {t:"Late",h:"12 Trim Street",d:"Four beds, two and a half baths, and a hot tub in the courtyard. Nine minutes from the Bell.",cls:"key"}
+ {t:"Late",h:"12 Trim Street",d:"Four bedrooms, seven beds, two bathrooms, and a hot tub in the courtyard. Nine minutes from the Bell.",cls:"key"}
 ])}
 ${legBox("🚂 &nbsp;Oxford → Bath Spa",[
  {i:"🚄",h:"Great Western, one change at Didcot Parkway",d:"Oxford to Didcot is about thirteen minutes, Didcot to Bath about forty-three, plus the wait. Call it an hour and a quarter and do not cut the connection fine with five people and ten bags.",p:"one change"},
@@ -1545,7 +1539,7 @@ ${timeline([
 /* 20 */ { id:"money", nav:"What it costs", sub:"Every number", html:`
 <div class="kicker">What it costs</div>
 <h2>${aud(TOTAL)} a head, and here is every line of it</h2>
-<p class="lead">Priced for five people sharing. Everything below is either secured at that number or a deliberately cautious estimate — nothing in here is a guess dressed up as a figure. The flight line is no longer an estimate at all: it is read straight off the two issued e-tickets.</p>
+<p class="lead">This is <b>Travis’s</b> number, and it is the honest one to quote because the flight line is his award-ticket taxes rather than a fare anybody else is paying. Bath and London divide five ways; Oxford now divides four, because he sleeps at a mate’s. Everything below is either secured at that figure or a deliberately cautious estimate — nothing here is a guess dressed up as a number. <b>The four’s own figure is in the box below the table.</b></p>
 <div class="card">
 <table class="money">
 <thead><tr><th>Line</th><th class="r">Per person</th></tr></thead>
@@ -1553,22 +1547,32 @@ ${timeline([
 </table>
 </div>
 <div class="todo"><div class="th"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" aria-hidden="true"><path d="M3 18V8a2 2 0 0 1 2-2h8a3 3 0 0 1 3 3v2h3a3 3 0 0 1 3 3v4M3 18h18M7 10h3"/></svg>One line is missing from this table</div><p><b>Sunday 4 July has no accommodation booked and no figure in the total above.</b> Hampstead runs out on the Sunday morning and the plane does not go until Monday evening, so there is a tenth night to buy. It is left out deliberately rather than guessed at.</p><p style="margin-bottom:0">For scale: a seventh night at the Coach House at the same rate the other six average would be about <b>A$135 a head</b> — and it should come in under that, because the cleaning fee is already paid. Treat <b>A$100–180 a head</b> as the band until it is actually priced, and note that it may be one bed rather than five.</p></div>
+<div class="card tight" style="margin-top:18px"><h3>And what the other four pay</h3>
+<p>Identical on everything except Oxford, where they split the house between four instead of five — and they are buying their own flights, which are not in either column.</p>
+<table class="money"><tbody>
+<tr><td>Oxford — the en-suite house</td><td class="r">A$385</td></tr>
+<tr><td>Bath</td><td class="r">A$219</td></tr>
+<tr><td>London — Hampstead</td><td class="r">A$810</td></tr>
+<tr><td>Lord’s, trains, ETA and the rest</td><td class="r">A$1,262</td></tr>
+<tr class="tot"><td>Per person, before their own airfare</td><td class="r">A$2,676</td></tr>
+</tbody></table>
+<p class="small" style="margin-bottom:0">Add roughly <b>A$1,471–1,542</b> each for the one-way to London on the Thursday, read live on 23 November 2026, and whatever they spend getting home later.</p></div>
 <h3 style="margin-top:22px">The bit worth looking at twice</h3>
-<p>Nine <i>booked</i> nights of accommodation across Oxford, Bath and Hampstead, for five people, works out at:</p>
+<p>Nine <i>booked</i> nights of accommodation across Oxford, Bath and Hampstead, per person per night:</p>
 <div class="pernight">
-  <div class="pn"><div class="city">Oxford</div><div class="v">A$157</div><div class="u">per person per night · 2 nights</div><div class="bar"><i style="width:87%"></i></div></div>
-  <div class="pn"><div class="city">Bath</div><div class="v">A$181</div><div class="u">per person per night · 1 night</div><div class="bar"><i style="width:100%"></i></div></div>
-  <div class="pn"><div class="city">London</div><div class="v">A$135</div><div class="u">per person per night · 6 nights</div><div class="bar"><i style="width:75%"></i></div></div>
+  <div class="pn"><div class="city">Oxford</div><div class="v">A$193</div><div class="u">per person per night · 2 nights · four sharing</div><div class="bar"><i style="width:88%"></i></div></div>
+  <div class="pn"><div class="city">Bath</div><div class="v">A$219</div><div class="u">per person per night · 1 night · five sharing</div><div class="bar"><i style="width:100%"></i></div></div>
+  <div class="pn"><div class="city">London</div><div class="v">A$135</div><div class="u">per person per night · 6 nights · five sharing</div><div class="bar"><i style="width:62%"></i></div></div>
 </div>
-<div class="card tight"><p style="margin:0"><b>A$1,305 each for nine nights</b> — accommodation <b>averaging A$145 a night</b> across the three houses. The average is the point. London is much the cheapest because six nights in one house spreads every fixed cost six ways. Bath is the dearest for exactly the opposite reason: one night in a four-bedroom Georgian townhouse carries every fixed cost on its own. Oxford now sits between them, forty-five dollars a night under the Cowley Road flat we were comparing it with — though still twenty dollars a night over the Jericho house that was lost when the flights moved.</p></div>
+<div class="card tight"><p style="margin:0"><b>A$1,414 each for nine nights if you are one of the four; A$1,029 if you are Travis.</b> The shape is the same either way. London is much the cheapest because six nights in one house spreads every fixed cost six ways. Bath is the dearest for exactly the opposite reason: one night in a Georgian townhouse carries the whole cleaning fee on its own. Oxford sits between them — and it costs more per head than the duplex it replaced only because four people are splitting it rather than five. <b>The house itself is fifty-four dollars cheaper.</b></p></div>
 <h3 style="margin-top:22px">What a hostel would actually cost</h3>
 <p>Worth doing honestly, so here it is — priced on YHA’s own site, for our exact dates, on 7 November 2026.</p>
 <div class="card tight"><table class="money"><tbody><tr><td><b>YHA London Central</b><br><span class="small">Mon 28 Jun – Sat 3 Jul, bunk in a shared single-gender room</span></td><td class="r">£30 midweek<br>£50 Fri &amp; Sat</td></tr><tr><td><b>YHA Bath</b><br><span class="small">Read for Sun 4 Jul, before the dates moved to Sun 27 Jun</span></td><td class="r">£24</td></tr><tr><td><b>YHA Oxford</b><br><span class="small">There isn’t one. Oxford is not among the 92 YHA hostels in England and Wales.</span></td><td class="r">—</td></tr></tbody></table></div>
-<p>At about A$1.95 to the pound that is <b>A$59 a night midweek and A$98 on the weekend</b> in London, against <b>A$135</b> for the Hampstead house. So the house is running at roughly double a bunk — and Tuesday 29 June has no bed available at the hostel at all. Bath is the wide one: A$47 against A$181, for the single-night reason above.</p>
+<p>At about A$1.95 to the pound that is <b>A$59 a night midweek and A$98 on the weekend</b> in London, against <b>A$135</b> for the Hampstead house. So the house is running at roughly double a bunk — and Tuesday 29 June has no bed available at the hostel at all. Bath is the wide one: A$47 against A$219, for the single-night reason above.</p>
 <div class="note">For double a bunk bed you get your own room, a front door that is yours, a kitchen, somewhere to sit at the end of the day, and no 10am checkout into the street. That is the trade, stated plainly.</div>
 <h3 style="margin-top:22px">What is not in the number</h3>
 <p><b>Sunday 4 July’s bed</b> — see the red box above; it is the one real hole in the number. Then food, drink and anything you buy: budget £50–70 a day if you eat and drink well, which on this trip you will — call it <b>A$1,400–2,050</b> across fifteen days. Add a third Lord’s day (about A$346) if one comes back on the exchange, and day five on the Sunday is now reachable too. And the four flying out on the Thursday are buying their own fares, which are not in the figure above.</p>
-<div class="note"><b>Four sharing instead of five costs about A$326 more each.</b> The houses are booked whole, so the beds divide the same way whoever is in them — which is why a late drop-out is expensive for everybody else, not just for them.</div>
+<div class="note"><b>A late drop-out is expensive for everybody else, not just for them.</b> Every house is booked whole, so the beds divide the same way whoever is in them — Oxford is already the worked example: the same house, four names instead of five, and sixty-six dollars a head more. Lose another body from Bath or Hampstead and the remaining four pick up about <b>A$257 each</b>.</div>
 <p class="small">The flight figure is read off the two Qantas e-tickets, both issued 15 November 2026 and both logged on 22 November 2026: A$343.60 charged in AUD on the outbound, £515.74 charged in GBP on the return, converted at mid-market. It is taxes and carrier charges on a points booking, not a cash fare, and the GBP side will land a little higher if the card added a foreign-currency margin. Cash fares were verified against Google Flights and the airlines on seventeen reads between 29 October and 14 November 2026, for comparison only. Bath and Hampstead are secured Airbnb reservation figures; Oxford is a live quote for 25–27 June read on 15 November 2026, not yet booked. Hostel rates read from yha.org.uk on 7 November 2026, against the London dates, which have not moved. Trains, Oyster, the Heathrow coach, the UK ETA, insurance and an eSIM are estimates and deliberately on the high side.</p>`},
 
 /* 21 */ { id:"end", nav:"Come with us", sub:"The ask", html:`
@@ -1577,13 +1581,14 @@ ${timeline([
 <h2 style="font-size:clamp(30px,7.4vw,44px)">Five of us, and the flights are issued</h2>
 <p class="lead" style="text-align:left">The outbound and the return are both <b>ticketed</b> — real flight numbers, real times, Premium Economy out of Melbourne on Wednesday 23 June and home out of Heathrow on Monday 5 July. Two days of Ashes cricket at Lord’s are in hand at face value. Hampstead is secured for six nights and does not move — the Test has not moved either.</p>
 <p style="text-align:left">What is left is the front half and one night at the back. Oxford and Bath both need rebooking onto the new June dates, and both of the old reservations cancel free, so nothing is at risk while that happens. And <b>Sunday 4 July needs a bed</b>, because the booked flight home is a day later than this book was built for.</p>
+<p style="text-align:left"><b>All three houses are now Superhost-or-better.</b> Oxford 4.82 from 98 stays, Bath 4.85 from 468 and a Guest Favourite, Hampstead 4.98 from 80 and in Airbnb’s top five per cent. That was deliberate: on a trip this long, one badly run house is the thing everybody remembers.</p>
 <div class="rule">◆</div>
 <div class="grid2" style="text-align:left">
   <div class="stat"><div class="n">${aud(TOTAL)}</div><div class="l">per person, all in</div></div>
   <div class="stat"><div class="n">15</div><div class="l">days, 23 Jun – 7 Jul 2027</div></div>
 </div>
 <div class="card" style="text-align:left"><h3>What you need to do</h3>
-<p><b>1. Rebook Oxford and Bath.</b> Cherwell Gates on St Clement’s for Friday 25 to Sunday 27 June, and Trim Street for the Sunday night. Bath comes in seventy-five dollars a head <i>under</i> the booking it replaces. Oxford comes in <i>over</i> — forty-one dollars a head more than the Jericho house, which is simply what the dates moving costs; against the Cowley Road flat we were looking at a week ago it is eighty-nine dollars cheaper. Read the two flags on the Oxford page first: one bathroom, and a listing Airbnb has marked bottom-ten-per-cent. Ask the host what is in bedrooms three and four before you pay.</p>
+<p><b>1. Rebook Oxford and Bath.</b> The <b>en-suite house off St Clement’s</b> for Friday 25 to Sunday 27 June — <b>four guests, not five</b>, because Travis is at Cave Street — and <b>Trim Street</b> for the Sunday night, five guests. Both re-read live on 23 November 2026: Oxford <b>A$1,541.66</b>, Bath <b>A$1,096.56</b>. Bath is still thirty-seven dollars a head under the July booking it replaces, though that saving has halved since the first quote, and the listing is flagged <i>“rare find, usually booked”</i> — so do Bath first. Message the Oxford host about the luggage drop at the same time.</p>
 <p><b>2. Release the old two.</b> Trim Street cancels free until 4 June 2027 and the Jericho house until 4 July 2027, so do it in that order and there is never a gap.</p>
 <p><b>3. Book the Thursday outbound.</b> This is the only leg the four have to buy together — most of them are coming home much later, so buy one ways. <b>THAI, A$1,448</b>: out 1:30pm Thursday, into Heathrow 7:15am Friday, one stop, <b>checked bag in the fare</b>, bookable on thaiairways.com itself. <b>Finnair is A$1,233</b> and lands at ten past nine, also direct with the airline — but it is a Light fare with <i>no</i> checked bag and Google will not quote the bag price, so the real gap is smaller than A$215. Ignore the A$672 Air India headline: Google hides the price because it <i>might be incorrect</i>, and on the return search both its pairings read <i>price unavailable</i> — tenth read running.</p>
 <p><b>3b. And if Northy comes — the THAI return no longer gets him home alongside you.</b> <b>THAI return, A$2,688</b>, same outbound, home out of Heathrow 9:25pm on <i>Sunday</i> 4 July and into Melbourne 7:30am Tuesday. That was an hour and a quarter behind the award routing when the award routing flew on the Sunday. It now flies on the <b>Monday</b> and lands Wednesday 7 July — so on the THAI fare Northy would get in <b>nearly a full day ahead</b>, not just behind. The fare is still well priced, A$1,274 under the usual band. But if travelling home together is the point, the leg to match is <b>BA 11, Heathrow 7:25pm Monday 5 July</b>.</p>
